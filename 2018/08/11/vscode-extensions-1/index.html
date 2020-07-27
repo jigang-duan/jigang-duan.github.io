@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>yo code - 扩展生成器 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="vscodeextension">
+  
+  
+  
+  
+  <meta name="description" content="我们编写了一个Yeoman 生成器来帮助您开始。 先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, Node.js包管理器，它将用于安装扩展生成器。 安装生成器从命令提示符安装Yeoman和VS Code扩展生成器: 1npm install -g yo generator-code 运行你代码Yeoman生成器将指导您完成创建自定义或扩展所需的步骤，并提示您">
+<meta name="keywords" content="vscode,extension">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yo Code - 扩展生成器">
+<meta property="og:url" content="https://jigangduan.github.io/2018/08/11/vscode-extensions-1/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="我们编写了一个Yeoman 生成器来帮助您开始。 先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, Node.js包管理器，它将用于安装扩展生成器。 安装生成器从命令提示符安装Yeoman和VS Code扩展生成器: 1npm install -g yo generator-code 运行你代码Yeoman生成器将指导您完成创建自定义或扩展所需的步骤，并提示您">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://code.visualstudio.com/assets/docs/extensions/yocode/yocode.png">
+<meta property="og:image" content="https://code.visualstudio.com/assets/docs/extensions/yocode/yo-workaround.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Yo Code - 扩展生成器">
+<meta name="twitter:description" content="我们编写了一个Yeoman 生成器来帮助您开始。 先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, Node.js包管理器，它将用于安装扩展生成器。 安装生成器从命令提示符安装Yeoman和VS Code扩展生成器: 1npm install -g yo generator-code 运行你代码Yeoman生成器将指导您完成创建自定义或扩展所需的步骤，并提示您">
+<meta name="twitter:image" content="https://code.visualstudio.com/assets/docs/extensions/yocode/yocode.png">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-vscode-extensions-1" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Yo Code - 扩展生成器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/11/vscode-extensions-1/" class="article-date">
+	  <time datetime="2018-08-11T02:32:19.000Z" itemprop="datePublished">2018-08-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们编写了一个<a href="https://github.com/Microsoft/vscode-generator-code" target="_blank" rel="noopener">Yeoman 生成器</a>来帮助您开始。</p>
+<h1 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h1><p>你需要的节点。在您的<code>$PATH</code>中安装并可用js。<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>安装包括<a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a>, Node.js包管理器，它将用于安装扩展生成器。</p>
+<h1 id="安装生成器"><a href="#安装生成器" class="headerlink" title="安装生成器"></a>安装生成器</h1><p>从命令提示符安装Yeoman和VS Code扩展生成器:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g yo generator-code</span><br></pre></td></tr></table></figure>
+<h1 id="运行你代码"><a href="#运行你代码" class="headerlink" title="运行你代码"></a>运行你代码</h1><p>Yeoman生成器将指导您完成创建自定义或扩展所需的步骤，并提示您输入所需的信息。</p>
+<p>要启动生成器，在命令提示符中输入以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yo code</span><br></pre></td></tr></table></figure>
+<p><img src="https://code.visualstudio.com/assets/docs/extensions/yocode/yocode.png" alt="yocode"></p>
+<h1 id="生成器的选择"><a href="#生成器的选择" class="headerlink" title="生成器的选择"></a>生成器的选择</h1><p>生成器可以为新扩展创建扩展框架，也可以根据现有的TextMate定义文件为语言、主题或片段创建现成的扩展。</p>
+<h2 id="新建扩展-TypeScript"><a href="#新建扩展-TypeScript" class="headerlink" title="新建扩展(TypeScript)"></a>新建扩展(TypeScript)</h2><p>创建一个实现“hello world”命令的扩展框架。将此作为您自己的扩展的起点。</p>
+<ul>
+<li>提示输入扩展标识符，并将在当前目录中创建该名称的文件夹。</li>
+<li>创建带有源、测试和输出文件夹的基本文件夹结构。</li>
+<li>模板输出package.json文件和扩展名主文件。</li>
+<li>设置launch.json和tasks.json，以便F5编译和运行您的扩展并附加调试器。</li>
+<li>可以选择设置Git存储库。</li>
+</ul>
+<p>创建之后，在创建的文件夹上打开VS代码。该文件夹包含一个文件<code>vsc-extension-quickstart.md</code>，作为接下来步骤的快速指南。这个扩展的设置是为了让你得到扩展API的智能感知。</p>
+<h2 id="新建扩展-JavaScript"><a href="#新建扩展-JavaScript" class="headerlink" title="新建扩展(JavaScript)"></a>新建扩展(JavaScript)</h2><p>与新建扩展(TypeScript)相同，但是JavaScript。这个扩展的设置是为了让你得到扩展API的智能感知。</p>
+<h2 id="新建颜色主题"><a href="#新建颜色主题" class="headerlink" title="新建颜色主题"></a>新建颜色主题</h2><p>创建一个能提供新颜色主题的扩展。您可以基于现有的TextMate颜色主题创建主题，或者从头创建新主题。</p>
+<ul>
+<li>如果您计划使用 <strong>Developer: Generate Color Theme From Current Settings</strong> 命令在您的设置中使用自定义颜色创建主题(推荐)，那么从新的扩展开始。</li>
+<li>以TextMate颜色主题开始，以现有的主题(如<code>.tmtheme</code>)开始。</li>
+</ul>
+<p>生成器将:</p>
+<ul>
+<li>提示输入颜色主题名称以及颜色基础主题(亮或暗)。</li>
+<li>提示输入扩展标识符，并将在当前目录中创建该名称的文件夹。</li>
+</ul>
+<p>创建之后，在创建的文件夹上打开VS Code并运行扩展来测试新主题。查看<code>vsc-extension-quickstart.md</code>。下面是一个快速指南。</p>
+<h2 id="新语言支持"><a href="#新语言支持" class="headerlink" title="新语言支持"></a>新语言支持</h2><p>创建一个扩展，该扩展使用着色器提供语言。</p>
+<ul>
+<li>提示输入现有TextMate语言文件(.tmLanguage, .plist or .json)的位置(URL或文件路径)。此文件将导入新扩展名。要开始一个新的语法，您可以通过传递一个空的名称来跳过这个。</li>
+<li>提示输入扩展标识符，并将在当前目录中创建该名称的文件夹。</li>
+</ul>
+<p>创建好后，在创建的文件夹上打开VS代码并运行扩展来测试着色。查看<code>vsc-extension-quickstart.md</code>以了解接下来的步骤。查看已经创建的语言配置文件，并定义配置选项，比如语言使用的注释和括号。</p>
+<h2 id="新建代码片段"><a href="#新建代码片段" class="headerlink" title="新建代码片段"></a>新建代码片段</h2><p>创建提供新代码片段的扩展。</p>
+<ul>
+<li>提示输入包含TextMate片段(.tmsnippet)或Sublime片段(.sublime-snippet)的文件夹位置。这些文件被转换为VS Code片段文件。</li>
+<li>提示输入这些片段将被激活的语言。</li>
+<li>提示输入扩展标识符，并将在当前目录中创建该名称的文件夹。</li>
+</ul>
+<p>创建之后，在创建的文件夹上打开VS Code并运行扩展来测试代码片段。查看vsc-extension-quickstart.md。接下来的步骤。</p>
+<h2 id="新建扩展包"><a href="#新建扩展包" class="headerlink" title="新建扩展包"></a>新建扩展包</h2><p>创建一个扩展，该扩展使用您最喜欢的扩展提供一个新的扩展包。</p>
+<ul>
+<li>提示将已安装的扩展添加到扩展包。</li>
+<li>提示输入扩展标识符，并将在当前目录中创建该名称的文件夹。</li>
+<li>检查包中的扩展依赖关系。发布扩展包之前的json文件。</li>
+</ul>
+<p>创建好后，在创建的文件夹上打开VS代码并运行扩展来测试扩展包。查看<code>vsc-extension-quickstart.md</code>接下来的步骤。</p>
+<h1 id="你的扩展文件夹"><a href="#你的扩展文件夹" class="headerlink" title="你的扩展文件夹"></a>你的扩展文件夹</h1><p>要加载扩展，需要将文件复制到VS Code扩展文件夹.vscode/extensions。根据平台的不同，它位于以下文件夹中:</p>
+<ul>
+<li>Windows <code>%USERPROFILE%\.vscode\extensions</code></li>
+<li>macOS <code>~/.vscode/extensions</code></li>
+<li>Linux <code>~/.vscode/extensions</code></li>
+</ul>
+<p>如果每次VS Code运行时都要加载扩展名，请将项目复制到<code>.vscode/extensions</code>下的新文件夹中(“侧加载”)。例如:<code>~/.vscode/extensions/myextension</code>。</p>
+<h1 id="下一个步骤"><a href="#下一个步骤" class="headerlink" title="下一个步骤"></a>下一个步骤</h1><p><a href="https://code.visualstudio.com/docs/extensions/publish-extension" target="_blank" rel="noopener">发布工具</a>-学习如何发布你的扩展到VS Code市场。<br><a href="https://code.visualstudio.com/docs/extensions/example-hello-world" target="_blank" rel="noopener">Hello World</a>—尝试“Hello World”演练来构建您的第一个扩展。<br><a href="https://code.visualstudio.com/docs/extensions/samples" target="_blank" rel="noopener">其他扩展示例</a>—查看我们的示例扩展项目列表。</p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><p>yo代码生成器不响应Windows 10上的箭头键<br>尝试用yo启动Yeoman生成器，然后选择代码生成器。</p>
+<p><img src="https://code.visualstudio.com/assets/docs/extensions/yocode/yo-workaround.png" alt="yo"></p>
+<p>如果箭头键仍然没有响应，试着从一个升高的外壳启动Yeoman。为此，右键单击shell并选择Run as administrator。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/11/vscode-extensions-1/" target="_blank" title="Yo Code - 扩展生成器">https://jigangduan.github.io/2018/08/11/vscode-extensions-1/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/extension/">extension</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vscode/">vscode</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/11/vscode-extensions-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          扩展 - Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/11/Sentry/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Sentry服务搭建</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#先决条件"><span class="nav-number">1.</span> <span class="nav-text">先决条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装生成器"><span class="nav-number">2.</span> <span class="nav-text">安装生成器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行你代码"><span class="nav-number">3.</span> <span class="nav-text">运行你代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成器的选择"><span class="nav-number">4.</span> <span class="nav-text">生成器的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建扩展-TypeScript"><span class="nav-number">4.1.</span> <span class="nav-text">新建扩展(TypeScript)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建扩展-JavaScript"><span class="nav-number">4.2.</span> <span class="nav-text">新建扩展(JavaScript)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建颜色主题"><span class="nav-number">4.3.</span> <span class="nav-text">新建颜色主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新语言支持"><span class="nav-number">4.4.</span> <span class="nav-text">新语言支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建代码片段"><span class="nav-number">4.5.</span> <span class="nav-text">新建代码片段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建扩展包"><span class="nav-number">4.6.</span> <span class="nav-text">新建扩展包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#你的扩展文件夹"><span class="nav-number">5.</span> <span class="nav-text">你的扩展文件夹</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下一个步骤"><span class="nav-number">6.</span> <span class="nav-text">下一个步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见问题"><span class="nav-number">7.</span> <span class="nav-text">常见问题</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

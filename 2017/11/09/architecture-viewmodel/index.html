@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>android 架构组件 - viewmodel | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="android架构设计">
+  
+  
+  
+  
+  <meta name="description" content="ViewModel类旨在以生命周期的方式存储和管理与ui相关的数据。ViewModel类允许数据在诸如屏幕旋转之类的配置更改中存活。  注意:要将ViewModel导入到您的Android项目中，请参见向您的项目添加组件。  Android框架管理UI控制器的生命周期，比如activities和fragments。该框架可能会决定销毁或重新创建UI控制器，以响应完全超出您控制的某些用户操作或设备">
+<meta name="keywords" content="android,架构设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 架构组件 - ViewModel">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/09/architecture-viewmodel/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="ViewModel类旨在以生命周期的方式存储和管理与ui相关的数据。ViewModel类允许数据在诸如屏幕旋转之类的配置更改中存活。  注意:要将ViewModel导入到您的Android项目中，请参见向您的项目添加组件。  Android框架管理UI控制器的生命周期，比如activities和fragments。该框架可能会决定销毁或重新创建UI控制器，以响应完全超出您控制的某些用户操作或设备">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://developer.android.google.cn/topic/images/arch/icons/icons_cards_viewmodel.svg">
+<meta property="og:image" content="https://developer.android.google.cn/images/topic/libraries/architecture/viewmodel-lifecycle.png">
+<meta property="og:image" content="https://developer.android.google.cn/images/topic/libraries/architecture/viewmodel-loader.png">
+<meta property="og:image" content="https://developer.android.google.cn/images/topic/libraries/architecture/viewmodel-replace-loader.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.193Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 架构组件 - ViewModel">
+<meta name="twitter:description" content="ViewModel类旨在以生命周期的方式存储和管理与ui相关的数据。ViewModel类允许数据在诸如屏幕旋转之类的配置更改中存活。  注意:要将ViewModel导入到您的Android项目中，请参见向您的项目添加组件。  Android框架管理UI控制器的生命周期，比如activities和fragments。该框架可能会决定销毁或重新创建UI控制器，以响应完全超出您控制的某些用户操作或设备">
+<meta name="twitter:image" content="https://developer.android.google.cn/topic/images/arch/icons/icons_cards_viewmodel.svg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-architecture-viewmodel" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android 架构组件 - ViewModel
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/09/architecture-viewmodel/" class="article-date">
+	  <time datetime="2017-11-09T03:26:10.000Z" itemprop="datePublished">2017-11-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android架构组件/">Android架构组件</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://developer.android.google.cn/topic/images/arch/icons/icons_cards_viewmodel.svg" width="240" height="240" align="center/"></p>
+<p><a href="https://developer.android.google.cn/reference/android/arch/lifecycle/ViewModel.html" target="_blank" rel="noopener">ViewModel</a>类旨在以生命周期的方式存储和管理与ui相关的数据。<br><code>ViewModel</code>类允许数据在诸如屏幕旋转之类的配置更改中存活。</p>
+<blockquote>
+<p>注意:要将ViewModel导入到您的Android项目中，请参见<a href="/2017/11/08/adding-components/">向您的项目添加组件</a>。</p>
+</blockquote>
+<p>Android框架管理UI控制器的生命周期，比如activities和fragments。<br>该框架可能会决定销毁或重新创建UI控制器，以响应完全超出您控制的某些用户操作或设备事件。</p>
+<p>如果系统破坏或重新创建一个UI控制器，那么存储在其中的任何与UI相关的数据都将丢失。<br>例如，你的应用可能会在其中一个activity中包含一个用户列表。<br>当为配置更改重新创建activity时，新activity必须重新获取用户列表。<br>对于简单的数据，该activity可以使用<a href="https://developer.android.google.cn/reference/android/app/Activity.html#onSaveInstanceState(android.os.Bundle" target="_blank" rel="noopener">onSaveInstanceState()</a>)方法，并从<a href="https://developer.android.google.cn/reference/android/app/Activity.html#onCreate(android.os.Bundle" target="_blank" rel="noopener">onCreate()</a>)中的bundle中恢复其数据，但是这种方法只适用于少量的数据，这些数据可以序列化然后反序列化，而不是像用户列表或位图那样的潜在的大量数据。</p>
+<p>另一个问题是UI控制器经常需要进行异步调用，这可能需要一些时间才能返回。<br>UI控制器需要管理这些调用，并确保系统在被销毁后清除它们，以避免潜在的内存泄漏。<br>这种管理需要大量的维护，并且在为配置更改重新创建对象的情况下，由于对象可能不得不重新发出已经发出的调用，这是对资源的浪费。</p>
+<p>诸如activities和fragments之类的UI控制器主要是用来显示UI数据、对用户操作作出反应，或者处理操作系统通信，比如权限请求。<br>要求UI控制器也负责从数据库或网络加载数据，这增加了类的膨胀。<br>给UI控制器分配过多的责任会导致一个单独的类，它试图独自处理应用程序的所有工作，而不是将工作委托给其他类。<br>以这种方式为UI控制器分配过多的责任也会使测试变得更加困难。</p>
+<p>将视图数据所有权与UI控制器逻辑分离是更容易、更高效的。</p>
+<a id="more"></a>
+<h2 id="实现ViewModel"><a href="#实现ViewModel" class="headerlink" title="实现ViewModel"></a>实现ViewModel</h2><p>架构组件为UI控制器提供ViewModel助手类，负责为UI准备数据。<br>在配置更改期间，<code>ViewModel对象将自动保留</code>，以便它们保存的数据立即可用到下一个activity或fragment实例。<br>例如，如果您需要在应用程序中显示一个用户列表，请确保将责任分配给一个ViewModel，而不是一个activity或fragment，如下面的示例代码所示:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyViewModel</span> <span class="keyword">extends</span> <span class="title">ViewModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> MutableLiveData&lt;List&lt;User&gt;&gt; users;</span><br><span class="line">    <span class="keyword">public</span> LiveData&lt;List&lt;User&gt;&gt; getUsers() &#123;</span><br><span class="line">        <span class="keyword">if</span> (users == <span class="keyword">null</span>) &#123;</span><br><span class="line">            users = <span class="keyword">new</span> MutableLiveData&lt;List&lt;Users&gt;&gt;();</span><br><span class="line">            loadUsers();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> users;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadUsers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 执行一个异步操作来获取用户.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，您可以从以下activity中访问该列表:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Create a ViewModel the first time the system calls an activity's onCreate() method.</span></span><br><span class="line">        <span class="comment">// Re-created activities receive the same MyViewModel instance created by the first activity.</span></span><br><span class="line"></span><br><span class="line">        MyViewModel model = ViewModelProviders.of(<span class="keyword">this</span>).get(MyViewModel<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        model.getUsers().observe(<span class="keyword">this</span>, users -&gt; &#123;</span><br><span class="line">            <span class="comment">// update UI</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果该activity被重新创建，它将收到第一个activity创建的<code>MyViewModel</code>实例。<br>当所有者activity完成后，框架调用<a href="https://developer.android.google.cn/reference/android/arch/lifecycle/ViewModel.html" target="_blank" rel="noopener">ViewModel</a>对象的<a href="https://developer.android.google.cn/reference/android/arch/lifecycle/ViewModel.html#onCleared(" target="_blank" rel="noopener">onCleared()</a>)方法，以便它可以清理资源。</p>
+<blockquote>
+<p>⚠️:<code>ViewModel</code>永远不能引用视图、<a href="https://developer.android.google.cn/reference/android/arch/lifecycle/Lifecycle.html" target="_blank" rel="noopener">Lifecycle</a>或任何可能引用activity上下文的类。</p>
+</blockquote>
+<p>ViewModel对象的设计是为了比具体的视图实例或LifecycleOwners实例活得更活。<br>这个设计还意味着您可以更容易地编写测试来覆盖ViewModel，因为它不知道视图和生命周期对象。<br>ViewModel对象可以包含LifecycleObservers，比如LiveData对象。<br>然而，<strong>ViewModel对象永远不能观察对生命周期敏感的观察对象的变化</strong>，例如LiveData对象。<br>如果ViewModel需要Application context，例如找到一个系统服务，它可以扩展<a href="https://developer.android.google.cn/reference/android/arch/lifecycle/AndroidViewModel.html" target="_blank" rel="noopener">AndroidViewModel</a>类，并拥有一个在构造函数中接收到Application的构造函数，因为Application类扩展了Context。</p>
+<h2 id="ViewModel的生命周期"><a href="#ViewModel的生命周期" class="headerlink" title="ViewModel的生命周期"></a>ViewModel的生命周期</h2><p>ViewModel对象是在获得ViewModel时被传递到ViewModelProvider的生命周期的范围。<br>ViewModel仍然存在于内存中，直到它被限定的生命周期永久地消失:在activity的情况下，当它finishes时，在一个fragment中，当它被detached时。</p>
+<p>图1演示了一个activity的各个生命周期状态，当它进行轮转，然后结束。<br>插图还显示了与相关活动生命周期相邻的ViewModel的生命周期。<br>这个特殊的图说明了activity的状态。<br>同样的基本状态也适用于fragment的生命周期。</p>
+<p><img src="https://developer.android.google.cn/images/topic/libraries/architecture/viewmodel-lifecycle.png" alt="viewmodel-lifecycle.png"></p>
+<p>在系统调用activity对象的<code>onCreate()</code>方法时，通常需要一个ViewModel。<br>系统可以在activity的整个生命周期中多次调用onCreate()，例如在设备屏幕被旋转时。<br>ViewModel存在于您第一次请求ViewModel时，<code>直到activity完成并销毁</code>。</p>
+<h2 id="fragments之间共享数据"><a href="#fragments之间共享数据" class="headerlink" title="fragments之间共享数据"></a>fragments之间共享数据</h2><p>在一个activity中，两个或多个fragments需要相互通信是很常见的。<br>设想一个常见的master-detail fragments，其中有一个fragment，用户从一个列表中选择一个项目，另一个fragment显示所选项的内容。<br>这个案例并不简单，因为两个fragments都需要定义一些接口描述，而所有者activity必须将两者结合在一起。<br>此外，两个fragments必须处理另一个fragment尚未创建或可见的场景。</p>
+<p>这个常见的痛点可以通过使用ViewModel对象来解决。<br>这些fragments可以使用它们的activity范围来共享一个视图模型，以处理这种通信，如下面的示例代码所示:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SharedViewModel</span> <span class="keyword">extends</span> <span class="title">ViewModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> MutableLiveData&lt;Item&gt; selected = <span class="keyword">new</span> MutableLiveData&lt;Item&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">select</span><span class="params">(Item item)</span> </span>&#123;</span><br><span class="line">        selected.setValue(item);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LiveData&lt;Item&gt; <span class="title">getSelected</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> selected;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MasterFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> SharedViewModel model;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        model = ViewModelProviders.of(getActivity()).get(SharedViewModel<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        itemSelector.setOnClickListener(item -&gt; &#123;</span><br><span class="line">            model.select(item);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DetailFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        model.getSelected().observe(<span class="keyword">this</span>, &#123; item -&gt;</span><br><span class="line">           <span class="comment">// Update the UI.</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请注意，在获取ViewModelProvider时，两个fragments都使用getActivity()。<br>因此，这两个fragments都接收相同的SharedViewModel实例，该实例的作用域是activity。</p>
+<p>这种方法提供了以下好处:</p>
+<ul>
+<li><p>activity不需要做任何事情，也不需要知道任何关于这种通信的信息。</p>
+</li>
+<li><p>除了SharedViewModel合同之外，Fragments不需要相互了解。<br>如果其中一个fragments消失了，另一个则继续正常工作。</p>
+</li>
+<li><p>每个fragment都有自己的生命周期，并且不受另一个生命周期的影响。<br>如果一个fragment替换另一个fragment，UI将继续工作，没有任何问题。</p>
+</li>
+</ul>
+<h2 id="用ViewModel替换Loaders"><a href="#用ViewModel替换Loaders" class="headerlink" title="用ViewModel替换Loaders"></a>用ViewModel替换Loaders</h2><p>像<a href="https://developer.android.google.cn/reference/android/content/CursorLoader.html" target="_blank" rel="noopener">CursorLoader</a>这样的Loader类经常用于同步数据库数据保持应用程序的UI。<br>您可以使用ViewModel，以及其他一些类来替换loader。<br>使用ViewModel将UI控制器与数据加载操作分离，这意味着类之间的强引用较少。</p>
+<p>在使用loaders的一种常见方法中，应用程序可能使用一个CursorLoader来观察数据库的内容。<br>当数据库中的值发生变化时，loader会自动触发数据的重新加载，并更新UI:</p>
+<p><img src="https://developer.android.google.cn/images/topic/libraries/architecture/viewmodel-loader.png" alt="viewmodel-loader.png"></p>
+<p>ViewModel使用Room和LiveData来替换loader。<br>ViewModel确保数据在设备配置更改中得以保存。<br>当数据库发生变化时，Room会通知您的LiveData，而LiveData则会用修改后的数据更新您的UI。</p>
+<p><img src="https://developer.android.google.cn/images/topic/libraries/architecture/viewmodel-replace-loader.png" alt="viewmodel-replace-loader.png"></p>
+<p><a href="https://medium.com/google-developers/lifecycle-aware-data-loading-with-android-architecture-components-f95484159de4" target="_blank" rel="noopener">这篇博客文章</a>描述了如何使用一个带有LiveData的ViewModel来替换一个<a href="https://developer.android.google.cn/reference/android/content/AsyncTaskLoader.html" target="_blank" rel="noopener">AsyncTaskLoader</a>。</p>
+<p>随着您的数据变得越来越复杂，您可能会选择一个单独的类来加载数据。<br>ViewModel的目的是封装UI控制器的数据，使数据能够在配置更改中存活。<br>有关如何在配置更改中加载、持久化和管理数据的信息，请参见<a href="https://developer.android.google.cn/topic/libraries/architecture/saving-state.html" target="_blank" rel="noopener">保存UI状态</a>。</p>
+<p><a href="/2017/11/08/GuidetoAppArchitecture/">Android应用程序架构的指南</a>建议构建一个存储库类来处理这些函数。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/09/architecture-viewmodel/" target="_blank" title="Android 架构组件 - ViewModel">https://jigangduan.github.io/2017/11/09/architecture-viewmodel/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构设计/">架构设计</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/09/architecture-saving-states/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Android 架构组件 - 保存界面状态
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/08/architecture-livedata/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Android 架构组件 - LiveData</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现ViewModel"><span class="nav-number">1.</span> <span class="nav-text">实现ViewModel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewModel的生命周期"><span class="nav-number">2.</span> <span class="nav-text">ViewModel的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fragments之间共享数据"><span class="nav-number">3.</span> <span class="nav-text">fragments之间共享数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用ViewModel替换Loaders"><span class="nav-number">4.</span> <span class="nav-text">用ViewModel替换Loaders</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

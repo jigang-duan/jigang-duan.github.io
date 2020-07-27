@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>rxswift 例子 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="iosswiftrxswift">
+  
+  
+  
+  
+  <meta name="description" content="计算变量 简单的UI绑定 自动输入验证">
+<meta name="keywords" content="ios,swift,rxswift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift 例子">
+<meta property="og:url" content="https://jigangduan.github.io/2017/10/26/RxSwift-Examples/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="计算变量 简单的UI绑定 自动输入验证">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://reactivex.io/assets/reactivex_bg.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.161Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxSwift 例子">
+<meta name="twitter:description" content="计算变量 简单的UI绑定 自动输入验证">
+<meta name="twitter:image" content="http://reactivex.io/assets/reactivex_bg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-RxSwift-Examples" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      RxSwift 例子
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/26/RxSwift-Examples/" class="article-date">
+	  <time datetime="2017-10-26T02:21:15.000Z" itemprop="datePublished">2017-10-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://reactivex.io/assets/reactivex_bg.jpg" alt="reactivex.io"></p>
+<ol>
+<li><a href="#计算变量">计算变量</a></li>
+<li><a href="#简单的UI绑定">简单的UI绑定</a></li>
+<li><a href="#自动输入验证">自动输入验证</a></li>
+</ol>
+<a id="more"></a>
+<h2 id="计算变量"><a href="#计算变量" class="headerlink" title="计算变量"></a>计算变量</h2><p>首先，让我们从一些命令式代码开始。<br>本例的目的是将标识符<code>c</code>绑定到从<code>a</code>和<code>b</code>计算的值，在满足某些条件下。</p>
+<p>下面是计算<code>c</code>值的命令式代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 标准的命令式代码</span></span><br><span class="line"><span class="keyword">var</span> <span class="built_in">c</span>: <span class="type">String</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>       <span class="comment">// 只是赋值`1`到`a`一次</span></span><br><span class="line"><span class="keyword">var</span> b = <span class="number">2</span>       <span class="comment">// 只是赋值`2`到`b`一次</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> a + b &gt;= <span class="number">0</span> &#123;</span><br><span class="line">    <span class="built_in">c</span> = <span class="string">"\(a + b) is positive"</span> <span class="comment">// 只是赋值`c`一次</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>c</code>新的值是<code>3 is positive</code>. 然而，如果我们将<code>a</code>的值更改为<code>4</code>，那么<code>c</code>仍然会包含旧的值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">4</span>           <span class="comment">// `c` 仍然等于 "3 is positive", 这是不好的</span></span><br><span class="line">                <span class="comment">// 我们想让 `c` 等于 "6 is positive" 因为 4 + 2 = 6</span></span><br></pre></td></tr></table></figure>
+<p>这不是我们想要的行为.</p>
+<p>使用RxSwift改进的逻辑:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a <span class="comment">/*: Observable&lt;Int&gt;*/</span> = <span class="type">Variable</span>(<span class="number">1</span>)   <span class="comment">// a = 1</span></span><br><span class="line"><span class="keyword">let</span> b <span class="comment">/*: Observable&lt;Int&gt;*/</span> = <span class="type">Variable</span>(<span class="number">2</span>)   <span class="comment">// b = 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用`+`组合最新`a`和`b`的变量值</span></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">c</span> = <span class="type">Observable</span>.combineLatest(a.asObservable(), b.asObservable()) &#123; $<span class="number">0</span> + $<span class="number">1</span> &#125;</span><br><span class="line">	.<span class="built_in">filter</span> &#123; $<span class="number">0</span> &gt;= <span class="number">0</span> &#125;               <span class="comment">// 如果 `a + b &gt;= 0` 是 `true`, `a + b` 被传递给 `map` 操作符</span></span><br><span class="line">	.<span class="built_in">map</span> &#123; <span class="string">"\($0) is positive"</span> &#125;      <span class="comment">// maps `a + b` 后为 "\(a + b) is positive"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为初始值是a=1和b=2</span></span><br><span class="line"><span class="comment">// 1 + 2 = 3 是 &gt;= 0, 所以 `c` 一开始等于 "3 is positive"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 要从Rx `Observable`中提取值，请从`c`的值订阅</span></span><br><span class="line"><span class="comment">// `subscribe(onNext:)` 意味着订阅`c`的下一个(新)值</span></span><br><span class="line"><span class="comment">// 这也包括初始值 "3 is positive".</span></span><br><span class="line"><span class="built_in">c</span>.subscribe(onNext: &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;)          <span class="comment">// 打印: "3 is positive"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 现在，让我们改变`a`的值</span></span><br><span class="line">a.value = <span class="number">4</span>                                   <span class="comment">// 打印: 6 is positive</span></span><br><span class="line"><span class="comment">// 最新值的总和, `4` + `2`, 是 `6`.</span></span><br><span class="line"><span class="comment">// 因为 `&gt;= 0`, `map` 产生 "6 is positive"</span></span><br><span class="line"><span class="comment">// 这个结果被赋值给 `c`.</span></span><br><span class="line"><span class="comment">// 由于`c`的值改变了, `&#123; print($0) &#125;` 将被执行,</span></span><br><span class="line"><span class="comment">// "6 is positive" 将被打印出来.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 现在，让我们改变`b`的值</span></span><br><span class="line">b.value = -<span class="number">8</span>                                 <span class="comment">// 没有任何打印</span></span><br><span class="line"><span class="comment">// 最新值的总和, `4 + (-8)`, 是 `-4`.</span></span><br><span class="line"><span class="comment">// 因为这不是 `&gt;= 0`, `map` 没有被执行.</span></span><br><span class="line"><span class="comment">// 这意味着 `c` 仍然包含 "6 is positive"</span></span><br><span class="line"><span class="comment">// 由于`c`没有被更新，所以没有产生新的“next”值</span></span><br><span class="line"><span class="comment">// `&#123; print($0) &#125;` 不会被调用.</span></span><br></pre></td></tr></table></figure>
+<h2 id="简单的UI绑定"><a href="#简单的UI绑定" class="headerlink" title="简单的UI绑定"></a>简单的UI绑定</h2><ul>
+<li>不再是绑定变量, 让我们绑定<code>UITextField</code>的值使用<code>rx.text</code>属性</li>
+<li>然后, <code>map</code> 类型 <code>String</code> 到类型 <code>Int</code> 使用异步API确定这个数字是否为质数</li>
+<li>如果在异步调用完成之前修改了文本，那么一个新的async调用将通过<code>concat</code>来替代它</li>
+<li>将结果绑定到 <code>UILabel</code></li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> subscription<span class="comment">/*: Disposable */</span> = primeTextField.rx.text      <span class="comment">// 类型是 Observable&lt;String&gt;</span></span><br><span class="line">            .<span class="built_in">map</span> &#123; <span class="type">WolframAlphaIsPrime</span>(<span class="type">Int</span>($<span class="number">0</span>) ?? <span class="number">0</span>) &#125;          <span class="comment">// 类型是 Observable&lt;Observable&lt;Prime&gt;&gt;</span></span><br><span class="line">            .concat()                                           <span class="comment">// 类型是 Observable&lt;Prime&gt;</span></span><br><span class="line">            .<span class="built_in">map</span> &#123; <span class="string">"number \($0.n) is prime? \($0.isPrime)"</span> &#125;   <span class="comment">// 类型是 Observable&lt;String&gt;</span></span><br><span class="line">            .bind(to: resultLabel.rx.text)                      <span class="comment">// 返回 Disposable 可用于解除所有内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这将设置 `resultLabel.text` 为 "number 43 is prime? true" 在服务器调用完成后</span></span><br><span class="line">primeTextField.text = <span class="string">"43"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 要解绑所有，只需调用它</span></span><br><span class="line">subscription.dispose()</span><br></pre></td></tr></table></figure>
+<p>本例中使用的所有操作符都是和第一个示例中使用的操作符一样的。没有什么特别的.</p>
+<h2 id="自动输入验证"><a href="#自动输入验证" class="headerlink" title="自动输入验证"></a>自动输入验证</h2><p>如果您是Rx的新手，那么下一个例子可能会有点让人难以抗拒。但是，这里是为了演示RxSwift代码在现实世界中的样子.</p>
+<p>这个示例包含复杂的async UI验证逻辑，其中包含了进度通知。<br>所有的操作都被<code>disposeBag</code>取消了。</p>
+<p>让我们来试一试.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Availability</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> available(message: <span class="type">String</span>)</span><br><span class="line">    <span class="keyword">case</span> taken(message: <span class="type">String</span>)</span><br><span class="line">    <span class="keyword">case</span> invalid(message: <span class="type">String</span>)</span><br><span class="line">    <span class="keyword">case</span> pending(message: <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> message: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> .available(message: <span class="keyword">let</span> message),</span><br><span class="line">             .taken(message: <span class="keyword">let</span> message),</span><br><span class="line">             .invalid(message: <span class="keyword">let</span> message),</span><br><span class="line">             .pending(message: <span class="keyword">let</span> message):</span><br><span class="line"></span><br><span class="line">             <span class="keyword">return</span> message</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接绑定UI控制值</span></span><br><span class="line"><span class="comment">// 使用`usernameOutlet`的`username`作为username的值源</span></span><br><span class="line"><span class="keyword">self</span>.usernameOutlet.rx.text</span><br><span class="line">    .<span class="built_in">map</span> &#123; username <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 同步验证，这里没有什么特别的</span></span><br><span class="line">        <span class="keyword">if</span> username.isEmpty &#123;</span><br><span class="line">            <span class="comment">// 构建同步结果的方便性.</span></span><br><span class="line">            <span class="comment">// 如果在同一个方法中有混合的同步和异步代码,</span></span><br><span class="line">            <span class="comment">// 那么这将构造一个立即解析的异步结果.</span></span><br><span class="line">            <span class="keyword">return</span> <span class="type">Observable</span>.just(<span class="type">Availability</span>.invalid(message: <span class="string">"Username can't be empty."</span>))</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 当异步操作执行时，用户界面应该显示一些状态</span></span><br><span class="line">        <span class="keyword">let</span> loadingValue = <span class="type">Availability</span>.pending(message: <span class="string">"Checking availability ..."</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 这将触发一个服务器调用来检查用户名是否已经存在.</span></span><br><span class="line">        <span class="comment">// 它的类型是 `Observable&lt;ValidationResult&gt;`</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">API</span>.usernameAvailable(username)</span><br><span class="line">          .<span class="built_in">map</span> &#123; available <span class="keyword">in</span></span><br><span class="line">              <span class="keyword">if</span> available &#123;</span><br><span class="line">                  <span class="keyword">return</span> <span class="type">Availability</span>.available(message: <span class="string">"Username available"</span>)</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">else</span> &#123;</span><br><span class="line">                  <span class="keyword">return</span> <span class="type">Availability</span>.unavailable(message: <span class="string">"Username already taken"</span>)</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">// 使用 `loadingValue` 直到服务器响应</span></span><br><span class="line">          .startWith(loadingValue)</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 因为我们现在有 `Observable&lt;Observable&lt;ValidationResult&gt;&gt;`</span></span><br><span class="line"><span class="comment">// 我们需要返回一个简单的 `Observable&lt;ValidationResult&gt;`.</span></span><br><span class="line"><span class="comment">// 我们可以使用第二个示例中的concat操作符，但是如果提供了一个新的用户名，我们确实希望取消正在等待的异步操作。</span></span><br><span class="line"><span class="comment">// 这就为什么使用 `switchLatest` 了.</span></span><br><span class="line">    .switchLatest()</span><br><span class="line"><span class="comment">// 现在我们需要将它绑定到用户界面.</span></span><br><span class="line"><span class="comment">// 好的旧方法 `subscribe(onNext:)` 能够实现.</span></span><br><span class="line"><span class="comment">// 这就是`Observable`链的末端.</span></span><br><span class="line">    .subscribe(onNext: &#123; validity <span class="keyword">in</span></span><br><span class="line">        errorLabel.textColor = validationColor(validity)</span><br><span class="line">        errorLabel.text = validity.message</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="comment">// 这将生成一个`Disposable`对象，能解绑所有事并取消正在等待的异步操作。</span></span><br><span class="line"><span class="comment">// 而不是手动操作，这很麻烦,</span></span><br><span class="line"><span class="comment">// 让我们在view controller dealloc时自动处理一切.</span></span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/10/26/RxSwift-Examples/" target="_blank" title="RxSwift 例子">https://jigangduan.github.io/2017/10/26/RxSwift-Examples/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/">ios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rxswift/">rxswift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/26/RxSwift-GettingStarted/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          RxSwift 入门指南
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/26/RxSwift-DesignRationale/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">RxSwift 设计原理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算变量"><span class="nav-number">1.</span> <span class="nav-text">计算变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的UI绑定"><span class="nav-number">2.</span> <span class="nav-text">简单的UI绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动输入验证"><span class="nav-number">3.</span> <span class="nav-text">自动输入验证</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>mysql 笔记 (8) select | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="mysqlsql">
+  
+  
+  
+  
+  <meta name="description" content="语法1SELECT [ALL|DISTINCT] select_expr FROM -&amp;gt; WHERE -&amp;gt; GROUP BY [合计函数] -&amp;gt; HAVING -&amp;gt; ORDER BY -&amp;gt; LIMIT select_expr 可以用  表示所有字段。  `select  from tb;` 可以使用表达式（计算公式、函数调用、字段也是个表达式）  select stu">
+<meta name="keywords" content="mysql,sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 笔记 (8) SELECT">
+<meta property="og:url" content="https://jigangduan.github.io/2019/03/12/mysql-notes-8/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="语法1SELECT [ALL|DISTINCT] select_expr FROM -&amp;gt; WHERE -&amp;gt; GROUP BY [合计函数] -&amp;gt; HAVING -&amp;gt; ORDER BY -&amp;gt; LIMIT select_expr 可以用  表示所有字段。  `select  from tb;` 可以使用表达式（计算公式、函数调用、字段也是个表达式）  select stu">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.222Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 笔记 (8) SELECT">
+<meta name="twitter:description" content="语法1SELECT [ALL|DISTINCT] select_expr FROM -&amp;gt; WHERE -&amp;gt; GROUP BY [合计函数] -&amp;gt; HAVING -&amp;gt; ORDER BY -&amp;gt; LIMIT select_expr 可以用  表示所有字段。  `select  from tb;` 可以使用表达式（计算公式、函数调用、字段也是个表达式）  select stu">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-mysql-notes-8" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      MySQL 笔记 (8) SELECT
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-8/" class="article-date">
+	  <time datetime="2019-03-12T11:48:11.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [<span class="keyword">ALL</span>|<span class="keyword">DISTINCT</span>] select_expr <span class="keyword">FROM</span> -&gt; <span class="keyword">WHERE</span> -&gt; <span class="keyword">GROUP</span> <span class="keyword">BY</span> [合计函数] -&gt; <span class="keyword">HAVING</span> -&gt; <span class="keyword">ORDER</span> <span class="keyword">BY</span> -&gt; <span class="keyword">LIMIT</span></span><br></pre></td></tr></table></figure>
+<h4 id="select-expr"><a href="#select-expr" class="headerlink" title="select_expr"></a>select_expr</h4><ul>
+<li>可以用 <em> 表示所有字段。<br>  `select </em> from tb;`</li>
+<li>可以使用表达式（计算公式、函数调用、字段也是个表达式）<br>  <code>select stu, 29+25, now() from tb;</code></li>
+<li>可以为每个列使用别名。适用于简化列标识，避免多个列标识符重复。<ul>
+<li>使用 as 关键字，也可省略 as.<br><code>select stu+10 as add10 from tb;</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="FROM-子句"><a href="#FROM-子句" class="headerlink" title="FROM 子句"></a>FROM 子句</h4><p>用于标识查询来源。</p>
+<ul>
+<li><p>可以为表起别名。使用as关键字。</p>
+<p>  <code>SELECT * FROM tb1 AS tt, tb2 AS bb;</code></p>
+</li>
+<li><p>from子句后，可以同时出现多个表。</p>
+<ul>
+<li>多个表会横向叠加到一起，而数据会形成一个笛卡尔积。<br><code>SELECT * FROM tb1, tb2;</code></li>
+</ul>
+</li>
+<li><p>向优化符提示如何选择索引</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> <span class="keyword">INDEX</span>、<span class="keyword">IGNORE</span> <span class="keyword">INDEX</span>、<span class="keyword">FORCE</span> <span class="keyword">INDEX</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table1 <span class="keyword">USE</span> <span class="keyword">INDEX</span> (key1,key2) <span class="keyword">WHERE</span> key1=<span class="number">1</span> <span class="keyword">AND</span> key2=<span class="number">2</span> <span class="keyword">AND</span> key3=<span class="number">3</span>;</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table1 <span class="keyword">IGNORE</span> <span class="keyword">INDEX</span> (key3) <span class="keyword">WHERE</span> key1=<span class="number">1</span> <span class="keyword">AND</span> key2=<span class="number">2</span> <span class="keyword">AND</span> key3=<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="WHERE-子句"><a href="#WHERE-子句" class="headerlink" title="WHERE 子句"></a>WHERE 子句</h4><ul>
+<li>从from获得的数据源中进行筛选。</li>
+<li>整型1表示真，0表示假。</li>
+<li>表达式由运算符和运算数组成。<ul>
+<li>运算数：变量（字段）、值、函数返回值</li>
+<li>运算符：<br>=, &lt;=&gt;, &lt;&gt;, !=, &lt;=, &lt;, &gt;=, &gt;, !, &amp;&amp;, ||,<br>in (not) null, (not) like, (not) in, (not) between and, is (not), and, or, not, xor<br>is/is not 加上ture/false/unknown，检验某个值的真假<br>&lt;=&gt;与&lt;&gt;功能相同，&lt;=&gt;可用于null比较</li>
+</ul>
+</li>
+</ul>
+<h4 id="GROUP-BY-子句-分组子句"><a href="#GROUP-BY-子句-分组子句" class="headerlink" title="GROUP BY 子句, 分组子句"></a>GROUP BY 子句, 分组子句</h4><p><code>GROUP BY 字段/别名 [排序方式]</code></p>
+<p>分组后会进行排序。</p>
+<ul>
+<li>升序：ASC，</li>
+<li>降序：DESC</li>
+</ul>
+<p>以下[合计函数]需配合 GROUP BY 使用：</p>
+<ul>
+<li>count 返回不同的非NULL值数目  count(*)、count(字段)</li>
+<li>sum 求和</li>
+<li>max 求最大值</li>
+<li>min 求最小值</li>
+<li>avg 求平均值</li>
+<li>group_concat 返回带有来自一个组的连接的非NULL值的字符串结果。组内字符串连接。</li>
+</ul>
+<h4 id="HAVING-子句，条件子句"><a href="#HAVING-子句，条件子句" class="headerlink" title="HAVING 子句，条件子句"></a>HAVING 子句，条件子句</h4><p>与 where 功能、用法相同，执行时机不同。</p>
+<ul>
+<li>where 在开始时执行检测数据，对原数据进行过滤。</li>
+<li>having 对筛选出的结果再次进行过滤。</li>
+<li>having 字段必须是查询出来的，where 字段必须是数据表存在的。</li>
+<li>where 不可以使用字段的别名，having 可以。因为执行WHERE代码时，可能尚未确定列值。</li>
+<li>where 不可以使用合计函数。一般需用合计函数才会用 having</li>
+</ul>
+<p>SQL标准要求HAVING必须引用GROUP BY子句中的列或用于合计函数中的列。</p>
+<h4 id="ORDER-BY-子句，排序子句"><a href="#ORDER-BY-子句，排序子句" class="headerlink" title="ORDER BY 子句，排序子句"></a>ORDER BY 子句，排序子句</h4><p><code>order by 排序字段/别名 排序方式 [,排序字段/别名 排序方式]...</code></p>
+<ul>
+<li>升序：ASC</li>
+<li>降序：DESC</li>
+</ul>
+<p>支持多个字段的排序。</p>
+<h4 id="LIMIT-子句，限制结果数量子句"><a href="#LIMIT-子句，限制结果数量子句" class="headerlink" title="LIMIT 子句，限制结果数量子句"></a>LIMIT 子句，限制结果数量子句</h4><p>仅对处理好的结果进行数量限制。将处理好的结果的看作是一个集合，按照记录出现的顺序，索引从0开始。</p>
+<p><code>limit 起始位置, 获取条数</code></p>
+<p>省略第一个参数，表示从索引0开始。limit 获取条数</p>
+<h4 id="DISTINCT-ALL-选项"><a href="#DISTINCT-ALL-选项" class="headerlink" title="DISTINCT, ALL 选项"></a>DISTINCT, ALL 选项</h4><p>distinct 去除重复记录<br>默认为 all, 全部记录</p>
+<h3 id="UNION"><a href="#UNION" class="headerlink" title="UNION"></a>UNION</h3><p>将多个select查询的结果组合成一个结果集合。</p>
+<p><code>SELECT ... UNION [ALL|DISTINCT] SELECT ...</code></p>
+<p>默认 DISTINCT 方式，即所有返回的行都是唯一的</p>
+<p>建议，对每个SELECT查询加上小括号包裹。<br>ORDER BY 排序时，需加上 LIMIT 进行结合。<br>需要各select查询的字段数量一样。<br>每个select查询的字段列表(数量、类型)应一致，因为结果中的字段名以第一条select语句为准。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/03/12/mysql-notes-8/" target="_blank" title="MySQL 笔记 (8) SELECT">https://jigangduan.github.io/2019/03/12/mysql-notes-8/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/12/mysql-notes-9/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          MySQL 笔记 (9) 子查询
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/12/mysql-notes-7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MySQL 笔记 (7) 建表规范</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">1.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#select-expr"><span class="nav-number">1.1.</span> <span class="nav-text">select_expr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FROM-子句"><span class="nav-number">1.2.</span> <span class="nav-text">FROM 子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WHERE-子句"><span class="nav-number">1.3.</span> <span class="nav-text">WHERE 子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GROUP-BY-子句-分组子句"><span class="nav-number">1.4.</span> <span class="nav-text">GROUP BY 子句, 分组子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HAVING-子句，条件子句"><span class="nav-number">1.5.</span> <span class="nav-text">HAVING 子句，条件子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ORDER-BY-子句，排序子句"><span class="nav-number">1.6.</span> <span class="nav-text">ORDER BY 子句，排序子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LIMIT-子句，限制结果数量子句"><span class="nav-number">1.7.</span> <span class="nav-text">LIMIT 子句，限制结果数量子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DISTINCT-ALL-选项"><span class="nav-number">1.8.</span> <span class="nav-text">DISTINCT, ALL 选项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNION"><span class="nav-number">2.</span> <span class="nav-text">UNION</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

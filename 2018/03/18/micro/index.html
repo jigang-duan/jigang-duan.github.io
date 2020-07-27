@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>micro - 微服务工具包 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="golanggo-micro">
+  
+  
+  
+  
+  <meta name="description" content="到现在为止，你可能已经听说过这种新的现象，微服务。如果你还不熟悉，而且对学习感兴趣，请在查看这里。 在这篇博文中，我们将讨论Micro，一个开源的微服务工具包。Micro提供了构建和管理微服务的核心需求。它由一系列的库和工具组成，这些库和工具主要面向Go语言的编程开发，但是通过使用Sidecar来解决其他语言的问题。 在我们了解微观的细节之前，让我们来谈谈为什么我们决定把时间花在这上面。">
+<meta name="keywords" content="golang,go-micro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Micro - 微服务工具包">
+<meta property="og:url" content="https://jigangduan.github.io/2018/03/18/micro/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="到现在为止，你可能已经听说过这种新的现象，微服务。如果你还不熟悉，而且对学习感兴趣，请在查看这里。 在这篇博文中，我们将讨论Micro，一个开源的微服务工具包。Micro提供了构建和管理微服务的核心需求。它由一系列的库和工具组成，这些库和工具主要面向Go语言的编程开发，但是通过使用Sidecar来解决其他语言的问题。 在我们了解微观的细节之前，让我们来谈谈为什么我们决定把时间花在这上面。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521376593279&di=576a492a87f7c5608921cec413e24295&imgtype=0&src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/sidecar.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/web.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/cli.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/greeter.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.215Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Micro - 微服务工具包">
+<meta name="twitter:description" content="到现在为止，你可能已经听说过这种新的现象，微服务。如果你还不熟悉，而且对学习感兴趣，请在查看这里。 在这篇博文中，我们将讨论Micro，一个开源的微服务工具包。Micro提供了构建和管理微服务的核心需求。它由一系列的库和工具组成，这些库和工具主要面向Go语言的编程开发，但是通过使用Sidecar来解决其他语言的问题。 在我们了解微观的细节之前，让我们来谈谈为什么我们决定把时间花在这上面。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521376593279&di=576a492a87f7c5608921cec413e24295&imgtype=0&src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-micro" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Micro - 微服务工具包
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/18/micro/" class="article-date">
+	  <time datetime="2018-03-18T10:15:47.000Z" itemprop="datePublished">2018-03-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/go-micro/">go-micro</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1521376593279&amp;di=576a492a87f7c5608921cec413e24295&amp;imgtype=0&amp;src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg" alt></p>
+<p>到现在为止，你可能已经听说过这种新的现象，微服务。<br>如果你还不熟悉，而且对学习感兴趣，请在查看<a href="/2018/03/18/micro-introduction/">这里</a>。</p>
+<p>在这篇博文中，我们将讨论<a href="https://github.com/micro/micro" target="_blank" rel="noopener">Micro</a>，一个开源的微服务工具包。Micro提供了构建和管理微服务的核心需求。它由一系列的库和工具组成，这些库和工具主要面向<a href="https://golang.org/" target="_blank" rel="noopener">Go</a>语言的编程开发，但是通过使用<a href="https://github.com/micro/micro/tree/master/car" target="_blank" rel="noopener">Sidecar</a>来解决其他语言的问题。</p>
+<p>在我们了解微观的细节之前，让我们来谈谈为什么我们决定把时间花在这上面。</p>
+<a id="more"></a>
+<h2 id="开发或部署"><a href="#开发或部署" class="headerlink" title="开发或部署"></a>开发或部署</h2><p>从我们过去的经验和我们在业界所看到的情况来看，我们需要关注开发而不是部署。PaaS解决方案是现成的。AWS、谷歌和微软等公司都提供了功能丰富的平台，而且如果不这样做的话，它们也会迅速转向支持容器编排。所有这一切使我们可以通过点击几个按钮来访问大规模的计算。</p>
+<p>这个新世界听起来不错。你可能会说这解决了你所有的问题，对吧?虽然我们现在可以使用大规模的计算能力，但是我们仍然缺乏能够使我们编写能够利用它的软件的工具。不仅如此，在这个新的世界中，容器可能会更加短暂，随着运行时重新安排它们或它们正在运行的机器的失败，容器会变得更加短暂。</p>
+<h2 id="扩展的挑战"><a href="#扩展的挑战" class="headerlink" title="扩展的挑战"></a>扩展的挑战</h2><p>我们经常看到的另一个问题是，组织是如何成为其整体架构的牺牲品的。由于需要以极快的速度增长，有一种趋势是将功能塞进现有系统，并导致技术债务，使雪球陷入无法控制的局面。除此之外，当组织试图增加工程团队的时候，开发人员在单个代码基础上进行协作，或者并行地进行特性开发，而不在发布时被阻塞，这将变得更加困难。</p>
+<p>对于SOA或基于微服务的架构来说，重构和最终路径是不可避免的。公司最终会在房子里进行研发工作，通过尝试和错误来学习。如果有一些工具可以帮助创建可伸缩的系统，减少研发的可能性，并从过去的经验中提供专业知识。</p>
+<h2 id="进入Micro"><a href="#进入Micro" class="headerlink" title="进入Micro"></a>进入Micro</h2><p>在Micro方面，我们正在构建一个微服务生态系统，其中包括用于微服务开发的工具、服务和解决方案。我们用一个同名的工具来构建这个生态系统的基础。Micro是一个微型服务工具包，它可以创建可伸缩的体系结构，并提高执行速度。</p>
+<p>让我们深入了解一下Micro的特征。</p>
+<h2 id="Go-Micro"><a href="#Go-Micro" class="headerlink" title="Go Micro"></a><a name="go-micro"></a>Go Micro</h2><p><a href="https://github.com/micro/go-micro" target="_blank" rel="noopener">Go Micro</a>是一个可插入的RPC框架，用于在Go中构建微服务。它提供了创建、发现和与服务通信所需的基本特性。任何优秀的微服务体系结构的核心都始于服务发现、同步和异步通信。</p>
+<p>包括包装和特点:</p>
+<ul>
+<li>Registry - 客户端服务发现</li>
+<li>Transport - 同步通信</li>
+<li>Broker - 异步通信</li>
+<li>Selector - 节点过滤和负载平衡</li>
+<li>Codec - 消息编码/解码</li>
+<li>Server - 构建在上面的RPC服务器</li>
+<li>Client - 构建在上面的RPC客户端</li>
+</ul>
+<p>与大多数库不同的是，它是可插拔的体系结构。这允许将每个包的实现和后端系统交换出去。例如;注册表的默认服务发现机制是<a href="https://www.consul.io/" target="_blank" rel="noopener">Consul</a>，但这可以很容易地与etcd、zookeeper或其他您选择实现的插件交换。我们正在实现的插件可以在<a href="https://github.com/micro/go-plugins" target="_blank" rel="noopener">github.com/micro/go-plugins</a>上找到。</p>
+<p>可插拔系统的价值在于能够选择用于支持微服务的平台，而无需重写任何代码。Go Micro要求零代码更改，只需导入一个插件就可以了。</p>
+<p>Go Micro是写微服务的起点。readme提供了如何编写、运行和查询服务的概述。这里有一个类似的例子，在<a href="https://github.com/micro" target="_blank" rel="noopener">repo github.com/micro</a>中提供了<a href="https://github.com/micro/examples/tree/master/greeter" target="_blank" rel="noopener">micro/example/greeter</a>和更多的示例服务。</p>
+<h2 id="Sidecar"><a href="#Sidecar" class="headerlink" title="Sidecar"></a>Sidecar</h2><p>Go Micro提供了一种方式Go来编写服务，但是其他语言呢?我们如何创建一个polygot生态系统，让任何人都能利用Micro的优势?虽然Micro是写在Go上的，但是我们想让一个快速简单的方法来集成用任何语言编写的应用程序。</p>
+<p>进入<a href="https://github.com/micro/micro/tree/master/car" target="_blank" rel="noopener">Sidecar</a>，这是一种轻量级的伙伴服务，它在概念上“附加”到主(即父级)应用程序，并通过提供Micro系统的特性来补充它。sidecar是一个与您的应用程序并行运行的进程，它通过一个HTTP接口实现了Go Micro的特性。</p>
+<p>sidecar的特点:</p>
+<ul>
+<li>注册与发现系统</li>
+<li>主机发现其他服务</li>
+<li>主应用程序的健康检查</li>
+<li>用于发出RPC请求的代理</li>
+<li>通过WebSockets的PubSub</li>
+</ul>
+<p><img src="https://micro.mu/blog/assets/images/sidecar.png" alt></p>
+<p>可以在<a href="https://github.com/micro/examples/tree/master/greeter" target="_blank" rel="noopener">这里</a>找到使用带有ruby或python的Sidecar的例子。我们将在不久的将来添加更多的示例代码，以帮助理解如何集成sidecar。</p>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><p>将RPC请求从一个服务发送到另一个服务非常简单，但对于外部访问并不理想。服务的实例可能会失败，它们可能被重新安排到其他地方，或者最终绑定到任意的端口。该<a href="https://github.com/micro/micro/tree/master/api" target="_blank" rel="noopener">API</a>为查询微服务提供了一个单一入口点，并应作为外部访问的网关。</p>
+<p>该API提供了一些不同类型的请求处理程序。</p>
+<h3 id="rpc"><a href="#rpc" class="headerlink" title="/rpc"></a>/rpc</h3><p>可以使用/rpc端点通过RPC查询单个服务。例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl \</span><br><span class="line">	-d <span class="string">"service=go.micro.srv.greeter"</span> \</span><br><span class="line">	-d <span class="string">"method=Say.Hello"</span> \</span><br><span class="line">	-d <span class="string">"request=&#123;\"name\": \"John\"&#125;"</span> \</span><br><span class="line">	http://localhost:8080/rpc</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">"msg"</span>:<span class="string">"Hello John"</span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="api-Request"><a href="#api-Request" class="headerlink" title="api.Request"></a>api.Request</h3><p>该API可用于分解由单个微服务提供的url。这是一种强大的API组合方法。在这里，API使用请求路径的第一部分以及名称空间组件来确定要路由请求的服务。然后，HTTP请求被转换为一个api.Request，并适当地转发。</p>
+<p>在Micro上，我们使用创建API微服务的模式来服务于边缘的请求。分离后端和前端服务的职责。</p>
+<p>API请求处理的一个例子:</p>
+<p>请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /greeter/say/hello?name=John</span><br></pre></td></tr></table></figure>
+<p>变成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">service: go.micro.api.greeter (default namespace go.micro.api is applied)</span><br><span class="line">method: Say.Hello</span><br><span class="line">request &#123;</span><br><span class="line">	&quot;method&quot;: &quot;GET&quot;,</span><br><span class="line">	&quot;path&quot;: &quot;/greeter/say/hello&quot;,</span><br><span class="line">	&quot;get&quot;: &#123;</span><br><span class="line">		&quot;name&quot;: &quot;John&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>api.Request 和 api.Response的结构:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">message Pair &#123;</span><br><span class="line">	optional string key = 1;</span><br><span class="line">	repeated string values = 2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Request &#123;</span><br><span class="line">	optional string method = 1;   // GET, POST, etc</span><br><span class="line">	optional string path = 2;     // e.g /greeter/say/hello</span><br><span class="line">	map&lt;string, Pair&gt; header = 3; </span><br><span class="line">	map&lt;string, Pair&gt; get = 4;    // The URI query params</span><br><span class="line">	map&lt;string, Pair&gt; post = 5;   // The post body params</span><br><span class="line">	optional string body = 6;     // raw request body; if not application/x-www-form-urlencoded</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Response &#123;</span><br><span class="line">	optional int32 statusCode = 1;</span><br><span class="line">	map&lt;string, Pair&gt; header = 2;</span><br><span class="line">	optional string body = 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以在这里找到如何创建API服务的示例。 <a href="https://github.com/micro/micro/blob/master/examples/greeter/api/api.go" target="_blank" rel="noopener">Greeter API</a></p>
+<h3 id="proxy"><a href="#proxy" class="headerlink" title="proxy"></a>proxy</h3><p>API的请求处理的最终方法是反向代理。正如上面所述，API使用请求路径和名称空间组件来确定要路由请求的服务。通过提供反向代理和微服务请求路由，我们能够支持REST，这是一种广泛追求的需求。</p>
+<p>通过传递–api_handler=proxy标志，可以启用代理。</p>
+<p>如何构建一个RESTful API的一个例子可以在这里找到<a href="https://github.com/micro/examples/tree/master/greeter/api/rest" target="_blank" rel="noopener">micro/examples/greeter/api</a>。</p>
+<h2 id="Web-UI"><a href="#Web-UI" class="headerlink" title="Web UI"></a>Web UI</h2><p><a href="https://github.com/micro/micro/tree/master/web" target="_blank" rel="noopener">web UI</a>提供了一个简单的指示板，用于观察和与运行的系统交互。不仅如此，它还提供了与API非常相似的反向代理。我们的“web代理”的目标是使web应用程序的开发成为微服务。同样，就像API一样，请求路径与名称空间一起使用，以确定要路由请求的服务。web代理还支持web sockets，因为我们认为实时是交付web应用程序的核心部分。</p>
+<p><img src="https://micro.mu/blog/assets/images/web.png" alt="web ui"></p>
+<h2 id="CLI"><a href="#CLI" class="headerlink" title="CLI"></a>CLI</h2><p>CLI是一个命令行工具，它提供了在运行环境中观察、交互和管理服务的方法。当前的特性集允许您检查注册表、检查服务的基本健康状况并对服务本身执行查询。</p>
+<p><img src="https://micro.mu/blog/assets/images/cli.png" alt="cli"></p>
+<p>另一个很好的特性是使用Sidecar作为CLI的代理的能力。这就像在执行CLI时指定sidecar的地址作为标志一样简单–proxy_address=example.proxy.com。</p>
+<h2 id="把它放在一起"><a href="#把它放在一起" class="headerlink" title="把它放在一起"></a>把它放在一起</h2><p>我们已经通过使用简单的greeter服务编写了一个完整的端到端流程示例。</p>
+<p>流程如下:</p>
+<ol>
+<li>HTTP GET请求name=John被发送到/greeter/say/hello的micro API</li>
+<li>API将这个使用默认名称空间转换为API服务go.micro.api.greeter和方法Say.Hello。请求的结构是一个api.Request。</li>
+<li>使用Go Micro的API，查询注册表以查找服务go.micro.api的所有节点。将请求转发给节点。</li>
+<li>greeter api解析请求，生成hello。请求并请求rpc服务go.micro.srv.greeter。同样，使用相同的注册表/发现机制来查找服务的节点。</li>
+<li>greeter rpc服务使用hello.Response响应。</li>
+<li>greeter api将响应转换为api.Response并将其传回API。</li>
+<li>micro API解析响应并响应客户机的HTTP请求。</li>
+</ol>
+<p><img src="https://micro.mu/blog/assets/images/greeter.png" alt></p>
+<p>在一个更复杂的示例中，API服务可以调用许多其他RPC服务，聚合和转换数据，然后将最终的汇总结果传递给客户机。这允许您在不了解客户机的情况下，在后台维护一致的外部入口点和更改服务。</p>
+<h2 id="Dome"><a href="#Dome" class="headerlink" title="Dome"></a>Dome</h2><p>如果你想在运行的系统上，请在<a href="http://web.micro.pm/" target="_blank" rel="noopener">web.micro.pm</a>处查看我们的演示。</p>
+<p>我们正在使用谷歌集装箱引擎在Kubernetes上运行Micro。演示是开源的，如果您想自己运行它。你可以在<a href="https://github.com/micro/kubernetes" target="_blank" rel="noopener">这里github.com/micro/kubernetes</a>找到k8s配置。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Micro为编写和管理微服务提供了基本的构建模块。微观包括核心需求;发现、客户机/服务器和发布/订阅。CLI让您与环境和服务交互。sidecar可以集成任何非微应用程序。该API是rpc请求的单一入口点，可以创建REST端点。有了可插入的接口，您可以选择并选择您想要利用的系统来构建您的体系结构。</p>
+<p>我们在Micro上的目标是在规模上实现开发，提高执行速度，并从开发人员生命周期的最初阶段开始提供价值。我们觉得Micro是做所有这些事情的最好方法。随着时间的推移，工具的生态系统将会发展到包含更多的功能丰富的服务，用于发现、路由和可转换性。</p>
+<p>如果你想了解更多关于我们提供的服务或微服务，请检查<a href="https://micro.mu" target="_blank" rel="noopener">micro.mu</a>。或者是<a href="https://github.com/micro/micro" target="_blank" rel="noopener">github repo</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/18/micro/" target="_blank" title="Micro - 微服务工具包">https://jigangduan.github.io/2018/03/18/micro/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-micro/">go-micro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/18/go-micro/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          用Go Micro编写微服务
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/18/micro-introduction/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">介绍Micro - 微服务系统</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开发或部署"><span class="nav-number">1.</span> <span class="nav-text">开发或部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展的挑战"><span class="nav-number">2.</span> <span class="nav-text">扩展的挑战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入Micro"><span class="nav-number">3.</span> <span class="nav-text">进入Micro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-Micro"><span class="nav-number">4.</span> <span class="nav-text">Go Micro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sidecar"><span class="nav-number">5.</span> <span class="nav-text">Sidecar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API"><span class="nav-number">6.</span> <span class="nav-text">API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rpc"><span class="nav-number">6.1.</span> <span class="nav-text">/rpc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api-Request"><span class="nav-number">6.2.</span> <span class="nav-text">api.Request</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proxy"><span class="nav-number">6.3.</span> <span class="nav-text">proxy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-UI"><span class="nav-number">7.</span> <span class="nav-text">Web UI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLI"><span class="nav-number">8.</span> <span class="nav-text">CLI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把它放在一起"><span class="nav-number">9.</span> <span class="nav-text">把它放在一起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dome"><span class="nav-number">10.</span> <span class="nav-text">Dome</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">11.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>spring boot 2精髓 - (4) 视图技术 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javaspringspring-boot">
+  
+  
+  
+  
+  <meta name="description" content="Beetl 模板引擎特点:  功能完备  语法和使用习俗简单, 类似 JavaScript 语法和习俗  超高的性能  易于整合  支持模板单独开发和测试  扩展和个性化。 Beet!支持自定义方法、格式化函数、虚拟属性、标签和 HTML 标签。同时 也支持自定义占位符和控制语句起始符号。   依赖beetl-framework-starter 定界符号和占位符Beetl 支持自定义定界符号和占">
+<meta name="keywords" content="java,spring,spring-boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 2精髓 - (4) 视图技术">
+<meta property="og:url" content="https://jigangduan.github.io/2018/12/22/SpringBoot2-4/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="Beetl 模板引擎特点:  功能完备  语法和使用习俗简单, 类似 JavaScript 语法和习俗  超高的性能  易于整合  支持模板单独开发和测试  扩展和个性化。 Beet!支持自定义方法、格式化函数、虚拟属性、标签和 HTML 标签。同时 也支持自定义占位符和控制语句起始符号。   依赖beetl-framework-starter 定界符号和占位符Beetl 支持自定义定界符号和占">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545416256131&di=e95967b63f8bf7ad8fe7fa41d1740c58&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Boot 2精髓 - (4) 视图技术">
+<meta name="twitter:description" content="Beetl 模板引擎特点:  功能完备  语法和使用习俗简单, 类似 JavaScript 语法和习俗  超高的性能  易于整合  支持模板单独开发和测试  扩展和个性化。 Beet!支持自定义方法、格式化函数、虚拟属性、标签和 HTML 标签。同时 也支持自定义占位符和控制语句起始符号。   依赖beetl-framework-starter 定界符号和占位符Beetl 支持自定义定界符号和占">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545416256131&di=e95967b63f8bf7ad8fe7fa41d1740c58&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-SpringBoot2-4" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Spring Boot 2精髓 - (4) 视图技术
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/22/SpringBoot2-4/" class="article-date">
+	  <time datetime="2018-12-21T18:23:20.000Z" itemprop="datePublished">2018-12-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/精髓/">精髓</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1545416256131&amp;di=e95967b63f8bf7ad8fe7fa41d1740c58&amp;imgtype=0&amp;src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg" alt="spring boot"></p>
+<h2 id="Beetl-模板引擎"><a href="#Beetl-模板引擎" class="headerlink" title="Beetl 模板引擎"></a>Beetl 模板引擎</h2><p>特点:</p>
+<ul>
+<li><p>功能完备</p>
+</li>
+<li><p>语法和使用习俗简单, 类似 JavaScript 语法和习俗</p>
+</li>
+<li><p>超高的性能</p>
+</li>
+<li><p>易于整合</p>
+</li>
+<li><p>支持模板单独开发和测试</p>
+</li>
+<li><p>扩展和个性化。 Beet!支持自定义方法、格式化函数、虚拟属性、标签和 HTML 标签。同时 也支持自定义占位符和控制语句起始符号。</p>
+</li>
+</ul>
+<h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><p><code>beetl-framework-starter</code></p>
+<h3 id="定界符号和占位符"><a href="#定界符号和占位符" class="headerlink" title="定界符号和占位符"></a>定界符号和占位符</h3><p>Beetl 支持自定义定界符号和占位符号 ， 默认使用&lt;%%&gt;作为定界符号，使用${}作为占位符号</p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><h3 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h3><p>全局变量即通过 Model 或者 ModelAndView传入的变量，可以在模板或者子模板中使用。</p>
+<p>默认的全局变量:</p>
+<ul>
+<li><p>request 中所有的 attribute 在模板中可以直接通过 name 来引用，比如在 Controller 层 request.setAttribute(”user”，user)，则在模板中可以 直接用 ${user.name}。这里也包括 Model 或者 Mode!AndView 中的所有变量，都会成为模板的 全局变量</p>
+</li>
+<li><p>Session 提供了 Session 会话，模板通过 session[”name”]或者 session.name 引用 Session 中的变量。注意， Session 并非 Serviet 中的标准 Session 对象。参考 Serviet 来获取HTTP Session</p>
+</li>
+<li><p>request，标准的 HTTPServletRequest，可以在模板中引用 request 属性 (getter)，如 ${request.requestURL}</p>
+</li>
+<li><p>parameter， 读取用户提交的参数，如${parameter.userld}</p>
+</li>
+<li><p>ctxPath, Web 应用中的 ContextPath。 在 Spring Boot 中， 应用默认是“/” 。 通过 application.properties 的属性 server.context-path 可以配置。</p>
+</li>
+<li><p>servlet, WebVariable 的 实例，包含了 HTTPSession、 HTTPServletRequest、 HTTPServlet­ Response 三 个属性，模板中可以通过 request、 response、 session 来引用，如 ${servlet.request.requestURL}</p>
+</li>
+<li><p>所有 groupTemplate 的共享变量</p>
+</li>
+</ul>
+<h3 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h3><p>在模板中定义的变量，只能在当前模板中使用，无法在子模板中使用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@var salary = user.salary*2;</span><br><span class="line">&lt;span&gt;$&#123;user .name&#125;&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+<p>Beet! 定义变量的方式与 JS 类似</p>
+<h3 id="共享变量"><a href="#共享变量" class="headerlink" title="共享变量"></a>共享变量</h3><p>类似全局变量，可以在任何模板中使用，需要通过 groupTemplate 的 API 添加</p>
+<h3 id="模板变量"><a href="#模板变量" class="headerlink" title="模板变量"></a>模板变量</h3><p>变量的内容是模板对应的输出</p>
+<h2 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h2><h3 id="计算表达式"><a href="#计算表达式" class="headerlink" title="计算表达式"></a>计算表达式</h3><p>类似 JS， 支持+、 、气/、%等表达式，变量的类型与相应的 Java类型一致</p>
+<h3 id="逻辑表达式"><a href="#逻辑表达式" class="headerlink" title="逻辑表达式"></a>逻辑表达式</h3><p>Beetl 支持类似 JavaScript、 Java 的条件表达式，如〉、〈、二、 !=、〉=、&lt;=、 以及三元表达式等</p>
+<h2 id="控制语句"><a href="#控制语句" class="headerlink" title="控制语句"></a>控制语句</h2><h3 id="循环语旬"><a href="#循环语旬" class="headerlink" title="循环语旬"></a>循环语旬</h3><p>Beetl 支持多种循环方式，最常用的是 for···in 循环语句</p>
+<p>for···in循环支持 elsefor 语法，即如果未进入循环体，则执行 elsefor部分</p>
+<p>for(exp;exp,exp)</p>
+<p>while(exp)</p>
+<h3 id="条件语旬"><a href="#条件语旬" class="headerlink" title="条件语旬"></a>条件语旬</h3><p>if else</p>
+<p>switch case</p>
+<p>break</p>
+<h3 id="try-catch"><a href="#try-catch" class="headerlink" title="try catch"></a>try catch</h3><h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><p>Beet!内直了大量的常用函数以辅助模板渲染、规则引擎等功能， 函数调用方法与 JS一样。 当然也可以注册自定义 的 函数，自定义函数可以通过 Java 来实现 ，或者通过 Beet! 本身来实现。</p>
+<p>Beetl 提供的常用函数如下 :</p>
+<ul>
+<li>print和 println，输出对象，如果对象为空，则不输出。</li>
+<li>has，判断是否具有这个全局变量，如 if(has(userList)){….}，判断 后台是否提供了 userList 变量 。</li>
+<li>isEmpty，判断变量或者表达式是否为空，如果不存在，为 null，都返回 true:同时如 果字符串空，集合空也返回 true; isNotEmpty 则相反。</li>
+<li>debug，在控制台打印变量或者表达式。此方法还会附带此调用所在的文件和模板，以及变量的名字等信息，方便追踪 。</li>
+<li>date，日期函数，获得当前日期。</li>
+<li>trim，截取一个日期或者数字类型井返回字符串，如trim(126.l8,1)返回字符串 126.18, 位im(date(),’yyyy’)返回年份 2017。</li>
+<li>parseInt、parseLong、parseDouble，将字符串或者 number转为对应的类型</li>
+<li>global，返回一个全局变量值，参数是一个字符串，如 varuser= global(“user_”+i)</li>
+<li>cookie，返回指定的 cookie对象， 如 var userCook = cookie(”user”),allCookies = cookie()</li>
+<li>strutil.* 系列函数，对字符串的操作，如 strutil.split(“abc,def”,”,”)将返回一个字符串数组，具体参考Beetl使用手册</li>
+<li>array.*， 集合的相关函数 ，如 array.contain</li>
+<li>shiro.* Spring是常用的安全框架，并非是Beetl的内置函数(参考官网手册)</li>
+<li>spring.* Spring框架中可以使用的一系列函数，比如 spel表达式</li>
+<li>reg.*，正则表达式的相关函数</li>
+</ul>
+<h2 id="格式化函数"><a href="#格式化函数" class="headerlink" title="格式化函数"></a>格式化函数</h2><p>格式化的格式是${exp,formatName=”可选参数”}</p>
+<h2 id="直接调用Java"><a href="#直接调用Java" class="headerlink" title="直接调用Java"></a>直接调用Java</h2><p>可以在模板中以 Java方式调用表达式，使用的时候，必须在表达式前使用@符号以表示其 后表达式是 Java 风格的</p>
+<h2 id="标签函数"><a href="#标签函数" class="headerlink" title="标签函数"></a>标签函数</h2><p>所谓标签函数，即允许处理模板文件中的一块内容，功能等同于 jsp tag</p>
+<h2 id="HTML-标签"><a href="#HTML-标签" class="headerlink" title="HTML 标签"></a>HTML 标签</h2><p>HTML 是一种特殊的标签函数， Beetl 在形式上与HTML标签类似， Beetl 默认通过#符号 来区分 Beetl的HTML标签</p>
+<h2 id="安全输出"><a href="#安全输出" class="headerlink" title="安全输出"></a>安全输出</h2><p>Beetl 在变量表达式后面使用符号“!”来提醒 Beetl 此变量可能不存在，表达式将返回“ ! ” 后的表达式值，如果其后没有表达式，则返回 null。</p>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><h3 id="配置-Beetl"><a href="#配置-Beetl" class="headerlink" title="配置 Beetl"></a>配置 Beetl</h3><p>在 resources 下添加 beetl.properties 文件来个性化 Beetl</p>
+<h3 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h3><p>自定义方法可以通过 Function接口的 call方法实现</p>
+<h3 id="自定义格式化函数"><a href="#自定义格式化函数" class="headerlink" title="自定义格式化函数"></a>自定义格式化函数</h3><h3 id="自定义标签函数"><a href="#自定义标签函数" class="headerlink" title="自定义标签函数"></a>自定义标签函数</h3><h3 id="自定义-HTML-标签"><a href="#自定义-HTML-标签" class="headerlink" title="自定义 HTML 标签"></a>自定义 HTML 标签</h3><h3 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h3><p>布局是保持模板重用的最重要的功能之一， Beet) 可以联合 include 和 layout 来实现重用</p>
+<h3 id="AJAX局部渲染"><a href="#AJAX局部渲染" class="headerlink" title="AJAX局部渲染"></a>AJAX局部渲染</h3><h2 id="脚本引擎"><a href="#脚本引擎" class="headerlink" title="脚本引擎"></a>脚本引擎</h2><p>Beetl 是模板引擎，但本质上还是一个脚本语言，它在解析阶段会将模板转化为 Beetl 脚本执行。groupTemplate 提供了执行脚本的功能，并能获取到返回值</p>
+<h2 id="JSON-技术"><a href="#JSON-技术" class="headerlink" title="JSON 技术"></a>JSON 技术</h2><p>在 Controller 中，方法注解为@ResponseBody，则 自动将方法返回的对象序列化成 JSON。</p>
+<h2 id="MVC分离开发"><a href="#MVC分离开发" class="headerlink" title="MVC分离开发"></a>MVC分离开发</h2><p>Beetl提供了 WebSimulate来支持这种分离</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/22/SpringBoot2-4/" target="_blank" title="Spring Boot 2精髓 - (4) 视图技术">https://jigangduan.github.io/2018/12/22/SpringBoot2-4/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/">spring-boot</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/22/SpringBoot2-5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Spring Boot 2精髓 - (5) 数据库访问
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/22/SpringBoot2-3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Spring Boot 2精髓 - (3) MVC</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Beetl-模板引擎"><span class="nav-number">1.</span> <span class="nav-text">Beetl 模板引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖"><span class="nav-number">1.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定界符号和占位符"><span class="nav-number">1.2.</span> <span class="nav-text">定界符号和占位符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局变量"><span class="nav-number">2.1.</span> <span class="nav-text">全局变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局部变量"><span class="nav-number">2.2.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共享变量"><span class="nav-number">2.3.</span> <span class="nav-text">共享变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板变量"><span class="nav-number">2.4.</span> <span class="nav-text">模板变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表达式"><span class="nav-number">3.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算表达式"><span class="nav-number">3.1.</span> <span class="nav-text">计算表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑表达式"><span class="nav-number">3.2.</span> <span class="nav-text">逻辑表达式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制语句"><span class="nav-number">4.</span> <span class="nav-text">控制语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#循环语旬"><span class="nav-number">4.1.</span> <span class="nav-text">循环语旬</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件语旬"><span class="nav-number">4.2.</span> <span class="nav-text">条件语旬</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#try-catch"><span class="nav-number">4.3.</span> <span class="nav-text">try catch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用"><span class="nav-number">5.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化函数"><span class="nav-number">6.</span> <span class="nav-text">格式化函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接调用Java"><span class="nav-number">7.</span> <span class="nav-text">直接调用Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签函数"><span class="nav-number">8.</span> <span class="nav-text">标签函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML-标签"><span class="nav-number">9.</span> <span class="nav-text">HTML 标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全输出"><span class="nav-number">10.</span> <span class="nav-text">安全输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级功能"><span class="nav-number">11.</span> <span class="nav-text">高级功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-Beetl"><span class="nav-number">11.1.</span> <span class="nav-text">配置 Beetl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义函数"><span class="nav-number">11.2.</span> <span class="nav-text">自定义函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义格式化函数"><span class="nav-number">11.3.</span> <span class="nav-text">自定义格式化函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义标签函数"><span class="nav-number">11.4.</span> <span class="nav-text">自定义标签函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义-HTML-标签"><span class="nav-number">11.5.</span> <span class="nav-text">自定义 HTML 标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局"><span class="nav-number">11.6.</span> <span class="nav-text">布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AJAX局部渲染"><span class="nav-number">11.7.</span> <span class="nav-text">AJAX局部渲染</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本引擎"><span class="nav-number">12.</span> <span class="nav-text">脚本引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-技术"><span class="nav-number">13.</span> <span class="nav-text">JSON 技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC分离开发"><span class="nav-number">14.</span> <span class="nav-text">MVC分离开发</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

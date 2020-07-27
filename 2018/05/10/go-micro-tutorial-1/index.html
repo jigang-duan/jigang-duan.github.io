@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>go微服务教程-第一部分 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="golanggo-micro">
+  
+  
+  
+  
+  <meta name="description" content="介绍这是一个十节Golang的微服务的系列。利用protobuf和gRPC作为底层传输协议。为什么?因为我花了很长时间才弄明白并解决了一个清晰而简洁的解决方案，我想要分享我在创建、测试和部署微服务的过程中所了解到的东西，这些服务是与其他新出现的用户端到一起的。 在本教程中，我们将介绍一些基本概念、术语，并以最原始的形式创建我们的第一个微服务。">
+<meta name="keywords" content="golang,go-micro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go微服务教程-第一部分">
+<meta property="og:url" content="https://jigangduan.github.io/2018/05/10/go-micro-tutorial-1/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="介绍这是一个十节Golang的微服务的系列。利用protobuf和gRPC作为底层传输协议。为什么?因为我花了很长时间才弄明白并解决了一个清晰而简洁的解决方案，我想要分享我在创建、测试和部署微服务的过程中所了解到的东西，这些服务是与其他新出现的用户端到一起的。 在本教程中，我们将介绍一些基本概念、术语，并以最原始的形式创建我们的第一个微服务。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526284371762&di=4d74aecb4c8b43534361e1c232276d81&imgtype=0&src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.203Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go微服务教程-第一部分">
+<meta name="twitter:description" content="介绍这是一个十节Golang的微服务的系列。利用protobuf和gRPC作为底层传输协议。为什么?因为我花了很长时间才弄明白并解决了一个清晰而简洁的解决方案，我想要分享我在创建、测试和部署微服务的过程中所了解到的东西，这些服务是与其他新出现的用户端到一起的。 在本教程中，我们将介绍一些基本概念、术语，并以最原始的形式创建我们的第一个微服务。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526284371762&di=4d74aecb4c8b43534361e1c232276d81&imgtype=0&src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-go-micro-tutorial-1" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Go微服务教程-第一部分
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/10/go-micro-tutorial-1/" class="article-date">
+	  <time datetime="2018-05-10T13:56:15.000Z" itemprop="datePublished">2018-05-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1526284371762&amp;di=4d74aecb4c8b43534361e1c232276d81&amp;imgtype=0&amp;src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330" alt="micro-diag"></p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这是一个十节Golang的微服务的系列。利用protobuf和gRPC作为底层传输协议。为什么?因为我花了很长时间才弄明白并解决了一个清晰而简洁的解决方案，我想要分享我在创建、测试和部署微服务的过程中所了解到的东西，这些服务是与其他新出现的用户端到一起的。</p>
+<p>在本教程中，我们将介绍一些基本概念、术语，并以最原始的形式创建我们的第一个微服务。</p>
+<a id="more"></a>
+<p>我们将在整个系列中创建以下服务:</p>
+<ul>
+<li>货物</li>
+<li>库存</li>
+<li>用户</li>
+<li>身份验证</li>
+<li>角色</li>
+<li>船只</li>
+</ul>
+<p>我们最终将会用到:golang, mongodb, grpc, docker，谷歌云，Kubernetes, NATS, CircleCI, Terraform和go-micro。</p>
+<p>接下来，您可以按照我所包含的步骤进行操作，但是一定要使用<a href="https://github.com/EwanValentine/shippy" target="_blank" rel="noopener">git repo</a>(每一篇文章都有自己的分支)作为参考，将GOPATH更改为您自己的步骤。</p>
+<p>同时注意，我正在使用Macbook，所以您可能需要修改makefile以使用$GOPATH而不是$(GOPATH)，操作系统之间可能还有其他一些不一致的地方。</p>
+<h1 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h1><ul>
+<li>对Golang及其生态系统的理解</li>
+<li>安装gRPC / protobuf - 看这里</li>
+<li>安装Golang - 看这里</li>
+<li>安装以下的go库:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get -u google.golang.org/grpc</span><br><span class="line">go get -u github.com/golang/protobuf/protoc-gen-go</span><br></pre></td></tr></table></figure>
+<h1 id="我们构建什么"><a href="#我们构建什么" class="headerlink" title="我们构建什么"></a>我们构建什么</h1><p>我们将构建一个您能想到的最通用的微服务示例，一个集装箱管理平台!一个博客对微服务的用例太过简单，我想要一些能真正展示复杂性分离的东西。所以这是一个很好的挑战!</p>
+<p>让我们从基础开始:</p>
+<h1 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="什么是微服务"></a>什么是微服务</h1><p>在传统的庞大应用程序中，所有的组织特性都被写入到一个应用程序中。有时，它们被它们的类型分组，比如控制器、实体、工厂等等。其他时候，可能在更大的应用程序中，特性会被关注点或特性分隔开来。因此，您可能会有一个auth包、一个朋友包和一个文章包。它们可能包含自己的工厂、服务、存储库、模型等，但最终它们都被组合在一个代码库中。</p>
+<p>微服务是将第二种方法稍作进一步的概念，并将这些关注点分离为独立的可运行的代码库。</p>
+<h1 id="为什么微服务"><a href="#为什么微服务" class="headerlink" title="为什么微服务"></a>为什么微服务</h1><p>复杂性——将特性拆分为微服务，可以将代码分割成更小的块。这让人想起了古老的unix格言:“做好一件事”。有一种趋势是，单分子允许域彼此紧密耦合，而关注点变得模糊。这将导致更危险、更复杂的更新、潜在的更多bug和更复杂的集成。</p>
+<p>规模——在一个整体中，某些代码领域可能比其他领域更频繁地使用。用一个整体，你只能缩放整个代码库。因此，如果您的auth服务经常受到攻击，您需要扩展整个代码库来处理您的第auth服务的负载。</p>
+<p>有了微服务，这种分离就可以让您单独地扩展单个服务。这意味着更有效的水平扩展。它与多核、多区域的云计算非常有效。</p>
+<p>Nginx写了一个关于微服务的各种概念的奇妙系列，<a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">请阅读</a>。</p>
+<h1 id="为什么Golang"><a href="#为什么Golang" class="headerlink" title="为什么Golang"></a>为什么Golang</h1><p>毕竟，微服务是由所有语言支持的，毕竟，微服务是一个概念，而不是一个特定的框架或工具。也就是说，有些语言更适合，或者比其他语言更好地支持微服务。有一种非常支持的语言是Golang。</p>
+<p>Golang非常轻，非常快，并且对并发有非常好的支持，在运行多个机器和内核时，它是一个强大的功能。</p>
+<p>Go还包含一个非常强大的用于编写web服务的标准库。</p>
+<p>最后，还有一个很棒的微服务框架，叫做Go-micro。我们将在本系列中使用。</p>
+<h1 id="引入protobuf-gRPC"><a href="#引入protobuf-gRPC" class="headerlink" title="引入protobuf/gRPC"></a>引入protobuf/gRPC</h1><p>由于微服务被拆分为单独的代码库，而微服务的一个重要问题就是通信。在一个单一的通信中不是一个问题，因为你直接从代码库的其他地方调用代码。然而，微服务没有这种能力，因为它们生活在不同的地方。因此，你需要一种方式，让这些独立的服务能够以尽可能少的延迟进行对话。</p>
+<p>在这里，您可以使用传统的REST，例如http上的JSON或XML。但是，这种方法的问题在于，服务A必须将其数据编码成JSON/XML，将一个大字符串发送到网络上，然后服务于B，然后将该消息从JSON解码为代码。这在规模上有潜在的开销问题。当您被迫采用这种形式的web浏览器通信时，服务可以以任何他们希望的格式进行对话。</p>
+<p><a href="https://grpc.io/" target="_blank" rel="noopener">gRPC</a>是由谷歌提出的基于轻量级二进制文件的RPC通信协议。这是很多单词，我们来仔细分析一下。gRPC使用二进制作为其核心数据格式。在我们的RESTful示例中，使用JSON，您将通过http发送一个字符串。字符串包含关于其编码格式的大量元数据;关于它的长度，它的内容格式和各种其他零零碎碎。这是为了让服务器能够通知传统的基于浏览器的客户端。在两个服务之间进行通信时，我们并不需要所有这些。所以我们可以使用冷硬二进制，它的重量要轻得多。gRPC使用了新的HTTP 2.0规范，它允许使用二进制数据。它甚至允许双向流，这很酷!HTTP 2对于gRPC的工作方式非常重要。有关HTTP 2的更多信息，请查看<a href="https://developers.google.com/web/fundamentals/performance/http2/" target="_blank" rel="noopener">谷歌的这篇精彩文章</a>。</p>
+<p>但是对于二进制数据我们怎么做呢?gRPC有一个叫做protobuf的互换DSL。Protobuf允许您使用开发人员友好的格式定义服务的接口。</p>
+<p>让我们从创建第一个服务定义开始。从我们的repo的根目录创建以下文件:<strong>consignment-service/proto/consignment/consignment.proto</strong>。就目前而言，我把我们所有的服务都安排在一个单一的回购协议里。这就是所谓的mono-repo。这主要是为了让本教程保持简单。有很多反对使用单引号的理由，我不会在这里讨论。您可以将所有这些服务和组件放在单独的repos中，也有许多很好的理由支持这种方法。</p>
+<p>这里有一篇<a href="https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/" target="_blank" rel="noopener">很棒的关于gRPC的文章</a>，我强烈推荐你读一读。</p>
+<p>在您刚刚创建的consignment.proto文件中，添加以下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// consignment-service/proto/consignment/consignment.proto</span><br><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">package go.micro.srv.consignment;</span><br><span class="line"></span><br><span class="line">service ShippingService &#123;</span><br><span class="line">  rpc CreateConsignment(Consignment) returns (Response) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Consignment &#123;</span><br><span class="line">  string id = 1;</span><br><span class="line">  string description = 2;</span><br><span class="line">  int32 weight = 3;</span><br><span class="line">  repeated Container containers = 4;</span><br><span class="line">  string vessel_id = 5;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Container &#123;</span><br><span class="line">  string id = 1;</span><br><span class="line">  string customer_id = 2;</span><br><span class="line">  string origin = 3;</span><br><span class="line">  string user_id = 4;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Response &#123;</span><br><span class="line">  bool created = 1;</span><br><span class="line">  Consignment consignment = 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一个非常基本的例子，但是这里有一些事情。首先，定义您的服务，这应该包含您希望向其他服务公开的方法。然后定义消息类型，这些是有效的数据结构。Protobuf是静态类型的，您可以定义自定义类型，就像我们在容器中所做的那样。消息本身就是自定义类型。</p>
+<p>这里有两个库，消息由protobuf处理，我们定义的服务由gRPC protobuf插件处理，它编译代码来与这些类型交互。我们的proto文件的服务部分。</p>
+<p>然后，通过一个CLI来生成这个protobuf定义，生成代码来接口这个二进制数据和您的功能。</p>
+<p>说到这里，让我们为我们的第一个服务<code>$ touch consignment-service/Makefile</code>创建一个Makefile。</p>
+<p>注意:在复制Makefile代码时要注意格式，它们必须是制表符间距，否则就会中断。请确保您的编辑器已经对makefile进行了linting或适当的设置。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">build:</span></span><br><span class="line">    protoc -I. --go_out=plugins=grpc:<span class="variable">$(GOPATH)</span>/src/github.com/ewanvalentine/shipper/consignment-service \</span><br><span class="line">      proto/consignment/consignment.proto</span><br></pre></td></tr></table></figure>
+<p>这将调用protoc库，该库负责将您的protobuf定义编译成代码。我们还指定了grpc插件的使用，以及构建上下文和输出路径。</p>
+<p>现在，当您从这个服务目录运行<code>$ make build</code>时，查看<code>proto/consignment/</code>您应该看到一个新的Go文件，叫做consignment.pb.go。这是gRPC/protobuf库自动生成的代码，允许您将protobuf定义与您自己的代码进行接口。</p>
+<p>我们现在来创建main.go文件在项目根<code>$ touch consignment-service/main.go</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// consignment-service/main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Import the generated protobuf code</span></span><br><span class="line">	pb <span class="string">"github.com/ewanvalentine/shipper/consignment-service/proto/consignment"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/context"</span></span><br><span class="line">	<span class="string">"google.golang.org/grpc"</span></span><br><span class="line">	<span class="string">"google.golang.org/grpc/reflection"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	port = <span class="string">":50051"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IRepository <span class="keyword">interface</span> &#123;</span><br><span class="line">	Create(*pb.Consignment) (*pb.Consignment, error)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Repository - Dummy repository, this simulates the use of a datastore</span></span><br><span class="line"><span class="comment">// of some kind. We'll replace this with a real implementation later on.</span></span><br><span class="line"><span class="keyword">type</span> Repository <span class="keyword">struct</span> &#123;</span><br><span class="line">	consignments []*pb.Consignment</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *Repository)</span> <span class="title">Create</span><span class="params">(consignment *pb.Consignment)</span> <span class="params">(*pb.Consignment, error)</span></span> &#123;</span><br><span class="line">	updated := <span class="built_in">append</span>(repo.consignments, consignment)</span><br><span class="line">	repo.consignments = updated</span><br><span class="line">	<span class="keyword">return</span> consignment, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Service should implement all of the methods to satisfy the service</span></span><br><span class="line"><span class="comment">// we defined in our protobuf definition. You can check the interface</span></span><br><span class="line"><span class="comment">// in the generated code itself for the exact method signatures etc</span></span><br><span class="line"><span class="comment">// to give you a better idea.</span></span><br><span class="line"><span class="keyword">type</span> service <span class="keyword">struct</span> &#123;</span><br><span class="line">	repo IRepository</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreateConsignment - we created just one method on our service,</span></span><br><span class="line"><span class="comment">// which is a create method, which takes a context and a request as an</span></span><br><span class="line"><span class="comment">// argument, these are handled by the gRPC server.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">CreateConsignment</span><span class="params">(ctx context.Context, req *pb.Consignment)</span> <span class="params">(*pb.Response, error)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Save our consignment</span></span><br><span class="line">	consignment, err := s.repo.Create(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Return matching the `Response` message we created in our</span></span><br><span class="line">        <span class="comment">// protobuf definition.</span></span><br><span class="line">	<span class="keyword">return</span> &amp;pb.Response&#123;Created: <span class="literal">true</span>, Consignment: consignment&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	repo := &amp;Repository&#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set-up our gRPC server.</span></span><br><span class="line">	lis, err := net.Listen(<span class="string">"tcp"</span>, port)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"failed to listen: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	s := grpc.NewServer()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Register our service with the gRPC server, this will tie our</span></span><br><span class="line">        <span class="comment">// implementation into the auto-generated interface code for our</span></span><br><span class="line">        <span class="comment">// protobuf definition.</span></span><br><span class="line">	pb.RegisterShippingServiceServer(s, &amp;service&#123;repo&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Register reflection service on gRPC server.</span></span><br><span class="line">	reflection.Register(s)</span><br><span class="line">	<span class="keyword">if</span> err := s.Serve(lis); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"failed to serve: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请仔细阅读代码中的注释。但总的来说，我们在这里创建了实现逻辑，我们的gRPC方法接口使用生成的格式，在端口50051上创建一个新的gRPC服务器。有你有它!一个功能齐全的gRPC服务。你可以用$ go main来运行这个。去吧，但是你什么都看不到，你还不能用它……因此，让我们创建一个客户端来查看它的实际操作。</p>
+<p>让我们创建一个命令行接口，它将使用一个JSON委托文件，并与我们的gRPC服务交互。</p>
+<p>在根目录中，创建一个新的子目录<code>$ mkdir consignment-cli</code>。在该目录中，创建一个名为<code>cli.go</code>的文件。以下内容:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// consignment-cli/cli.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"encoding/json"</span></span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line"></span><br><span class="line">	pb <span class="string">"github.com/ewanvalentine/shipper/consignment-service/proto/consignment"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/context"</span></span><br><span class="line">	<span class="string">"google.golang.org/grpc"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	address         = <span class="string">"localhost:50051"</span></span><br><span class="line">	defaultFilename = <span class="string">"consignment.json"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">parseFile</span><span class="params">(file <span class="keyword">string</span>)</span> <span class="params">(*pb.Consignment, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> consignment *pb.Consignment</span><br><span class="line">	data, err := ioutil.ReadFile(file)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	json.Unmarshal(data, &amp;consignment)</span><br><span class="line">	<span class="keyword">return</span> consignment, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// Set up a connection to the server.</span></span><br><span class="line">	conn, err := grpc.Dial(address, grpc.WithInsecure())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"Did not connect: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> conn.Close()</span><br><span class="line">	client := pb.NewShippingService(conn)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Contact the server and print out its response.</span></span><br><span class="line">	file := defaultFilename</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(os.Args) &gt; <span class="number">1</span> &#123;</span><br><span class="line">		file = os.Args[<span class="number">1</span>]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	consignment, err := parseFile(file)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"Could not parse file: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	r, err := client.CreateConsignment(context.Background(), consignment)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"Could not greet: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	log.Printf(<span class="string">"Created: %t"</span>, r.Created)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在创建一个委托(consignment-cli/consignment.json):</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"description"</span>: <span class="string">"This is a test consignment"</span>,</span><br><span class="line">  <span class="attr">"weight"</span>: <span class="number">550</span>,</span><br><span class="line">  <span class="attr">"containers"</span>: [</span><br><span class="line">    &#123; <span class="attr">"customer_id"</span>: <span class="string">"cust001"</span>, <span class="attr">"user_id"</span>: <span class="string">"user001"</span>, <span class="attr">"origin"</span>: <span class="string">"Manchester, United Kingdom"</span> &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"vessel_id"</span>: <span class="string">"vessel001"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，如果你在consignment-service运行<code>$ go run main.go</code>，然后在一个单独的终端面板中运行<code>$ go run cli.go</code>。您应该看到一条消息说Created: true。但是，我们如何才能真正检验它创造了什么呢?让我们用GetConsignments方法来更新我们的服务，这样我们就可以查看所有创建的委托。</p>
+<p>首先让我们更新我们的proto定义(我留下注释来表示所做的更改):</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// consignment-service/proto/consignment/consignment.proto</span></span><br><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> <span class="keyword">go</span>.micro.srv.consignment;</span><br><span class="line"></span><br><span class="line">service ShippingService &#123;</span><br><span class="line">  rpc CreateConsignment(Consignment) returns (Response) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Created a new method</span></span><br><span class="line">  rpc GetConsignments(GetRequest) returns (Response) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Consignment &#123;</span><br><span class="line">  <span class="keyword">string</span> id = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">string</span> description = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">int32</span> weight = <span class="number">3</span>;</span><br><span class="line">  repeated Container containers = <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">string</span> vessel_id = <span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Container &#123;</span><br><span class="line">  <span class="keyword">string</span> id = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">string</span> customer_id = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">string</span> origin = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">string</span> user_id = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Created a blank get request</span></span><br><span class="line">message GetRequest &#123;&#125;</span><br><span class="line"></span><br><span class="line">message Response &#123;</span><br><span class="line">  <span class="keyword">bool</span> created = <span class="number">1</span>;</span><br><span class="line">  Consignment consignment = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Added a pluralised consignment to our generic response message</span></span><br><span class="line">  repeated Consignment consignments = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此，我们在我们的服务上创建了一个名为GetConsignments的新方法，我们还创建了一个新的GetRequest，它暂时不包含任何东西。我们还在响应消息中添加了一个consignments字段。您将注意到这里的类型在实际类型之前重复了关键字。正如您可能已经猜到的那样，这意味着将这个字段作为这些类型的数组来处理。</p>
+<p>现在再次运行<code>$ make build</code>。现在，再次尝试运行您的服务，您应该会看到类似于:*. service没有实现go_micro_srv_consignment.ShippingServiceServer(丢失GetConsignments方法)的错误。</p>
+<p>由于我们的gRPC方法的实现，是基于与protobuf库生成的接口相匹配的，所以我们需要确保我们的实现符合我们的proto定义。</p>
+<p>所以，让我们更新一下我们的<code>consignment-service/main.go</code>文件:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Import the generated protobuf code</span></span><br><span class="line">	pb <span class="string">"github.com/ewanvalentine/shipper/consignment-service/proto/consignment"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/context"</span></span><br><span class="line">	<span class="string">"google.golang.org/grpc"</span></span><br><span class="line">	<span class="string">"google.golang.org/grpc/reflection"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	port = <span class="string">":50051"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IRepository <span class="keyword">interface</span> &#123;</span><br><span class="line">	Create(*pb.Consignment) (*pb.Consignment, error)</span><br><span class="line">	GetAll() []*pb.Consignment</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Repository - Dummy repository, this simulates the use of a datastore</span></span><br><span class="line"><span class="comment">// of some kind. We'll replace this with a real implementation later on.</span></span><br><span class="line"><span class="keyword">type</span> Repository <span class="keyword">struct</span> &#123;</span><br><span class="line">	consignments []*pb.Consignment</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *Repository)</span> <span class="title">Create</span><span class="params">(consignment *pb.Consignment)</span> <span class="params">(*pb.Consignment, error)</span></span> &#123;</span><br><span class="line">	updated := <span class="built_in">append</span>(repo.consignments, consignment)</span><br><span class="line">	repo.consignments = updated</span><br><span class="line">	<span class="keyword">return</span> consignment, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *Repository)</span> <span class="title">GetAll</span><span class="params">()</span> []*<span class="title">pb</span>.<span class="title">Consignment</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> repo.consignments</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Service should implement all of the methods to satisfy the service</span></span><br><span class="line"><span class="comment">// we defined in our protobuf definition. You can check the interface</span></span><br><span class="line"><span class="comment">// in the generated code itself for the exact method signatures etc</span></span><br><span class="line"><span class="comment">// to give you a better idea.</span></span><br><span class="line"><span class="keyword">type</span> service <span class="keyword">struct</span> &#123;</span><br><span class="line">	repo IRepository</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreateConsignment - we created just one method on our service,</span></span><br><span class="line"><span class="comment">// which is a create method, which takes a context and a request as an</span></span><br><span class="line"><span class="comment">// argument, these are handled by the gRPC server.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">CreateConsignment</span><span class="params">(ctx context.Context, req *pb.Consignment)</span> <span class="params">(*pb.Response, error)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Save our consignment</span></span><br><span class="line">	consignment, err := s.repo.Create(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Return matching the `Response` message we created in our</span></span><br><span class="line">	<span class="comment">// protobuf definition.</span></span><br><span class="line">	<span class="keyword">return</span> &amp;pb.Response&#123;Created: <span class="literal">true</span>, Consignment: consignment&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">GetConsignments</span><span class="params">(ctx context.Context, req *pb.GetRequest)</span> <span class="params">(*pb.Response, error)</span></span> &#123;</span><br><span class="line">	consignments := s.repo.GetAll()</span><br><span class="line">	<span class="keyword">return</span> &amp;pb.Response&#123;Consignments: consignments&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	repo := &amp;Repository&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Set-up our gRPC server.</span></span><br><span class="line">	lis, err := net.Listen(<span class="string">"tcp"</span>, port)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"failed to listen: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	s := grpc.NewServer()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Register our service with the gRPC server, this will tie our</span></span><br><span class="line">	<span class="comment">// implementation into the auto-generated interface code for our</span></span><br><span class="line">	<span class="comment">// protobuf definition.</span></span><br><span class="line">	pb.RegisterShippingServiceServer(s, &amp;service&#123;repo&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Register reflection service on gRPC server.</span></span><br><span class="line">	reflection.Register(s)</span><br><span class="line">	<span class="keyword">if</span> err := s.Serve(lis); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"failed to serve: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里，我们已经包含了新的GetConsignments方法，更新了我们的存储库和接口，并满足了proto定义生成的接口。如果你运行$ go run main.go。再来一遍，这又管用了。</p>
+<p>让我们更新cli工具，以包括调用此方法和列出我们的委托的能力:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">	getAll, err := client.GetConsignments(context.Background(), &amp;pb.GetRequest&#123;&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"Could not list consignments: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> getAll.Consignments &#123;</span><br><span class="line">		log.Println(v)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在我们的main函数的最下面，在下面我们记录我们的”Created: success”消息，附加上面的代码，并重新运行 $ go run cli.go。这将创建一个委托，然后调用GetConsignments。您应该看到这个列表在运行的次数越多。</p>
+<p>注意:为了简洁起见，我有时可能会修订之前用一个…表示没有对前面的代码做任何更改，但是添加了附加的行或附加的行。</p>
+<p>因此，我们已经成功地创建了一个微服务和一个客户端来与它交互，使用protobuf和gRPC。</p>
+<p>本系列的下一篇文章将围绕如何集成go-micro，这是一个强大的框架，用于创建基于gRPC的微服务。我们还将创建第二个服务，即容器服务。说到容器，只是为了混淆问题，我们还将在本系列的下一部分中查看Docker容器中的服务。</p>
+<h1 id="进一步的阅读"><a href="#进一步的阅读" class="headerlink" title="进一步的阅读"></a>进一步的阅读</h1><ul>
+<li>文章和通讯<br><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">https://www.nginx.com/blog/introduction-to-microservices/</a><br><a href="https://martinfowler.com/articles/microservices.html" target="_blank" rel="noopener">https://martinfowler.com/articles/microservices.html</a><br><a href="https://www.microservices.com/talks/" target="_blank" rel="noopener">https://www.microservices.com/talks/</a> <a href="https://medium.facilelogin.com/ten-talks-on-microservices-you-cannot-miss-at-any-cost-7bbe5ab7f43f#.ui0748oat" target="_blank" rel="noopener">https://medium.facilelogin.com/ten-talks-on-microservices-you-cannot-miss-at-any-cost-7bbe5ab7f43f#.ui0748oat</a> <a href="https://microserviceweekly.com/" target="_blank" rel="noopener">https://microserviceweekly.com/</a></li>
+<li>书<br><a href="https://www.amazon.co.uk/Building-Microservices-Sam-Newman/dp/1491950358" target="_blank" rel="noopener">https://www.amazon.co.uk/Building-Microservices-Sam-Newman/dp/1491950358</a> <a href="https://www.amazon.co.uk/Devops-Handbook-World-Class-Reliability-Organizations/dp/1942788002" target="_blank" rel="noopener">https://www.amazon.co.uk/Devops-Handbook-World-Class-Reliability-Organizations/dp/1942788002</a> <a href="https://www.amazon.co.uk/Phoenix-Project-DevOps-Helping-Business/dp/0988262509" target="_blank" rel="noopener">https://www.amazon.co.uk/Phoenix-Project-DevOps-Helping-Business/dp/0988262509</a></li>
+<li>播客<br><a href="https://softwareengineeringdaily.com/tag/microservices/" target="_blank" rel="noopener">https://softwareengineeringdaily.com/tag/microservices/</a><br><a href="https://martinfowler.com/tags/podcast.html" target="_blank" rel="noopener">https://martinfowler.com/tags/podcast.html</a><br><a href="https://www.infoq.com/microservices/podcasts/" target="_blank" rel="noopener">https://www.infoq.com/microservices/podcasts/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/05/10/go-micro-tutorial-1/" target="_blank" title="Go微服务教程-第一部分">https://jigangduan.github.io/2018/05/10/go-micro-tutorial-1/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-micro/">go-micro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/10/go-micro-tutorial-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Go微服务教程-第二部分(Docker和go-micro)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/10/go-micro-tutorial-readme/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Go微服务教程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#先决条件"><span class="nav-number">2.</span> <span class="nav-text">先决条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#我们构建什么"><span class="nav-number">3.</span> <span class="nav-text">我们构建什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是微服务"><span class="nav-number">4.</span> <span class="nav-text">什么是微服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么微服务"><span class="nav-number">5.</span> <span class="nav-text">为什么微服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么Golang"><span class="nav-number">6.</span> <span class="nav-text">为什么Golang</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引入protobuf-gRPC"><span class="nav-number">7.</span> <span class="nav-text">引入protobuf/gRPC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进一步的阅读"><span class="nav-number">8.</span> <span class="nav-text">进一步的阅读</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>android theme 和 style | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="androidandroid-ui">
+  
+  
+  
+  
+  <meta name="description" content="Android 5.0 带来了新的功能，允许你为视图(以及任何后代)指定一个覆盖主题。下面介绍如何使用它以及为什么要使用它。">
+<meta name="keywords" content="android,android-ui">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Theme 和 Style">
+<meta property="og:url" content="https://jigangduan.github.io/2017/10/09/android-theme-style/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="Android 5.0 带来了新的功能，允许你为视图(以及任何后代)指定一个覆盖主题。下面介绍如何使用它以及为什么要使用它。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1513857484893&di=f44d6937a4f10732b39e203b321a4816&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F15%2F24%2F14%2F87658PICnfX_1024.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.173Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Theme 和 Style">
+<meta name="twitter:description" content="Android 5.0 带来了新的功能，允许你为视图(以及任何后代)指定一个覆盖主题。下面介绍如何使用它以及为什么要使用它。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1513857484893&di=f44d6937a4f10732b39e203b321a4816&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F15%2F24%2F14%2F87658PICnfX_1024.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-android-theme-style" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android Theme 和 Style
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/09/android-theme-style/" class="article-date">
+	  <time datetime="2017-10-09T09:02:11.000Z" itemprop="datePublished">2017-10-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513857484893&amp;di=f44d6937a4f10732b39e203b321a4816&amp;imgtype=0&amp;src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F15%2F24%2F14%2F87658PICnfX_1024.jpg" alt></p>
+<p>Android 5.0 带来了新的功能，允许你为视图(以及任何后代)指定一个覆盖主题。下面介绍如何使用它以及为什么要使用它。</p>
+<a id="more"></a>
+<h2 id="为什么"><a href="#为什么" class="headerlink" title="为什么?"></a>为什么?</h2><p>您可能已经在不知道的情况下使用了这个功能:<code>Theme.Holo.Light.DarkActionBar</code>。</p>
+<p>考虑一下Light.DarkActionBar主题。内容是亮系的主题(背景是亮的，前景是暗的)，但是动作条使用了一个暗的主题(暗背景和亮前景色)。</p>
+<p>如果不能提供一个单独的主题，您需要手动将文本颜色和其他前景颜色设置为某种相反色。</p>
+<p>这里就是旧的actionBarWidgetTheme属性出现的地方，它允许你指定只用于你的操作栏的主题。以下是一个该平台的DarkActionBar主题:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"Theme.Holo.Light.DarkActionBar"</span>&gt;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:actionBarWidgetTheme"</span>&gt;</span>@android:style/Theme.Holo<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因此，你可以在action bar上使用暗主题。</p>
+<h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><p>如何工作的呢?简单地说，它是API v1的一个可用的<a href="https://developer.android.com/reference/android/view/ContextThemeWrapper.html" target="_blank" rel="noopener">ContextThemeWrapper</a>类。这是一个很简单的类，它的作用是:</p>
+<p>它包装在现有的Context (比如Activity)，然后将一个新主题覆盖到该Context的主题之上。这一点很重要，因为这将导致……</p>
+<h2 id="ThemeOverlay"><a href="#ThemeOverlay" class="headerlink" title="ThemeOverlay"></a>ThemeOverlay</h2><p>您可能已经在Lollipop SDK中看到了这些主题。有两种主要的覆盖:</p>
+<ul>
+<li>ThemeOverlay.Material.Light</li>
+<li>ThemeOverlay.Material.Dark</li>
+</ul>
+<p>那么这些是什么呢?同样，线索在名称中，它们与ContextThemeWrapper的工作方式是直接匹配的。</p>
+<p>它们是特殊的主题，覆盖了正常的<code>Theme.Material</code>主题，覆盖了相关的属性，使它们变得亮/暗。</p>
+<h2 id="ThemeOverlay-ActionBar"><a href="#ThemeOverlay-ActionBar" class="headerlink" title="ThemeOverlay + ActionBar"></a>ThemeOverlay + ActionBar</h2><p>你敏锐的眼睛也会看到ActionBar ThemeOverlay衍生品:</p>
+<ul>
+<li>ThemeOverlay.Material.Light.ActionBar</li>
+<li>ThemeOverlay.Material.Dark.ActionBar</li>
+</ul>
+<p>这些只应该通过新的<code>actionBarTheme</code>属性与Action Bar一起使用，或者直接设置在您的Toolbar上(见下面)。</p>
+<p>目前对他们的父母来说，唯一不同的是，他们将<code>colorControlNormal</code>更改为<code>android:textColorPrimary</code>，从而使任何文本和图标都不透明。</p>
+<h2 id="android-theme"><a href="#android-theme" class="headerlink" title="android:theme"></a>android:theme</h2><p>让我们回到新的Lollipop功能。正如前面提到的，现在可以直接在布局中指定一个主题。最常见的使用(可能)是使用Toolbar:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Toolbar</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"?android:attr/actionBarSize"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"?android:attr/colorPrimaryDark"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">"@android:style/ThemeOverlay.Material.Dark.ActionBar"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>希望你们现在能看到它们是如何结合在一起的。我们现在已经让Toolbar有了一个黑色的主题，确保它的内容是浅色的，并且与黑暗背景形成对比。</p>
+<p>有一点需要注意的是，在Lollipop上的<code>android:theme</code>有效于所有在布局中声明的孩子们:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">"@android:style/ThemeOverlay.Material.Dark"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Anything here will also have a dark theme --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果需要，你的孩子可以设定自己的主题。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>让我们来总结一下我最近被问到的一个问题:</p>
+<blockquote>
+<p>我如何设置android:colorEdgeEffect，使它只在一个视图上生效?</p>
+</blockquote>
+<p><code>colorEdgeEffect</code>属性是Android 5.0中的一个新主题属性，用于自定义列表的超滚动效果的颜色。</p>
+<p>因为这是一个主题属性，您不能直接在视图上设置它。相反，我们需要使用一个定制的theme叠加来使用<code>android:theme</code>。我们的自定义覆盖只是将<code>android:colorEdgeEffect</code>设为红色。然后我们将这个主题设置为视图，这样它就会生效。</p>
+<p><strong>res/values/themes.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"RedThemeOverlay"</span> <span class="attr">parent</span>=<span class="string">"android:ThemeOverlay.Material"</span>&gt;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:colorEdgeEffect"</span>&gt;</span>#FF0000<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>res/layout/fragment_list.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ListView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">"RedThemeOverlay"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>需要注意的是，colorEdgeEffect只是一个例子，这个技术可以与所有的主题属性一起使用。</p>
+<h2 id="Theme-和-Style"><a href="#Theme-和-Style" class="headerlink" title="Theme 和 Style"></a>Theme 和 Style</h2><p>那么区别是什么呢?它们都是以完全相同的方式声明的(你已经知道了)，它们的区别在于它们是如何被使用的。</p>
+<p>主题是为你的应用程序设计的全局样式，新功能并没有改变，它只是允许你根据每个视图进行调整。</p>
+<p>样式是在一个视图级别上应用的。在内部，当您在视图上设置样式时，LayoutInflater将读取该样式并在任何显式属性之前将其应用到AttributeSet(这允许您在视图上覆盖样式值)。</p>
+<p>属性集中的值可以引用视图的主题中的值。</p>
+<blockquote>
+<p>主题是全局的，风格是局部的。</p>
+</blockquote>
+<h2 id="AppCompat"><a href="#AppCompat" class="headerlink" title="AppCompat"></a>AppCompat</h2><p>那么AppCompat是如何适应这一情况的呢?很明显，它会返回一些新的颜色主题属性。</p>
+<p>它还支持某些widgets的<code>android:theme</code>功能，目前只有<code>android.support.v7.widget.Toolbar</code>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/10/09/android-theme-style/" target="_blank" title="Android Theme 和 Style">https://jigangduan.github.io/2017/10/09/android-theme-style/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-ui/">android-ui</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/10/android-code-lint/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          android 代码优化 - 注解检查
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/09/Java界的神器-使用Lombok来消除你的冗余代码量/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Java界的神器-使用Lombok来消除你的冗余代码量</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么"><span class="nav-number">1.</span> <span class="nav-text">为什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本功能"><span class="nav-number">2.</span> <span class="nav-text">基本功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThemeOverlay"><span class="nav-number">3.</span> <span class="nav-text">ThemeOverlay</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThemeOverlay-ActionBar"><span class="nav-number">4.</span> <span class="nav-text">ThemeOverlay + ActionBar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#android-theme"><span class="nav-number">5.</span> <span class="nav-text">android:theme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">6.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Theme-和-Style"><span class="nav-number">7.</span> <span class="nav-text">Theme 和 Style</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AppCompat"><span class="nav-number">8.</span> <span class="nav-text">AppCompat</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

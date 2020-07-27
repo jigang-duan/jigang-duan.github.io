@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>开源教育技术栈 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  
+  <meta name="description" content="应用目录 基础软件 虚拟化 openstack 操作系统 Unbuntu Centos 邮件 RoundCube web服务器 Apache Nginx 数据库服务器Mysql phpmyadmin / Postgresql postgresqlstudio 单点登录 Apereo CAS 轻型目录访问协议LDAP OpenLDAP 云盘 ownCloud Seafile pydio API平台">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源教育技术栈">
+<meta property="og:url" content="https://jigangduan.github.io/2019/05/04/edustack/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="应用目录 基础软件 虚拟化 openstack 操作系统 Unbuntu Centos 邮件 RoundCube web服务器 Apache Nginx 数据库服务器Mysql phpmyadmin / Postgresql postgresqlstudio 单点登录 Apereo CAS 轻型目录访问协议LDAP OpenLDAP 云盘 ownCloud Seafile pydio API平台">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.200Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开源教育技术栈">
+<meta name="twitter:description" content="应用目录 基础软件 虚拟化 openstack 操作系统 Unbuntu Centos 邮件 RoundCube web服务器 Apache Nginx 数据库服务器Mysql phpmyadmin / Postgresql postgresqlstudio 单点登录 Apereo CAS 轻型目录访问协议LDAP OpenLDAP 云盘 ownCloud Seafile pydio API平台">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-edustack" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      开源教育技术栈
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/05/04/edustack/" class="article-date">
+	  <time datetime="2019-05-04T02:36:49.000Z" itemprop="datePublished">2019-05-04</time>
+	</a>
+
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>应用目录</p>
+<h2 id="基础软件"><a href="#基础软件" class="headerlink" title="基础软件"></a>基础软件</h2><ul>
+<li>虚拟化 <a href="http://www.openstack.org/" target="_blank" rel="noopener">openstack</a></li>
+<li>操作系统 <a href="http://www.ubuntu.org.cn/" target="_blank" rel="noopener">Unbuntu</a> <a href="http://www.centos.org/" target="_blank" rel="noopener">Centos</a></li>
+<li>邮件 <a href="http://roundcube.net/" target="_blank" rel="noopener">RoundCube</a></li>
+<li>web服务器 <a href="http://httpd.apache.org/" target="_blank" rel="noopener">Apache</a> <a href="http://nginx.org/cn/" target="_blank" rel="noopener">Nginx</a></li>
+<li>数据库服务器<a href="http://www.mysql.com/" target="_blank" rel="noopener">Mysql</a> <a href="http://www.phpmyadmin.net/" target="_blank" rel="noopener">phpmyadmin</a> / <a href="http://www.postgresql.org/" target="_blank" rel="noopener">Postgresql</a> <a href="http://www.postgresqlstudio.org/" target="_blank" rel="noopener">postgresqlstudio</a></li>
+<li>单点登录 <a href="https://apereo.github.io/cas/" target="_blank" rel="noopener">Apereo CAS</a></li>
+<li>轻型目录访问协议LDAP <a href="http://www.openldap.org/" target="_blank" rel="noopener">OpenLDAP</a></li>
+<li>云盘 <a href="http://owncloud.org/" target="_blank" rel="noopener">ownCloud</a> <a href="https://github.com/haiwen/seafile" target="_blank" rel="noopener">Seafile</a> <a href="https://pydio.com/" target="_blank" rel="noopener">pydio</a></li>
+<li>API平台 <a href="https://www.dreamfactory.com/" target="_blank" rel="noopener">Dreamfactory</a> <a href="http://swagger.io/" target="_blank" rel="noopener">Swagger</a></li>
+<li>移动后端开发 <a href="https://parse.com/" target="_blank" rel="noopener">Parse</a></li>
+<li>证书 <a href="https://letsencrypt.org/" target="_blank" rel="noopener">LetsEncrypt</a></li>
+<li>网络存储 <a href="http://www.freenas.org/" target="_blank" rel="noopener">FreeNAS</a></li>
+</ul>
+<h2 id="大数据"><a href="#大数据" class="headerlink" title="大数据"></a>大数据</h2><ul>
+<li>数据仓库ETL <a href="https://github.com/pentaho/pentaho-kettle" target="_blank" rel="noopener">pentaho-kettle</a></li>
+<li>商业智能BI <a href="http://spagobilabs.github.io/" target="_blank" rel="noopener">spagoBI</a></li>
+<li>日志分析 <a href="https://www.elastic.co/" target="_blank" rel="noopener">ELK</a> <a href="https://flume.apache.org/" target="_blank" rel="noopener">Flume</a>+<a href="https://kafka.apache.org/" target="_blank" rel="noopener">Kafka</a>+<a href="http://storm.apache.org/" target="_blank" rel="noopener">Strom</a></li>
+<li>CDH <a href="http://www.cloudera.com/" target="_blank" rel="noopener">Cloudera</a></li>
+<li>数据仓库 <a href="http://pivotal.io/big-data/pivotal-greenplum-database" target="_blank" rel="noopener">Greenplum</a></li>
+<li>数据分析及可视化 <a href="https://github.com/airbnb/superset" target="_blank" rel="noopener">SuperSet</a></li>
+<li>内存大数据 <a href="http://www.alluxio.org/" target="_blank" rel="noopener">Alluxio</a> <a href="http://geode.incubator.apache.org/" target="_blank" rel="noopener">Geode</a></li>
+<li>神经网络 <a href="https://www.tensorflow.org/" target="_blank" rel="noopener">TensorFlow</a></li>
+</ul>
+<h2 id="管理"><a href="#管理" class="headerlink" title="管理"></a>管理</h2><ul>
+<li>系统管理 <a href="https://github.com/webmin/webmin" target="_blank" rel="noopener">Webmin</a></li>
+<li>虚拟主机 <a href="http://www.ispconfig.org/" target="_blank" rel="noopener">ISPconfig</a></li>
+<li>数据中心 <a href="http://www.racktables.org/" target="_blank" rel="noopener">RackTables</a></li>
+<li>监控 <a href="http://www.zabbix.com/" target="_blank" rel="noopener">zabbix</a></li>
+<li>APM <a href="https://github.com/naver/pinpoint" target="_blank" rel="noopener">pinpoint</a></li>
+<li>运维 <a href="http://www.saltstack.com/" target="_blank" rel="noopener">SaltStack</a> <a href="https://github.com/ansible" target="_blank" rel="noopener">Ansible</a></li>
+<li>漏洞扫描 <a href="http://www.openvas.org/" target="_blank" rel="noopener">openvas</a> <a href="http://w3af.org/" target="_blank" rel="noopener">w3af</a></li>
+<li>网络克隆 <a href="http://clonezilla.org/" target="_blank" rel="noopener">CloneZilla</a> <a href="http://drbl.org/" target="_blank" rel="noopener">DBRL</a></li>
+<li>跳板机 <a href="http://www.jumpserver.org/" target="_blank" rel="noopener">JumpServer</a></li>
+</ul>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><ul>
+<li>内容管理系统 <a href="http://wordpress.org/" target="_blank" rel="noopener">WordPress</a></li>
+<li>搜索 <a href="http://lucene.apache.org/solr/" target="_blank" rel="noopener">Solr</a></li>
+<li>知识社区 <a href="http://www.wecenter.com/" target="_blank" rel="noopener">WeCenter</a></li>
+<li>视频门户 <a href="http://mediadrop.net/" target="_blank" rel="noopener">MediaDrop</a> <a href="https://github.com/mediadrop/mediadrop/" target="_blank" rel="noopener">github地址</a></li>
+<li>视频处理 <a href="http://www.kaltura.org/" target="_blank" rel="noopener">Kaltura</a></li>
+<li>资源管理  <a href="http://www.resourcespace.org/" target="_blank" rel="noopener">ResourceSpace</a></li>
+</ul>
+<h2 id="教学科研"><a href="#教学科研" class="headerlink" title="教学科研"></a>教学科研</h2><ul>
+<li>慕课MOOCS <a href="http://code.edx.org/" target="_blank" rel="noopener">Open edX</a> <a href="https://github.com/instructure" target="_blank" rel="noopener">Canvas</a></li>
+<li>课程管理 <a href="https://moodle.org/" target="_blank" rel="noopener">Moodle</a></li>
+<li>代码管理 <a href="http://gitlab.org/" target="_blank" rel="noopener">Gitlab</a></li>
+<li>看板 <a href="https://github.com/wekan/wekan" target="_blank" rel="noopener">WeKan</a></li>
+<li>在线会议 <a href="https://github.com/bigbluebutton/bigbluebutton" target="_blank" rel="noopener">BigBlueButton</a></li>
+<li>课程制作 <a href="https://code.google.com/p/course-builder/" target="_blank" rel="noopener">Course Builder</a> / <a href="https://code.google.com/p/oppia/" target="_blank" rel="noopener">oppia</a></li>
+<li><p>学术协作 <a href="http://oaeproject.org/" target="_blank" rel="noopener">OAEproject</a></p>
+</li>
+<li><p><a href="https://www.folio.org/" target="_blank" rel="noopener">FOLIO</a>  FOLIO是图书馆，开发商和供应商合作建立的一个开源图书馆服务平台。 它支持传统的资源管理功能，可以扩展到其他机构领域。</p>
+</li>
+</ul>
+<h2 id="社交"><a href="#社交" class="headerlink" title="社交"></a>社交</h2><ul>
+<li>聊天机器人 <a href="https://hubot.github.com/" target="_blank" rel="noopener">Hubot</a></li>
+<li>讨论区 <a href="http://www.discourse.org/" target="_blank" rel="noopener">Discourse</a></li>
+<li>投票 <a href="http://www.limesurvey.org/en/" target="_blank" rel="noopener">Limesurvey</a></li>
+<li>即时通信 <a href="https://github.com/RocketChat" target="_blank" rel="noopener">Rocket.Chat</a></li>
+<li>分布式社交网络 <a href="https://joinmastodon.org/" target="_blank" rel="noopener">Mastodon</a></li>
+</ul>
+<h2 id="桌面"><a href="#桌面" class="headerlink" title="桌面"></a>桌面</h2><ul>
+<li>绘图 <a href="https://krita.org/zh/" target="_blank" rel="noopener">krita</a></li>
+<li>数学软件 <a href="https://www.geogebra.org/" target="_blank" rel="noopener">Geogebra</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/05/04/edustack/" target="_blank" title="开源教育技术栈">https://jigangduan.github.io/2019/05/04/edustack/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/18/programming-with-errors/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          errors 编程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/03/editors/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">editors</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础软件"><span class="nav-number">1.</span> <span class="nav-text">基础软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大数据"><span class="nav-number">2.</span> <span class="nav-text">大数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理"><span class="nav-number">3.</span> <span class="nav-text">管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内容"><span class="nav-number">4.</span> <span class="nav-text">内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#教学科研"><span class="nav-number">5.</span> <span class="nav-text">教学科研</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#社交"><span class="nav-number">6.</span> <span class="nav-text">社交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#桌面"><span class="nav-number">7.</span> <span class="nav-text">桌面</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

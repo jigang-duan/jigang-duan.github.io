@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>spring mvc | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javaspring">
+  
+  
+  
+  
+  <meta name="description" content="MVC是Spring框架中最重要的模块之一。它构建在强大的Spring IoC容器上，并广泛使用容器特性来简化其配置。 模型-视图-控制器(MVC)是UI设计中常见的设计模式。它将模型、视图和控制器的角色分离到应用程序中，从而将业务逻辑与ui分离开来。模型负责为要显示的视图封装应用程序数据。视图应该只显示此数据，而不包含任何业务逻辑。控制器负责接收用户的请求并调用后端服务进行业务处理。处理后，后">
+<meta name="keywords" content="java,spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC">
+<meta property="og:url" content="https://jigangduan.github.io/2018/08/01/Spring-5-Recipes-3/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="MVC是Spring框架中最重要的模块之一。它构建在强大的Spring IoC容器上，并广泛使用容器特性来简化其配置。 模型-视图-控制器(MVC)是UI设计中常见的设计模式。它将模型、视图和控制器的角色分离到应用程序中，从而将业务逻辑与ui分离开来。模型负责为要显示的视图封装应用程序数据。视图应该只显示此数据，而不包含任何业务逻辑。控制器负责接收用户的请求并调用后端服务进行业务处理。处理后，后">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532860369549&di=2a8997ffc5dad85bea5e24cfa55877f7&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F21%2F83%2F158PICJ58PICmFp_1024.jpg">
+<meta property="og:image" content="http://qiniu.jigangduan.xyz/18-8-1/30181199.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.165Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC">
+<meta name="twitter:description" content="MVC是Spring框架中最重要的模块之一。它构建在强大的Spring IoC容器上，并广泛使用容器特性来简化其配置。 模型-视图-控制器(MVC)是UI设计中常见的设计模式。它将模型、视图和控制器的角色分离到应用程序中，从而将业务逻辑与ui分离开来。模型负责为要显示的视图封装应用程序数据。视图应该只显示此数据，而不包含任何业务逻辑。控制器负责接收用户的请求并调用后端服务进行业务处理。处理后，后">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532860369549&di=2a8997ffc5dad85bea5e24cfa55877f7&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F21%2F83%2F158PICJ58PICmFp_1024.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Spring-5-Recipes-3" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Spring MVC
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/01/Spring-5-Recipes-3/" class="article-date">
+	  <time datetime="2018-08-01T13:19:03.000Z" itemprop="datePublished">2018-08-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/开发范例代码大全/">开发范例代码大全</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1532860369549&amp;di=2a8997ffc5dad85bea5e24cfa55877f7&amp;imgtype=0&amp;src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F21%2F83%2F158PICJ58PICmFp_1024.jpg" alt="spring"></p>
+<p>MVC是Spring框架中最重要的模块之一。<br>它构建在强大的Spring IoC容器上，并广泛使用容器特性来简化其配置。</p>
+<p>模型-视图-控制器(MVC)是UI设计中常见的设计模式。<br>它将模型、视图和控制器的角色分离到应用程序中，从而将业务逻辑与ui分离开来。<br>模型负责为要显示的视图封装应用程序数据。视图应该只显示此数据，而不包含任何业务逻辑。<br>控制器负责接收用户的请求并调用后端服务进行业务处理。<br>处理后，后端服务可以返回一些数据以供视图显示。<br>控制器收集这些数据并为视图准备模型。<br>MVC模式的核心思想是将业务逻辑与ui分离开来，使其能够独立地进行更改，而不会相互影响。</p>
+<p>在Spring MVC应用程序中，模型通常由域对象组成，这些域对象由服务层处理并由持久化层保存。<br>视图通常是用Java标准标记库(JSTL)编写的JSP模板。<br>但是，也可以将视图定义为PDF文件、Excel文件、RESTful web服务，甚至是Flex接口，后者通常被称为富Internet应用程序(ria)。<br>完成本章后，您将能够使用Spring MVC开发Java web应用程序。<br>您还将了解Spring MVC的通用控制器和视图类型，其中包括自Spring 3.0发布以来用于创建控制器的注解。<br>此外，您将了解Spring MVC的基本原则，它将作为后续章节中更高级主题的基础。</p>
+<h1 id="使用Spring-MVC开发一个简单的Web应用程序"><a href="#使用Spring-MVC开发一个简单的Web应用程序" class="headerlink" title="使用Spring MVC开发一个简单的Web应用程序"></a>使用Spring MVC开发一个简单的Web应用程序</h1><p>问题</p>
+<p>您希望使用Spring MVC开发一个简单的web应用程序，以了解这个框架的基本概念和配置。</p>
+<p>解决方案</p>
+<p>Spring MVC的中心组件是前端控制器。在最简单的Spring MVC应用程序中，这个控制器是惟一需要在Java web部署描述符(即web.xml文件或ServletContainerInitializer)中配置的servlet。Spring MVC控制器(通常称为dispatcher servlet)实现了Sun的核心Java EE设计模式之一，称为Front Controller。它充当Spring MVC框架的前端控制器，每个web请求都必须经过它，以便能够管理整个请求处理过程。</p>
+<p>当web请求被发送到Spring MVC应用程序时，控制器首先接收请求。然后，它将组织在Spring的web应用程序上下文中配置的不同组件或控制器本身中存在的注释，这些都是处理请求所需的。图3-1显示了Spring MVC中请求处理的主要流程。</p>
+<p><img src="http://qiniu.jigangduan.xyz/18-8-1/30181199.jpg" alt="图3-1"></p>
+<p>要在Spring中定义一个控制器类，必须用@Controller或@RestController注释标记一个类。<br>当@Controller带注释的类(即controller类)接收到请求时，它会寻找合适的处理程序方法来处理请求。这要求控制器类通过一个或多个处理程序映射将每个请求映射到处理程序方法。为此，使用@RequestMapping注释修饰controller类的方法，使它们成为处理程序方法。<br>这些处理程序方法的签名(您可以从任何标准类中看到)是开放的。可以为处理程序方法指定任意名称，并定义各种方法参数。同样，处理程序方法可以返回一系列值中的任何一个(例如，String或void)，这取决于它执行的应用程序逻辑。随着这本书的深入，您将会遇到各种方法参数，这些参数可以使用@RequestMapping注释在处理程序方法中使用。下面只是有效参数类型的部分列表，仅供您了解。</p>
+<ul>
+<li>HttpServletRequest或HttpServleResponse</li>
+<li>请求任意类型的参数，用@RequestParam注释</li>
+<li>任意类型的模型属性，用@ModelAttribute标注。</li>
+<li>在传入请求中包含的Cookie值，用@CookieValue标注。</li>
+<li>映射或ModelMap，用于处理方法向模型添加属性。</li>
+<li>处理程序方法访问命令对象的绑定和验证结果的错误或BindingResult</li>
+<li>SessionStatus，用来通知处理程序方法完成会话处理</li>
+</ul>
+<p>一旦控制器类选择了一个适当的处理程序方法，它将调用处理程序方法的逻辑与请求。通常，控制器的逻辑调用后端服务来处理请求。<br>此外，处理程序方法的逻辑可能会从众多输入参数(例如HttpServletRequest、Map、Errors或SessionStatus)中添加或删除信息，这些参数将构成正在进行的Spring MVC流的一部分。<br>处理完请求后，它将控件委托给一个视图，该视图被表示为处理程序方法的返回值。要提供一种灵活的方法，处理程序方法的返回值并不表示视图的实现(例如，user.jsp report.pdf)。而是逻辑视图(例如，user或report)——注意文件扩展的缺乏。<br>处理程序方法的返回值可以是表示逻辑视图名的字符串，也可以是void，在这种情况下，默认逻辑视图名是根据处理程序方法或控制器的名称确定的。<br>要将信息从控制器传递到视图，处理程序的方法返回逻辑视图名称字符串或voip是不相关的，因为处理程序方法的输入参数将对视图可用。例如，如果处理程序方法以Map和SessionStatus对象作为输入参数——在处理程序方法的逻辑中修改它们的内容——这些相同的对象将被处理程序方法返回的视图访问。<br>当控制器类接收到一个视图时，它将逻辑视图名解析为一个特定的视图实现(例如，user)。通过视图解析器来实现jsp或report.pdf。视图解析器是在实现ViewResolver接口的web应用程序上下文中配置的bean。它的职责是为逻辑视图名返回特定的视图实现(HTML、JSP、PDF或其他)。<br>一旦控制器类将视图名解析为视图实现，根据视图实现的设计，它将呈现控制器处理程序方法传递的对象(例如HttpServletRequest、Map、Errors或SessionStatus)。视图的职责是向用户显示在处理程序方法的逻辑中添加的对象。</p>
+<p>它是如何工作的</p>
+<p>假设你要为一个体育中心开发一个法庭预约系统。此应用程序的ui是基于web的，以便用户可以通过Internet在线预订。您希望使用Spring MVC开发这个应用程序。首先，在域子包中创建以下域类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.domain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Reservation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String courtName;</span><br><span class="line">    <span class="keyword">private</span> Date date;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> hour;</span><br><span class="line">    <span class="keyword">private</span> Player player; </span><br><span class="line">    <span class="keyword">private</span> SportType sportType;</span><br><span class="line">        <span class="comment">// Constructors, Getters and Setters</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.domain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Player</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">        <span class="comment">// Constructors, Getters and Setters</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.domain;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SportType</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">        <span class="comment">// Constructors, Getters and Setters</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，在服务子包中定义以下服务接口，为表示层提供预订服务:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.domain.Reservation;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ReservationService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Reservation&gt; <span class="title">query</span><span class="params">(String courtName)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在生产应用程序中，应该使用数据库持久性实现这个接口。但是为了简单起见，您可以将预订记录存储在一个列表中，并为测试目的硬编码多个预订。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.domain.Player;</span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.domain.Reservation;</span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.domain.SportType;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDate;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Objects;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReservationServiceImpl</span> <span class="keyword">implements</span> <span class="title">ReservationService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> SportType TENNIS = <span class="keyword">new</span> SportType(<span class="number">1</span>, <span class="string">"Tennis"</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> SportType SOCCER = <span class="keyword">new</span> SportType(<span class="number">2</span>, <span class="string">"Soccer"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;Reservation&gt; reservations = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReservationServiceImpl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        reservations.add(<span class="keyword">new</span> Reservation(<span class="string">"Tennis #1"</span>, LocalDate.of(<span class="number">2008</span>, <span class="number">1</span>, <span class="number">14</span>), <span class="number">16</span>, <span class="keyword">new</span> Player(<span class="string">"Roger"</span>, <span class="string">"N/A"</span>), TENNIS));</span><br><span class="line">        reservations.add(<span class="keyword">new</span> Reservation(<span class="string">"Tennis #2"</span>, LocalDate.of(<span class="number">2008</span>, <span class="number">1</span>, <span class="number">14</span>), <span class="number">20</span>, <span class="keyword">new</span> Player(<span class="string">"James"</span>, <span class="string">"N/A"</span>), TENNIS));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Reservation&gt; <span class="title">query</span><span class="params">(String courtName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.reservations.stream()</span><br><span class="line">            .filter(reservation -&gt; Objects.equals(reservation.getCourtName(), courtName)).collect(Collectors.toList());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="设置一个Spring-MVC应用程序"><a href="#设置一个Spring-MVC应用程序" class="headerlink" title="设置一个Spring MVC应用程序"></a>设置一个Spring MVC应用程序</h2><p>接下来，您需要创建一个Spring MVC应用程序布局。通常，使用Spring MVC开发的web应用程序的设置方式与标准Java web应用程序相同，只是需要添加一些配置文件和特定于Spring MVC的必需库。<br>Java EE规范定义了由web archive (WAR文件)组成的Java web应用程序的有效目录结构。例如，您必须提供一个web部署描述符(即:在WEB-INF根或一个或多个实现ServletContainerInitializer的类中。这个web应用程序的类文件和JAR文件应该分别放在WEB-INF/classes 和 WEB-INF/lib目录中。<br>对于您的法庭预订系统，您将创建以下目录结构。注意，突出显示的文件是spring特定的配置文件。</p>
+<blockquote>
+<p>注意，要使用Spring MVC开发web应用程序，您必须将所有普通的Spring依赖项(更多信息请参阅第1章)以及Spring web和Spring MVC依赖项添加到您的类路径中。如果您正在使用Maven，请向您的Maven项目添加以下依赖项:</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-webmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果您使用的是gradle，请添加以下内容:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="keyword">compile</span> <span class="string">"org.springframework:spring-webmvc:$springVersion"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>WEB-INF目录之外的文件可以通过url直接访问，因此CSS文件和图像文件必须放在那里。在使用Spring MVC时，JSP文件充当模板。它们被用于生成动态内容的框架读取，因此应该将JSP文件放到WEB-INF目录中，以防止直接访问它们。但是，有些应用服务器不允许WEB-INF内部的文件被web应用程序内部读取。在这种情况下，您只能将它们放在WEB-INF目录之外。</p>
+<h2 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h2><p>web部署描述符(web.xml或ServletContainerInitializer是Java web应用程序的基本配置文件)。在这个文件中，定义应用程序的servlet以及web请求如何映射到它们。对于Spring MVC应用程序，您必须只定义一个单独的DispatcherServlet实例，它充当Spring MVC的前端控制器，尽管您可以在需要时定义多个。<br>在大型应用程序中，可以方便地使用多个DispatcherServlet实例。这允许将DispatcherServlet实例指定为特定的url，从而使代码管理更加容易，并允许各个团队成员在不妨碍彼此的情况下处理应用程序的逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.web;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.config.CourtConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.context.support.AnnotationConfigWebApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.DispatcherServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletContainerInitializer;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletContext;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRegistration;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CourtServletContainerInitializer</span> <span class="keyword">implements</span> <span class="title">ServletContainerInitializer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStartup</span><span class="params">(Set&lt;Class&lt;?&gt;&gt; c, ServletContext ctx)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">        AnnotationConfigWebApplicationContext applicationContext = <span class="keyword">new</span> AnnotationConfigWebApplicationContext();</span><br><span class="line">        applicationContext.register(CourtConfiguration<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        DispatcherServlet dispatcherServlet = <span class="keyword">new</span> DispatcherServlet(applicationContext);</span><br><span class="line">        ServletRegistration.Dynamic courtRegistration = ctx.addServlet(<span class="string">"court"</span>, dispatcherServlet);</span><br><span class="line">        courtRegistration.setLoadOnStartup(<span class="number">1</span>);</span><br><span class="line">        courtRegistration.addMapping(<span class="string">"/"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个CourtServletContainerInitializer，您定义一个类型为DispatcherServlet的servlet。<br>这是Spring MVC中的核心servlet类，它接收web请求并将它们分派给适当的处理程序。您将此servlet的名称设置为court，并使用斜杠(/)映射所有url，斜杠表示根目录。注意，可以将URL模式设置为更细粒度的模式。在较大的应用程序,<br>在各种servlet之间委托模式可能更有意义，但为了简单起见，应用程序中的所有url都委托给单个法庭servlet。<br>要检测到CourtServletContainerInitializer，还必须在META-INF/services目录中添加一个名为javax.servlet.ServletContainerInitializer的文件。文件的内容应该是CourtServletContainerInitializer的全名。此文件由servlet容器加载，用于引导应用程序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.apress.springrecipes.court.web.CourtServletContainerInitializer</span><br></pre></td></tr></table></figure>
+<p>最后，添加CourtConfiguration类，它是一个简单的@Configuration类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(<span class="string">"com.apress.springrecipes.court"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CourtConfiguration</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>这定义了一个@ComponentScan注释，它将扫描com.apress.springrecipes.court包(和子包)并注册所有检测到的bean(在本例中，是ReservationServiceImpl和尚未创建的@Controller带注释类)。</p>
+<h2 id="创建Spring-MVC控制器"><a href="#创建Spring-MVC控制器" class="headerlink" title="创建Spring MVC控制器"></a>创建Spring MVC控制器</h2><p>基于注解的控制器类可以是一个不实现特定接口或扩展特定基类的任意类。您可以使用@Controller注释它。可以在控制器中定义一个或多个处理程序方法来处理单个或多个操作。处理程序方法的签名足够灵活，可以接受一系列参数。<br>@RequestMapping注释可以应用到类级别或方法级别。第一个映射策略是将特定的URL模式映射到控制器类，然后将特定的HTTP方法映射到每个处理程序方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.web;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.Model;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/welcome"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WelcomeController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">welcome</span><span class="params">(Model model)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Date today = <span class="keyword">new</span> Date();</span><br><span class="line">        model.addAttribute(<span class="string">"today"</span>, today);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"welcome"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该控制器创建一个java.util.Date对象来检索当前日期，然后将其作为属性添加到输入模型对象中，以便目标视图可以显示它。<br>由于您已经激活了对com.apress.springrecipes.court 包的注释扫描，因此在部署时将检测控制器类的注释。<br>@Controller注释将类定义为Spring MVC控制器。@RequestMapping注释更有趣，因为它包含属性，可以在类或处理程序方法级别声明。这个类中使用的第一个值—(“/welcome”)—用于指定控制器可操作的URL，这意味着/welcome URL上收到的任何请求都由WelcomeController类处理。<br>一旦控制器类处理了请求，它将调用委托给控制器中声明的默认HTTP GET处理程序方法。这种行为的原因是URL上的每个初始请求都属于HTTP GET类型。因此，当控制器处理/welcome URL上的请求时，它随后委托给默认的HTTP GET处理程序方法进行处理。<br>注释@RequestMapping(method = RequestMethod.GET)用于将welcome方法修饰为控制器的默认HTTP GET处理程序方法。值得一提的是，如果没有声明默认的HTTP GET处理程序方法，就会抛出ServletException。因此，对于Spring MVC控制器来说，至少有一个URL路由和默认的HTTP GET处理程序方法是很重要的。<br>这种方法的另一种变体是在方法级别使用的@RequestMapping注释中声明value - url路由和默认的HTTP GET处理程序。下面说明本声明:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WelcomeController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/welcome"</span>, method=RequestMethod.GET)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">welcome</span><span class="params">(Model model)</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个声明与前面的声明是等价的。值属性指示到其中的URL<br>处理程序方法被映射，方法属性定义处理程序方法作为控制器的默认HTTP GET方法。最后，还有一些方便的注释，如@GetMapping、@PostMapping等等，以最小化配置。下面的映射将与前面提到的声明一样:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WelcomeController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/welcome"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">welcome</span><span class="params">(Model model)</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@GetMapping注释使类更短，可能更容易阅读。<br>最后一个控制器演示了Spring MVC的基本原理。但是，典型的控制器可能调用后端服务进行业务处理。例如，您可以创建一个控制器来查询某一法院的保留如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.web;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.domain.Reservation;</span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.service.ReservationService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.Model;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/reservationQuery"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReservationQueryController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReservationService reservationService;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReservationQueryController</span><span class="params">(ReservationService reservationService)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.reservationService = reservationService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setupForm</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sumbitForm</span><span class="params">(@RequestParam(<span class="string">"courtName"</span>)</span> String courtName, Model model) </span>&#123;</span><br><span class="line">        List&lt;Reservation&gt; reservations = java.util.Collections.emptyList();</span><br><span class="line">        <span class="keyword">if</span> (courtName != <span class="keyword">null</span>) &#123;</span><br><span class="line">            reservations = reservationService.query(courtName);</span><br><span class="line">        &#125;</span><br><span class="line">        model.addAttribute(<span class="string">"reservations"</span>, reservations);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"reservationQuery"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如前所述，控制器然后查找默认的HTTP GET处理程序方法。由于公共void setupForm()方法为此分配了必要的@RequestMapping注释，因此它被称为next。<br>与前面的默认HTTP GET处理程序方法不同，请注意，该方法没有输入参数，没有逻辑，并且具有一个空返回值。这意味着两件事。由于没有输入参数和逻辑，视图只显示实现模板(例如JSP)中硬编码的数据，因为没有<br>控制器正在添加数据。如果返回值为空，则使用基于请求URL的默认视图名;因此，由于请求URL是/reservation查询，因此假设有一个名为reservationQuery的返回视图。</p>
+<p>其余的处理程序方法使用@PostMapping注释进行修饰。乍一看，只有类级/reservation查询URL语句的两个处理程序方法可能会令人困惑，但实际上非常简单。当在/reservation查询URL上发出HTTP GET请求时，将调用一个方法;当HTTP POST请求在同一个URL上进行时，调用另一个。<br>web应用程序中的大多数请求都是HTTP GET类型，而HTTP POST类型的请求通常是在用户提交HTML表单时发出的。因此，揭示更多应用程序的视图(我们将很快描述它)，在初始加载HTML表单时调用一个方法(即:，而另一个在提交HTML表单时被调用(例如。HTTP POST)。<br>仔细查看HTTP POST默认处理程序方法，请注意这两个输入参数。首先注意@RequestParam(“courtName”)字符串courtName声明，用于提取名为courtName的请求参数。在这种情况下，HTTP POST请求以表单/reservation查询的形式出现?courtName = &lt;价值&gt;;此声明使方法中的变量courtName下的值可用。其次，请注意模型声明，它用于定义一个对象，以便将数据传递到返回的视图。<br>处理程序方法执行的逻辑包括使用控制器的预订服务来使用courtName变量执行查询。从该查询获得的结果被分配给模型对象，模型对象稍后将可用于显示的返回视图。<br>最后，注意该方法返回一个名为reservationQuery的视图。这个方法也可以返回void，就像默认的HTTP GET一样，并且由于请求URL而被分配给相同的reservationQuery默认视图。这两种方法都是相同的。<br>现在您已经了解了Spring MVC控制器是如何构成的，现在是时候探索控制器的处理程序方法将其结果委托给哪些视图了。</p>
+<h2 id="创建JSP视图"><a href="#创建JSP视图" class="headerlink" title="创建JSP视图"></a>创建JSP视图</h2><p>Spring MVC为不同的表示技术支持多种类型的视图。它们包括jsp、HTML、PDF、Excel工作表(XLS)、XML、JSON、Atom和RSS提要、JasperReports和其他第三方视图实现。<br>在Spring MVC应用程序中，视图通常是用JSTL编写的JSP模板。当应用程序的web.xml文件中定义的dispatcherservlet接收处理程序返回的视图名称时，它将逻辑视图名称解析为视图实现以进行呈现。例如，可以在web应用程序上下文的CourtConfiguration中配置InternalResourceViewResolver bean，以便将视图名解析为/WEB-INF/jsp/目录中的JSP文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> InternalResourceViewResolver <span class="title">internalResourceViewResolver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    InternalResourceViewResolver viewResolver = <span class="keyword">new</span> InternalResourceViewResolver();</span><br><span class="line">    viewResolver.setPrefix(<span class="string">"/WEB-INF/jsp/"</span>);</span><br><span class="line">    viewResolver.setSuffix(<span class="string">".jsp"</span>);</span><br><span class="line">    <span class="keyword">return</span> viewResolver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过使用最后的配置，一个名为reservationQuery的逻辑视图被委托给位于<code>/WEB-INF/jsp/reservationQuery.jsp</code>的视图实现。了解了这一点，您可以为welcome控制器创建以下JSP模板，并将其命名为<code>welcome.jsp</code>并将其放在<code>/WEB-INF/ jsp/</code>目录中:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">"fmt"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/fmt"</span> %&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Welcome&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h2&gt;Welcome to Court Reservation System&lt;/h2&gt;</span><br><span class="line">Today is &lt;fmt:formatDate value="$&#123;today&#125;" pattern="yyyy-MM-dd" /&gt;. &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>在这个JSP模板中，您使用JSTL中的fmt标记库将today模型属性格式化为yyyy-MM-dd模式。不要忘记在这个JSP模板的顶部包含fmt标记库定义。<br>接下来，您可以为预订查询控制器创建另一个JSP模板，并将其命名为reservationQuery.jsp以匹配视图名称。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">"c"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> %&gt;</span><br><span class="line">&lt;%@ taglib prefix=<span class="string">"fmt"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/fmt"</span> %&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Reservation Query&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;form method=<span class="string">"post"</span>&gt;</span><br><span class="line">Court Name</span><br><span class="line">&lt;input type=<span class="string">"text"</span> name=<span class="string">"courtName"</span> value=<span class="string">"$&#123;courtName&#125;"</span> /&gt;</span><br><span class="line">&lt;input type=<span class="string">"submit"</span> value=<span class="string">"Query"</span> /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;table border=<span class="string">"1"</span>&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">        &lt;th&gt;Court Name&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;Date&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;Hour&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;Player&lt;/th&gt;</span><br><span class="line">    &lt;/tr&gt;</span><br><span class="line">    &lt;c:forEach items=<span class="string">"$&#123;reservations&#125;"</span> <span class="keyword">var</span>=<span class="string">"reservation"</span>&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">        &lt;td&gt;$&#123;reservation.courtName&#125;&lt;/td&gt;</span><br><span class="line">        &lt;td&gt;&lt;fmt:formatDate value="$&#123;reservation.date&#125;" pattern="yyyy-MM-dd" /&gt;&lt;/td&gt;</span><br><span class="line">        &lt;td&gt;$&#123;reservation.hour&#125;&lt;/td&gt;</span><br><span class="line">        &lt;td&gt;$&#123;reservation.player.name&#125;&lt;/td&gt;</span><br><span class="line">    &lt;/tr&gt;</span><br><span class="line">    &lt;/c:forEach&gt;</span><br><span class="line">&lt;/table&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>在这个JSP模板中，您包含了一个表单，用户可以输入他们想查询的法院名称，然后使用<code>&lt;c:forEach&gt;</code>标记来循环预订的模型属性来生成结果表。</p>
+<h2 id="部署Web应用程序"><a href="#部署Web应用程序" class="headerlink" title="部署Web应用程序"></a>部署Web应用程序</h2><p>在web应用程序的开发过程中，我们强烈建议安装本地Java EE应用服务器，该服务器附带用于测试和调试的web容器。为了便于配置和部署，我们选择了Apache Tomcat 8.5。x作为web容器。<br>这个web容器的部署目录位于webapps目录中。默认情况下，Tomcat监听端口8080，并将应用程序部署到应用程序WAR的同名上下文。因此，如果您将应用程序打包到一个名为court的WAR中。war、欢迎控制器和预订查询控制器可以通过以下url访问:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">http://<span class="title">localhost</span>:8080/<span class="title">court</span>/<span class="title">welcome</span></span></span><br><span class="line"><span class="function"><span class="title">http</span>://<span class="title">localhost</span>:8080/<span class="title">court</span>/<span class="title">reservationQuery</span></span></span><br></pre></td></tr></table></figure>
+<p>提示项目还可以使用app. <code>run ../gradlew buildDocker</code>创建一个Docker容器，以获得一个包含tomcat和应用程序的容器。然后，您可以启动一个Docker容器来测试应用程序(<code>docker run -p 8080:8080 spring-recipes-4th/court-web</code>).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apress.springrecipes.court.web;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.apress.springrecipes.court.config.CourtConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.support. AbstractAnnotationConfigDispatcherServletInitializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CourtWebApplicationInitializer</span> <span class="keyword">extends</span> <span class="title">AbstractAnnotationConfigDispatcherServletInitializer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getRootConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getServletConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Class[] &#123;CourtConfiguration<span class="class">.<span class="keyword">class</span>&#125;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> String[] getServletMappings() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String[] &#123; <span class="string">"/"</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/01/Spring-5-Recipes-3/" target="_blank" title="Spring MVC">https://jigangduan.github.io/2018/08/01/Spring-5-Recipes-3/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/10/vscode-extensions/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          扩展 VS Code
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/29/Spring-5-Recipes-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Spring 核心任务</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Spring-MVC开发一个简单的Web应用程序"><span class="nav-number">1.</span> <span class="nav-text">使用Spring MVC开发一个简单的Web应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置一个Spring-MVC应用程序"><span class="nav-number">1.1.</span> <span class="nav-text">设置一个Spring MVC应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建配置文件"><span class="nav-number">1.2.</span> <span class="nav-text">创建配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Spring-MVC控制器"><span class="nav-number">1.3.</span> <span class="nav-text">创建Spring MVC控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建JSP视图"><span class="nav-number">1.4.</span> <span class="nav-text">创建JSP视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Web应用程序"><span class="nav-number">1.5.</span> <span class="nav-text">部署Web应用程序</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

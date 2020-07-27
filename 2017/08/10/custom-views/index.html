@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>自定义视图(1) —— 创建自定义视图类 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="androidandroid-ui">
+  
+  
+  
+  
+  <meta name="description" content="一个设计良好的自定义视图与其他设计良好的类非常相似。它封装了一个特定的功能集，它使用了一个简单的接口，它有效地使用CPU和内存，等等。除了是一个设计良好的类之外，自定义视图应该是:  符合Android标准 提供与Android XML布局兼容的定制样式属性 发送访问事件 与多个Android平台兼容  Android框架提供了一组基类和XML标记，以帮助您创建满足所有这些需求的视图。本课程将讨">
+<meta name="keywords" content="android,android-ui">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义视图(1) —— 创建自定义视图类">
+<meta property="og:url" content="https://jigangduan.github.io/2017/08/10/custom-views/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="一个设计良好的自定义视图与其他设计良好的类非常相似。它封装了一个特定的功能集，它使用了一个简单的接口，它有效地使用CPU和内存，等等。除了是一个设计良好的类之外，自定义视图应该是:  符合Android标准 提供与Android XML布局兼容的定制样式属性 发送访问事件 与多个Android平台兼容  Android框架提供了一组基类和XML标记，以帮助您创建满足所有这些需求的视图。本课程将讨">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://qiniu.jigangduan.xyz/qiniu.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义视图(1) —— 创建自定义视图类">
+<meta name="twitter:description" content="一个设计良好的自定义视图与其他设计良好的类非常相似。它封装了一个特定的功能集，它使用了一个简单的接口，它有效地使用CPU和内存，等等。除了是一个设计良好的类之外，自定义视图应该是:  符合Android标准 提供与Android XML布局兼容的定制样式属性 发送访问事件 与多个Android平台兼容  Android框架提供了一组基类和XML标记，以帮助您创建满足所有这些需求的视图。本课程将讨">
+<meta name="twitter:image" content="http://qiniu.jigangduan.xyz/qiniu.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-custom-views" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      自定义视图(1) —— 创建自定义视图类
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/10/custom-views/" class="article-date">
+	  <time datetime="2017-08-10T12:02:30.000Z" itemprop="datePublished">2017-08-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-用户界面的最佳实践/">Android 用户界面的最佳实践</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://qiniu.jigangduan.xyz/qiniu.jpg" alt="android"></p>
+<p>一个设计良好的自定义视图与其他设计良好的类非常相似。<br>它封装了一个特定的功能集，它使用了一个简单的接口，它有效地使用CPU和内存，等等。<br>除了是一个设计良好的类之外，自定义视图应该是:</p>
+<ul>
+<li>符合Android标准</li>
+<li>提供与Android XML布局兼容的定制样式属性</li>
+<li>发送访问事件</li>
+<li>与多个Android平台兼容</li>
+</ul>
+<p>Android框架提供了一组基类和XML标记，以帮助您创建满足所有这些需求的视图。<br>本课程将讨论如何使用Android框架来创建视图类的核心功能。</p>
+<a id="more"></a>
+<h2 id="子类化View"><a href="#子类化View" class="headerlink" title="子类化View"></a>子类化View</h2><p>在Android框架中定义的所有视图类都扩展<a href="https://developer.android.google.cn/reference/android/view/View.html" target="_blank" rel="noopener">View</a>。<br>您的自定义视图也可以直接扩展<code>View</code>，或者您可以通过扩展现有的视图子类，例如<a href="https://developer.android.google.cn/reference/android/widget/Button.html" target="_blank" rel="noopener">Button</a>来节省时间。</p>
+<p>为了让Android Studio能够与视图交互，至少必须提供一个构造函数，该构造函数将<a href="https://developer.android.google.cn/reference/android/content/Context.html" target="_blank" rel="noopener">Context</a>和<a href="https://developer.android.google.cn/reference/android/util/AttributeSet.html" target="_blank" rel="noopener">AttributeSet</a>对象作为参数。<br>这个构造函数允许布局编辑器创建和编辑视图的实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PieChart</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PieChart</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="定义自定义属性"><a href="#定义自定义属性" class="headerlink" title="定义自定义属性"></a>定义自定义属性</h2><p>要向用户界面添加内置视图，需要在XML元素中指定它，并使用元素属性控制其外观和行为。<br>编写良好的自定义视图也可以通过<em>XML</em>添加和样式化。<br>要在您的自定义视图中启用该行为，您必须:</p>
+<ul>
+<li>在<code>&lt;declare-styleable&gt;</code>资源元素中为视图定义定制属性</li>
+<li>为XML布局中的属性指定值</li>
+<li>在运行时检索属性值</li>
+<li>将检索到的属性值应用到您的视图中</li>
+</ul>
+<p>本节讨论如何定义自定义属性并指定它们的值。<br>下一节将讨论如何在运行时检索和应用这些值。</p>
+<p>要定义自定义属性，请将<code>&lt;declare-styleable&gt;</code>资源添加到项目中。<br>按照惯例将这些资源放入一个<code>res/values/attrs.xml</code>文件中。<br>下面是一个<code>attrs.xml</code>文件的例子:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">"PieChart"</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"showText"</span> <span class="attr">format</span>=<span class="string">"boolean"</span> /&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"labelPosition"</span> <span class="attr">format</span>=<span class="string">"enum"</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">enum</span> <span class="attr">name</span>=<span class="string">"left"</span> <span class="attr">value</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">enum</span> <span class="attr">name</span>=<span class="string">"right"</span> <span class="attr">value</span>=<span class="string">"1"</span>/&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">attr</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这段代码声明了两个自定义属性，<code>showText</code>和<code>labelPosition</code>，它们属于一个名为<code>PieChart</code>的样式实体。<br>根据惯例，样式化实体的名称与定义自定义视图的类的名称相同。<br>虽然没有必要遵循这个惯例，但是许多流行的代码编辑器都依赖于这个命名约定来提供语句完成。</p>
+<p>一旦定义了定制属性，就可以在布局XML文件中使用它们，就像内置的属性一样。<br>惟一的区别是，您的自定义属性属于不同的名称空间。<br>而不是属于<a href="http://schemas.android.com/apk/res/android名称空间,他们属于http://schemas.android.com/apk/res/(你的包名称)。" target="_blank" rel="noopener">http://schemas.android.com/apk/res/android名称空间,他们属于http://schemas.android.com/apk/res/(你的包名称)。</a><br>例如，下面是如何使用为<code>PieChart</code>定义的属性:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">xmlns:custom</span>=<span class="string">"http://schemas.android.com/apk/res/com.example.customviews"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">com.example.customviews.charting.PieChart</span></span></span><br><span class="line"><span class="tag">     <span class="attr">custom:showText</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">     <span class="attr">custom:labelPosition</span>=<span class="string">"left"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>为了避免重复冗长的名称空间URI，该示例使用了<code>xmlns</code>指令。<br>这个指令分配别名定义命名空间<code>http://schemas.android.com/apk/res/com.example.customviews</code>。<br>您可以为您的命名空间选择任何别名。</p>
+<p>请注意将自定义视图添加到布局的XML标记的名称。<br>它是自定义视图类的完全限定名。<br>如果您的视图类是内部类，则必须使用视图的外层类的名称进一步限定它。<br>进一步。例如，<code>PieChart</code>类有一个名为<code>PieView</code>的内部类。<br>使用这个类的自定义属性,可以使用标签<code>com.example.customviews.charting.PieChart$PieView</code>。</p>
+<h2 id="应用自定义属性"><a href="#应用自定义属性" class="headerlink" title="应用自定义属性"></a>应用自定义属性</h2><p>当从XML布局创建视图时，XML标记中的所有属性都是从资源包中读取的，并作为AttributeSet传递到视图的构造函数中。<br>虽然可以直接从<a href="https://developer.android.google.cn/reference/android/util/AttributeSet.html" target="_blank" rel="noopener">AttributeSet</a>中读取值，但是这样做有一些缺点:</p>
+<ul>
+<li>属性值中的资源引用没有被解析</li>
+<li>不能应用风格</li>
+</ul>
+<p>相反，将<a href="https://developer.android.google.cn/reference/android/util/AttributeSet.html" target="_blank" rel="noopener">AttributeSet</a>传递到<a href="https://developer.android.google.cn/reference/android/content/res/Resources.Theme.html#obtainStyledAttributes(android.util.AttributeSet,%20int[],%20int,%20int" target="_blank" rel="noopener">obtainStyledAttributes()</a>)。<br>这个方法传递了一个已经被取消和样式化的值的TypedArray数组。</p>
+<p>Android资源编译器为您做了很多工作，使调用obtainStyledAttributes()更容易。<br>对于res目录中的每个<declare-styleable>资源，生成的R.java定义了一个属性id数组和一组常量，这些常量为数组中的每个属性定义索引。<br>您可以使用预定义的常量来读取TypedArray的属性。<br>下面是压电图类如何读取它的属性:</declare-styleable></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">PieChart</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">super</span>(context, attrs);</span><br><span class="line">   TypedArray a = context.getTheme().obtainStyledAttributes(</span><br><span class="line">        attrs,</span><br><span class="line">        R.styleable.PieChart,</span><br><span class="line">        <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">       mShowText = a.getBoolean(R.styleable.PieChart_showText, <span class="keyword">false</span>);</span><br><span class="line">       mTextPos = a.getInteger(R.styleable.PieChart_labelPosition, <span class="number">0</span>);</span><br><span class="line">   &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">       a.recycle();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，<a href="https://developer.android.google.cn/reference/android/content/res/TypedArray.html" target="_blank" rel="noopener">TypedArray</a>对象是一个共享资源，必须在使用后回收。</p>
+<h2 id="添加属性和事件"><a href="#添加属性和事件" class="headerlink" title="添加属性和事件"></a>添加属性和事件</h2><p>属性是控制视图的行为和外观的一种强大的方式，但是只有在视图初始化时才能读取它们。<br>为了提供动态行为，为每个定制属性公开一个属性对 getter和setter。<br>下面的代码片段展示了PieChart如何公开一个名为showText的属性:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isShowText</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> mShowText;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setShowText</span><span class="params">(<span class="keyword">boolean</span> showText)</span> </span>&#123;</span><br><span class="line">   mShowText = showText;</span><br><span class="line">   invalidate();</span><br><span class="line">   requestLayout();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，<code>setShowText</code>调用<a href="https://developer.android.google.cn/reference/android/view/View.html#invalidate(" target="_blank" rel="noopener">invalidate()</a>)和<a href="https://developer.android.google.cn/reference/android/view/View.html#requestLayout(" target="_blank" rel="noopener">requestLayout()</a>)。<br>这些调用对于确保视图的行为可靠是至关重要的。<br>您必须在对可能<strong>更改其外观的属性</strong>进行任何更改之后，使视图<code>invalidate</code>，以便系统知道需要重新绘制它。<br>同样地，如果属性更改可能<strong>影响视图的大小或形状</strong>，则需要<strong>请求一个新的布局</strong>。<br>忘记这些方法调用会导致难以找到的bug。</p>
+<p>自定义视图还应该支持事件侦听器来通信重要事件。<br>例如，PieChart公开一个名为OnCurrentItemChanged的自定义事件，以通知侦听器告知，用户已经将饼图转到一个新的饼图上。</p>
+<p>很容易忘记暴露属性和事件，尤其是当您是自定义视图的唯一用户时。<br>花一些时间仔细地定义视图的接口可以减少将来的维护成本。<br>一个好的规则是始终公开任何影响您的自定义视图的可见外观或行为的属性。</p>
+<h2 id="可访问性的设计"><a href="#可访问性的设计" class="headerlink" title="可访问性的设计"></a>可访问性的设计</h2><p>您的自定义视图应该支持最广泛的用户。<br>这包括有残疾的用户阻止他们看到或使用触摸屏。<br>为了支持残疾用户，您应该:</p>
+<ul>
+<li>标签你输入字段使用<code>android:contentDescription</code>属性</li>
+<li>在适当的时候，通过调用<a href="https://developer.android.google.cn/reference/android/view/accessibility/AccessibilityEventSource.html#sendAccessibilityEvent(int" target="_blank" rel="noopener">sendAccessibilityEvent()</a>) 来发送可访问性事件。</li>
+<li>支持备用控制器，如D-pad和轨迹球</li>
+</ul>
+<p>有关创建可访问视图的更多信息，请参见在Android开发人员指南中<a href="https://developer.android.google.cn/guide/topics/ui/accessibility/apps.html#custom-views" target="_blank" rel="noopener">可访问的应用程序</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/08/10/custom-views/" target="_blank" title="自定义视图(1) —— 创建自定义视图类">https://jigangduan.github.io/2017/08/10/custom-views/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-ui/">android-ui</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/13/custom-views-custom-drawing/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          自定义视图(2) —— 自定义绘制
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/10/best-practices-user-interface/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">用户界面的最佳实践</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#子类化View"><span class="nav-number">1.</span> <span class="nav-text">子类化View</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义自定义属性"><span class="nav-number">2.</span> <span class="nav-text">定义自定义属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用自定义属性"><span class="nav-number">3.</span> <span class="nav-text">应用自定义属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加属性和事件"><span class="nav-number">4.</span> <span class="nav-text">添加属性和事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可访问性的设计"><span class="nav-number">5.</span> <span class="nav-text">可访问性的设计</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

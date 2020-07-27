@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>在20分钟内构建实时流etl管道 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="kafka">
+  
+  
+  
+  
+  <meta name="description" content="最近有很多人说传统的ETL已经死了。在传统的ETL范式中，数据仓库是王者，ETL作业是批处理驱动的，所有内容都与其他内容进行通信，可伸缩性限制非常普遍。当人们咕哝着说由此造成的混乱是“做生意的成本”时，混乱的管道被勉强容忍。“人们学会了忍受这样的一团糟:  然而，ETL并没有死。开发人员越来越喜欢一种新的ETL范式，它具有分布式系统和事件驱动的应用程序，其中业务可以实时和大规模地处理数据。仍然需要">
+<meta name="keywords" content="kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在20分钟内构建实时流ETL管道">
+<meta property="og:url" content="https://jigangduan.github.io/2018/11/28/building-real-time-streaming-etl-pipeline-20-minutes/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="最近有很多人说传统的ETL已经死了。在传统的ETL范式中，数据仓库是王者，ETL作业是批处理驱动的，所有内容都与其他内容进行通信，可伸缩性限制非常普遍。当人们咕哝着说由此造成的混乱是“做生意的成本”时，混乱的管道被勉强容忍。“人们学会了忍受这样的一团糟:  然而，ETL并没有死。开发人员越来越喜欢一种新的ETL范式，它具有分布式系统和事件驱动的应用程序，其中业务可以实时和大规模地处理数据。仍然需要">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/etl_mess.png">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/etl_streaming.png">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/blog_connect_streams_ref_arch.jpg">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/blog_connect_streams_spec_arch.jpg">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/streams_kv_generic.jpg">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/blog_streams_kv_specific-1.jpg">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/blog_streams_kv_transform-2.jpg">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/blog_streams_kv_count.jpg">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/blog_streams_kv_sum.jpg">
+<meta property="og:image" content="https://www.confluent.io/wp-content/uploads/blog_connect_streams_ref_arch.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在20分钟内构建实时流ETL管道">
+<meta name="twitter:description" content="最近有很多人说传统的ETL已经死了。在传统的ETL范式中，数据仓库是王者，ETL作业是批处理驱动的，所有内容都与其他内容进行通信，可伸缩性限制非常普遍。当人们咕哝着说由此造成的混乱是“做生意的成本”时，混乱的管道被勉强容忍。“人们学会了忍受这样的一团糟:  然而，ETL并没有死。开发人员越来越喜欢一种新的ETL范式，它具有分布式系统和事件驱动的应用程序，其中业务可以实时和大规模地处理数据。仍然需要">
+<meta name="twitter:image" content="https://www.confluent.io/wp-content/uploads/etl_mess.png">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-building-real-time-streaming-etl-pipeline-20-minutes" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      在20分钟内构建实时流ETL管道
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/11/28/building-real-time-streaming-etl-pipeline-20-minutes/" class="article-date">
+	  <time datetime="2018-11-28T04:50:29.000Z" itemprop="datePublished">2018-11-28</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Kafka/">Kafka</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近有很多人说传统的<a href="https://www.confluent.io/online-talk/etl-is-dead-long-live-streams/" target="_blank" rel="noopener">ETL已经死了</a>。在传统的ETL范式中，数据仓库是王者，ETL作业是批处理驱动的，所有内容都与其他内容进行通信，可伸缩性限制非常普遍。当人们咕哝着说由此造成的混乱是“做生意的成本”时，混乱的管道被勉强容忍。“人们学会了忍受这样的一团糟:</p>
+<p><img src="https://www.confluent.io/wp-content/uploads/etl_mess.png" alt="etl_mess"></p>
+<p>然而，ETL并没有死。开发人员越来越喜欢一种<a href="https://www.confluent.io/blog/the-future-of-etl-isnt-what-it-used-to-be/" target="_blank" rel="noopener">新的ETL范式</a>，它具有分布式系统和事件驱动的应用程序，其中业务可以实时和大规模地处理数据。仍然需要“提取”、“转换”和“加载”，但是现在的区别是将数据作为<a href="https://www.confluent.io/blog/data-dichotomy-rethinking-the-way-we-treat-data-and-services/" target="_blank" rel="noopener">一等公民</a>对待。企业不再希望将数据降级为批处理，而批处理通常仅限于每天离线完成一次。它们拥有更多不同类型的数据源，并且希望消除混乱的点到点连接。我们可以将流处理直接嵌入到每个服务中，核心业务应用程序可以依赖流平台来分发和处理事件。这篇文章的重点是演示在Apache卡夫卡®如何轻松地可以实现这些流ETL管道。</p>
+<p><img src="https://www.confluent.io/wp-content/uploads/etl_streaming.png" alt="etl_streaming"></p>
+<p>Kafka是一个分布式流平台，是现代企业架构的核心。它提供了在<a href="http://docs.confluent.io/current/connect/index.html?_ga=2.253257225.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">Kafka Connect</a>框架中运行的Kafka连接器，可以从不同的数据源提取数据;提供了丰富的<a href="http://docs.confluent.io/current/streams/index.html?_ga=2.157511354.1607560460.1543371833-1257759938.1543371833#" target="_blank" rel="noopener">Kafka流API</a>，可以从核心应用程序中执行复杂的转换和分析;您可以部署<a href="https://www.confluent.io/confluent-schema-registry/" target="_blank" rel="noopener">Confluent</a>模式注册中心来集中管理模式，验证兼容性，并在数据不符合模式时提供警告。(不明白为什么需要为关键任务数据建立模式注册表?)阅读这篇<a href="https://www.confluent.io/blog/schema-registry-kafka-stream-processing-yes-virginia-you-really-need-one/" target="_blank" rel="noopener">博客文章</a>。端到端参考体系结构如下:</p>
+<p><img src="https://www.confluent.io/wp-content/uploads/blog_connect_streams_ref_arch.jpg" alt="connect_streams_ref_arch"></p>
+<p>让我们考虑一个使用Kafka Streams API进行实时有状态流处理的应用程序。我们将运行端到端参考体系结构的一个具体示例，并向您展示如何:</p>
+<ul>
+<li>运行Kafka源连接器从另一个系统(SQLite3数据库)读取数据，然后使用单个消息转换(SMTs)修改正在运行的数据，然后将其写入Kafka集群</li>
+<li>使用Kafka Streams API(例如count和sum)处理和丰富来自Java应用程序的数据</li>
+<li>运行Kafka接收器连接器将数据从Kafka集群写到另一个系统(AWS S3)</li>
+</ul>
+<p>本例的工作流程如下:</p>
+<p><img src="https://www.confluent.io/wp-content/uploads/blog_connect_streams_spec_arch.jpg" alt></p>
+<p>如果您希望在您的环境中进行后续操作并进行尝试，请使用<a href="http://docs.confluent.io/current/quickstart.html?_ga=2.189940523.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">快速入门</a>指南来设置Kafka集群并下载完整的<a href="https://github.com/confluentinc/examples/tree/5.0.0-post/connect-streams-pipeline" target="_blank" rel="noopener">源代码</a>。</p>
+<h2 id="提取数据到Kafka"><a href="#提取数据到Kafka" class="headerlink" title="提取数据到Kafka"></a>提取数据到Kafka</h2><p>首先，我们必须将数据导入客户机应用程序。要在Kafka和其他系统之间复制数据，用户可以从各种<a href="https://www.confluent.io/product/connectors" target="_blank" rel="noopener">现成的连接器</a>中选择Kafka连接器。Kafka源连接器从另一个系统导入数据到Kafka, Kafka接收器连接器从Kafka导出数据到另一个系统。</p>
+<p>对于我们的示例，我们希望从SQLite3数据库中提取数据，该数据库保存到<code>/usr/local/lib/retail.db</code>。数据库有一个名为<code>locations</code>的表，它有三个列<code>id</code>、<code>name</code>和<code>sale</code>，其中包含示例内容:</p>
+<p><strong>locations</strong></p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>sale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Raleigh</td>
+<td>300</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dusseldorf</td>
+<td>100</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Raleigh</td>
+<td>600</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Moscow</td>
+<td>800</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Sydney</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dusseldorf</td>
+<td>400</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Chennai</td>
+<td>400</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>我们希望从该表创建一个数据流，其中流中的每个消息都是K/V对。你会问，key是什么，value是什么?我们来算一下。</p>
+<p><img src="https://www.confluent.io/wp-content/uploads/streams_kv_generic.jpg" alt="streams_kv_generic"></p>
+<p>为了将表数据提取到Kafka主题中，我们使用免费的<a href="https://www.confluent.io/download" target="_blank" rel="noopener">Confluent开源</a>下载附带的JDBC连接器。注意，默认情况下，JDBC连接器不会向消息添加键。由于消息键对于组织和分组消息非常有用，因此我们将使用smt设置该键。如果使用默认配置设置，数据将被写入Kafka主题，配置如下:</p>
+<p><strong>默认配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置名</th>
+<th>配置值  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>源数据库</td>
+<td>test.db</td>
+</tr>
+<tr>
+<td>Kafka 创建的topic</td>
+<td>test-sqlite-jdbc-locations</td>
+</tr>
+<tr>
+<td>消息键呈现</td>
+<td>有效的空 (具有null值的JSON模式)</td>
+</tr>
+<tr>
+<td>信息值模式</td>
+<td>JSON</td>
+</tr>
+<tr>
+<td>数据治理</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p>相反，我们需要以下目标配置:</p>
+<p><strong>目标配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置名</th>
+<th>配置值  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>源数据库</td>
+<td><code>/usr/local/lib/retail.db</code></td>
+</tr>
+<tr>
+<td>Kafka 创建的topic</td>
+<td>retail-locations</td>
+</tr>
+<tr>
+<td>消息键呈现</td>
+<td>是的，使用Kafka Connect的单个消息转换特性插入密钥</td>
+</tr>
+<tr>
+<td>信息值模式</td>
+<td>Avro</td>
+</tr>
+<tr>
+<td>数据治理</td>
+<td>是的，使用模式注册表</td>
+</tr>
+</tbody>
+</table>
+<p>为了实现目标配置，我们修改JDBC源连接器属性文件<a href="https://github.com/confluentinc/kafka-connect-jdbc/blob/master/config/source-quickstart-sqlite.properties" target="_blank" rel="noopener">source-quickstart-sqlite.properties</a>:</p>
+<p>然后，我们将这些配置行添加到JDBC源连接器属性文件中，以利用<a href="https://kafka.apache.org/documentation.html#connect_transforms" target="_blank" rel="noopener">单个消息转换</a>(SMT)函数，这些函数在将从表行提取的数据写到Kafka主题之前操作这些数据。我们使用<code>ValueToKey</code>和<code>ExtractField</code> SMT函数将null键替换为从消息值派生的字段。</p>
+<p>最后，我们将这些配置行添加到JDBC源连接器属性文件中，以将键转换器配置为字符串(可以像JSON或Avro那样轻松地序列化)，将值转换器配置为模式的Avro。Confluent模式注册表运行在<code>http://schemaregistry1:8081</code>。</p>
+<p>为了简单起见，我们以Kafka Connect独立模式运行JDBC源连接器。在生产中，您应该始终使用<a href="http://docs.confluent.io/current/connect/userguide.html?_ga=2.177883045.1607560460.1543371833-1257759938.1543371833#distributed-mode" target="_blank" rel="noopener">分布式模式</a>进行可伸缩性和容错，并使用<a href="https://www.confluent.io/product/control-center/" target="_blank" rel="noopener">合流控制中心</a>进行集中管理。</p>
+<p>此时，Kafka Connect运行JDBC连接器，并将表的每一行作为键/值对写入Kafka主题retail-locations。对该表的状态感兴趣的应用程序将从本主题读取。当将行添加到SQLite3数据库中的源表时，Kafka Connect会自动将它们作为消息写入Kafka主题，然后在KStream对象中自动提供给客户机应用程序。因此，我们实现了数据的无界、连续的实时流。这个数据流就是我们所说的“流”。</p>
+<p>每个表行被序列化为Avro记录。我们可以从主题retail-locations查找Confluent模式注册表中消息值的模式。</p>
+<h2 id="使用Kafka-Streams-API转换数据"><a href="#使用Kafka-Streams-API转换数据" class="headerlink" title="使用Kafka Streams API转换数据"></a>使用Kafka Streams API转换数据</h2><p>既然源数据已写入Kafka主题，那么任何数量的应用程序都可以从该主题读取并使用模式注册表反序列化消息值(即Avro记录)。一个简单的应用程序可以是<code>kafka-avro-consol-consumer</code>:</p>
+<p>但是控制台使用者命令行工具不是我们的最终目标。我们希望演示如何在客户机应用程序中使用Kafka Streams API来处理该主题中的数据。Confluent提供了关于如何使用API开发应用程序的<a href="http://docs.confluent.io/current/streams/developer-guide.html?_ga=2.218696473.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">优秀文档</a>。</p>
+<p>在这里，我想强调应用程序的两个部分:</p>
+<ol>
+<li>从Kafka主题创建Kafka流对象</li>
+<li>使用Kafka流处理操作数据转换</li>
+</ol>
+<h3 id="创建Kafka流对象"><a href="#创建Kafka流对象" class="headerlink" title="创建Kafka流对象"></a>创建Kafka流对象</h3><p>从Kafka主题创建Kafka流对象意味着将Kafka中的字节记录转换为客户机应用程序中的Java对象。因为消息值是Avro记录，所以我们需要匹配该模式的Java类。我们创建一个名为<code>location.avsc</code>的Avro模式文件，它定义了客户机对数据结构的期望。它是JSON格式的，并且有一个记录，其中包含三个字段<code>id</code>、<code>name</code>和<code>sales</code>，这些字段对应于表列</p>
+<p>为了让Java客户机应用程序能够反序列化在这个Avro模式中编写的消息，我们需要有一个对应的Java类(例如Location)。但是，我们不需要编写Java代码!在我们的pom.xml 中，我们使用Maven插件<a href="https://maven-repository.com/artifact/org.apache.avro/avro-maven-plugin" target="_blank" rel="noopener">avro-maven-plugin</a>，它自动生成这些类的Java代码。</p>
+<p>现在Java源代码已经从Avro模式文件中自动创建，您的应用程序可以导入该包:</p>
+<p>下一个关键步骤是配置streams配置，以使用适当的serialization/deserialization类并指向模式注册中心:</p>
+<p>您现在可以创建KStream对象:</p>
+<p>请注意，在上面的工作流中省略了一些基本的Kafka流设置，但是请记住查看<a href="http://docs.confluent.io/current/streams/developer-guide.html?_ga=2.214656663.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">Streams开发人员指南</a>以获得详细的说明。</p>
+<h2 id="处理和丰富数据"><a href="#处理和丰富数据" class="headerlink" title="处理和丰富数据"></a>处理和丰富数据</h2><p>在客户端应用程序的这一点上，我们有一个名为<code>locationsStream</code>的<code>KStream</code>对象，它包含一个消息流，其中消息键是<code>&lt;Long&gt;</code> id，消息值是<code>&lt;Location&gt;</code>记录，其中包含它的id、name和sale值。</p>
+<p><img src="https://www.confluent.io/wp-content/uploads/blog_streams_kv_specific-1.jpg" alt></p>
+<p>现在我们可以用流处理器进行数据转换。有一个丰富的Kafka Streams API用于实时流处理，您可以在核心业务应用程序中利用它。有许多流处理器，它们一次接收一条输入记录，将其操作应用于该记录，然后可能向其下游处理器生成一条或多条输出记录。这些处理器可以是无状态的(例如一次转换一条消息，或者根据某些条件过滤掉消息)，也可以是有状态的(例如跨多个消息的<a href="http://docs.confluent.io/current/streams/concepts.html?_ga=2.256593675.1607560460.1543371833-1257759938.1543371833#streams-concepts-joins" target="_blank" rel="noopener">join</a>, <a href="http://docs.confluent.io/current/streams/concepts.html?_ga=2.252314505.1607560460.1543371833-1257759938.1543371833#streams-concepts-aggregations" target="_blank" rel="noopener">aggregate</a>, 或 <a href="http://docs.confluent.io/current/streams/concepts.html?_ga=2.252314505.1607560460.1543371833-1257759938.1543371833#streams-concepts-windowing" target="_blank" rel="noopener">window</a>数据)。</p>
+<p>为了开始使用Kafka Streams API，下面是三个示例，其中包含示例代码和相应的可视化结果流数据:</p>
+<ol>
+<li>将数据流转换为新类型的键/值对。例如，我们可以使用map方法将原来的<code>KStream&lt;Long, Location&gt;</code>转换为<code>KStream&lt;Long, Long&gt;</code>的key/value对，其中key是相同的key, value只是sales的值。</li>
+</ol>
+<p><img src="https://www.confluent.io/wp-content/uploads/blog_streams_kv_transform-2.jpg" alt="streams_kv_transform"></p>
+<ol>
+<li>计算特定键的出现次数，首先根据键对消息进行分组，然后使用Count方法计算出现次数。Kafka Streams API具有捕获<a href="http://docs.confluent.io/current/streams/concepts.html?highlight=duality&amp;_ga=2.245065605.1607560460.1543371833-1257759938.1543371833#duality-of-streams-and-tables" target="_blank" rel="noopener">流和表的对重性</a>的本地抽象:KStream表示消息流，其中每个数据记录表示无界数据集中的自包含数据，KTable表示changelogs，其中每个数据记录表示更新。我们还可以为aKTable命名一个本地<a href="http://docs.confluent.io/current/streams/architecture.html?_ga=2.223022875.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">状态存储</a>，这允许我们像查询普通表一样轻松地查询它。例如，我们可以计算每个键出现的次数。</li>
+</ol>
+<p><img src="https://www.confluent.io/wp-content/uploads/blog_streams_kv_count.jpg" alt></p>
+<ol>
+<li>通过首先基于键对消息进行分组，然后使用reduce方法对值进行求和，从而对特定键的值进行求和。例如，我们可以跨所有消息对给定键的销售额进行求和，并在添加新销售额时对其进行实时更新。这个例子还展示了Kafka流如何允许我们在KStream和ktable之间来回切换。</li>
+</ol>
+<p><img src="https://www.confluent.io/wp-content/uploads/blog_streams_kv_sum.jpg" alt></p>
+<h2 id="将数据加载到其他系统"><a href="#将数据加载到其他系统" class="headerlink" title="将数据加载到其他系统"></a>将数据加载到其他系统</h2><p>在这一点上，所有丰富的数据仍然在我们的客户端应用程序中，我们可能希望将它流到另一个系统中。事实上，您可能希望在许多目标下游系统中的数据作为扇出管道的一部分。您可以使用多个Kafka接收器连接器运行Kafka Connect，以便任何数量的目标下游系统都可以接收相同的数据。Kafka接收器连接器可以与Kafka源连接器并行运行。</p>
+<p>在我们的示例中，目标系统是AWS S3 bucket。要在那里加载数据，从Kafka获取数据和从Kafka获取数据一样容易。应用程序用这条语句将theKStream写到Kafka主题上:</p>
+<p>然后Kafka接收器连接器处理进入下游系统的摄入。您可以将接收器连接器指向这个Kafka主题，并使用Kafka Connect以与为Kafka源连接器运行Kafka Connect类似的方式运行它。</p>
+<p>要将数据加载到AWS S3中，可以使用适当的主题名称、S3区域和bucket配置S3连接器属性，然后运行连接器。现在我们将省略S3的精确配置(很快就会有另一篇关于此配置的博客文章)，但是您可以使用以下命令启动连接器:</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>也许在这篇博客文章中描述的工作流对于我们这个非常简单的例子来说似乎带来了很多开销。但是，考虑具有多个数据源和目标的真实场景，这些数据源和目标需要摄取数据，同时支持随时间变化的各种模式。有多步骤的实时工作流，具有复杂的转换，需要高耐久性和容错能力。Kafka为构建流ETL管道提供了一个非常灵活、可伸缩的架构。您不希望试图将其与传统的ETL范式结合在一起，因为整个过程不可避免地会变得混乱。回顾Kafka参考体系结构图，您可以看到实时的、关键业务的应用程序如何从Kafka的流化ETL功能中获益:</p>
+<p><img src="https://www.confluent.io/wp-content/uploads/blog_connect_streams_ref_arch.jpg" alt></p>
+<p>Kafka流媒体平台允许关键任务应用程序实时处理数据:</p>
+<ul>
+<li><a href="http://docs.confluent.io/current/connect/index.html?_ga=2.47982375.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">Kafka连接器</a>在Kafka Connect框架中运行，开发人员可以从一个系统中提取数据或将数据加载到另一个系统中</li>
+<li><a href="https://kafka.apache.org/documentation/streams/" target="_blank" rel="noopener">Kafka Streams API</a>为应用程序提供了流处理功能，可以一次转换一条消息或事件。这些转换可以包括连接多个数据源、过滤数据和在一段时间内聚合数据</li>
+<li><a href="http://docs.confluent.io/current/schema-registry/docs/index.html?_ga=2.47982375.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">Confluent模式注册</a>中心使用Avro模式提供数据治理</li>
+<li><a href="https://www.confluent.io/product/control-center/" target="_blank" rel="noopener">汇流控制中心</a>提供集中管理</li>
+</ul>
+<p><a href="https://www.confluent.io/download/" target="_blank" rel="noopener">下载</a>Confluent开放源代码，并从使用Kafka流、Kafka Connect、Avro、模式注册表的代码<a href="https://github.com/confluentinc/kafka-streams-examples" target="_blank" rel="noopener">示例</a>开始。如果你喜欢Docker，你也可以看看<a href="https://docs.confluent.io/current/streams/kafka-streams-examples/docs/index.html?_ga=2.219940505.1607560460.1543371833-1257759938.1543371833" target="_blank" rel="noopener">Kafka的音乐演示</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/11/28/building-real-time-streaming-etl-pipeline-20-minutes/" target="_blank" title="在20分钟内构建实时流ETL管道">https://jigangduan.github.io/2018/11/28/building-real-time-streaming-etl-pipeline-20-minutes/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/30/data-dichotomy-rethinking-the-way-we-treat-data-and-services/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          数据二分法：重新思考我们对待数据和服务的方式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/28/hello-world-kafka-connect-kafka-streams/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Hello World, Kafka连接器 + Kafka流计算</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#提取数据到Kafka"><span class="nav-number">1.</span> <span class="nav-text">提取数据到Kafka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Kafka-Streams-API转换数据"><span class="nav-number">2.</span> <span class="nav-text">使用Kafka Streams API转换数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Kafka流对象"><span class="nav-number">2.1.</span> <span class="nav-text">创建Kafka流对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理和丰富数据"><span class="nav-number">3.</span> <span class="nav-text">处理和丰富数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将数据加载到其他系统"><span class="nav-number">4.</span> <span class="nav-text">将数据加载到其他系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

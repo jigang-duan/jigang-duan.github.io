@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>android 自动化测试 - 第4部分 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="android自动化测试">
+  
+  
+  
+  
+  <meta name="description" content="在这篇博文中，我们正在开发一个名为Github用户搜索的Android应用程序。在之前的博客文章中，我们研究了为测试创建应用程序、创建API调用和编写API转换的第一个基本测试。阅读第1部分、第2部分和第3部分。 这篇文章将着眼于创建一个与repository通信并向视图传递信息的presenter。这还包括为presenter编写单元测试。这篇博文的示例github repo将会在这里找到。">
+<meta name="keywords" content="android,自动化测试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 自动化测试 - 第4部分">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/17/introduction-android-testing-part-4/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="在这篇博文中，我们正在开发一个名为Github用户搜索的Android应用程序。在之前的博客文章中，我们研究了为测试创建应用程序、创建API调用和编写API转换的第一个基本测试。阅读第1部分、第2部分和第3部分。 这篇文章将着眼于创建一个与repository通信并向视图传递信息的presenter。这还包括为presenter编写单元测试。这篇博文的示例github repo将会在这里找到。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://szimg.mukewang.com/5850bc4500015ecd05400300-360-202.jpg">
+<meta property="og:image" content="https://i0.wp.com/riggaroo.co.za/wp-content/uploads/2016/08/Screen-Shot-2016-08-08-at-8.00.29-PM.png?resize=768%2C109&ssl=1">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.208Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 自动化测试 - 第4部分">
+<meta name="twitter:description" content="在这篇博文中，我们正在开发一个名为Github用户搜索的Android应用程序。在之前的博客文章中，我们研究了为测试创建应用程序、创建API调用和编写API转换的第一个基本测试。阅读第1部分、第2部分和第3部分。 这篇文章将着眼于创建一个与repository通信并向视图传递信息的presenter。这还包括为presenter编写单元测试。这篇博文的示例github repo将会在这里找到。">
+<meta name="twitter:image" content="http://szimg.mukewang.com/5850bc4500015ecd05400300-360-202.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-introduction-android-testing-part-4" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android 自动化测试 - 第4部分
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/17/introduction-android-testing-part-4/" class="article-date">
+	  <time datetime="2017-11-17T12:28:15.000Z" itemprop="datePublished">2017-11-17</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-自动化测试/">Android 自动化测试</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://szimg.mukewang.com/5850bc4500015ecd05400300-360-202.jpg" width="88%" height="320" align="center/"></p>
+<p>在这篇博文中，我们正在开发一个名为Github用户搜索的Android应用程序。在之前的博客文章中，我们研究了为测试创建应用程序、创建API调用和编写API转换的第一个基本测试。阅读第1部分、第2部分和第3部分。</p>
+<p>这篇文章将着眼于创建一个与repository通信并向视图传递信息的presenter。这还包括为presenter编写单元测试。这篇博文的示例github repo将会在<a href="https://github.com/riggaroo/GithubUsersSearchApp" target="_blank" rel="noopener">这里</a>找到。</p>
+<a id="more"></a>
+<h2 id="创建Presenter"><a href="#创建Presenter" class="headerlink" title="创建Presenter"></a>创建Presenter</h2><ol>
+<li><p>为了开始创建，创建称为MvpView和MvpPresenter的基本接口。所有的MVP功能都将扩展这两个接口。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MvpView</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MvpPresenter</span>&lt;<span class="title">V</span> <span class="keyword">extends</span> <span class="title">MvpView</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">   	<span class="function"><span class="keyword">void</span> <span class="title">attachView</span><span class="params">(V mvpView)</span></span>;</span><br><span class="line"></span><br><span class="line">   	<span class="function"><span class="keyword">void</span> <span class="title">detachView</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个BasePresenter。<br>这将提供功能来检查一个视图是否附加到presenter上，以及管理RxJava订阅的方法。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasePresenter</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">MvpView</span>&gt; <span class="keyword">implements</span> <span class="title">MvpPresenter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    	<span class="keyword">private</span> T view;</span><br><span class="line"></span><br><span class="line">    	<span class="keyword">private</span> CompositeSubscription compositeSubscription = <span class="keyword">new</span> CompositeSubscription();</span><br><span class="line"></span><br><span class="line">    	<span class="meta">@Override</span></span><br><span class="line">    	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">attachView</span><span class="params">(T mvpView)</span> </span>&#123;</span><br><span class="line">        	view = mvpView;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="meta">@Override</span></span><br><span class="line">    	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">detachView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        	compositeSubscription.clear();</span><br><span class="line">        	view = <span class="keyword">null</span>;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="function"><span class="keyword">public</span> T <span class="title">getView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        	<span class="keyword">return</span> view;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkViewAttached</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        	<span class="keyword">if</span> (!isViewAttached()) &#123;</span><br><span class="line">            	<span class="keyword">throw</span> <span class="keyword">new</span> MvpViewNotAttachedException();</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isViewAttached</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        	<span class="keyword">return</span> view != <span class="keyword">null</span>;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSubscription</span><span class="params">(Subscription subscription)</span> </span>&#123;</span><br><span class="line">        	<span class="keyword">this</span>.compositeSubscription.add(subscription);</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="keyword">protected</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MvpViewNotAttachedException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line">        	<span class="function"><span class="keyword">public</span> <span class="title">MvpViewNotAttachedException</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            	<span class="keyword">super</span>(<span class="string">"Please call Presenter.attachView(MvpView) before"</span> + <span class="string">" requesting data to the Presenter"</span>);</span><br><span class="line">        	&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 正如您可以看到的，在presenter中有一个<code>CompositeSubscription</code>。<br>该对象将持有一组RxJava订阅。<br><code>detachView()</code>方法调用<code>compositeSubscription.clear()</code>将从所有订阅退订,防止内存泄漏和视图崩溃(代码将不会运行时视图被摧毁,因为它是unsubscribed)。<br>当一个presenter在一个子类中创建一个订阅器时，我们将调用<code>addSubscription()</code></p>
+</li>
+<li><p>在一个名为<code>UserSearchContract</code>的类中创建视图和presenter之间的契约。<br>在这个类中，创建一个用于视图和presenter的两个接口。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserSearchContract</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   	<span class="class"><span class="keyword">interface</span> <span class="title">View</span> <span class="keyword">extends</span> <span class="title">MvpView</span> </span>&#123;</span><br><span class="line">       	<span class="function"><span class="keyword">void</span> <span class="title">showSearchResults</span><span class="params">(List&lt;User&gt; githubUserList)</span></span>;</span><br><span class="line"></span><br><span class="line">       	<span class="function"><span class="keyword">void</span> <span class="title">showError</span><span class="params">(String message)</span></span>;</span><br><span class="line"></span><br><span class="line">       	<span class="function"><span class="keyword">void</span> <span class="title">showLoading</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">       	<span class="function"><span class="keyword">void</span> <span class="title">hideLoading</span><span class="params">()</span></span>;</span><br><span class="line">   	&#125;</span><br><span class="line"></span><br><span class="line">   	<span class="class"><span class="keyword">interface</span> <span class="title">Presenter</span> <span class="keyword">extends</span> <span class="title">MvpPresenter</span>&lt;<span class="title">View</span>&gt; </span>&#123;</span><br><span class="line">       	<span class="function"><span class="keyword">void</span> <span class="title">search</span><span class="params">(String term)</span></span>;</span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 在view中，有4种方法，<code>showSearchResults()</code>、<code>showLoading()</code>、<code>hideLoading()</code>、<code>showError()</code>。<br>在presenter中，有一个名为<code>search()</code>的方法。</p>
+<p> <strong>presenter</strong>不关心<strong>view</strong>是如何显示结果的，也不关心它如何显示错误。类似地，一个<strong>view</strong>并不关心一个<strong>presenter</strong>如何搜索，只要它使用这些回调来通知，实现就无关紧要了。</p>
+<p> 分离视图和presenter之间的逻辑很简单。<br>考虑为另一种类型的UI重用演示程序，这将使您意识到代码应该在哪里。<br>例如，如果您必须使用Java Swing，那么在这种情况下，您的演示器可以保持不变，只有您的视图实现会有所不同。<br>这可以帮助您通过简单地问自己一个问题来放置逻辑:<strong>如果我有不同类型的UI，那么presenter中的逻辑会有意义吗?</strong></p>
+</li>
+<li><p>现在，view和presenter之间的契约被定义了。<br>创建/导航到UserSearchPresenter。<br>这里将创建UserRepository的订阅，它将调用Github API。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSearchPresenter</span> <span class="keyword">extends</span> <span class="title">BasePresenter</span>&lt;<span class="title">UserSearchContract</span>.<span class="title">View</span>&gt; <span class="keyword">implements</span> <span class="title">UserSearchContract</span>.<span class="title">Presenter</span> </span>&#123;</span><br><span class="line">   	<span class="keyword">private</span> <span class="keyword">final</span> Scheduler mainScheduler, ioScheduler;</span><br><span class="line">   	<span class="keyword">private</span> UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">   	UserSearchPresenter(UserRepository userRepository, Scheduler ioScheduler, Scheduler mainScheduler) &#123;</span><br><span class="line">       	<span class="keyword">this</span>.userRepository = userRepository;</span><br><span class="line">       	<span class="keyword">this</span>.ioScheduler = ioScheduler;</span><br><span class="line">       	<span class="keyword">this</span>.mainScheduler = mainScheduler;</span><br><span class="line">   	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 在这里，presenter扩展了<code>BasePresenter</code>，并实现了第3步中定义的<code>UserSearchContract.Presenter</code>契约。该类将实现<code>search()</code>方法。</p>
+<p> 在尝试进行单元测试时，使用构造函数注入可以轻松地模拟<code>UserRepository</code>。schedulers也被注入到构造函数中，因为单元测试总是使用<code>Schedulers.immediate()</code>，但是在视图中，我们将使用不同的线程。</p>
+</li>
+<li><p>现在，为了实现search():</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">search</span><span class="params">(String term)</span> </span>&#123;</span><br><span class="line">       checkViewAttached();</span><br><span class="line">       getView().showLoading();</span><br><span class="line">       addSubscription(userRepository.searchUsers(term).subscribeOn(ioScheduler).observeOn(mainScheduler).subscribe(<span class="keyword">new</span> Subscriber&lt;List&lt;User&gt;&gt;() &#123;</span><br><span class="line">           <span class="meta">@Override</span></span><br><span class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="meta">@Override</span></span><br><span class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">               getView().hideLoading();</span><br><span class="line">               getView().showError(e.getMessage()); <span class="comment">//TODO You probably don't want this error to show to users - Might want to show a friendlier message :)</span></span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="meta">@Override</span></span><br><span class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(List&lt;User&gt; users)</span> </span>&#123;</span><br><span class="line">               getView().hideLoading();</span><br><span class="line">               getView().showSearchResults(users);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p> 首先，运行checkViewAttached()，如果在方法开始运行时没有附加视图，它将抛出一个异常。<br>然后告诉视图，它应该通过调用showLoading()开始加载。<br>创建<code>userRepository.searchUsers()</code>的订阅。<br>将<code>subscribeOn()</code>设置为<code>ioScheduler</code>变量，因为我们希望在IO线程上发生这些网络调用。<br>设置observeOn()  <code>mainScheduler</code>，因为我们希望在主线程上观察到这个订阅的结果。<br>然后通过调用<code>addSubscription</code>，将订阅添加到复合订阅中。</p>
+</li>
+</ol>
+<p>在<code>onNext()</code>方法中，通过使用API返回的用户列表调用<code>hideLoading()</code>和<code>showSearchResults()</code>来处理结果。<br>在<code>onError()</code>中，停止加载，并使用异常的消息调用<code>showError()</code>。</p>
+<p>下面是<code>UserSearchPresenter</code>的完整代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> za.co.riggaroo.gus.presentation.search;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rx.Scheduler;</span><br><span class="line"><span class="keyword">import</span> rx.Subscriber;</span><br><span class="line"><span class="keyword">import</span> za.co.riggaroo.gus.data.UserRepository;</span><br><span class="line"><span class="keyword">import</span> za.co.riggaroo.gus.data.remote.model.User;</span><br><span class="line"><span class="keyword">import</span> za.co.riggaroo.gus.presentation.base.BasePresenter;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSearchPresenter</span> <span class="keyword">extends</span> <span class="title">BasePresenter</span>&lt;<span class="title">UserSearchContract</span>.<span class="title">View</span>&gt; <span class="keyword">implements</span> <span class="title">UserSearchContract</span>.<span class="title">Presenter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Scheduler mainScheduler, ioScheduler;</span><br><span class="line">    <span class="keyword">private</span> UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">    UserSearchPresenter(UserRepository userRepository, Scheduler ioScheduler, Scheduler mainScheduler) &#123;</span><br><span class="line">        <span class="keyword">this</span>.userRepository = userRepository;</span><br><span class="line">        <span class="keyword">this</span>.ioScheduler = ioScheduler;</span><br><span class="line">        <span class="keyword">this</span>.mainScheduler = mainScheduler;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">search</span><span class="params">(String term)</span> </span>&#123;</span><br><span class="line">        checkViewAttached();</span><br><span class="line">        getView().showLoading();</span><br><span class="line">        addSubscription(userRepository.searchUsers(term).subscribeOn(ioScheduler).observeOn(mainScheduler).subscribe(<span class="keyword">new</span> Subscriber&lt;List&lt;User&gt;&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">                getView().hideLoading();</span><br><span class="line">                getView().showError(e.getMessage()); <span class="comment">//TODO You probably don't want this error to show to users - Might want to show a friendlier message :)</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(List&lt;User&gt; users)</span> </span>&#123;</span><br><span class="line">                getView().hideLoading();</span><br><span class="line">                getView().showSearchResults(users);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="为UserSearchPresenter编写单元测试"><a href="#为UserSearchPresenter编写单元测试" class="headerlink" title="为UserSearchPresenter编写单元测试"></a>为UserSearchPresenter编写单元测试</h2><p>现在已经定义了presenter，让我们为它创建一些单元测试。</p>
+<ol>
+<li>选择<code>UserSearchPresenter</code>类名。按“<em>ALT+Enter</em>”并选择“<em>Create Test</em>”。选择“app/src/<strong>test</strong>/java”文件夹，因为这是一个不需要Android依赖的单元测试。结果测试的位置如下:<code>app/src/test/java/za/co/riggaroo/gus/presentation</code></li>
+<li><p>在<code>UserSearchPresenterTest</code>中，创建setup方法，并定义测试所需的变量。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserSearchPresenterTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   	<span class="meta">@Mock</span></span><br><span class="line">   	UserRepository userRepository;</span><br><span class="line">   	<span class="meta">@Mock</span></span><br><span class="line">   	UserSearchContract.View view;</span><br><span class="line"></span><br><span class="line">   	UserSearchPresenter userSearchPresenter;</span><br><span class="line"></span><br><span class="line">   	<span class="meta">@Before</span></span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       	MockitoAnnotations.initMocks(<span class="keyword">this</span>);</span><br><span class="line">       	userSearchPresenter = <span class="keyword">new</span> UserSearchPresenter(userRepository, Schedulers.immediate(), Schedulers.immediate());</span><br><span class="line">       	userSearchPresenter.attachView(view);</span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 通过创建<code>UserRepository</code>和<code>UserSearchContract.View</code>的模拟实例，我们将确保我们只是在测试<code>UserSearchPresenter</code>。<br>在<code>setUp()</code>方法中,我们称之为<code>MockitoAnnotations.initMocks()</code>。<br>然后使用模拟对象和即时调度程序创建搜索演示程序。<br>使用模拟视图对象调用<code>attachView()</code>，因为只有当一个视图被连接时，它才会起作用。</p>
+</li>
+<li><p>第一个测试将测试一个有效的搜索词是否有正确的回调:</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String USER_LOGIN_RIGGAROO = <span class="string">"riggaroo"</span>;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String USER_LOGIN_2_REBECCA = <span class="string">"rebecca"</span>;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">search_ValidSearchTerm_ReturnsResults</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       UsersList userList = getDummyUserList();</span><br><span class="line">       when(userRepository.searchUsers(anyString())).thenReturn(Observable.&lt;List&lt;User&gt;&gt;just(userList.getItems()));</span><br><span class="line"></span><br><span class="line">       userSearchPresenter.search(<span class="string">"riggaroo"</span>);</span><br><span class="line"></span><br><span class="line">       verify(view).showLoading();</span><br><span class="line">       verify(view).hideLoading();</span><br><span class="line">       verify(view).showSearchResults(userList.getItems());</span><br><span class="line">       verify(view, never()).showError(anyString());</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function">UsersList <span class="title">getDummyUserList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       List&lt;User&gt; githubUsers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       githubUsers.add(user1FullDetails());</span><br><span class="line">       githubUsers.add(user2FullDetails());</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> UsersList(githubUsers);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function">User <span class="title">user1FullDetails</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> User(USER_LOGIN_RIGGAROO, <span class="string">"Rigs Franks"</span>, <span class="string">"avatar_url"</span>, <span class="string">"Bio1"</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function">User <span class="title">user2FullDetails</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> User(USER_LOGIN_2_REBECCA, <span class="string">"Rebecca Franks"</span>, <span class="string">"avatar_url2"</span>, <span class="string">"Bio2"</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p> 这个测试断言:假定(<strong>Given</strong>)用户repository返回一组用户，当(<strong>when</strong>)在演示程序中调用search()时，将(<strong>then</strong>)调用<code>showLoading()</code>和<code>showSearchResults()</code>。这个测试还断言<code>showError()</code>方法永远不会被调用。</p>
+</li>
+<li><p>下一个测试是在UserRepository抛出错误时测试负面场景的测试。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">search_UserRepositoryError_ErrorMsg</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      String errorMsg = <span class="string">"No internet"</span>;</span><br><span class="line">      when(userRepository.searchUsers(anyString())).thenReturn(Observable.error(<span class="keyword">new</span> IOException(errorMsg)));</span><br><span class="line"></span><br><span class="line">      userSearchPresenter.search(<span class="string">"bookdash"</span>);</span><br><span class="line"></span><br><span class="line">      verify(view).showLoading();</span><br><span class="line">      verify(view).hideLoading();</span><br><span class="line">      verify(view, never()).showSearchResults(anyList());</span><br><span class="line">      verify(view).showError(errorMsg);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p> 这个测试正在测试以下内容:假定(<strong>Given</strong>) <code>userRepository</code>返回一个异常，在调用<code>search()</code>时，应该调用<code>showError()</code>。</p>
+</li>
+<li><p>我们将添加的最后一个测试将断言，如果视图没有附加，将抛出一个异常。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span>(expected = BasePresenter.MvpViewNotAttachedException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">   <span class="title">public</span> <span class="title">void</span> <span class="title">search_NotAttached_ThrowsMvpException</span>() </span>&#123;</span><br><span class="line">       userSearchPresenter.detachView();</span><br><span class="line"></span><br><span class="line">       userSearchPresenter.search(<span class="string">"test"</span>);</span><br><span class="line"></span><br><span class="line">       verify(view, never()).showLoading();</span><br><span class="line">       verify(view, never()).showSearchResults(anyList());</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让我们运行测试，看看我们有多少测试覆盖率。右键单击测试名称并单击“<em>Run tests with coverage</em>”。</p>
+<p> <img src="https://i0.wp.com/riggaroo.co.za/wp-content/uploads/2016/08/Screen-Shot-2016-08-08-at-8.00.29-PM.png?resize=768%2C109&amp;ssl=1" alt></p>
+<p> 我们对UserSearchPresenter有100%的覆盖率！耶!</p>
+</li>
+</ol>
+<p>下一篇博客文章将讨论创建视图和为视图编写测试。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/17/introduction-android-testing-part-4/" target="_blank" title="Android 自动化测试 - 第4部分">https://jigangduan.github.io/2017/11/17/introduction-android-testing-part-4/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化测试/">自动化测试</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/20/introduction-automated-android-testing-part-5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Android 自动化测试 - 第5部分
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/17/introduction-android-testing-part3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Android 自动化测试 - 第3部分</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Presenter"><span class="nav-number">1.</span> <span class="nav-text">创建Presenter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为UserSearchPresenter编写单元测试"><span class="nav-number">2.</span> <span class="nav-text">为UserSearchPresenter编写单元测试</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>android 自动化测试 - 第1部分 介绍 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="android自动化测试">
+  
+  
+  
+  
+  <meta name="description" content="很多人对如何在Android中进行测试感到困惑和不确定。在过去，测试Android应用程序是非常困难的，并没有太多的方向。在这个系列中，将尝试让你的测试更容易一些。这第一篇文章只是为了让你开始测试，接下来的几章将深入Android的测试。让我们开始吧！">
+<meta name="keywords" content="android,自动化测试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 自动化测试 - 第1部分 介绍">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/17/introduction-automated-android-testing/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="很多人对如何在Android中进行测试感到困惑和不确定。在过去，测试Android应用程序是非常困难的，并没有太多的方向。在这个系列中，将尝试让你的测试更容易一些。这第一篇文章只是为了让你开始测试，接下来的几章将深入Android的测试。让我们开始吧！">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://szimg.mukewang.com/5850bc4500015ecd05400300-360-202.jpg">
+<meta property="og:image" content="https://i0.wp.com/riggaroo.co.za/wp-content/uploads/2016/06/BasicStructureOfAndroidApp.png?w=276&ssl=1">
+<meta property="og:image" content="https://i2.wp.com/riggaroo.co.za/wp-content/uploads/2016/06/Automated-testing-in-Android.png?resize=768%2C904&ssl=1">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.209Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 自动化测试 - 第1部分 介绍">
+<meta name="twitter:description" content="很多人对如何在Android中进行测试感到困惑和不确定。在过去，测试Android应用程序是非常困难的，并没有太多的方向。在这个系列中，将尝试让你的测试更容易一些。这第一篇文章只是为了让你开始测试，接下来的几章将深入Android的测试。让我们开始吧！">
+<meta name="twitter:image" content="http://szimg.mukewang.com/5850bc4500015ecd05400300-360-202.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-introduction-automated-android-testing" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android 自动化测试 - 第1部分 介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/17/introduction-automated-android-testing/" class="article-date">
+	  <time datetime="2017-11-17T09:29:12.000Z" itemprop="datePublished">2017-11-17</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-自动化测试/">Android 自动化测试</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://szimg.mukewang.com/5850bc4500015ecd05400300-360-202.jpg" width="88%" height="320" align="center/"></p>
+<p>很多人对如何在Android中进行测试感到困惑和不确定。<br>在过去，测试Android应用程序是非常困难的，并没有太多的方向。在这个系列中，将尝试让你的测试更容易一些。<br>这第一篇文章只是为了让你开始测试，接下来的几章将深入Android的测试。<br>让我们开始吧！</p>
+<a id="more"></a>
+<h2 id="为什么要测试呢？"><a href="#为什么要测试呢？" class="headerlink" title="为什么要测试呢？"></a>为什么要测试呢？</h2><ul>
+<li>测试迫使你以不同的方式思考，并隐含地使你的代码更清晰。</li>
+<li>如果您的代码有测试，您会对自己的代码更有信心。</li>
+<li>闪亮的绿色状态栏和详细的报告详细，说明编写测试的后果覆盖了你多少的代码。</li>
+<li><code>回归测试</code>变得容易很多，因为自动化测试会首先收集错误。</li>
+</ul>
+<p>回归测试对我来说是最大的好处。如果你重构代码，且测试仍然通过，你会相信你没有造成任何破坏。<br><strong>测试的问题在于，您可能不会立即看到测试的好处</strong>，因为真正的价值只会在需要重构的几个月后才会显现出来。</p>
+<h2 id="Android中有哪些类型的测试？"><a href="#Android中有哪些类型的测试？" class="headerlink" title="Android中有哪些类型的测试？"></a>Android中有哪些类型的测试？</h2><h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><p>单元测试通常以可重复的方式实现尽可能小的代码单元（可以是方法，类或组件）的功能。</p>
+<p>用于执行此测试的工具：</p>
+<ul>
+<li><a href="http://junit.org/" target="_blank" rel="noopener">JUnit</a>  - 正常的测试断言。</li>
+<li><a href="http://site.mockito.org" target="_blank" rel="noopener">Mockito</a> - 模拟其他未经测试的类。</li>
+<li><a href="https://github.com/jayway/powermock" target="_blank" rel="noopener">PowerMock</a>  - 模拟静态类，如Android环境类等。</li>
+</ul>
+<h3 id="UI测试-交互测试"><a href="#UI测试-交互测试" class="headerlink" title="UI测试 - 交互测试"></a>UI测试 - 交互测试</h3><p>UI测试或交互测试模拟典型的用户与您的应用程序的交互。<br>点击按钮，输入文本是UI测试可以完成的一些事情。</p>
+<p>用于执行此测试的工具：</p>
+<ul>
+<li><a href="https://google.github.io/android-testing-support-library/docs/espresso/" target="_blank" rel="noopener">Espresso</a>  - 用于在你的应用中进行测试，选择项目，确保某些东西是可见的。</li>
+<li><a href="https://developer.android.google.cn/training/testing/ui-testing/uiautomator-testing.html" target="_blank" rel="noopener">UIAutomator</a>  - 用于测试不同应用之间的交互。</li>
+</ul>
+<p>还有其他工具可用于此类测试，如  <a href="http://robotium.com/" target="_blank" rel="noopener">Robotium</a>，  <a href="http://appium.io/" target="_blank" rel="noopener">Appium</a>，  <a href="http://calaba.sh/" target="_blank" rel="noopener">Calabash</a>，  <a href="http://robolectric.org/" target="_blank" rel="noopener">Robolectric</a>。</p>
+<h2 id="开始自动化测试我需要做什么"><a href="#开始自动化测试我需要做什么" class="headerlink" title="开始自动化测试我需要做什么?"></a>开始自动化测试我需要做什么?</h2><p>为了让你在应用中开始自动测试，你应该遵循某种架构模式，帮助你以一种简洁、可测试的方式测试和构建你的应用程序。很容易进行测试的一个模式是<a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter" target="_blank" rel="noopener">模型视图展示者(MVP)</a>，用于查看网络和数据库访问的视图和<a href="http://martinfowler.com/eaaCatalog/repository.html" target="_blank" rel="noopener">存储库模式</a>。</p>
+<p>当然，这不是您作为Android开发者唯一的选择，它是您可以探索的许多方法之一，以便获得测试覆盖率和简洁的架构。</p>
+<p>我发现在没有定义结构的情况下实现测试非常困难，通常我的测试是无用的，我不知道要测试什么，在大型应用程序中获取代码也很困难。<br>我的UI测试也不是很可靠，因为他们正在对生产服务器进行测试。希望我们可以在这个博客系列中解决这些问题。</p>
+<h2 id="以可测试的方式构建应用程序"><a href="#以可测试的方式构建应用程序" class="headerlink" title="以可测试的方式构建应用程序"></a>以可测试的方式构建应用程序</h2><p>下面是一个图表，描述了我将用作博客系列文章的其余部分的指导原则:</p>
+<p><img src="https://i0.wp.com/riggaroo.co.za/wp-content/uploads/2016/06/BasicStructureOfAndroidApp.png?w=276&amp;ssl=1" alt></p>
+<ul>
+<li><p><strong>视图(Views)</strong> - <code>Activities</code>和<code>Fragments</code>。<br>这是我们设置文本并进行UI更改的地方。我通常喜欢在这部分中保留Android特定的代码，并尽量不传递比视图更深入的内容，显然这并不总是容易的，但这是一个很好的指导，可以尝试遵循。<br>视图应该只与<code>presenters</code>对话。</p>
+</li>
+<li><p><strong>展示者(Presenters)</strong> - 这是决定在视图中应该显示什么内容的业务逻辑。<br><code>Presenters</code>与<code>Repositories</code>交互以获取信息，并将信息传达给视图。<br>如果你可以避免使用Android特有的代码，尽量避免使用Android的代码，因为这会使单元测试变得更加困难。</p>
+</li>
+<li><p><strong>存储库(Repositories)</strong> — 决定从哪里获取数据，它们是否来自本地持久化的数据?还是应该从网络中获得数据?<br><code>Repositories</code>和<code>presenters</code>交谈</p>
+</li>
+<li><p><strong>模型(Models)</strong> — 通常是POJOs，这些模型被Presenter和View使用，以便将信息从Presenter中传递给View。</p>
+</li>
+</ul>
+<p>单元测试将测试Presenters和Repositories。UI测试将测试视图一直到Repositories。</p>
+<p>有很多很好的文章描述了MVP和其他架构选项——这篇博客文章不会详细介绍这些细节。请阅读更多关于Android架构的文章，<a href="https://labs.ribot.co.uk/android-application-architecture-8b6e34acda65#.qbyl367c7" target="_blank" rel="noopener">这里</a>,<a href="https://github.com/googlesamples/android-architecture" target="_blank" rel="noopener">这里</a>和<a href="https://github.com/android10/Android-CleanArchitecture" target="_blank" rel="noopener">这里</a>。</p>
+<h2 id="在我的Android应用中，自动测试在哪里"><a href="#在我的Android应用中，自动测试在哪里" class="headerlink" title="在我的Android应用中，自动测试在哪里?"></a>在我的Android应用中，自动测试在哪里?</h2><p>在你的Android应用文件夹结构中，有两个文件夹可以存放测试: <code>test</code>和<code>androidTest</code></p>
+<p><img src="https://i2.wp.com/riggaroo.co.za/wp-content/uploads/2016/06/Automated-testing-in-Android.png?resize=768%2C904&amp;ssl=1" alt></p>
+<ul>
+<li><p><code>androidTest</code> —— Android交互测试就在这里。这个文件夹中的测试需要运行在Android模拟器或物理设备上。</p>
+</li>
+<li><p><code>test/</code>  – 单元测试被放置在这个文件夹中。<br>单元测试运行在本地机器上的JVM上，不运行在Android设备或模拟器上。<br>这意味着他们不能访问Android类(例如<code>Context</code>类)。</p>
+</li>
+</ul>
+<hr>
+<p>现在我们已经知道了不同种类的测试以及在我们的应用中放置它们的位置。<br>下一篇文章我们将深入介绍如何构造代码，以便更好地进行单元测试。请看这里的第2部分！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/17/introduction-automated-android-testing/" target="_blank" title="Android 自动化测试 - 第1部分 介绍">https://jigangduan.github.io/2017/11/17/introduction-automated-android-testing/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化测试/">自动化测试</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/17/automated-android-testing-part-2-setup/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Android 自动化测试 - 第2部分 安装
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/14/resources-getting-started-android-development/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">现代ANDROID开发入门资源</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要测试呢？"><span class="nav-number">1.</span> <span class="nav-text">为什么要测试呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android中有哪些类型的测试？"><span class="nav-number">2.</span> <span class="nav-text">Android中有哪些类型的测试？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试"><span class="nav-number">2.1.</span> <span class="nav-text">单元测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI测试-交互测试"><span class="nav-number">2.2.</span> <span class="nav-text">UI测试 - 交互测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始自动化测试我需要做什么"><span class="nav-number">3.</span> <span class="nav-text">开始自动化测试我需要做什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以可测试的方式构建应用程序"><span class="nav-number">4.</span> <span class="nav-text">以可测试的方式构建应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在我的Android应用中，自动测试在哪里"><span class="nav-number">5.</span> <span class="nav-text">在我的Android应用中，自动测试在哪里?</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

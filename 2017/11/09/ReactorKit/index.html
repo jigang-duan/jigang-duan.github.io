@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>reactorkit 介绍 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="iosswift">
+  
+  
+  
+  
+  <meta name="description" content="ReactorKit是一个响应式和单向的Swift应用程序架构的框架。这个文章介绍了ReactorKit的基本概念，并描述了如何使用ReactorKit构建应用程序。 如果您希望看到实际的代码，您可能希望首先看到示例部分。访问API参考的代码级文档。">
+<meta name="keywords" content="ios,swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactorKit 介绍">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/09/ReactorKit/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="ReactorKit是一个响应式和单向的Swift应用程序架构的框架。这个文章介绍了ReactorKit的基本概念，并描述了如何使用ReactorKit构建应用程序。 如果您希望看到实际的代码，您可能希望首先看到示例部分。访问API参考的代码级文档。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/931655/25073432/a91c1688-2321-11e7-8f04-bf91031a09dd.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/931655/25098066/2de21a28-23e2-11e7-8a41-d33d199dd951.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/931655/27789114-393e2eea-6026-11e7-9b32-bae314e672ee.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.161Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactorKit 介绍">
+<meta name="twitter:description" content="ReactorKit是一个响应式和单向的Swift应用程序架构的框架。这个文章介绍了ReactorKit的基本概念，并描述了如何使用ReactorKit构建应用程序。 如果您希望看到实际的代码，您可能希望首先看到示例部分。访问API参考的代码级文档。">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-ReactorKit" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ReactorKit 介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/09/ReactorKit/" class="article-date">
+	  <time datetime="2017-11-09T10:40:18.000Z" itemprop="datePublished">2017-11-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/iOS第三方库/">iOS第三方库</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png" alt="reactorkit"></p>
+<p><a href="https://github.com/ReactorKit/ReactorKit" target="_blank" rel="noopener">ReactorKit</a>是一个响应式和单向的Swift应用程序架构的框架。<br>这个文章介绍了ReactorKit的基本概念，并描述了如何使用ReactorKit构建应用程序。</p>
+<p>如果您希望看到实际的代码，您可能希望首先看到<a href="#examples">示例</a>部分。访问<a href="http://reactorkit.io/docs/latest/" target="_blank" rel="noopener">API参考</a>的代码级文档。</p>
+<a id="more"></a>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>ReactorKit是<a href="https://facebook.github.io/flux/" target="_blank" rel="noopener">Flux</a>和<a href="https://en.wikipedia.org/wiki/Reactive_programming" target="_blank" rel="noopener">响应式编程</a>的结合。<br>user actions和view states通过可观察的流传递到每一层。<br>这些流是单向的: view只能发射actions，reactor只能发射states。</p>
+<p><img src="https://cloud.githubusercontent.com/assets/931655/25073432/a91c1688-2321-11e7-8f04-bf91031a09dd.png" alt="flux"></p>
+<h3 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h3><ul>
+<li><p><strong>可测试性</strong>：ReactorKit的第一个目的是将业务逻辑从视图中分离出来。<br>这可以使代码可测试。<br>一个reactor对视图没有任何依赖性。<br>只需要测试reactors和测试视图绑定。<br>有关详细信息，请参见<a href="#testing">测试部分</a>。</p>
+</li>
+<li><p><strong>从小处开始</strong>: ReactorKit并不要求整个应用程序遵循单一的架构。<br>对于一个或多个特定的视图，可以部分地采用ReactorKit。<br>你不需要重写所有的东西来在你现有的项目中使用ReactorKit。</p>
+</li>
+<li><p><strong>更少的成本</strong>: ReactorKit专注于避免复杂的代码为简单的事情。<br>与其他架构相比，ReactorKit的代码需要更少的代码。<br>开始简单，扩大规模</p>
+</li>
+</ul>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><p><em>View</em>显示数据。<br>view controller和cell被视为view。<br>view将用户输入绑定到action流，并将view states绑定到每个UI组件。<br>view层中没有业务逻辑。<br>view定义了如何映射action流和state流。</p>
+<p>要定义一个view，只需让现有的类遵循一个名为<code>View</code>的协议。<br>然后，你的类会自动地有一个名为<code>reactor</code>的属性。<br>这个属性通常是在view之外设置的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProfileViewController</span>: <span class="title">UIViewController</span>, <span class="title">View</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">profileViewController.reactor = <span class="type">UserViewReactor</span>() <span class="comment">// inject reactor</span></span><br></pre></td></tr></table></figure>
+<p>当<code>reactor</code>属性发生变化时，就会调用<code>bind(reactor:)</code>。<br>实现这个方法来定义action流和state流的绑定。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">bind</span><span class="params">(reactor: ProfileViewReactor)</span></span> &#123;</span><br><span class="line">  <span class="comment">// action (View -&gt; Reactor)</span></span><br><span class="line">  refreshButton.rx.tap.<span class="built_in">map</span> &#123; <span class="type">Reactor</span>.<span class="type">Action</span>.refresh &#125;</span><br><span class="line">    .bind(to: reactor.action)</span><br><span class="line">    .disposed(by: <span class="keyword">self</span>.disposeBag)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// state (Reactor -&gt; View)</span></span><br><span class="line">  reactor.state.<span class="built_in">map</span> &#123; $<span class="number">0</span>.isFollowing &#125;</span><br><span class="line">    .bind(to: followButton.rx.isSelected)</span><br><span class="line">    .disposed(by: <span class="keyword">self</span>.disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="支持-Storyboard"><a href="#支持-Storyboard" class="headerlink" title="支持 Storyboard"></a>支持 Storyboard</h4><p>如果使用storyboard来初始化view controllers，使用<code>StoryboardView</code>协议。<br>所有的东西都是一样的，唯一不同的是，在视图加载之后，<code>StoryboardView</code>执行绑定。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> viewController = <span class="type">MyViewController</span>()</span><br><span class="line">viewController.reactor = <span class="type">MyViewReactor</span>() <span class="comment">// 不会立即执行`bind(reactor:)`</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewController</span>: <span class="title">UIViewController</span>, <span class="title">StoryboardView</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">bind</span><span class="params">(reactor: MyViewReactor)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 在视图加载后(viewDidLoad)调用</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Reactor"><a href="#Reactor" class="headerlink" title="Reactor"></a>Reactor</h3><p>Reactor是一个独立于UI的层，它负责管理视图的状态。<br>reactor最重要的作用是将控制流从一个视图中分离出来。<br>每个视图都有对应的reactor，并把所有的逻辑都委托给它的reactor。<br>reactor不依赖于视图，因此可以很容易地测试它。</p>
+<p>符合Reactor协议来定义一个reactor。<br>该协议需要定义三种类型: <code>Action</code>、<code>Mutation</code>和<code>State</code>。<br>它还需要一个名为<code>initialState</code>的属性。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProfileViewReactor</span>: <span class="title">Reactor</span> </span>&#123;</span><br><span class="line">  <span class="comment">// represent user actions</span></span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">Action</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> refreshFollowingStatus(<span class="type">Int</span>)</span><br><span class="line">    <span class="keyword">case</span> follow(<span class="type">Int</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// represent state changes</span></span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">Mutation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> setFollowing(<span class="type">Bool</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// represents the current view state</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">State</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> isFollowing: <span class="type">Bool</span> = <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> initialState: <span class="type">State</span> = <span class="type">State</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个<code>Action</code>代表一个<em>用户交互</em>，而<code>State</code>代表一个<em>视图状态</em>。<br><code>Mutation</code>是<code>Action</code>与<code>State</code>之间的<em>_桥梁_</em>。<br>一个reactor将action流转换成state流的两个步骤:<code>mutate()</code>和<code>reduce()</code>。</p>
+<p><img src="https://cloud.githubusercontent.com/assets/931655/25098066/2de21a28-23e2-11e7-8a41-d33d199dd951.png" alt="reactor"></p>
+<p><strong><code>mutate()</code></strong></p>
+<p><code>mutate()</code>接收到一个<code>Action</code>并产生一个<code>Observable&lt;Mutation&gt;</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mutate</span><span class="params">(action: Action)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Mutation</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>每个副作用，比如异步操作或API调用，都是在这个方法中执行的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mutate</span><span class="params">(action: Action)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Mutation</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">switch</span> action &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="keyword">let</span> .refreshFollowingStatus(userID): <span class="comment">// receive an action</span></span><br><span class="line">    <span class="keyword">return</span> <span class="type">UserAPI</span>.isFollowing(userID) <span class="comment">// create an API stream</span></span><br><span class="line">      .<span class="built_in">map</span> &#123; (isFollowing: <span class="type">Bool</span>) -&gt; <span class="type">Mutation</span> <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">Mutation</span>.setFollowing(isFollowing) <span class="comment">// convert to Mutation stream</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> <span class="keyword">let</span> .follow(userID):</span><br><span class="line">    <span class="keyword">return</span> <span class="type">UserAPI</span>.follow()</span><br><span class="line">      .<span class="built_in">map</span> &#123; <span class="number">_</span> -&gt; <span class="type">Mutation</span> <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">Mutation</span>.setFollowing(<span class="literal">true</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><code>reduce()</code></strong></p>
+<p><code>reduce()</code>从以前的State和Mutation中生成一个新的State。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reduce</span><span class="params">(state: State, mutation: Mutation)</span></span> -&gt; <span class="type">State</span></span><br></pre></td></tr></table></figure>
+<p>这个方法是一个纯函数。<br>它应该以同步方式返回一个新State。<br>不要在这个函数中执行任何副作用。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reduce</span><span class="params">(state: State, mutation: Mutation)</span></span> -&gt; <span class="type">State</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> state = state <span class="comment">// create a copy of the old state</span></span><br><span class="line">  <span class="keyword">switch</span> mutation &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="keyword">let</span> .setFollowing(isFollowing):</span><br><span class="line">    state.isFollowing = isFollowing <span class="comment">// manipulate the state, creating a new state</span></span><br><span class="line">    <span class="keyword">return</span> state <span class="comment">// return the new state</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><code>transform()</code></strong></p>
+<p><code>transform()</code>变换每个流。<br>有三个transform()函数:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">transform</span><span class="params">(action: Observable&lt;Action&gt;)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Action</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">transform</span><span class="params">(mutation: Observable&lt;Mutation&gt;)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Mutation</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">transform</span><span class="params">(state: Observable&lt;State&gt;)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">State</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>实现这些方法来转换和合并其他可观察的流。<br>例如，transform(mutation:)是将全局事件流与mutation流相结合的最佳位置。<br>有关详细信息，请参见<a href="#global-states">全局状态</a>部分。</p>
+<p>这些方法也可以用于调试目的:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">transform</span><span class="params">(action: Observable&lt;Action&gt;)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Action</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> action.debug(<span class="string">"action"</span>) <span class="comment">// Use RxSwift's debug() operator</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h2><h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>ReactorKit有一个特殊的层命名为Service。<br>service层执行实际的业务逻辑。<br>reactor是视图和管理事件流的服务之间的中间层。<br>当一个reactor从视图接收到用户操作时，reactor将调用service逻辑。<br>该service发出一个网络请求，并将响应发送回reactor。<br>然后，reactor创建一个带有服务响应的mutation流。</p>
+<p>这里有一个服务的例子:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">UserServiceType</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">user</span><span class="params">(id: Int)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">User</span>&gt;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">follow</span><span class="params">(id: Int)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Void</span>&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span>: <span class="title">Service</span>, <span class="title">UserServiceType</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">user</span><span class="params">(id: Int)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">User</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> foo()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">follow</span><span class="params">(id: Int)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Void</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> bar()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="全局状态"><a href="#全局状态" class="headerlink" title="全局状态"></a>全局状态</h3><p>不像Redux，ReactorKit并没有定义一个全局应用程序状态。<br>这意味着您可以使用任何东西来管理一个全局状态。<br>您可以使用一个Variable，一个PublishSubject，甚至一个reactor。<br>ReactorKit不需要有一个全局状态，所以你可以在你的应用中使用ReactorKit在一个特定的特性。</p>
+<p>在<code>Action → Mutation → State</code>流中没有全局状态。<br>您应该使用<code>transform(mutation:)</code>来将全局状态转换为一个mutation。<br>让我们假设我们有一个全局Variable，该Variable存储当前经过身份验证的用户。<br>如果您想发出Mutation.setUser(User?)当<code>currentUser</code>被更改时，您可以如下所做:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> currentUser: <span class="type">Variable</span>&lt;<span class="type">User</span>&gt; <span class="comment">// global state</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">transform</span><span class="params">(mutation: Observable&lt;Mutation&gt;)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Mutation</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="type">Observable</span>.merge(mutation, currentUser.<span class="built_in">map</span>(<span class="type">Mutation</span>.setUser))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，每当视图向reactor发送一个action，而currentUser被改变时，这个mutation就会被释放出来。</p>
+<h3 id="View交流"><a href="#View交流" class="headerlink" title="View交流"></a>View交流</h3><p>在多个视图之间进行通信，您必须熟悉回调闭包或委托模式。<br>反应堆建议你使用<a href="https://github.com/ReactiveX/RxSwift/blob/master/RxSwift/Reactive.swift" target="_blank" rel="noopener">reactive的扩展</a>。<br>最常见的控制实例是UIButton.rx.tap。<br>关键的概念是将您的自定义视图视为UIButton或UILabel。</p>
+<p><img src="https://user-images.githubusercontent.com/931655/27789114-393e2eea-6026-11e7-9b32-bae314e672ee.png" alt="view-view"></p>
+<p>让我们假设我们有一个显示消息的<code>ChatViewController</code>。<br>ChatViewController拥有一个<code>MessageInputView</code>。<br>当用户在MessageInputView上点击发送按钮时，文本将被发送到ChatViewController，而ChatViewController将绑定到反应器的操作。<br>这是一个示例:<code>MessageInputView</code>的Rx扩展:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Reactive</span> <span class="title">where</span> <span class="title">Base</span>: <span class="title">MessageInputView</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> sendButtonTap: <span class="type">ControlEvent</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> source = base.sendButton.rx.tap.withLatestFrom(...)</span><br><span class="line">    <span class="keyword">return</span> <span class="type">ControlEvent</span>(events: source)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以在ChatViewController中使用那个扩展。例如:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">messageInputView.rx.sendButtonTap</span><br><span class="line">  .<span class="built_in">map</span>(<span class="type">Reactor</span>.<span class="type">Action</span>.send)</span><br><span class="line">  .bind(to: reactor.action)</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>ReactorKit有一个内置的测试功能。<br>您将能够轻松地测试一个view和一个reactor，并使用下面的指令。</p>
+<h4 id="什么测试"><a href="#什么测试" class="headerlink" title="什么测试"></a>什么测试</h4><p>首先，你必须决定要测试什么。<br>有两件事要测试:一个view和一个reactor。</p>
+<ul>
+<li>View<ul>
+<li>Action:一个适当的action被发送到一个指定用户交互的reactor上吗?</li>
+<li>State: view属性是否正确地按state设置呢?</li>
+</ul>
+</li>
+<li>Reactor<ul>
+<li>State:一个state随着action而改变吗?</li>
+</ul>
+</li>
+</ul>
+<h4 id="View测试"><a href="#View测试" class="headerlink" title="View测试"></a>View测试</h4><p>一个view可以用一个stub  reactor进行测试。<br>reactor有一个stub属性，它可以记录actions并强制改变states。<br>如果启用了一个reactor的stub，mutate() 和reduce()都不会被执行。<br>一个stub有这些属性:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> isEnabled: <span class="type">Bool</span> &#123; <span class="keyword">get</span> <span class="keyword">set</span> &#125;</span><br><span class="line"><span class="keyword">var</span> state: <span class="type">Variable</span>&lt;<span class="type">Reactor</span>.<span class="type">State</span>&gt; &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">var</span> action: <span class="type">ActionSubject</span>&lt;<span class="type">Reactor</span>.<span class="type">Action</span>&gt; &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">var</span> actions: [<span class="type">Reactor</span>.<span class="type">Action</span>] &#123; <span class="keyword">get</span> &#125; <span class="comment">// recorded actions</span></span><br></pre></td></tr></table></figure>
+<p>下面是一些示例测试案例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testAction_refresh</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// 1. prepare a stub reactor</span></span><br><span class="line">  <span class="keyword">let</span> reactor = <span class="type">MyReactor</span>()</span><br><span class="line">  reactor.stub.isEnabled = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. prepare a view with a stub reactor</span></span><br><span class="line">  <span class="keyword">let</span> view = <span class="type">MyView</span>()</span><br><span class="line">  view.reactor = reactor</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. send an user interaction programatically</span></span><br><span class="line">  view.refreshControl.sendActions(<span class="keyword">for</span>: .valueChanged)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 4. assert actions</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(reactor.stub.actions.last, .refresh)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testState_isLoading</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// 1. prepare a stub reactor</span></span><br><span class="line">  <span class="keyword">let</span> reactor = <span class="type">MyReactor</span>()</span><br><span class="line">  reactor.stub.isEnabled = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. prepare a view with a stub reactor</span></span><br><span class="line">  <span class="keyword">let</span> view = <span class="type">MyView</span>()</span><br><span class="line">  view.reactor = reactor</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. set a stub state</span></span><br><span class="line">  reactor.stub.state.value = <span class="type">MyReactor</span>.<span class="type">State</span>(isLoading: <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 4. assert view properties</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(view.activityIndicator.isAnimating, <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Reactor测试"><a href="#Reactor测试" class="headerlink" title="Reactor测试"></a>Reactor测试</h4><p>一个reactor可以独立测试。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testIsBookmarked</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> reactor = <span class="type">MyReactor</span>()</span><br><span class="line">  reactor.action.onNext(.toggleBookmarked)</span><br><span class="line">  <span class="type">XCTAssertEqual</span>(reactor.currentState.isBookmarked, <span class="literal">true</span>)</span><br><span class="line">  reactor.action.onNext(.toggleBookmarked)</span><br><span class="line">  <span class="type">XCTAssertEqual</span>(reactor.currentState.isBookmarked, <span class="literal">false</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有时，一个state会被多个action改变。<br>例如，一个.refresh的动作将第state.isLoading个设置为true，并在刷新后设置为false。<br>在这种情况下，很难用currentState测试state.isLoading，所以您可能需要使用RxTest或RxExpect。<br>下面是一个使用RxExpect的示例测试用例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testIsLoading</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="type">RxExpect</span>(<span class="string">"it should change isLoading"</span>) &#123; test <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> reactor = test.retain(<span class="type">MyReactor</span>())</span><br><span class="line">    test.input(reactor.action, [</span><br><span class="line">      next(<span class="number">100</span>, .refresh) <span class="comment">// send .refresh at 100 scheduler time</span></span><br><span class="line">    ])</span><br><span class="line">    test.<span class="built_in">assert</span>(reactor.state.<span class="built_in">map</span> &#123; $<span class="number">0</span>.isLoading &#125;)</span><br><span class="line">      .since(<span class="number">100</span>) <span class="comment">// values since 100 scheduler time</span></span><br><span class="line">      .<span class="built_in">assert</span>([</span><br><span class="line">        <span class="literal">true</span>,  <span class="comment">// just after .refresh</span></span><br><span class="line">        <span class="literal">false</span>, <span class="comment">// after refreshing</span></span><br><span class="line">      ])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h2><p>ReactorKit提供了一些约定来编写干净简洁的代码。</p>
+<p>您必须在view之外创建reactor，并将其传递给view的reactor属性。</p>
+<p><strong>Good</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> view = <span class="type">MyView</span>()</span><br><span class="line">view.reactor = <span class="type">MyViewReactor</span>(provider: provider)</span><br></pre></td></tr></table></figure>
+<p><strong>Bad</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyView</span>: <span class="title">UIView</span>, <span class="title">View</span> </span>&#123;</span><br><span class="line">  <span class="keyword">init</span>() &#123;</span><br><span class="line">    <span class="keyword">self</span>.reactor = <span class="type">MyViewReactor</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
+<li><a href="https://github.com/ReactorKit/ReactorKit/tree/master/Examples/Counter" target="_blank" rel="noopener">Counter</a>: 最简单和最基本的ReactorKit例子</li>
+<li><a href="https://github.com/ReactorKit/ReactorKit/tree/master/Examples/GitHubSearch" target="_blank" rel="noopener">GitHub Search</a>:一个提供GitHub库搜索的简单应用程序</li>
+<li><a href="https://github.com/devxoul/RxTodo" target="_blank" rel="noopener">RxTodo</a>: 使用ReactorKit的iOS待办事项</li>
+<li><a href="https://github.com/devxoul/Cleverbot" target="_blank" rel="noopener">Cleverbot</a>: 使用Cleverbot和ReactorKit的iOS消息应用</li>
+<li><a href="https://github.com/devxoul/Drrrible" target="_blank" rel="noopener">Drrrible</a>: Dribbble iOS使用ReactorKit(App Store)对</li>
+<li><a href="https://github.com/cruisediary/Passcode" target="_blank" rel="noopener">Passcode</a>:iOS RxSwift、ReactorKit和IGListKit示例的Passcode</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/09/ReactorKit/" target="_blank" title="ReactorKit 介绍">https://jigangduan.github.io/2017/11/09/ReactorKit/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/">ios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/14/resources-getting-started-android-development/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          现代ANDROID开发入门资源
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/09/architecture-paging/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Android 架构组件 - 分页库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计目标"><span class="nav-number">1.1.</span> <span class="nav-text">设计目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View"><span class="nav-number">1.2.</span> <span class="nav-text">View</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#支持-Storyboard"><span class="nav-number">1.2.1.</span> <span class="nav-text">支持 Storyboard</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor"><span class="nav-number">1.3.</span> <span class="nav-text">Reactor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级"><span class="nav-number">2.</span> <span class="nav-text">高级</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Service"><span class="nav-number">2.1.</span> <span class="nav-text">Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局状态"><span class="nav-number">2.2.</span> <span class="nav-text">全局状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View交流"><span class="nav-number">2.3.</span> <span class="nav-text">View交流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">2.4.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么测试"><span class="nav-number">2.4.1.</span> <span class="nav-text">什么测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#View测试"><span class="nav-number">2.4.2.</span> <span class="nav-text">View测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reactor测试"><span class="nav-number">2.4.3.</span> <span class="nav-text">Reactor测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#约定"><span class="nav-number">3.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">4.</span> <span class="nav-text">示例</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>iiot消息队列(iot mq)选型 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="iotmq">
+  
+  
+  
+  
+  <meta name="description" content="为什么被需要MQ？IIoT作为设备接入和业务层承上启下的作用，其最重要的职能在于提供一个统一接口:  解耦上下各个不同系统的之间的关联性，使它们之间可以不直接依赖 同构系统中每个结点上的一致性，是各个系统直接可以交流 灵活地添加组件或适配系统，使其结构灵活，易于扩充  为了达到这三个功能，门面模式+适配器+观察者模式 的设计模式非常适合，那么消息队列就是最佳选择了。消息队列作为门面，作为各个系统">
+<meta name="keywords" content="iot,mq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IIoT消息队列(IoT MQ)选型">
+<meta property="og:url" content="https://jigangduan.github.io/2018/11/01/things-queue-selection/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="为什么被需要MQ？IIoT作为设备接入和业务层承上启下的作用，其最重要的职能在于提供一个统一接口:  解耦上下各个不同系统的之间的关联性，使它们之间可以不直接依赖 同构系统中每个结点上的一致性，是各个系统直接可以交流 灵活地添加组件或适配系统，使其结构灵活，易于扩充  为了达到这三个功能，门面模式+适配器+观察者模式 的设计模式非常适合，那么消息队列就是最佳选择了。消息队列作为门面，作为各个系统">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541071679715&di=50aab83e6c74021f1953d0597eef308e&imgtype=0&src=http%3A%2F%2Fimg.mukewang.com%2F594b40910001a47e06000338-590-330.jpg">
+<meta property="og:image" content="http://qiniu.jigangduan.xyz/18-11-2/66533308.jpg">
+<meta property="og:image" content="http://qiniu.jigangduan.xyz/18-11-2/22560586.jpg">
+<meta property="og:image" content="http://dataguild.org/wp-content/uploads/2015/12/iot-mqtt-tutorial-01.png">
+<meta property="og:image" content="http://emqtt.com/static/img/overview.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IIoT消息队列(IoT MQ)选型">
+<meta name="twitter:description" content="为什么被需要MQ？IIoT作为设备接入和业务层承上启下的作用，其最重要的职能在于提供一个统一接口:  解耦上下各个不同系统的之间的关联性，使它们之间可以不直接依赖 同构系统中每个结点上的一致性，是各个系统直接可以交流 灵活地添加组件或适配系统，使其结构灵活，易于扩充  为了达到这三个功能，门面模式+适配器+观察者模式 的设计模式非常适合，那么消息队列就是最佳选择了。消息队列作为门面，作为各个系统">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541071679715&di=50aab83e6c74021f1953d0597eef308e&imgtype=0&src=http%3A%2F%2Fimg.mukewang.com%2F594b40910001a47e06000338-590-330.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-things-queue-selection" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      IIoT消息队列(IoT MQ)选型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/11/01/things-queue-selection/" class="article-date">
+	  <time datetime="2018-11-01T02:48:24.000Z" itemprop="datePublished">2018-11-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/IoT/">IoT</a><a class="article-category-link" href="/categories/IoT/消息队列/">消息队列</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1541071679715&amp;di=50aab83e6c74021f1953d0597eef308e&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.mukewang.com%2F594b40910001a47e06000338-590-330.jpg" alt="mq"></p>
+<h2 id="为什么被需要MQ？"><a href="#为什么被需要MQ？" class="headerlink" title="为什么被需要MQ？"></a>为什么被需要MQ？</h2><p>IIoT作为设备接入和业务层承上启下的作用，其最重要的职能在于提供一个统一接口:</p>
+<ul>
+<li><code>解耦</code>上下各个不同系统的之间的关联性，使它们之间可以不直接依赖</li>
+<li><code>同构</code>系统中每个结点上的一致性，是各个系统直接可以交流</li>
+<li><code>灵活</code>地添加组件或适配系统，使其结构灵活，易于扩充</li>
+</ul>
+<p>为了达到这三个功能，<code>门面模式+适配器+观察者模式</code> 的设计模式非常适合，那么<code>消息队列</code>就是最佳选择了。<br>消息队列作为<code>门面</code>，作为各个系统的接入点，<code>解耦</code>了它们之间的相互关联；我们还需要制定一套统一的消息标准，<code>同构</code>各个系统的接入方式；为了满足已有的协议和系统，需要使用适配器的方式，让它们兼容到整个的系统中来。</p>
+<h2 id="特性需求"><a href="#特性需求" class="headerlink" title="特性需求"></a>特性需求</h2><p>各个不同的系统可能包括采取服务，各类设备，数据中心或SCADA等，为了满足这些不同的系统需要满足如下特性：</p>
+<p>实时性<br>高并发<br>可靠性<br>安全防护<br>可扩展</p>
+<h2 id="消息队列协议对比"><a href="#消息队列协议对比" class="headerlink" title="消息队列协议对比"></a>消息队列协议对比</h2><p>为了找到合适的消息队列系统，选定几个消息队列协议进行对比来找到合适方式。</p>
+<ul>
+<li>MQTT（消息队列遥测传输），在物联网、小型设备、移动应用等方面有较广泛的应用</li>
+<li>AMQP（级消息队列协议），是应用层协议的一个开放标准,为面向消息的中间件设计</li>
+<li>Kafka(不是协议，是消息系统)，解决有吞吐量要求而的日志和数据聚合作用</li>
+</ul>
+<p><strong>比较项：</strong></p>
+<p><img src="http://qiniu.jigangduan.xyz/18-11-2/66533308.jpg" alt="消息队列协议对比"></p>
+<p><img src="http://qiniu.jigangduan.xyz/18-11-2/22560586.jpg" alt="消息队列协议对比"></p>
+<blockquote>
+<p>从上面各项比较可以得知，MQTT优势是实时性，Kafka优势是数据聚合，AMQP优势是应层解耦</p>
+</blockquote>
+<h2 id="方案建议EMQ-Kafka"><a href="#方案建议EMQ-Kafka" class="headerlink" title="方案建议EMQ+Kafka"></a>方案建议<code>EMQ+Kafka</code></h2><p>MQTT协议应用场景大多是在物联网设备的接入，对短数据有非常适应的实时性特点，Kafka和AMQP的实时性都不及MQTT。<br>MQTT专门为物联网设计，可以直接接入支持MQTT协议的设备，软件，系统或移动端。目前大多的物联网平台的做法是使用MQTT做设备上传协议，如果是其他采集协议，就使用网关做协议转换器，如下：</p>
+<p><img src="http://dataguild.org/wp-content/uploads/2015/12/iot-mqtt-tutorial-01.png" alt="iot-mqtt"></p>
+<p>但我们公司不用选择设备的原因，其建议协议转换功能在采集服务器中，也是做为协议适配的功效，其适配器可以尽量灵活部署，可能是插件，服务器应用，桌面应用和Linux设备等。</p>
+<blockquote>
+<p>MQTT在实时性上表现优异但在数据聚合方面上不足，所以建议<code>EMQ+Kafka</code>的模式。如果数据是输出给类似ETL（数字仓库）这样的，需要通过Kafka作缓冲和聚合；如果是连接到SCADA这样的系统，直接通过EMQ就可以了。</p>
+</blockquote>
+<h2 id="EMQ简介"><a href="#EMQ简介" class="headerlink" title="EMQ简介"></a>EMQ简介</h2><p><a href="http://emqtt.com" target="_blank" rel="noopener">EMQ</a>是百万级分布式开源物联网MQTT消息服务器。基于高并发的Erlang/OTP语言平台设计，支持百万级连接和分布式集群，发布订阅模式的开源MQTT消息服务器。完整支持MQTT V3.1/V3.1.1协议规范，扩展支持WebSocket、Stomp、CoAP、MQTT-SN或私有TCP协议。</p>
+<p><img src="http://emqtt.com/static/img/overview.png" alt="emqtt"></p>
+<p>官网了解更多：</p>
+<p><a href="http://emqtt.com" target="_blank" rel="noopener">http://emqtt.com</a><br><a href="https://www.emqx.io" target="_blank" rel="noopener">https://www.emqx.io</a><br><a href="https://github.com/emqx/emqx" target="_blank" rel="noopener">GitHub</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/11/01/things-queue-selection/" target="_blank" title="IIoT消息队列(IoT MQ)选型">https://jigangduan.github.io/2018/11/01/things-queue-selection/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iot/">iot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mq/">mq</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/28/hello-world-kafka-connect-kafka-streams/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Hello World, Kafka连接器 + Kafka流计算
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/10/30/github-paas/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">GitHub精选-PaaS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么被需要MQ？"><span class="nav-number">1.</span> <span class="nav-text">为什么被需要MQ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特性需求"><span class="nav-number">2.</span> <span class="nav-text">特性需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列协议对比"><span class="nav-number">3.</span> <span class="nav-text">消息队列协议对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案建议EMQ-Kafka"><span class="nav-number">4.</span> <span class="nav-text">方案建议EMQ+Kafka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EMQ简介"><span class="nav-number">5.</span> <span class="nav-text">EMQ简介</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

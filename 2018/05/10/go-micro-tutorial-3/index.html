@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>go微服务教程-第三部分 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="golanggo-micro">
+  
+  
+  
+  
+  <meta name="description" content="在之前的文章中，我们介绍了go-micro和Docker的一些基础知识。我们还介绍了第二种服务。在这篇文章中，我们将讨论docker-compose，以及如何在本地更轻松地运行我们的服务。我们将介绍一些不同的数据库，最后我们将介绍第三种服务。">
+<meta name="keywords" content="golang,go-micro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go微服务教程-第三部分">
+<meta property="og:url" content="https://jigangduan.github.io/2018/05/10/go-micro-tutorial-3/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="在之前的文章中，我们介绍了go-micro和Docker的一些基础知识。我们还介绍了第二种服务。在这篇文章中，我们将讨论docker-compose，以及如何在本地更轻松地运行我们的服务。我们将介绍一些不同的数据库，最后我们将介绍第三种服务。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526284371762&di=4d74aecb4c8b43534361e1c232276d81&imgtype=0&src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.204Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go微服务教程-第三部分">
+<meta name="twitter:description" content="在之前的文章中，我们介绍了go-micro和Docker的一些基础知识。我们还介绍了第二种服务。在这篇文章中，我们将讨论docker-compose，以及如何在本地更轻松地运行我们的服务。我们将介绍一些不同的数据库，最后我们将介绍第三种服务。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526284371762&di=4d74aecb4c8b43534361e1c232276d81&imgtype=0&src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-go-micro-tutorial-3" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Go微服务教程-第三部分
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/10/go-micro-tutorial-3/" class="article-date">
+	  <time datetime="2018-05-10T13:56:27.000Z" itemprop="datePublished">2018-05-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1526284371762&amp;di=4d74aecb4c8b43534361e1c232276d81&amp;imgtype=0&amp;src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330" alt="micro-diag"></p>
+<p>在之前的文章中，我们介绍了<a href="https://github.com/micro/go-micro" target="_blank" rel="noopener">go-micro</a>和<a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a>的一些基础知识。我们还介绍了第二种服务。在这篇文章中，我们将讨论<a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">docker-compose</a>，以及如何在本地更轻松地运行我们的服务。我们将介绍一些不同的数据库，最后我们将介绍第三种服务。</p>
+<a id="more"></a>
+<h1 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h1><p>安装docker-compose:<a href="https://docs.docker.com/compose/install/" target="_blank" rel="noopener">https://docs.docker.com/compose/install/</a></p>
+<p>但是首先，让我们看看数据库。</p>
+<h1 id="选择数据库"><a href="#选择数据库" class="headerlink" title="选择数据库"></a>选择数据库</h1><p>到目前为止，我们的数据实际上并没有存储在任何地方，而是存储在我们的服务中，当我们的容器重新启动时，它就会丢失。当然，我们需要一种持久化、存储和查询数据的方法。</p>
+<p>微服务的好处在于，每个服务可以使用不同的数据库。当然你不需要这么做，很多人都不需要。事实上，我很少为小团队做这样的事情，因为维护几个不同的数据库是一种精神上的飞跃，而不仅仅是一个。但是在某些情况下，一个服务数据可能不适合您为其他服务使用的数据库。所以用别的东西是有意义的。由于您的关注是完全独立的，微服务使这个简单的简单。</p>
+<p>为您的服务选择“正确”的数据库是一篇完全不同的文章，<a href="https://www.infoworld.com/article/3236291/database/how-to-choose-a-database-for-your-microservices.html" target="_blank" rel="noopener">例如这篇文章</a>，所以我们不会对这个subect做太多的细节。但是，如果您有相当松散或不一致的数据集，那么NoSQL文档存储解决方案是完美的。它们更灵活，可以存储和使用json。我们将为NoSQL数据库使用MongoDB。没有什么特别的原因，除了它表现良好，它被广泛使用和支持，并且有一个伟大的在线社区。</p>
+<p>如果您的数据更严格地定义和关系，那么使用传统的rdbms或关系数据库是有意义的。但实际上并没有硬性规定，一般情况下，任何人都可以胜任这份工作。但是一定要查看您的数据结构，考虑您的服务是否正在进行更多的阅读或更多的写作，查询的复杂程度如何，并尝试将这些作为选择数据库的起点。对于我们的关系数据库，我们将使用Postgres。再一次，没有什么特别的原因，除了它做的很好，我很熟悉它。你可以用MySQL, MariaDB，或者别的什么。</p>
+<p>Amazon和谷歌对于这两种数据库类型的前提解决方案都有一些出色的解决方案，如果您想避免管理自己的数据库(通常是明智的)。另一个不错的选择是编写，它将使用相同的云提供程序作为您的服务，以避免连接延迟，从而实现各种数据库技术的完全管理、可伸缩的实例。</p>
+<p>亚马逊:RDBMS: <a href="https://aws.amazon.com/rds/" target="_blank" rel="noopener">https://aws.amazon.com/rds/</a> NoSQL: <a href="https://aws.amazon.com/dynamodb/" target="_blank" rel="noopener">https://aws.amazon.com/dynamodb/</a>。</p>
+<p>RDBMS: <a href="https://cloud.google.com/spanner/" target="_blank" rel="noopener">https://cloud.google.com/spanner/</a> NoSQL: <a href="https://cloud.google.com/datastore/。" target="_blank" rel="noopener">https://cloud.google.com/datastore/。</a></p>
+<p>现在我们已经讨论了一些数据库，让我们来做一些编码!</p>
+<h1 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h1><p>在本系列的最后一部分中，我们研究了Docker，它让我们在轻量级容器中运行我们的服务，并使用它们自己的运行时和依赖项。但是，必须使用单独的Makefile来运行和管理每个服务，这有点麻烦。让我们来看看<a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">docker-compose</a>。<a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">Docker-compose </a>允许您在yaml文件中定义docker容器的列表，并指定关于其运行时的元数据。Docker-compose服务或多或少地映射到我们已经使用的docker命令。例如:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -p 50052:50051 -e MICRO_SERVER_ADDRESS=:50051 -e MICRO_REGISTRY=mdns vessel-service</span><br></pre></td></tr></table></figure>
+<p>就变成了:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3.1'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">vessel-service:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./vessel-service</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">50052</span><span class="string">:50051</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br><span class="line">      <span class="attr">MICRO_SERVER_ADDRESS:</span> <span class="string">":50051"</span></span><br></pre></td></tr></table></figure>
+<p>简单!</p>
+<p>因此，让我们在我们的目录$ touch docker-compose.yml中创建一个docker- compile文件。现在加入我们的服务:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">'3.1'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">consignment-cli:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./consignment-cli</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">consignment-service:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./consignment-service</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">50051</span><span class="string">:50051</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_ADDRESS:</span> <span class="string">":50051"</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">"datastore:27017"</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">vessel-service:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./vessel-service</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">50052</span><span class="string">:50051</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_ADDRESS:</span> <span class="string">":50051"</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br></pre></td></tr></table></figure>
+<p>首先，我们定义了我们想要使用的docker-compose的版本，然后是服务列表。还有其他根级定义，如网络和卷，但我们现在只关注服务。</p>
+<p>每个服务由它的名称定义，然后我们包括一个构建路径，它是指向一个位置的引用，该位置应该包含一个Dockerfile。这告诉docker-compose 使用这个Dockerfile来构建它的映像。您还可以在这里使用图像来使用预构建映像。我们以后会讲到。然后定义端口映射，最后定义环境变量。</p>
+<p>要构建docker-compose栈，只需运行<code>$ docker-compose build</code>，并运行它，<code>$ docker-compose run</code>。要在后台运行栈，请使用<code>$ docker-compose up -d</code>。您还可以使用$ docker ps查看当前正在运行的容器的列表。最后，您可以通过运行<code>$ docker stop $(docker ps -qa)</code>来停止所有当前的容器。</p>
+<p>我们来运行栈。您应该会看到大量的输出和dockerfile正在构建。您可能也会从我们的CLI工具中看到错误，但是不要担心，这很可能是因为它是在我们的其他服务之前运行的。它只是说它还找不到它们。</p>
+<p>让我们通过运行CLI工具进行测试。要通过docker-组合运行它，只需运行<code>$ docker-compose run consignment-cli</code>，一旦所有其他容器都在运行。您应该看到它像以前一样成功运行。</p>
+<h1 id="实体和protobufs"><a href="#实体和protobufs" class="headerlink" title="实体和protobufs"></a>实体和protobufs</h1><p>在本系列中，我们谈到了protobufs是我们数据模型的中心。我们使用它来定义我们的服务结构和功能。由于protobuf以或多或少的所有正确的数据类型生成结构，我们也可以重用这些结构作为我们的底层数据库模型。这实际上相当令人兴奋。它与原型保持一致，成为真理的唯一来源。</p>
+<p>然而，这种方法确实有缺点。有时，将protobuf生成的代码编组到一个有效的数据库实体中是很困难的。有时，数据库技术使用自定义类型，这些类型很难从protobuf生成的原生类型转换。我花了很多时间思考的一个问题是如何将Id字符串转换为Id bson。ObjectId Mongodb的实体。结果是bson。ObjectId，实际上只是一个字符串，所以你可以把它们组合在一起。另外，mongodb的id索引在内部存储为_id，因此您需要一种方法将其绑定到id字符串字段，因为您不能真正执行_id字符串。这意味着要找到一种方法来为您的原buf文件定义自定义标记。但我们以后会讲到。</p>
+<p>此外，<a href="https://www.reddit.com/r/golang/comments/77yd72/question_do_you_use_protobufs_in_place_of_structs/" target="_blank" rel="noopener">许多人经常反对</a>使用protobuf定义作为数据库实体，因为您将通信技术与数据库代码紧密耦合。这也是一个有效的点。</p>
+<p>一般情况下，建议在protobuf定义代码和数据库实体之间进行转换。但是，您最终会得到许多转换代码，用于转换两个几乎相同的类型，例如:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(service *Service)</span> <span class="params">(ctx context.Context, req *proto.User, res *proto.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">  entity := &amp;models.User&#123;</span><br><span class="line">    Name: req.Name.</span><br><span class="line">    Email: req.Email,</span><br><span class="line">    Password: req.Password,</span><br><span class="line">  &#125;</span><br><span class="line">  err := service.repo.Create(entity)</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>表面上看起来并不是那么糟糕，但是当你有几个嵌套结构和几种类型时。它可能非常繁琐，而且可能需要大量的迭代来转换嵌套结构等等。</p>
+<p>不过,这种方法真的到你喜欢很多东西在编程,这并不归结为对或错。所以无论感觉最合适的方法。但是,我自己的个人意见是,两个几乎相同的类型之间的转换,尤其是考虑到我们对待protobuf代码作为我们的基础数据,感觉自己像一个减损从我们获得的利益使用protobufs作为你的核心定义。所以我将使用我们的protobuf代码数据库。顺便说一句,我不是说我是对的,我想听到你的意见。</p>
+<p>让我们开始我们的第一个服务，我们的寄售服务。我觉得我们应该先整理一下。我们把所有东西都集中到main_go文件中。我知道这些都是微服务，但这并不是混乱的借口!因此，让我们在consignationservice、<code>handler.go</code>、<code>datastore.go</code>和<code>repository.go</code>中创建两个更多的文件。我在服务的根目录中创建这些，而不是创建它们作为新的包和目录。这对于小型的微服务来说是完全足够的。对于开发人员来说，创建这样的结构是一种常见的诱惑:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">main.go</span><br><span class="line">models/</span><br><span class="line">  user.go</span><br><span class="line">handlers/</span><br><span class="line">  auth.go</span><br><span class="line">  user.go</span><br><span class="line">services/</span><br><span class="line">  auth.go</span><br></pre></td></tr></table></figure>
+<p>这又回到了MVC时代，在Golang中并没有得到真正的建议。当然不是小项目。如果你有一个更大的项目，有多个关注点，你可以按照下面的方式组织它:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main.go</span><br><span class="line">users/</span><br><span class="line">  services/</span><br><span class="line">    auth.go</span><br><span class="line">  handlers/</span><br><span class="line">    auth.go</span><br><span class="line">    user.go</span><br><span class="line">  users/</span><br><span class="line">    user.go</span><br><span class="line">containers/</span><br><span class="line">  services/</span><br><span class="line">    manage.go</span><br><span class="line">  models/</span><br><span class="line">    container.go</span><br></pre></td></tr></table></figure>
+<p>在这里，您是按域对代码进行分组，而不是按其所做的任意分组代码。</p>
+<p>然而，由于我们正在处理一个微服务，它应该只处理一个单一的问题，我们不需要采取上述任何一种方法。事实上，Go的宗旨是鼓励简单。因此，我们将从简单的开始，并将所有内容都放在服务的根目录中，并使用一些明确定义的文件名。</p>
+<p>作为附带说明，我们需要更新Dockerfile的文件，因为我们不需要将新的分离的代码导入到包中，我们需要告诉go编译器将这些新文件拖入其中。因此，更新构建函数如下所示:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN CGO_ENABLED=0 GOOS=linux go build  -o consignment-service -a -installsuffix cgo main.go repository.go handler.go datastore.go</span><br></pre></td></tr></table></figure>
+<p>这将包括我们将要创建的新文件。</p>
+<p><a href="https://github.com/go-mgo/mgo" target="_blank" rel="noopener">MongoDB Golang lib</a>是这个简单的一个很好的例子，最后，这里有一篇<a href="https://rakyll.org/style-packages/" target="_blank" rel="noopener">关于组织Go codebase的好文章</a>。</p>
+<p>让我们首先从main.go中删除所有的存储库代码，并重新使用它来使用mongodb库，mgo。再一次，我试着注释代码来解释每个部分的功能，所以请仔细阅读代码和注释。特别是关于mgo如何处理会话的部分:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// consignment-service/repository.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy/consignment-service/proto/consignment"</span></span><br><span class="line">	<span class="string">"gopkg.in/mgo.v2"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	dbName = <span class="string">"shippy"</span></span><br><span class="line">	consignmentCollection = <span class="string">"consignments"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Repository <span class="keyword">interface</span> &#123;</span><br><span class="line">	Create(*pb.Consignment) error</span><br><span class="line">	GetAll() ([]*pb.Consignment, error)</span><br><span class="line">	Close()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> ConsignmentRepository <span class="keyword">struct</span> &#123;</span><br><span class="line">	session *mgo.Session</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a new consignment</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *ConsignmentRepository)</span> <span class="title">Create</span><span class="params">(consignment *pb.Consignment)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> repo.collection().Insert(consignment)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// GetAll consignments</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *ConsignmentRepository)</span> <span class="title">GetAll</span><span class="params">()</span> <span class="params">([]*pb.Consignment, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> consignments []*pb.Consignment</span><br><span class="line">	<span class="comment">// Find normally takes a query, but as we want everything, we can nil this.</span></span><br><span class="line">	<span class="comment">// We then bind our consignments variable by passing it as an argument to .All().</span></span><br><span class="line">	<span class="comment">// That sets consignments to the result of the find query.</span></span><br><span class="line">	<span class="comment">// There's also a `One()` function for single results.</span></span><br><span class="line">	err := repo.collection().Find(<span class="literal">nil</span>).All(&amp;consignments)</span><br><span class="line">	<span class="keyword">return</span> consignments, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Close closes the database session after each query has ran.</span></span><br><span class="line"><span class="comment">// Mgo creates a 'master' session on start-up, it's then good practice</span></span><br><span class="line"><span class="comment">// to copy a new session for each request that's made. This means that</span></span><br><span class="line"><span class="comment">// each request has its own database session. This is safer and more efficient,</span></span><br><span class="line"><span class="comment">// as under the hood each session has its own database socket and error handling.</span></span><br><span class="line"><span class="comment">// Using one main database socket means requests having to wait for that session.</span></span><br><span class="line"><span class="comment">// I.e this approach avoids locking and allows for requests to be processed concurrently. Nice!</span></span><br><span class="line"><span class="comment">// But... it does mean we need to ensure each session is closed on completion. Otherwise</span></span><br><span class="line"><span class="comment">// you'll likely build up loads of dud connections and hit a connection limit. Not nice!</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *ConsignmentRepository)</span> <span class="title">Close</span><span class="params">()</span></span> &#123;</span><br><span class="line">	repo.session.Close()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *ConsignmentRepository)</span> <span class="title">collection</span><span class="params">()</span> *<span class="title">mgo</span>.<span class="title">Collection</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> repo.session.DB(dbName).C(consignmentCollection)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此，我们的代码负责与Mongodb数据库进行交互。我们需要创建创建主session/connection.的代码。更新consignment-service/datastore.go。用以下:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// consignment-service/datastore.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"gopkg.in/mgo.v2"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreateSession creates the main session to our mongodb instance</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreateSession</span><span class="params">(host <span class="keyword">string</span>)</span> <span class="params">(*mgo.Session, error)</span></span> &#123;</span><br><span class="line">	session, err := mgo.Dial(host)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	session.SetMode(mgo.Monotonic, <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> session, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就是这样，非常直接。它以一个主机字符串作为参数，将会话返回给我们的数据存储，当然还有一个潜在的错误，因此我们可以在启动时处理它。让我们修改我们的主。将此文件连接到我们的存储库:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// consignment-service/main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Import the generated protobuf code</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line"></span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy/consignment-service/proto/consignment"</span></span><br><span class="line">	vesselProto <span class="string">"github.com/EwanValentine/shippy/vessel-service/proto/vessel"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	defaultHost = <span class="string">"localhost:27017"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Database host from the environment variables</span></span><br><span class="line">	host := os.Getenv(<span class="string">"DB_HOST"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> host == <span class="string">""</span> &#123;</span><br><span class="line">		host = defaultHost</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	session, err := CreateSession(host)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Mgo creates a 'master' session, we need to end that session</span></span><br><span class="line">	<span class="comment">// before the main function closes.</span></span><br><span class="line">	<span class="keyword">defer</span> session.Close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// We're wrapping the error returned from our CreateSession</span></span><br><span class="line">		<span class="comment">// here to add some context to the error.</span></span><br><span class="line">		log.Panicf(<span class="string">"Could not connect to datastore with host %s - %v"</span>, host, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create a new service. Optionally include some options here.</span></span><br><span class="line">	srv := micro.NewService(</span><br><span class="line"></span><br><span class="line">		<span class="comment">// This name must match the package name given in your protobuf definition</span></span><br><span class="line">		micro.Name(<span class="string">"go.micro.srv.consignment"</span>),</span><br><span class="line">		micro.Version(<span class="string">"latest"</span>),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	vesselClient := vesselProto.NewVesselService(<span class="string">"go.micro.srv.vessel"</span>, srv.Client())</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Init will parse the command line flags.</span></span><br><span class="line">	srv.Init()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Register handler</span></span><br><span class="line">	pb.RegisterShippingServiceHandler(srv.Server(), &amp;service&#123;session, vesselClient&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Run the server</span></span><br><span class="line">	<span class="keyword">if</span> err := srv.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="复制和克隆"><a href="#复制和克隆" class="headerlink" title="复制和克隆"></a>复制和克隆</h1><p>您可能已经注意到，在使用mgo Mongodb库时。我们创建一个数据库会话，它被传递到我们的处理程序中，但是在每个请求中，我们调用一个方法来克隆该会话并将其传递到存储库代码中。</p>
+<p>实际上，除了生成与数据库的第一个连接之外，我们从未接触过“主会话”，我们每次都要对数据存储进行调用时，我们调用了<code>session.clone()</code>。正如我在代码注释中简要提到的，但是我认为值得重新迭代一些细节，如果您使用主会话，您将重用相同的套接字。这意味着您的查询可能会被其他查询阻塞，并且必须等待操作在这个套接字上完成。这在支持并发性的语言中是没有意义的。</p>
+<p>因此，为了避免阻塞请求，mgo允许您Copy() 或 Clone()一个会话，以便您对每个请求都有一个并发连接。您会注意到，我提到过复制和克隆方法，它们非常相似，但是有一个细微但重要的区别。克隆重新使用与master相同的套接字。这减少了生成一个全新套接字的开销。这是快速写性能的最佳选择。然而，更长的操作，例如更复杂的查询或大数据作业等，可能会导致其他的go例程阻塞，试图使用这个套接字。</p>
+<p>一般来说，你最好是像我们这样的克隆。</p>
+<p>我们需要做的最后一点整理是将gRPC处理程序代码移到新的<code>handler.go</code>文件。让我们这样做。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// consignment-service.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/context"</span></span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy/consignment-service/proto/consignment"</span></span><br><span class="line">	vesselProto <span class="string">"github.com/EwanValentine/shippy/vessel-service/proto/vessel"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Service should implement all of the methods to satisfy the service</span></span><br><span class="line"><span class="comment">// we defined in our protobuf definition. You can check the interface</span></span><br><span class="line"><span class="comment">// in the generated code itself for the exact method signatures etc</span></span><br><span class="line"><span class="comment">// to give you a better idea.</span></span><br><span class="line"><span class="keyword">type</span> service <span class="keyword">struct</span> &#123;</span><br><span class="line">	vesselClient vesselProto.NewVesselService</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">GetRepo</span><span class="params">()</span> <span class="title">Repository</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;ConsignmentRepository&#123;s.session.Clone()&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreateConsignment - we created just one method on our service,</span></span><br><span class="line"><span class="comment">// which is a create method, which takes a context and a request as an</span></span><br><span class="line"><span class="comment">// argument, these are handled by the gRPC server.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">CreateConsignment</span><span class="params">(ctx context.Context, req *pb.Consignment, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">    repo := s.GetRepo()</span><br><span class="line">    <span class="keyword">defer</span> repo.Close()</span><br><span class="line">	<span class="comment">// Here we call a client instance of our vessel service with our consignment weight,</span></span><br><span class="line">	<span class="comment">// and the amount of containers as the capacity value</span></span><br><span class="line">	vesselResponse, err := s.vesselClient.FindAvailable(context.Background(), &amp;vesselProto.Specification&#123;</span><br><span class="line">		MaxWeight: req.Weight,</span><br><span class="line">		Capacity: <span class="keyword">int32</span>(<span class="built_in">len</span>(req.Containers)),</span><br><span class="line">	&#125;)</span><br><span class="line">	log.Printf(<span class="string">"Found vessel: %s \n"</span>, vesselResponse.Vessel.Name)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// We set the VesselId as the vessel we got back from our</span></span><br><span class="line">	<span class="comment">// vessel service</span></span><br><span class="line">	req.VesselId = vesselResponse.Vessel.Id</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Save our consignment</span></span><br><span class="line">	err = repo.Create(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Return matching the `Response` message we created in our</span></span><br><span class="line">	<span class="comment">// protobuf definition.</span></span><br><span class="line">	res.Created = <span class="literal">true</span></span><br><span class="line">	res.Consignment = req</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">GetConsignments</span><span class="params">(ctx context.Context, req *pb.GetRequest, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">    repo := s.GetRepo()</span><br><span class="line">    <span class="keyword">defer</span> repo.Close()</span><br><span class="line">	consignments, err := repo.GetAll()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.Consignments = consignments</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们已经更新了我们的repo中的一些返回参数，这些参数来自于上一个教程:Old:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Repository <span class="keyword">interface</span> &#123;</span><br><span class="line">	Create(*pb.Consignment) (*pb.Consignment, error)</span><br><span class="line">	GetAll() []*pb.Consignment</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>New:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Repository <span class="keyword">interface</span> &#123;</span><br><span class="line">	Create(*pb.Consignment) error</span><br><span class="line">	GetAll() ([]*pb.Consignment, error)</span><br><span class="line">    Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这只是因为我觉得我们不需要在创建后返回相同的货物。现在，我们从mgo返回一个适当的错误，以获取我们的get查询。否则代码或多或少是相同的。当然，我们将我们的封闭方法添加到接口中。</p>
+<p>现在让我们对您的vessel-service做同样的操作。我不打算在这篇文章中演示，你应该在这一点上有一个好的感觉。记住，您可以使用我的存储库作为参考。</p>
+<p>不过，我们将为我们的vesselservice添加一个新方法，它将允许我们创建新的容器。与以往一样，让我们从更新我们的protobuf定义开始:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> vessel;</span><br><span class="line"></span><br><span class="line">service VesselService &#123;</span><br><span class="line">  rpc FindAvailable(Specification) returns (Response) &#123;&#125;</span><br><span class="line">  rpc Create(Vessel) returns (Response) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Vessel &#123;</span><br><span class="line">  <span class="keyword">string</span> id = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int32</span> capacity = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">int32</span> max_weight = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">string</span> name = <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">bool</span> available = <span class="number">5</span>;</span><br><span class="line">  <span class="keyword">string</span> owner_id = <span class="number">6</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Specification &#123;</span><br><span class="line">  <span class="keyword">int32</span> capacity = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int32</span> max_weight = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Response &#123;</span><br><span class="line">  Vessel vessel = <span class="number">1</span>;</span><br><span class="line">  repeated Vessel vessels = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">bool</span> created = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在gRPC服务下创建了一个新创建方法，它接收一个容器并返回我们的一般响应。我们还为响应消息添加了一个新字段，仅仅是一个创建的bool。运行$ make构建以更新此服务。现在我们将在<code>vessel-service/handler.go</code>中添加一个新的处理程序和一个新的存储库方法:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vessel-service/handler.go</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">GetRepo</span><span class="params">()</span> <span class="title">Repository</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;VesselRepository&#123;s.session.Clone()&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *service)</span> <span class="title">Create</span><span class="params">(ctx context.Context, req *pb.Vessel, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">    repo := s.GetRepo()</span><br><span class="line">    <span class="keyword">defer</span> repo.Close()</span><br><span class="line">	<span class="keyword">if</span> err := repo.Create(req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.Vessel = req</span><br><span class="line">	res.Created = <span class="literal">true</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vessel-service/repository.go</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *VesselRepository)</span> <span class="title">Create</span><span class="params">(vessel *pb.Vessel)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> repo.collection().Insert(vessel)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以在这之后。我们已经更新了我们的服务以使用Mongodb。在尝试运行此操作之前，我们需要更新docker-compose文件，以包含Mongodb容器:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">datastore:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mongo</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">27017</span><span class="string">:27017</span></span><br></pre></td></tr></table></figure>
+<p>在您的两个服务中更新环境变量，包括:DB_HOST:“datastore:27017”。注意，我们将数据存储称为主机名，而不是本地主机。这是因为docker-组合为我们处理了一些聪明的内部DNS。</p>
+<p>所以你应该:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3.1'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">consignment-cli:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./consignment-cli</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">consignment-service:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./consignment-service</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">50051</span><span class="string">:50051</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_ADDRESS:</span> <span class="string">":50051"</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">"datastore:27017"</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">vessel-service:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./vessel-service</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">50052</span><span class="string">:50051</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_ADDRESS:</span> <span class="string">":50051"</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">"datastore:27017"</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">datastore:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mongo</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">27017</span><span class="string">:27017</span></span><br></pre></td></tr></table></figure>
+<p>重新构建您的堆栈<code>$ docker-compose build</code>并重新运行它<code>$ docker-compose up</code>。注意，有时由于Dockers缓存，您可能需要运行一个cacheless构建来获取某些更改。要在docker-compose中执行此操作，只需在运行<code>$ docker-compose build</code>时使用-no-cache标志。</p>
+<h1 id="用户服务"><a href="#用户服务" class="headerlink" title="用户服务"></a>用户服务</h1><p>现在，让我们创建第三个服务。我们将从更新docker-compose.yml文件开始。此外，为了将内容混合起来，我们将为我们的用户服务在docker堆栈中添加Postgres:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line">  <span class="attr">user-service:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./user-service</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">50053</span><span class="string">:50051</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MICRO_ADDRESS:</span> <span class="string">":50051"</span></span><br><span class="line">      <span class="attr">MICRO_REGISTRY:</span> <span class="string">"mdns"</span></span><br><span class="line"></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">database:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">5432</span><span class="string">:5432</span></span><br></pre></td></tr></table></figure>
+<p>现在在根目录中创建一个用户服务目录。和之前的服务一样。创建下列文件:handler.go, main.go, repository.go, database.go, Dockerfile, Makefile，我们的proto文件的子目录，最后是proto文件本身:proto/user/user.proto。</p>
+<p>将以下内容添加到user.proto:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">package go.micro.srv.user;</span><br><span class="line"></span><br><span class="line">service UserService &#123;</span><br><span class="line">    rpc Create(User) returns (Response) &#123;&#125;</span><br><span class="line">    rpc Get(User) returns (Response) &#123;&#125;</span><br><span class="line">    rpc GetAll(Request) returns (Response) &#123;&#125;</span><br><span class="line">    rpc Auth(User) returns (Token) &#123;&#125;</span><br><span class="line">    rpc ValidateToken(Token) returns (Token) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message User &#123;</span><br><span class="line">    string id = 1;</span><br><span class="line">    string name = 2;</span><br><span class="line">    string company = 3;</span><br><span class="line">    string email = 4;</span><br><span class="line">    string password = 5;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Request &#123;&#125;</span><br><span class="line"></span><br><span class="line">message Response &#123;</span><br><span class="line">    User user = 1;</span><br><span class="line">    repeated User users = 2;</span><br><span class="line">    repeated Error errors = 3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Token &#123;</span><br><span class="line">    string token = 1;</span><br><span class="line">    bool valid = 2;</span><br><span class="line">    repeated Error errors = 3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Error &#123;</span><br><span class="line">    int32 code = 1;</span><br><span class="line">    string description = 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，确保您已经创建了一个类似于我们以前的服务的Makefile，您应该能够运行$ make构建来生成我们的gRPC代码。根据我们以前的服务，我们已经创建了一些代码来接口我们的gRPC方法。我们只会让其中的一部分在这个系列的这一部分中工作。我们只是希望能够创建和获取一个用户。在本系列的下一部分中，我们将讨论身份验证和JWT。所以我们将会留下任何与现在有关的标记。您的处理程序应该是这样的:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user-service/handler.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"golang.org/x/net/context"</span></span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy/user-service/proto/user"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> service <span class="keyword">struct</span> &#123;</span><br><span class="line">	repo Repository</span><br><span class="line">	tokenService Authable</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">Get</span><span class="params">(ctx context.Context, req *pb.User, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	user, err := srv.repo.Get(req.Id)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.User = user</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">GetAll</span><span class="params">(ctx context.Context, req *pb.Request, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	users, err := srv.repo.GetAll()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.Users = users</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">Auth</span><span class="params">(ctx context.Context, req *pb.User, res *pb.Token)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	user, err := srv.repo.GetByEmailAndPassword(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.Token = <span class="string">"testingabc"</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">Create</span><span class="params">(ctx context.Context, req *pb.User, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> err := srv.repo.Create(req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.User = req</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">ValidateToken</span><span class="params">(ctx context.Context, req *pb.Token, res *pb.Token)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在让我们添加我们的存储库代码:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user-service/repository.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy/user-service/proto/user"</span></span><br><span class="line">	<span class="string">"github.com/jinzhu/gorm"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Repository <span class="keyword">interface</span> &#123;</span><br><span class="line">	GetAll() ([]*pb.User, error)</span><br><span class="line">	Get(id <span class="keyword">string</span>) (*pb.User, error)</span><br><span class="line">	Create(user *pb.User) error</span><br><span class="line">	GetByEmailAndPassword(user *pb.User) (*pb.User, error)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserRepository <span class="keyword">struct</span> &#123;</span><br><span class="line">	db *gorm.DB</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *UserRepository)</span> <span class="title">GetAll</span><span class="params">()</span> <span class="params">([]*pb.User, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> users []*pb.User</span><br><span class="line">	<span class="keyword">if</span> err := repo.db.Find(&amp;users).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> users, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *UserRepository)</span> <span class="title">Get</span><span class="params">(id <span class="keyword">string</span>)</span> <span class="params">(*pb.User, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> user *pb.User</span><br><span class="line">	user.Id = id</span><br><span class="line">	<span class="keyword">if</span> err := repo.db.First(&amp;user).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> user, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *UserRepository)</span> <span class="title">GetByEmailAndPassword</span><span class="params">(user *pb.User)</span> <span class="params">(*pb.User, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> err := repo.db.First(&amp;user).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> user, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(repo *UserRepository)</span> <span class="title">Create</span><span class="params">(user *pb.User)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> err := repo.db.Create(user).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们还需要改变ORM的行为来生成一个UUID，而不是试图生成一个整数ID，如果你不知道，UUID是一个随机生成的连字符字符串，用作ID或主键。这比使用自动递增的ID更安全，因为它阻止人们猜测或遍历API端点。MongoDB已经使用了这种变体，但是我们需要告诉我们的Postgres模型使用UUID。因此，在user-service/proto/user中创建一个名为extensions.go的新文件。在这个文件中，添加:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> go_micro_srv_user</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/jinzhu/gorm"</span></span><br><span class="line">	<span class="string">"github.com/satori/go.uuid"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(model *User)</span> <span class="title">BeforeCreate</span><span class="params">(scope *gorm.Scope)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	uuid := uuid.NewV4()</span><br><span class="line">	<span class="keyword">return</span> scope.SetColumn(<span class="string">"Id"</span>, uuid.String())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个钩子进入GORM的事件生命周期，以便在实体被保存之前为Id列生成UUID。</p>
+<p>您会注意到，与我们的Mongodb服务不同，我们没有进行任何连接处理。本机、SQL/postgres驱动程序的工作方式略有不同，所以这次我们不需要担心这个问题。我们正在使用一个名为“gorm”的软件包，让我们简单地讨论一下这个问题。</p>
+<h1 id="Gorm-Go-ORM"><a href="#Gorm-Go-ORM" class="headerlink" title="Gorm - Go + ORM"></a>Gorm - Go + ORM</h1><p><a href="http://jinzhu.me/gorm/" target="_blank" rel="noopener">Gorm</a>是一个合理的轻量级对象关系映射器，它与Postgres、MySQL、Sqlite等很好地工作，它很容易设置、使用和管理数据库模式自动更改。</p>
+<p>也就是说，使用微服务，您的数据结构要小得多，包含更少的连接和整体的复杂性。所以，不要觉得你应该使用任何类型的ORM。</p>
+<p>我们需要能够测试创建用户，所以让我们创建另一个cli工具。这一次用户cli在我们的项目根中。类似于我们的consignment-cli，但这次:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line"></span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy/user-service/proto/user"</span></span><br><span class="line">	microclient <span class="string">"github.com/micro/go-micro/client"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/cmd"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/context"</span></span><br><span class="line">	<span class="string">"github.com/micro/cli"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	cmd.Init()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create new greeter client</span></span><br><span class="line">	client := pb.NewUserService(<span class="string">"go.micro.srv.user"</span>, microclient.DefaultClient)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Define our flags</span></span><br><span class="line">	service := micro.NewService(</span><br><span class="line">		micro.Flags(</span><br><span class="line">			cli.StringFlag&#123;</span><br><span class="line">				Name:  <span class="string">"name"</span>,</span><br><span class="line">				Usage: <span class="string">"You full name"</span>,</span><br><span class="line">			&#125;,</span><br><span class="line">			cli.StringFlag&#123;</span><br><span class="line">				Name:  <span class="string">"email"</span>,</span><br><span class="line">				Usage: <span class="string">"Your email"</span>,</span><br><span class="line">			&#125;,</span><br><span class="line">			cli.StringFlag&#123;</span><br><span class="line">				Name:  <span class="string">"password"</span>,</span><br><span class="line">				Usage: <span class="string">"Your password"</span>,</span><br><span class="line">			&#125;,</span><br><span class="line">			cli.StringFlag&#123;</span><br><span class="line">				Name: <span class="string">"company"</span>,</span><br><span class="line">				Usage: <span class="string">"Your company"</span>,</span><br><span class="line">			&#125;,</span><br><span class="line">		),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Start as service</span></span><br><span class="line">	service.Init(</span><br><span class="line"></span><br><span class="line">		micro.Action(<span class="function"><span class="keyword">func</span><span class="params">(c *cli.Context)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">			name := c.String(<span class="string">"name"</span>)</span><br><span class="line">			email := c.String(<span class="string">"email"</span>)</span><br><span class="line">			password := c.String(<span class="string">"password"</span>)</span><br><span class="line">			company := c.String(<span class="string">"company"</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Call our user service</span></span><br><span class="line">			r, err := client.Create(context.TODO(), &amp;pb.User&#123;</span><br><span class="line">				Name: name,</span><br><span class="line">				Email: email,</span><br><span class="line">				Password: password,</span><br><span class="line">				Company: company,</span><br><span class="line">			&#125;)</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">				log.Fatalf(<span class="string">"Could not create: %v"</span>, err)</span><br><span class="line">			&#125;</span><br><span class="line">			log.Printf(<span class="string">"Created: %s"</span>, r.User.Id)</span><br><span class="line"></span><br><span class="line">			getAll, err := client.GetAll(context.Background(), &amp;pb.Request&#123;&#125;)</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">				log.Fatalf(<span class="string">"Could not list users: %v"</span>, err)</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span> _, v := <span class="keyword">range</span> getAll.Users &#123;</span><br><span class="line">				log.Println(v)</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			os.Exit(<span class="number">0</span>)</span><br><span class="line">		&#125;),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Run the server</span></span><br><span class="line">	<span class="keyword">if</span> err := service.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们使用了go-micro的命令行帮助器，非常简洁。</p>
+<p>我们可以运行这个并创建一个用户:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose run user-cli <span class="built_in">command</span> \</span><br><span class="line">  --name=<span class="string">"Ewan Valentine"</span> \</span><br><span class="line">  --email=<span class="string">"ewan.valentine89@gmail.com"</span> \</span><br><span class="line">  --password=<span class="string">"Testing123"</span> \</span><br><span class="line">  --company=<span class="string">"BBC"</span></span><br></pre></td></tr></table></figure>
+<p>您应该在列表中看到创建的用户!</p>
+<p>这不是很安全，因为目前我们存储的是明文密码，但是在本系列的下一部分中，我们将在我们的服务中查看身份验证和JWT标记。</p>
+<p>我们已经创建了一个额外的服务，一个额外的命令行工具，我们开始使用两种不同的数据库技术来保存数据。在这篇文章中，我们已经讨论了很多问题，如果我们过于迅速地讨论任何事情，涉及太多或假设太多的知识，我们就会道歉。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/05/10/go-micro-tutorial-3/" target="_blank" title="Go微服务教程-第三部分">https://jigangduan.github.io/2018/05/10/go-micro-tutorial-3/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-micro/">go-micro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/10/go-micro-tutorial-4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Go微服务教程-第四部分
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/10/go-micro-tutorial-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Go微服务教程-第二部分(Docker和go-micro)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#先决条件"><span class="nav-number">1.</span> <span class="nav-text">先决条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择数据库"><span class="nav-number">2.</span> <span class="nav-text">选择数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker-compose"><span class="nav-number">3.</span> <span class="nav-text">docker-compose</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实体和protobufs"><span class="nav-number">4.</span> <span class="nav-text">实体和protobufs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复制和克隆"><span class="nav-number">5.</span> <span class="nav-text">复制和克隆</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户服务"><span class="nav-number">6.</span> <span class="nav-text">用户服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gorm-Go-ORM"><span class="nav-number">7.</span> <span class="nav-text">Gorm - Go + ORM</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

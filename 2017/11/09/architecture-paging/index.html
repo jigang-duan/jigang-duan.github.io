@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>android 架构组件 - 分页库 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="android架构设计">
+  
+  
+  
+  
+  <meta name="description" content="分页库使您的应用程序可以更容易地根据需要从数据源加载信息，而不会使设备超载，或者等待一个大的数据库查询等待太长的时间。">
+<meta name="keywords" content="android,架构设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 架构组件 - 分页库">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/09/architecture-paging/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="分页库使您的应用程序可以更容易地根据需要从数据源加载信息，而不会使设备超载，或者等待一个大的数据库查询等待太长的时间。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://developer.android.google.cn/topic/images/arch/hero/arch-hero.png">
+<meta property="og:image" content="https://developer.android.google.cn/images/topic/libraries/architecture/paging-threading.gif">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 架构组件 - 分页库">
+<meta name="twitter:description" content="分页库使您的应用程序可以更容易地根据需要从数据源加载信息，而不会使设备超载，或者等待一个大的数据库查询等待太长的时间。">
+<meta name="twitter:image" content="https://developer.android.google.cn/topic/images/arch/hero/arch-hero.png">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-architecture-paging" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android 架构组件 - 分页库
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/09/architecture-paging/" class="article-date">
+	  <time datetime="2017-11-09T06:45:09.000Z" itemprop="datePublished">2017-11-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android架构组件/">Android架构组件</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://developer.android.google.cn/topic/images/arch/hero/arch-hero.png" alt="arch-hero.png"></p>
+<p>分页库使您的应用程序可以更容易地根据需要从数据源加载信息，而不会使设备超载，或者等待一个大的数据库查询等待太长的时间。</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>许多应用程序都使用大量的数据，但只需要在任何时候加载和显示一小部分数据。<br>一个应用程序可能会有数千个可能显示的项目，但它可能只需要一次访问其中的几十个。<br>如果应用程序不小心，它可能最终会请求它实际上不需要的数据，从而给设备和网络带来性能负担。<br>如果数据被存储或与远程数据库同步，这也会降低应用程序的速度，并浪费用户的数据计划。</p>
+<p>尽管现有的Android api允许在内容中进行分页，但它们带来了巨大的限制和缺点:</p>
+<ul>
+<li><p><a href="https://developer.android.google.cn/reference/android/widget/CursorAdapter.html" target="_blank" rel="noopener">CursorAdapter</a>使将数据库查询结果映射到ListView项变得更加容易，但是它在UI线程上运行数据库查询，并且在页面内容中使用<a href="https://developer.android.google.cn/reference/android/database/Cursor.html" target="_blank" rel="noopener">Cursor</a>效率不高。<br>有关使用CursorAdapter的缺点的更多细节，请参见该博客在<a href="https://medium.com/google-developers/large-database-queries-on-android-cb043ae626e8" target="_blank" rel="noopener">Android上发布大型数据库查询</a>。</p>
+</li>
+<li><p>AsyncListUtil允许将基于位置的数据转换为RecyclerView，但不允许非位置分页，它在可数的数据集中强制null作为占位符。</p>
+</li>
+</ul>
+<p>新的分页库解决了这些问题。<br>这个库包含几个类，可以简化请求数据的过程。<br>这些类还可以与现有的体系结构组件无缝协作，比如Room。</p>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><p>分页库提供了以下类，以及附加的支持类:</p>
+<p><strong><a href="https://developer.android.google.cn/reference/android/arch/paging/DataSource.html" target="_blank" rel="noopener">DataSource</a></strong></p>
+<p>使用这个类来定义一个数据源，您需要从它获取分页数据。<br>根据您需要访问数据的方式，您将扩展它的两个子类中的一个:</p>
+<ul>
+<li><p>使用<a href="https://developer.android.google.cn/reference/android/arch/paging/KeyedDataSource.html" target="_blank" rel="noopener">KeyedDataSource</a>，如果您需要使用来自item N的数据来获取item N+1。<br>例如，如果您正在为一个讨论应用程序获取线程评论，您可能需要传递一个评论的ID来获取下一个评论的内容。</p>
+</li>
+<li><p>使用<a href="https://developer.android.google.cn/reference/android/arch/paging/TiledDataSource.html" target="_blank" rel="noopener">TiledDataSource</a>，如果您需要从您在数据存储中选择的任何位置获取数据页。<br>这个类支持从您选择的任何位置开始请求一组数据项，比如“返回从位置1200开始的20个数据项”。</p>
+</li>
+</ul>
+<p>如果您使用<a href="/2017/11/09/architecture-room/">Room持久性库</a>来管理您的数据，它可以自动为您创建一个TiledDataSource，例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Query</span>(<span class="string">"select * from users WHERE age &gt; :age order by name DESC, id ASC"</span>)</span><br><span class="line"><span class="function">TiledDataSource&lt;User&gt; <span class="title">usersOlderThan</span><span class="params">(<span class="keyword">int</span> age)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><strong><a href="https://developer.android.google.cn/reference/android/arch/paging/PagedList.html" target="_blank" rel="noopener">PagedList</a></strong></p>
+<p>这个类从一个数据源加载数据。<br>您可以配置一次加载了多少数据，以及应该预先获取多少数据，从而最小化了用户等待数据加载的时间。<br>这个类可以向其他类提供更新信号，比如RecyclerView.Adapter，允许您在数据加载到页面时更新RecyclerView的内容。</p>
+<p><strong><a href="https://developer.android.google.cn/reference/android/arch/paging/PagedListAdapter.html" target="_blank" rel="noopener">PagedListAdapter</a></strong></p>
+<p>这个类是<code>RecyclerView.Adapte</code>r的实现，它显示了<code>PagedList</code>的数据。例如，当加载一个新页面时，<code>PagedListAdapter</code>表示数据已经到达的<code>RecyclerView</code>;这样，<code>RecyclerView</code>就可以用实际的条目替换任何占位符，执行适当的动画。</p>
+<p>PagedListAdapter还使用一个后台线程来计算PagedList下一次的更改(例如，当数据库更改生成一个带有更新数据的新PagedList时)，并根据需要调用<a href="https://developer.android.google.cn/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyItemChanged(int" target="_blank" rel="noopener">notifyItem…()</a>) 方法来更新列表的内容。<br>然后，RecyclerView执行必要的更改。<br>例如，如果一个项目改变了PagedList版本之间的位置，那么RecyclerView将使该项目移动到列表中的新位置。</p>
+<p><strong><a href="https://developer.android.google.cn/reference/android/arch/paging/LivePagedListProvider.html" target="_blank" rel="noopener">LivePagedListProvider</a></strong></p>
+<p>这个类从您提供的<a href="https://developer.android.google.cn/reference/android/arch/paging/DataSource.html" target="_blank" rel="noopener">DataSource</a>生成<code>LiveData&lt;PagedList&gt;</code>。<br>此外，如果您使用<a href="/2017/11/09/architecture-room/">Room持久性库</a>来管理数据库，那么DAO可以使用<code>TiledDataSource</code>为您生成<code>LivePagedListProvider</code>，例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Query</span>(<span class="string">"SELECT * from users order WHERE age &gt; :age order by name DESC, id ASC"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> LivePagedListProvider&lt;Integer, User&gt; <span class="title">usersOlderThan</span><span class="params">(<span class="keyword">int</span> age)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>整数参数告诉Room使用TiledDataSource，以基于位置的负载为基础。</p>
+<p>紧挨着，分页库的组件组织了来自后台线程的数据流，以及UI线程的表示。<br>例如，当在数据库中插入一个新项时，数据源就会失效，而LivePagedListProvider会在后台线程中生成一个新的PagedList。</p>
+<p><img src="https://developer.android.google.cn/images/topic/libraries/architecture/paging-threading.gif" alt="paging-threading.gif"><br>    图1所示 分页库组件在后台线程中完成了大部分工作，因此它们不会负担UI线程</p>
+<p>这个新创建的PagedList被发送到UI线程上的PagedListAdapter。<br>然后，PagedListAdapter会在后台线程上使用<a href="https://developer.android.google.cn/reference/android/support/v7/util/DiffUtil.html" target="_blank" rel="noopener">DiffUtil</a>来计算当前列表和新列表之间的差异。<br>当完成比较,PagedListAdapter使用差异列表信息做出适当的调用<a href="https://developer.android.google.cn/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyItemInserted(int" target="_blank" rel="noopener">RecyclerView.Adapter.notifyItemInserted()</a>)信号,插入一个新项。</p>
+<p>在UI线程上的RecyclerView知道它只需要绑定一个新条目，并将它显示在屏幕上。</p>
+<p>下面的代码示例显示了所有的片段一起工作。当用户在数据库中添加、删除或更改时，RecyclerView的内容会自动且有效地更新:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Dao</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserDao</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Query</span>(<span class="string">"SELECT * FROM user ORDER BY lastName ASC"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> LivePagedListProvider&lt;Integer, User&gt; <span class="title">usersByLastName</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewModel</span> <span class="keyword">extends</span> <span class="title">ViewModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> LiveData&lt;PagedList&lt;User&gt;&gt; usersList;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span><span class="params">(UserDao userDao)</span> </span>&#123;</span><br><span class="line">        usersList = userDao.usersByLastName().create(</span><br><span class="line">                <span class="comment">/* initial load position */</span> <span class="number">0</span>,</span><br><span class="line">                <span class="keyword">new</span> PagedList.Config.Builder()</span><br><span class="line">                        .setPageSize(<span class="number">50</span>)</span><br><span class="line">                        .setPrefetchDistance(<span class="number">50</span>)</span><br><span class="line">                        .build());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedState);</span><br><span class="line">        MyViewModel viewModel = ViewModelProviders.of(<span class="keyword">this</span>).get(MyViewModel<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        RecyclerView recyclerView = findViewById(R.id.user_list);</span><br><span class="line">        UserAdapter&lt;User&gt; adapter = <span class="keyword">new</span> UserAdapter();</span><br><span class="line">        viewModel.usersList.observe(<span class="keyword">this</span>, pagedList -&gt; adapter.setList(pagedList));</span><br><span class="line">        recyclerView.setAdapter(adapter);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserAdapter</span> <span class="keyword">extends</span> <span class="title">PagedListAdapter</span>&lt;<span class="title">User</span>, <span class="title">UserViewHolder</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserAdapter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(DIFF_CALLBACK);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(UserViewHolder holder, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        User user = getItem(position);</span><br><span class="line">        <span class="keyword">if</span> (user != <span class="keyword">null</span>) &#123;</span><br><span class="line">            holder.bindTo(user);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Null defines a placeholder item - PagedListAdapter will automatically invalidate</span></span><br><span class="line">            <span class="comment">// this row when the actual object is loaded from the database</span></span><br><span class="line">            holder.clear();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> DiffCallback&lt;User&gt; DIFF_CALLBACK = <span class="keyword">new</span> DiffCallback&lt;User&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">areItemsTheSame</span><span class="params">(@NonNull User oldUser, @NonNull User newUser)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// User properties may have changed if reloaded from the DB, but ID is fixed</span></span><br><span class="line">            <span class="keyword">return</span> oldUser.getId() == newUser.getId();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">areContentsTheSame</span><span class="params">(@NonNull User oldUser, @NonNull User newUser)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// <span class="doctag">NOTE:</span> if you use equals, your object must properly override Object#equals()</span></span><br><span class="line">            <span class="comment">// Incorrectly returning false here will result in too many animations.</span></span><br><span class="line">            <span class="keyword">return</span> oldUser.equals(newUser);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/09/architecture-paging/" target="_blank" title="Android 架构组件 - 分页库">https://jigangduan.github.io/2017/11/09/architecture-paging/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构设计/">架构设计</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/09/ReactorKit/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          ReactorKit 介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/09/architecture-room/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Android 架构组件 - Room持久性库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类"><span class="nav-number">2.</span> <span class="nav-text">类</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

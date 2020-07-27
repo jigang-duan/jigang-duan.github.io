@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>anko 布局 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="androidankokotlin">
+  
+  
+  
+  
+  <meta name="description" content="为什么Anko布局? DSL的原因? 支持现有的代码 它是如何工作的 它是可扩展的吗?   在你的项目中使用Anko Layouts 理解Anko 基础知识 AnkoComponent 辅助块 主题块 布局和LayoutParams Listeners 定制的协程上下文 使用资源标识符 实例简化符号 UI包装 Include标签   Anko支持插件 安装Anko支持插件 使用插件 XML D">
+<meta name="keywords" content="android,anko,kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Anko 布局">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/02/Anko-Layouts/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="为什么Anko布局? DSL的原因? 支持现有的代码 它是如何工作的 它是可扩展的吗?   在你的项目中使用Anko Layouts 理解Anko 基础知识 AnkoComponent 辅助块 主题块 布局和LayoutParams Listeners 定制的协程上下文 使用资源标识符 实例简化符号 UI包装 Include标签   Anko支持插件 安装Anko支持插件 使用插件 XML D">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/Kotlin/anko/blob/master/doc/logo.png?raw=true">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.148Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Anko 布局">
+<meta name="twitter:description" content="为什么Anko布局? DSL的原因? 支持现有的代码 它是如何工作的 它是可扩展的吗?   在你的项目中使用Anko Layouts 理解Anko 基础知识 AnkoComponent 辅助块 主题块 布局和LayoutParams Listeners 定制的协程上下文 使用资源标识符 实例简化符号 UI包装 Include标签   Anko支持插件 安装Anko支持插件 使用插件 XML D">
+<meta name="twitter:image" content="https://github.com/Kotlin/anko/blob/master/doc/logo.png?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Anko-Layouts" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Anko 布局
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/02/Anko-Layouts/" class="article-date">
+	  <time datetime="2017-11-02T10:56:23.000Z" itemprop="datePublished">2017-11-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Kotlin/">Kotlin</a><a class="article-category-link" href="/categories/Kotlin/Anko/">Anko</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://github.com/Kotlin/anko/blob/master/doc/logo.png?raw=true" alt="anko"></p>
+<ul>
+<li><a href="#why_anko_layouts">为什么Anko布局?</a><ul>
+<li><a href="#why_dsl">DSL的原因?</a></li>
+<li><a href="#existing_code">支持现有的代码</a></li>
+<li><a href="#how_works">它是如何工作的</a></li>
+<li><a href="#extensible">它是可扩展的吗?</a></li>
+</ul>
+</li>
+<li><a href="#using_anko_layouts">在你的项目中使用Anko Layouts</a></li>
+<li><a href="#understanding_anko">理解Anko</a><ul>
+<li><a href="#basics">基础知识</a></li>
+<li><a href="#ankocomponent">AnkoComponent</a></li>
+<li><a href="#helper_blocks">辅助块</a></li>
+<li><a href="#themed_blocks">主题块</a></li>
+<li><a href="#layouts_params">布局和LayoutParams</a></li>
+<li><a href="#listeners">Listeners</a></li>
+<li><a href="#custom_coroutine_context">定制的协程上下文</a></li>
+<li><a href="#using_resource_id">使用资源标识符</a></li>
+<li><a href="#instance_shorthand_notation">实例简化符号</a></li>
+<li><a href="#ui_wrapper">UI包装</a></li>
+<li><a href="#include_tag">Include标签</a></li>
+</ul>
+</li>
+<li><a href="#anko_support_plugin">Anko支持插件</a><ul>
+<li><a href="#installing_anko_support_plugin">安装Anko支持插件</a></li>
+<li><a href="#using_anko_support_plugin">使用插件</a></li>
+<li><a href="#xml_dsl_converter">XML DSL转换器</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="为什么Anko布局"><a href="#为什么Anko布局" class="headerlink" title="为什么Anko布局?"></a><a name="why_anko_layouts"></a>为什么Anko布局?</h2><h3 id="DSL的原因"><a href="#DSL的原因" class="headerlink" title="DSL的原因?"></a><a name="why_dsl"></a>DSL的原因?</h3><p>默认情况下，Android中的UI是用XML编写的。这在以下方面是不方便的:</p>
+<ul>
+<li>不是类型安全;</li>
+<li>不是空值安全;</li>
+<li>它迫使您为每一个布局编写几乎相同的代码;</li>
+<li>在设备上解析XML，浪费CPU时间和电池;</li>
+<li>最重要的是，它不允许代码重用。</li>
+</ul>
+<p>虽然您可以通过编程方式创建UI，但这几乎是不可能完成的，因为它有点难看，很难维护。这是一个普通的Kotlin版本(Java中的一个更长的版本):</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> act = <span class="keyword">this</span></span><br><span class="line"><span class="keyword">val</span> layout = LinearLayout(act)</span><br><span class="line">layout.orientation = LinearLayout.VERTICAL</span><br><span class="line"><span class="keyword">val</span> name = EditText(act)</span><br><span class="line"><span class="keyword">val</span> button = Button(act)</span><br><span class="line">button.text = <span class="string">"Say Hello"</span></span><br><span class="line">button.setOnClickListener &#123;</span><br><span class="line">    Toast.makeText(act, <span class="string">"Hello, <span class="subst">$&#123;name.text&#125;</span>!"</span>, Toast.LENGTH_SHORT).show()</span><br><span class="line">&#125;</span><br><span class="line">layout.addView(name)</span><br><span class="line">layout.addView(button)</span><br></pre></td></tr></table></figure>
+<p>DSL使相同的逻辑易于阅读，易于编写，并且没有运行时开销。这里又有了:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">verticalLayout &#123;</span><br><span class="line">    <span class="keyword">val</span> name = editText()</span><br><span class="line">    button(<span class="string">"Say Hello"</span>) &#123;</span><br><span class="line">        onClick &#123; toast(<span class="string">"Hello, <span class="subst">$&#123;name.text&#125;</span>!"</span>) &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，<code>onClick()</code>支持协程(接受suspending lambda)，这样您就可以在没有显式的<code>async(UI)</code>调用的情况下编写异步代码。</p>
+<h3 id="支持现有的代码"><a href="#支持现有的代码" class="headerlink" title="支持现有的代码"></a><a name="existing_code"></a>支持现有的代码</h3><p>你不需要重写Anko的所有UI。您可以用Java编写旧的类。此外，如果您仍然希望(或有)编写一个Kotlin activity类，并出于某种原因使XML布局膨胀，您可以使用视图属性，这将使事情变得更简单:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 与findViewById()相同，但使用起来更简单</span></span><br><span class="line"><span class="keyword">val</span> name = find&lt;TextView&gt;(R.id.name)</span><br><span class="line">name.hint = <span class="string">"Enter your name"</span></span><br><span class="line">name.onClick &#123; <span class="comment">/*do something*/</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>通过使用<a href="https://kotlinlang.org/docs/tutorials/android-plugin.html" target="_blank" rel="noopener">Kotlin的Android扩展</a>，您可以使您的代码更加紧凑。</p>
+<h3 id="它是如何工作的"><a href="#它是如何工作的" class="headerlink" title="它是如何工作的"></a><a name="how_works"></a>它是如何工作的</h3><p>没有🎩。Anko由一些Kotlin的<a href="http://kotlinlang.org/docs/reference/extensions.html" target="_blank" rel="noopener">扩展函数和属性</a>组成了类型安全的构造器，就像<a href="http://kotlinlang.org/docs/reference/type-safe-builders.html" target="_blank" rel="noopener">类型安全的构建器</a>所描述的那样。</p>
+<p>由于手工编写所有这些扩展有点乏味，所以它们是由Android SDK中的android.jar文件自动生成的。</p>
+<h3 id="它是可扩展的吗"><a href="#它是可扩展的吗" class="headerlink" title="它是可扩展的吗?"></a><a name="extensible"></a>它是可扩展的吗?</h3><p>简短的回答:<strong>是的</strong>。</p>
+<p>例如，您可能想要在DSL中使用MapView。然后把它写在任何可以导入的Kotlin文件中:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> ViewManager.<span class="title">mapView</span><span class="params">()</span></span> = mapView(theme = <span class="number">0</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> ViewManager.<span class="title">mapView</span><span class="params">(<span class="keyword">init</span>: <span class="type">MapView</span>.() -&gt; <span class="type">Unit</span>)</span></span>: MapView &#123;</span><br><span class="line">    <span class="keyword">return</span> ankoView(&#123; MapView(it) &#125;, theme = <span class="number">0</span>, <span class="keyword">init</span> = <span class="keyword">init</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>{ MapView(it) }</code>是您自定义<code>View</code>的工厂函数。它接受一个<code>Context</code>实例</p>
+<p>现在你可以这样写了:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">frameLayout &#123;</span><br><span class="line">    <span class="keyword">val</span> mapView = mapView().lparams(width = matchParent)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你想让你的用户能够应用一个定制的主题，你也可以这样写:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> ViewManager.<span class="title">mapView</span><span class="params">(theme: <span class="type">Int</span> = <span class="number">0</span>)</span></span> = mapView(theme) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> ViewManager.<span class="title">mapView</span><span class="params">(theme: <span class="type">Int</span> = <span class="number">0</span>, <span class="keyword">init</span>: <span class="type">MapView</span>.() -&gt; <span class="type">Unit</span>)</span></span>: MapView &#123;</span><br><span class="line">    <span class="keyword">return</span> ankoView(&#123; MapView(it) &#125;, theme, <span class="keyword">init</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在你的项目中使用Anko-Layouts"><a href="#在你的项目中使用Anko-Layouts" class="headerlink" title="在你的项目中使用Anko Layouts"></a><a name="using_anko_layouts"></a>在你的项目中使用Anko Layouts</h2><p>这些库依赖关系包括:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="comment">// Anko Layouts</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">"org.jetbrains.anko:anko-sdk25:$anko_version"</span> <span class="comment">// sdk15, sdk19, sdk21, sdk23 are also available</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">"org.jetbrains.anko:anko-appcompat-v7:$anko_version"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Coroutine listeners for Anko Layouts</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">"org.jetbrains.anko:anko-sdk25-coroutines:$anko_version"</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">"org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请阅读基于<a href="https://github.com/Kotlin/anko#gradle-based-project" target="_blank" rel="noopener">Gradle的项目</a>部分，以获得详细信息。</p>
+<h2 id="理解Anko"><a href="#理解Anko" class="headerlink" title="理解Anko"></a><a name="understanding_anko"></a>理解Anko</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a><a name="basics"></a>基础知识</h3><p>在Anko，你不需要从任何特殊的类继承:仅仅使用标准的<code>Activity</code>、<code>Fragment</code>、<code>FragmentActivity</code>或任何你想要的东西。</p>
+<p>首先，导入org.jetbrains.anko.*。在您的类中使用Anko布局DSL。</p>
+<p>在<code>onCreate()</code>中可以使用DSL:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">    </span><br><span class="line">    verticalLayout &#123;</span><br><span class="line">        padding = dip(<span class="number">30</span>)</span><br><span class="line">        editText &#123;</span><br><span class="line">            hint = <span class="string">"Name"</span></span><br><span class="line">            textSize = <span class="number">24f</span></span><br><span class="line">        &#125;</span><br><span class="line">        editText &#123;</span><br><span class="line">            hint = <span class="string">"Password"</span></span><br><span class="line">            textSize = <span class="number">24f</span></span><br><span class="line">        &#125;</span><br><span class="line">        button(<span class="string">"Login"</span>) &#123;</span><br><span class="line">            textSize = <span class="number">26f</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>🐧 没有明确的调用<code>setContentView(R.layout.something)</code>: Anko为<code>Activities</code>自动设置内容视图(但只对他们)。</p>
+</blockquote>
+<p><code>hint</code>和<code>textSize</code>是与java风格的getter和setter绑定的<a href="https://kotlinlang.org/docs/reference/java-interop.html#getters-and-setters" target="_blank" rel="noopener">合成扩展属性</a>，<code>padding</code>是Anko的<a href="http://kotlinlang.org/docs/reference/extensions.html#extension-properties" target="_blank" rel="noopener">扩展属性</a>。这些都存在于几乎所有View属性中，允许您编写<code>text = &quot;Some text&quot;</code>而不是<code>setText(&quot;Some text&quot;)</code>。</p>
+<p><code>verticalLayout</code>(一个<code>线性布局</code>，但已经有了<code>LinearLayout.VERTICAL</code>方向)、<code>editText</code>和<code>button</code>是构造新Viwe实例并将它们添加到父类的<a href="http://kotlinlang.org/docs/reference/extensions.html" target="_blank" rel="noopener">扩展函数</a>。我们将引用这些函数作为块。</p>
+<p>在Android框架中几乎所有的视图都存在块，它们在Activities、Fragments(默认情况下和android.support package)甚至是Context。例如，如果您有一个AnkoContext实例，您可以编写这样的块:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> name: EditText = with(ankoContext) &#123;</span><br><span class="line">    editText &#123;</span><br><span class="line">        hint = <span class="string">"Name"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="AnkoComponent"><a href="#AnkoComponent" class="headerlink" title="AnkoComponent"></a><a name="ankocomponent"></a>AnkoComponent</h3><p>尽管您可以直接使用DSL(在onCreate()或其他任何地方)，但不需要创建任何额外的类，在单独的类中使用UI通常是很方便的。如果您使用了提供的AnkoComponent接口，那么您还可以免费获得<a href="https://github.com/Kotlin/anko/blob/master/doc/preview.png" target="_blank" rel="noopener">DSL布局预览</a>功能。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?, persistentState: <span class="type">PersistableBundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState, persistentState)</span><br><span class="line">        MyActivityUI().setContentView(<span class="keyword">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyActivityUI</span> : <span class="type">AnkoComponent</span>&lt;<span class="type">MyActivity</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">createView</span><span class="params">(ui: <span class="type">AnkoContext</span>&lt;<span class="type">MyActivity</span>&gt;)</span></span> = with(ui) &#123;</span><br><span class="line">        verticalLayout &#123;</span><br><span class="line">            <span class="keyword">val</span> name = editText()</span><br><span class="line">            button(<span class="string">"Say Hello"</span>) &#123;</span><br><span class="line">                onClick &#123; ctx.toast(<span class="string">"Hello, <span class="subst">$&#123;name.text&#125;</span>!"</span>) &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="辅助块"><a href="#辅助块" class="headerlink" title="辅助块"></a><a name="helper_blocks"></a>辅助块</h3><p>正如您可能已经注意到的，前一节中的<code>button()</code>函数接受一个字符串参数。<br>对于常用的View，例如<code>TextView</code>、<code>EditText</code>、<code>Button</code>或<code>ImageView</code>，都存在这样的辅助块。</p>
+<p>如果您不需要为某个特定View设置任何属性，您可以省略 {}，编写button(“Ok”)，甚至只是button():</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">verticalLayout &#123;</span><br><span class="line">    button(<span class="string">"Ok"</span>)</span><br><span class="line">    button(R.string.cancel)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="主题块"><a href="#主题块" class="headerlink" title="主题块"></a><a name="themed_blocks"></a>主题块</h3><p>Anko提供了“themeable”版本，包括辅助块:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">verticalLayout &#123;</span><br><span class="line">    themedButton(<span class="string">"Ok"</span>, theme = R.style.myTheme)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="布局和LayoutParams"><a href="#布局和LayoutParams" class="headerlink" title="布局和LayoutParams"></a><a name="layouts_params"></a>布局和<code>LayoutParams</code></h3><p>可以使用<code>LayoutParams</code>对父容器中的小部件进行定位。在XML中，它是这样的:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_marginLeft</span>=<span class="string">"5dip"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_marginTop</span>=<span class="string">"10dip"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:src</span>=<span class="string">"@drawable/something"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在Anko中，使用lparams()在View描述后，指定了LayoutParams。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">linearLayout &#123;</span><br><span class="line">    button(<span class="string">"Login"</span>) &#123;</span><br><span class="line">        textSize = <span class="number">26f</span></span><br><span class="line">    &#125;.lparams(width = wrapContent) &#123;</span><br><span class="line">        horizontalMargin = dip(<span class="number">5</span>)</span><br><span class="line">        topMargin = dip(<span class="number">10</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果您指定了<code>lparams()</code>，但是省略了<code>width</code>和/或<code>height</code>，它们的默认值都是<code>wrapContent</code>。但是您总是可以显式地传递它们:使用<a href="http://kotlinlang.org/docs/reference/functions.html#named-arguments" target="_blank" rel="noopener">命名参数</a>。</p>
+<p>一些方便的辅助属性可以注意到:</p>
+<ul>
+<li><code>horizontalMargin</code> 设置左和右的边距</li>
+<li><code>verticalMargin</code> 设置顶部和底部的边距</li>
+<li><code>margin</code> 同时设置了所有四个边距</li>
+</ul>
+<p>注意，对于不同的布局，<code>lparams()</code>是不同的，例如，在<code>相对布局</code>的情况下:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> ID_OK = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">relativeLayout &#123;</span><br><span class="line">    button(<span class="string">"Ok"</span>) &#123;</span><br><span class="line">        id = ID_OK</span><br><span class="line">    &#125;.lparams &#123; alignParentTop() &#125;</span><br><span class="line">  </span><br><span class="line">    button(<span class="string">"Cancel"</span>).lparams &#123; below(ID_OK) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Listeners"><a href="#Listeners" class="headerlink" title="Listeners"></a><a name="listeners"></a>Listeners</h3><p>Anko有一名监听器的助手，他们可以无缝地支持协程。您可以在listener内编写异步代码！</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">button(<span class="string">"Login"</span>) &#123;</span><br><span class="line">    onClick &#123;</span><br><span class="line">    	<span class="keyword">val</span> user = myRetrofitService.getUser().await()</span><br><span class="line">        showUser(user)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>几乎和这个是一样的:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">button.setOnClickListener(<span class="keyword">object</span> : OnClickListener &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(v: <span class="type">View</span>)</span></span> &#123;</span><br><span class="line">    	launch(UI) &#123;</span><br><span class="line">    	    <span class="keyword">val</span> user = myRetrofitService.getUser().await()</span><br><span class="line">            showUser(user)</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>当你有很多方法的时候，Anko是很有帮助的。考虑下面的代码，没有使用Anko:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">seekBar.setOnSeekBarChangeListener(<span class="keyword">object</span> : OnSeekBarChangeListener &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onProgressChanged</span><span class="params">(seekBar: <span class="type">SeekBar</span>, progress: <span class="type">Int</span>, fromUser: <span class="type">Boolean</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// Something</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onStartTrackingTouch</span><span class="params">(seekBar: <span class="type">SeekBar</span>?)</span></span> &#123;</span><br><span class="line">        <span class="comment">// Just an empty method</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onStopTrackingTouch</span><span class="params">(seekBar: <span class="type">SeekBar</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// Another empty method</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>现在,Anko:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">seekBar &#123;</span><br><span class="line">    onSeekBarChangeListener &#123;</span><br><span class="line">        onProgressChanged &#123; seekBar, progress, fromUser -&gt;</span><br><span class="line">            <span class="comment">// Something</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果您为相同的<code>View</code>设置<code>onProgressChanged()</code>和<code>onStartTrackingTouch()</code>，那么这两个“部分定义”的listener将被合并。对于相同的listener方法，最后一个获胜。</p>
+<h3 id="定制的协程上下文"><a href="#定制的协程上下文" class="headerlink" title="定制的协程上下文"></a><a name="custom_coroutine_context"></a>定制的协程上下文</h3><p>您可以将一个定制的协程context传递给listener助手:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">button(<span class="string">"Login"</span>) &#123;</span><br><span class="line">    onClick(yourContext) &#123;</span><br><span class="line">    	<span class="keyword">val</span> user = myRetrofitService.getUser().await()</span><br><span class="line">        showUser(user)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用资源标识符"><a href="#使用资源标识符" class="headerlink" title="使用资源标识符"></a><a name="using_resource_id"></a>使用资源标识符</h3><p>前面几章中的所有例子都使用了原始Java字符串，但这并不是一个好的实践。通常，您将所有的字符串数据放入<code>res/values/</code>目录中，并在运行时调用它，例如<code>getString(R.string.login)</code>。</p>
+<p>幸运的是，在Anko中，您可以将资源标识符传递给助手块(<code>button(R.string.login)</code>)和扩展属性(<code>button { textResource = R.string.login }</code>)。</p>
+<p>注意，属性名不是相同的: <code>text</code>、<code>hint</code>、<code>image</code>，而是我们现在使用的是<code>textResource</code>、<code>hintResource</code>和<code>imageResource</code></p>
+<blockquote>
+<p>🐧 资源属性读时总是抛出AnkoException。</p>
+</blockquote>
+<h3 id="实例简化符号"><a href="#实例简化符号" class="headerlink" title="实例简化符号"></a><a name="instance_shorthand_notation"></a>实例简化符号</h3><p>有时候，您需要从活动代码中传递一个<code>Context</code>实例到某个Android SDK方法。<br>通常，你可以使用<code>this</code>，但是如果你在一个内部类里面呢?<br>如果您在Kotlin编写，您可能会在Java和this@SomeActivity用SomeActivity.this。</p>
+<p>对Anko，你可以写ctx。它是一个扩展属性，既可以在Activity和Service中工作，也可以从Fragment中访问(它的外壳是使用getActivity()方法)。<br>您还可以使用act扩展属性获得一个Activity实例。</p>
+<h3 id="UI包装"><a href="#UI包装" class="headerlink" title="UI包装"></a><a name="ui_wrapper"></a>UI包装</h3><p>在开始之前，Anko总是使用UI标签作为顶级的DSL元素:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UI &#123;</span><br><span class="line">    editText &#123;</span><br><span class="line">        hint = <span class="string">"Name"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你想的话，你仍然可以使用这个标签。而且，扩展DSL要容易得多，因为您必须只声明一个ViewManager.customView函数。请参见<a href="#extensible">扩展Anko</a>获取更多信息。</p>
+<h3 id="Include标签"><a href="#Include标签" class="headerlink" title="Include标签"></a><a name="include_tag"></a>Include标签</h3><p>可以很容易将XML布局插入到DSL中。<br>使用include()函数:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include&lt;View&gt;(R.layout.something) &#123;</span><br><span class="line">    backgroundColor = Color.RED</span><br><span class="line">&#125;.lparams(width = matchParent) &#123; margin = dip(<span class="number">12</span>) &#125;</span><br></pre></td></tr></table></figure>
+<p>您可以像往常一样使用lparams()，如果您提供了一个特定的类型而不是View，您也可以使用这个类型:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include&lt;TextView&gt;(R.layout.textfield) &#123;</span><br><span class="line">    text = <span class="string">"Hello, world!"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Anko支持插件"><a href="#Anko支持插件" class="headerlink" title="Anko支持插件"></a><a name="anko_support_plugin"></a>Anko支持插件</h2><p>Anko支持插件可用于IntelliJ IDEA和Android Studio。它允许你在IDE工具窗口中直接预览与Anko一起编写的AnkoComponent类。</p>
+<blockquote>
+<p>⚠️ Anko支持插件目前只支持Android Studio 2.4+。</p>
+</blockquote>
+<h3 id="安装Anko支持插件"><a href="#安装Anko支持插件" class="headerlink" title="安装Anko支持插件"></a><a name="installing_anko_support_plugin"></a>安装Anko支持插件</h3><p>你可以在<a href="https://plugins.jetbrains.com/update/index?pr=&amp;updateId=19242" target="_blank" rel="noopener">这里</a>下载Anko的支持插件。</p>
+<h3 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a><a name="using_anko_support_plugin"></a>使用插件</h3><p>假设你用Anko写了这些classes：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?, persistentState: <span class="type">PersistableBundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState, persistentState)</span><br><span class="line">        MyActivityUI().setContentView(<span class="keyword">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyActivityUI</span> : <span class="type">AnkoComponent</span>&lt;<span class="type">MyActivity</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">createView</span><span class="params">(ui: <span class="type">AnkoContext</span>&lt;<span class="type">MyActivity</span>&gt;)</span></span> = ui.apply &#123;</span><br><span class="line">        verticalLayout &#123;</span><br><span class="line">            <span class="keyword">val</span> name = editText()</span><br><span class="line">            button(<span class="string">"Say Hello"</span>) &#123;</span><br><span class="line">                onClick &#123; ctx.toast(<span class="string">"Hello, <span class="subst">$&#123;name.text&#125;</span>!"</span>) &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.view</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将光标放在<code>MyActivityUI</code>声明的地方，打开Anko布局预览工具窗口(“View” → “Tool Windows” → “Anko Layout Preview”)，并按下刷新。</p>
+<p>这需要构建项目，因此在实际显示图像之前需要花费一些时间。</p>
+<h3 id="XML-DSL转换器"><a href="#XML-DSL转换器" class="headerlink" title="XML DSL转换器"></a><a name="xml_dsl_converter"></a>XML DSL转换器</h3><p>该插件还支持将XML格式的布局转换为Anko布局代码。<br>打开一个XML文件并选择”Code” → “Convert to Anko Layouts DSL”。<br>您可以同时转换多个XML布局文件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/02/Anko-Layouts/" target="_blank" title="Anko 布局">https://jigangduan.github.io/2017/11/02/Anko-Layouts/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/anko/">anko</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kotlin/">kotlin</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/03/Anko-SQLite/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Anko SQLite
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/02/Anko-Commons/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Anko 通用模块</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么Anko布局"><span class="nav-number">1.</span> <span class="nav-text">为什么Anko布局?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DSL的原因"><span class="nav-number">1.1.</span> <span class="nav-text">DSL的原因?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持现有的代码"><span class="nav-number">1.2.</span> <span class="nav-text">支持现有的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#它是如何工作的"><span class="nav-number">1.3.</span> <span class="nav-text">它是如何工作的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#它是可扩展的吗"><span class="nav-number">1.4.</span> <span class="nav-text">它是可扩展的吗?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在你的项目中使用Anko-Layouts"><span class="nav-number">2.</span> <span class="nav-text">在你的项目中使用Anko Layouts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理解Anko"><span class="nav-number">3.</span> <span class="nav-text">理解Anko</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础知识"><span class="nav-number">3.1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AnkoComponent"><span class="nav-number">3.2.</span> <span class="nav-text">AnkoComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#辅助块"><span class="nav-number">3.3.</span> <span class="nav-text">辅助块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主题块"><span class="nav-number">3.4.</span> <span class="nav-text">主题块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局和LayoutParams"><span class="nav-number">3.5.</span> <span class="nav-text">布局和LayoutParams</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Listeners"><span class="nav-number">3.6.</span> <span class="nav-text">Listeners</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制的协程上下文"><span class="nav-number">3.7.</span> <span class="nav-text">定制的协程上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用资源标识符"><span class="nav-number">3.8.</span> <span class="nav-text">使用资源标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例简化符号"><span class="nav-number">3.9.</span> <span class="nav-text">实例简化符号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI包装"><span class="nav-number">3.10.</span> <span class="nav-text">UI包装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Include标签"><span class="nav-number">3.11.</span> <span class="nav-text">Include标签</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anko支持插件"><span class="nav-number">4.</span> <span class="nav-text">Anko支持插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Anko支持插件"><span class="nav-number">4.1.</span> <span class="nav-text">安装Anko支持插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用插件"><span class="nav-number">4.2.</span> <span class="nav-text">使用插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XML-DSL转换器"><span class="nav-number">4.3.</span> <span class="nav-text">XML DSL转换器</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

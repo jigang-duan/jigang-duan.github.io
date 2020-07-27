@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>android 网页获取短信验证码 可行性预研 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="android">
+  
+  
+  
+  
+  <meta name="description" content="目标： Android 网页获取短信验证码 目前状态： 预言阶段（技术上未实现）">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 网页获取短信验证码 可行性预研">
+<meta property="og:url" content="https://jigangduan.github.io/2017/12/18/WebPage-Get-SMS/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="目标： Android 网页获取短信验证码 目前状态： 预言阶段（技术上未实现）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1513593742523&di=097d2af5b9b3b97a9e1cd88594ea90bb&imgtype=0&src=http%3A%2F%2Fwww.263.net%2Fr%2Fcms%2Fwww%2F263%2Fresources%2Fimg%2Fsms_banner.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.171Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 网页获取短信验证码 可行性预研">
+<meta name="twitter:description" content="目标： Android 网页获取短信验证码 目前状态： 预言阶段（技术上未实现）">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1513593742523&di=097d2af5b9b3b97a9e1cd88594ea90bb&imgtype=0&src=http%3A%2F%2Fwww.263.net%2Fr%2Fcms%2Fwww%2F263%2Fresources%2Fimg%2Fsms_banner.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-WebPage-Get-SMS" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android 网页获取短信验证码 可行性预研
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/18/WebPage-Get-SMS/" class="article-date">
+	  <time datetime="2017-12-18T08:09:01.000Z" itemprop="datePublished">2017-12-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/预研/">预研</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513593742523&amp;di=097d2af5b9b3b97a9e1cd88594ea90bb&amp;imgtype=0&amp;src=http%3A%2F%2Fwww.263.net%2Fr%2Fcms%2Fwww%2F263%2Fresources%2Fimg%2Fsms_banner.jpg" alt></p>
+<p><strong>目标：</strong> Android 网页获取短信验证码</p>
+<p><strong>目前状态：</strong> 预言阶段（<code>技术上未实现</code>）</p>
+<a id="more"></a>
+<p><strong>网页端方案：</strong> Android WebKit插件开发 <code>SMS-BrowserPlugin</code></p>
+<ul>
+<li>方案描述： WebKit插件包括<code>PluginService</code>和<code>Plugin.so</code>动态库, Plugin.so提供与WebKit的交互，提供JS的接口；PluginService静态注册WebKit插件action，实现短信拦截功能。</li>
+</ul>
+<p><strong>Android端拦截短信方案</strong></p>
+<ul>
+<li>方案一： 监听SMS广播</li>
+<li>方案二： <code>NotificationListenserServic</code>监听Notifications，过滤短信应用包名的通知信息</li>
+</ul>
+<p><strong>过程记录：</strong></p>
+<ol>
+<li>研究Android WebKit插件原理及实现方式</li>
+<li>创建示例Plugin项目</li>
+<li>动态库需要Android中相关插件部分接口头文件，寻找头文件，下载后放入项目中。又需要依赖其他lib和头文件，依赖过重，依赖文件无从查起，放弃此方案，该用Android源码下编译方式</li>
+<li>Android源码下编译方式<ol>
+<li>安装虚拟机Ubuntu环境，安装<code>SSH-Server</code>,<code>Samba</code></li>
+<li>安装<code>JDK1.6</code>及Android编译所需要的<code>依赖库</code>（JDK版本和依赖环境需要与要编译的Android版本相关）</li>
+<li>安装<code>repo</code></li>
+<li>下载android-4.0_r1源码（翻墙下载速度过慢，使用中科大镜像。下载中由于网速不稳定问题，容易卡住，卡住后没有任何反应，需要停止再重新下载）</li>
+<li>下载后仓库和工作区源码容量近80G，编译存储空间溢出，删除掉仓库.repo，进剩下源码部分</li>
+<li>编译源码</li>
+<li>编译<code>SampleBrowserPlugin</code>，生成<code>SampleBrowserPlugin.apk</code>和<code>SampleBrowserPlugin.odex</code></li>
+<li>合并<code>.apk</code>和<code>.odex</code> （SampleBrowserPlugin.apk无法直接安装，合并.apk和.odex，再打包重新签名。但安装还是报错）</li>
+</ol>
+</li>
+<li>使用源码编译的动态库<ol>
+<li>解压缩.apk，得到动态库<code>armeabi-v7a/libsampleplugin.so</code> 文件</li>
+<li>将libsampleplugin.so加入到示例Plugin项目中</li>
+<li>编译项目生成APK，安装应用并启动</li>
+<li>编写HTML文件，包含插件相关参数的对象</li>
+<li>推入设备的SDCard中，使用浏览器打开(结果还是插件无法加载)</li>
+</ol>
+</li>
+<li>编译项目生成APK，安装应用并启动</li>
+<li>脚本使用插件对象<ol>
+<li>编写HTML文件，包含插件相关参数的对象</li>
+<li>推入设备的SDCard中，使用浏览器打开(结果还是插件无法加载)</li>
+</ol>
+</li>
+</ol>
+<p><strong>目前遇到的问题：</strong></p>
+<ul>
+<li>插件无法被浏览器正常的加载</li>
+</ul>
+<p><strong>后续方向：</strong></p>
+<ul>
+<li><p>分析<code>Web API</code>是否有对应的接口</p>
+<p><code>不可行</code>,</p>
+</li>
+<li><p>分析<code>WebExtension</code>是否可行</p>
+<p><code>不可行</code>，WebExtension由HTML、CSS、JS构成，不能访问Android原生接口</p>
+</li>
+<li><p>借助服务器中转</p>
+</li>
+</ul>
+<hr>
+<p>参考文档：</p>
+<ul>
+<li><a href="http://blog.csdn.net/ownerwu/article/details/6429072" target="_blank" rel="noopener">Android浏览器插件开发</a></li>
+<li><a href="http://blog.csdn.net/dj0379/article/details/18620595" target="_blank" rel="noopener">android 浏览器插件开发</a></li>
+<li><a href="http://www.infoq.com/cn/articles/webkit-for-developers" target="_blank" rel="noopener">开发者需要了解的WebKit</a></li>
+<li><a href="http://ffwmxr.blog.163.com/blog/static/6637272220134234470124/" target="_blank" rel="noopener">Android Webkit插件</a></li>
+<li><a href="http://mobile.51cto.com/widget-290455.htm" target="_blank" rel="noopener">解析Android WebKit插件基本结构</a></li>
+<li><a href="http://product.dangdang.com/23917243.html" target="_blank" rel="noopener">深入理解Android：WebKit卷</a></li>
+<li><a href="http://blog.csdn.net/makefish/article/details/5947569" target="_blank" rel="noopener">Android WebKit插件的基本结构</a></li>
+<li><a href="http://blog.csdn.net/crazy__chen/article/details/49474381" target="_blank" rel="noopener">Android短信拦截机制适配的坑(下)–4.4以上系统，主要是6.0</a></li>
+<li><a href="http://blog.csdn.net/crazy__chen/article/details/49473705" target="_blank" rel="noopener">Android短信拦截机制适配的坑(上)–4.4以下系统</a></li>
+<li><a href="http://androidxref.com" target="_blank" rel="noopener">AndroidXRef</a></li>
+<li><a href="https://mirror.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="noopener">Android 清华大学镜像</a></li>
+<li><a href="http://blog.csdn.net/mc_hust/article/details/33304733" target="_blank" rel="noopener">下载Android源代码错误汇总分析</a></li>
+<li><a href="http://www.jianshu.com/p/4cd8c109cdfb" target="_blank" rel="noopener">你真的理解AccessibilityService吗</a></li>
+<li><a href="http://blog.csdn.net/Innost/article/details/19299937" target="_blank" rel="noopener">深入理解SELinux SEAndroid（第一部分）</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/android-source/developing.html" target="_blank" rel="noopener"> Android 开源项目指南</a></li>
+<li><a href="http://blog.csdn.net/tyyj90/article/details/53443913" target="_blank" rel="noopener">【android源码】编译android M源码、刷机，开启源码学习的First Step</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/22124692" target="_blank" rel="noopener">如何利用拦截马实现短信拦截</a></li>
+<li><a href="https://github.com/lendylongli/qianghongbao" target="_blank" rel="noopener">微信抢红包外挂源码</a></li>
+<li><a href="https://github.com/ddwhan0123/BlogSample/tree/master/GetSMSDemo" target="_blank" rel="noopener"> 6.0短信监听 GetSMSDemo</a></li>
+<li><a href="https://github.com/lovedise/PermissionGen" target="_blank" rel="noopener">PermissionGen</a></li>
+<li><a href="https://www.zhihu.com/question/33540416" target="_blank" rel="noopener">NotificationListenerService不能监听到通知，研究了一天不知道是什么原因？</a></li>
+<li><a href="http://blog.csdn.net/cankingapp/article/details/50858229" target="_blank" rel="noopener">安卓通知栏管理详解及分析 NotificationListenerService</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/12/18/WebPage-Get-SMS/" target="_blank" title="Android 网页获取短信验证码 可行性预研">https://jigangduan.github.io/2017/12/18/WebPage-Get-SMS/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/03/sylius-set-up/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          基于Sylius搭建电商平台
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/14/merge-odex-apk/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Android中odex和apk文件的合并方法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

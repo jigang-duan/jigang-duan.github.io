@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>java高并发(2) 并发基础 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="java">
+  
+  
+  
+  
+  <meta name="description" content="CPU多级缓存CPU为何要有高速缓存CPU的频率太快了，快到主存跟不上，这样在处理时钟周期内，CPU常常需要等待主存，浪费资源。所以cache的出现，是为了缓解CPU和内存之间速度的不匹配问题(结构： cpu -&amp;gt; cache -&amp;gt; memory) CPU在摩尔定律的指导下以每18个月翻一番的速度在发展，然而内存和硬盘的发展速度远远不及CPU。这就造成了高性能能的内存和硬盘价格及其昂贵">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java高并发(2) 并发基础">
+<meta property="og:url" content="https://jigangduan.github.io/2019/04/18/java-high-concurrency-02/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="CPU多级缓存CPU为何要有高速缓存CPU的频率太快了，快到主存跟不上，这样在处理时钟周期内，CPU常常需要等待主存，浪费资源。所以cache的出现，是为了缓解CPU和内存之间速度的不匹配问题(结构： cpu -&amp;gt; cache -&amp;gt; memory) CPU在摩尔定律的指导下以每18个月翻一番的速度在发展，然而内存和硬盘的发展速度远远不及CPU。这就造成了高性能能的内存和硬盘价格及其昂贵">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://gitee.com/SCD-Wear/img-bed/raw/master/java/cpu-cache.png">
+<meta property="og:image" content="https://gitee.com/SCD-Wear/img-bed/raw/master/java/cpu-mesi.png">
+<meta property="og:image" content="https://gitee.com/SCD-Wear/img-bed/raw/master/java/cpu-out-of-order.png">
+<meta property="og:image" content="https://gitee.com/SCD-Wear/img-bed/raw/master/java/jvm.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java高并发(2) 并发基础">
+<meta name="twitter:description" content="CPU多级缓存CPU为何要有高速缓存CPU的频率太快了，快到主存跟不上，这样在处理时钟周期内，CPU常常需要等待主存，浪费资源。所以cache的出现，是为了缓解CPU和内存之间速度的不匹配问题(结构： cpu -&amp;gt; cache -&amp;gt; memory) CPU在摩尔定律的指导下以每18个月翻一番的速度在发展，然而内存和硬盘的发展速度远远不及CPU。这就造成了高性能能的内存和硬盘价格及其昂贵">
+<meta name="twitter:image" content="https://gitee.com/SCD-Wear/img-bed/raw/master/java/cpu-cache.png">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-java-high-concurrency-02" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Java高并发(2) 并发基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/18/java-high-concurrency-02/" class="article-date">
+	  <time datetime="2019-04-18T13:57:56.000Z" itemprop="datePublished">2019-04-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Java/">Java</a><a class="article-category-link" href="/categories/Java/高并发/">高并发</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CPU多级缓存"><a href="#CPU多级缓存" class="headerlink" title="CPU多级缓存"></a>CPU多级缓存</h2><h3 id="CPU为何要有高速缓存"><a href="#CPU为何要有高速缓存" class="headerlink" title="CPU为何要有高速缓存"></a>CPU为何要有高速缓存</h3><p>CPU的频率太快了，快到主存跟不上，这样在处理时钟周期内，CPU常常需要等待主存，浪费资源。<br>所以cache的出现，是为了缓解CPU和内存之间速度的不匹配问题(结构： cpu -&gt; cache -&gt; memory)</p>
+<p>CPU在摩尔定律的指导下以每18个月翻一番的速度在发展，然而内存和硬盘的发展速度远远不及CPU。<br>这就造成了高性能能的内存和硬盘价格及其昂贵。然而CPU的高度运算需要高速的数据。<br>为了解决这个问题，CPU厂商在CPU中内置了少量的高速缓存以解决I\O速度和CPU运算速度之间的不匹配问题。</p>
+<p><img src="https://gitee.com/SCD-Wear/img-bed/raw/master/java/cpu-cache.png" alt="cpu-cache"></p>
+<h3 id="CPU-cache-意义"><a href="#CPU-cache-意义" class="headerlink" title="CPU cache 意义"></a>CPU cache 意义</h3><ol>
+<li><strong>时间局部性</strong>：如果一个信息项正在被访问，那么在近期它很可能还会被再次访问。</li>
+<li><strong>空间局部性</strong>: 如果一个存储器的位置被引用，那么将来他附近的位置也会被引用。</li>
+</ol>
+<h3 id="带有高速缓存的CPU执行计算的流程"><a href="#带有高速缓存的CPU执行计算的流程" class="headerlink" title="带有高速缓存的CPU执行计算的流程"></a>带有高速缓存的CPU执行计算的流程</h3><ol>
+<li>程序以及数据被加载到主内存</li>
+<li>指令和数据被加载到CPU的高速缓存</li>
+<li>CPU执行指令，把结果写到高速缓存</li>
+<li>高速缓存中的数据写回主内存</li>
+</ol>
+<blockquote>
+<p>目前流行多级缓存结构</p>
+</blockquote>
+<h3 id="缓存一致性（MESI）"><a href="#缓存一致性（MESI）" class="headerlink" title="缓存一致性（MESI）"></a>缓存一致性（MESI）</h3><blockquote>
+<p><strong>缓存行（Cache line）</strong>: 缓存存储数据的单元</p>
+</blockquote>
+<p>MESI 是指4中状态的首字母。每个Cache line有4个状态，可用2个bit表示，它们分别是：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>描述</th>
+<th>监听任务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M 修改 (Modified)</td>
+<td>该Cache line有效，数据被修改了，和内存中的数据不一致，数据只存在于本Cache中。</td>
+<td>缓存行必须时刻监听所有试图读该缓存行相对就主存的操作，这种操作必须在缓存将该缓存行写回主存并将状态变成S（共享）状态之前被延迟执行。</td>
+</tr>
+<tr>
+<td>E 独享、互斥 (Exclusive)</td>
+<td>该Cache line有效，数据和内存中的数据一致，数据只存在于本Cache中。</td>
+<td>缓存行也必须监听其它缓存读主存中该缓存行的操作，一旦有这种操作，该缓存行需要变成S（共享）状态。</td>
+</tr>
+<tr>
+<td>S 共享 (Shared)</td>
+<td>该Cache line有效，数据和内存中的数据一致，数据存在于很多Cache中。</td>
+<td>缓存行也必须监听其它缓存使该缓存行无效或者独享该缓存行的请求，并将该缓存行变成无效（Invalid）。</td>
+</tr>
+<tr>
+<td>I 无效 (Invalid)</td>
+<td>该Cache line无效。</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>MESI状态转换:</p>
+<p><img src="https://gitee.com/SCD-Wear/img-bed/raw/master/java/cpu-mesi.png" alt="cpu-cache"></p>
+<p>触发事件:</p>
+<table>
+<thead>
+<tr>
+<th>触发事件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本地读取（Local read）</td>
+<td>本地cache读取本地cache数据</td>
+</tr>
+<tr>
+<td>本地写入（Local write）</td>
+<td>本地cache写入本地cache数据</td>
+</tr>
+<tr>
+<td>远端读取（Remote read）</td>
+<td>其他cache读取本地cache数据</td>
+</tr>
+<tr>
+<td>远端写入（Remote write）</td>
+<td>其他cache写入本地cache数据</td>
+</tr>
+</tbody>
+</table>
+<p>右边图示意了，当一个cache line的调整的状态的时候，另外一个cache line 需要调整的状态</p>
+<blockquote>
+<p>举个栗子来说：<br>假设cache 1 中有一个变量x = 0的cache line 处于S状态(共享)。<br>那么其他拥有x变量的cache 2、cache 3等x的cache line调整为S状态（共享）或者调整为 I 状态（无效）。</p>
+</blockquote>
+<h2 id="指令重排和内存屏障"><a href="#指令重排和内存屏障" class="headerlink" title="指令重排和内存屏障"></a>指令重排和内存屏障</h2><h3 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h3><p>现代CPU的速度越来越快，为了充分的利用CPU，在编译器和CPU执行期，都可能对指令重排。</p>
+<p><img src="https://gitee.com/SCD-Wear/img-bed/raw/master/java/cpu-out-of-order.png" alt="cpu-out-of-order"></p>
+<p>在并发模型下，重排序还是可能会引发问题，比较经典的就是“单例模式失效”问题</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">        synchronzied(Singleton<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">           <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">               instance = <span class="keyword">new</span> Singleton();  <span class="comment">//</span></span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> instance;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这段代码，初看没问题，但是在并发模型下，可能会出错,那是因为instance= new Singleton()并非一个原子操作，它实际上下面这三个操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">memory = allocate();    <span class="comment">//1：分配对象的内存空间</span></span><br><span class="line">ctorInstance(memory);  <span class="comment">//2：初始化对象</span></span><br><span class="line">instance = memory;     <span class="comment">//3：设置instance指向刚分配的内存地址</span></span><br></pre></td></tr></table></figure>
+<p>上面操作2依赖于操作1，但是操作3并不依赖于操作2，所以JVM是可以针对它们进行指令的优化重排序的，经过重排序后如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">memory = allocate();    <span class="comment">//1：分配对象的内存空间</span></span><br><span class="line">instance = memory;     <span class="comment">//3：instance指向刚分配的内存地址，此时对象还未初始化</span></span><br><span class="line">ctorInstance(memory);  <span class="comment">//2：初始化对象</span></span><br></pre></td></tr></table></figure>
+<p>可以看到指令重排之后，instance指向分配好的内存放在了前面，而这段内存的初始化被排在了后面。<br>在多线程场景下，可能A线程执行到了3，B线程发现已经不为空就返回继续执行，就会出错。</p>
+<blockquote>
+<p>在java里面volatile可以防止重排，还有另外一个作用即内存可见性</p>
+</blockquote>
+<h3 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h3><p>硬件层的内存屏障分为两种：Load Barrier 和 Store Barrier即读屏障和写屏障。内存屏障有两个作用：</p>
+<ol>
+<li>阻止屏障两侧的指令重排序；</li>
+<li>强制把写缓冲区/高速缓存中的脏数据等写回主内存，让缓存中相应的数据失效。</li>
+</ol>
+<p>对于<code>volatile</code>关键字，按照规范会有下面的操作：</p>
+<ol>
+<li>在每个volatile写入之前，插入一个StoreStore，写入之后，插入一个StoreLoad</li>
+<li>在每个volatile读取之前，插入LoadLoad，之后插入LoadStore</li>
+</ol>
+<h2 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h2><p><img src="https://gitee.com/SCD-Wear/img-bed/raw/master/java/jvm.png" alt="jvm"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/04/18/java-high-concurrency-02/" target="_blank" title="Java高并发(2) 并发基础">https://jigangduan.github.io/2019/04/18/java-high-concurrency-02/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/02/online-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          在线文档收录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/17/java-high-concurrency-01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Java高并发(1) 介绍</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU多级缓存"><span class="nav-number">1.</span> <span class="nav-text">CPU多级缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU为何要有高速缓存"><span class="nav-number">1.1.</span> <span class="nav-text">CPU为何要有高速缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU-cache-意义"><span class="nav-number">1.2.</span> <span class="nav-text">CPU cache 意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带有高速缓存的CPU执行计算的流程"><span class="nav-number">1.3.</span> <span class="nav-text">带有高速缓存的CPU执行计算的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存一致性（MESI）"><span class="nav-number">1.4.</span> <span class="nav-text">缓存一致性（MESI）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令重排和内存屏障"><span class="nav-number">2.</span> <span class="nav-text">指令重排和内存屏障</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指令重排"><span class="nav-number">2.1.</span> <span class="nav-text">指令重排</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存屏障"><span class="nav-number">2.2.</span> <span class="nav-text">内存屏障</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">3.</span> <span class="nav-text">Java内存模型</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

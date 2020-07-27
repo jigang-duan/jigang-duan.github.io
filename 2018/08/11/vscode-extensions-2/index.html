@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>扩展 - hello world | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="vscodeextension">
+  
+  
+  
+  
+  <meta name="description" content="你的第一个扩展本文档将指导您创建第一个VS Code扩展(“Hello World”)，并解释VS Code可扩展性的基本概念。 在本演练中，您将向VS Code添加一个新命令，该命令将显示一个简单的“Hello World”消息。在随后的演练中，您将与VS Code编辑器交互，并查询用户当前选择的文本。 先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, No">
+<meta name="keywords" content="vscode,extension">
+<meta property="og:type" content="article">
+<meta property="og:title" content="扩展 - Hello World">
+<meta property="og:url" content="https://jigangduan.github.io/2018/08/11/vscode-extensions-2/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="你的第一个扩展本文档将指导您创建第一个VS Code扩展(“Hello World”)，并解释VS Code可扩展性的基本概念。 在本演练中，您将向VS Code添加一个新命令，该命令将显示一个简单的“Hello World”消息。在随后的演练中，您将与VS Code编辑器交互，并查询用户当前选择的文本。 先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, No">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/generator.png">
+<meta property="og:image" content="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/running.png">
+<meta property="og:image" content="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/hitbp.png">
+<meta property="og:image" content="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/selection-length.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="扩展 - Hello World">
+<meta name="twitter:description" content="你的第一个扩展本文档将指导您创建第一个VS Code扩展(“Hello World”)，并解释VS Code可扩展性的基本概念。 在本演练中，您将向VS Code添加一个新命令，该命令将显示一个简单的“Hello World”消息。在随后的演练中，您将与VS Code编辑器交互，并查询用户当前选择的文本。 先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, No">
+<meta name="twitter:image" content="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/generator.png">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-vscode-extensions-2" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      扩展 - Hello World
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/11/vscode-extensions-2/" class="article-date">
+	  <time datetime="2018-08-11T04:16:04.000Z" itemprop="datePublished">2018-08-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="你的第一个扩展"><a href="#你的第一个扩展" class="headerlink" title="你的第一个扩展"></a>你的第一个扩展</h1><p>本文档将指导您创建第一个VS Code扩展(“Hello World”)，并解释VS Code可扩展性的基本概念。</p>
+<p>在本演练中，您将向VS Code添加一个新命令，该命令将显示一个简单的“Hello World”消息。在随后的演练中，您将与VS Code编辑器交互，并查询用户当前选择的文本。</p>
+<h1 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h1><p>你需要的节点。在您的<code>$PATH</code>中安装并可用js。<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>安装包括<a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a>, Node.js包管理器，它将用于安装扩展生成器。</p>
+<h1 id="生成一个新的扩展"><a href="#生成一个新的扩展" class="headerlink" title="生成一个新的扩展"></a>生成一个新的扩展</h1><p>向VS Code中添加自己的功能的最简单方法是添加一个命令。命令注册一个回调函数，该函数可以从命令调色板调用，也可以通过键绑定调用。</p>
+<p>我们编写了一个Yeoman生成器来帮助您开始。安装Yeoman和<a href="https://code.visualstudio.com/docs/extensions/yocode" target="_blank" rel="noopener">Yeoman VSCode扩展生成器</a>和脚手架一个新的扩展:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g yo generator-code</span><br><span class="line">yo code</span><br></pre></td></tr></table></figure>
+<p>对于hello world扩展，您可以创建<code>TypeScript</code>扩展或<code>JavaScript</code>扩展。对于本例，我们选择一个TypeScript扩展。</p>
+<p><img src="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/generator.png" alt="generator"></p>
+<h1 id="运行您的扩展"><a href="#运行您的扩展" class="headerlink" title="运行您的扩展"></a>运行您的扩展</h1><ul>
+<li>启动VS Code，选择<code>文件&gt;打开文件夹</code>并选择生成的文件夹。</li>
+<li>按<code>F5</code>或单击<code>调试</code>图标并单击Start。</li>
+<li>VS Code的一个新实例将以特殊模式(扩展开发主机)启动，这个新实例现在知道您的扩展了。</li>
+<li>按键⇧⌘P和运行该命令命名为Hello World。</li>
+</ul>
+<p>恭喜你!您刚刚创建并执行了第一个VS代码命令!</p>
+<p><img src="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/running.png" alt="running"></p>
+<h1 id="扩展的结构"><a href="#扩展的结构" class="headerlink" title="扩展的结构"></a>扩展的结构</h1><p>运行后生成的扩展应该具有以下结构:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .gitignore</span><br><span class="line">├── .vscode                     // VS Code integration</span><br><span class="line">│   ├── launch.json</span><br><span class="line">│   ├── settings.json</span><br><span class="line">│   └── tasks.json</span><br><span class="line">├── .vscodeignore               // files ignored when publishing extension</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   └── extension.ts            // the <span class="built_in">source</span> of the extension entry point</span><br><span class="line">├── <span class="built_in">test</span>                        // <span class="built_in">test</span> folder</span><br><span class="line">│   ├── extension.test.ts       // extension.test.js, <span class="keyword">in</span> <span class="keyword">case</span> of JavaScript extension</span><br><span class="line">│   └── index.ts                // index.js, <span class="keyword">in</span> <span class="keyword">case</span> of JavaScript extension</span><br><span class="line">├── node_modules</span><br><span class="line">│   ├── vscode                  // include vscode <span class="built_in">type</span> definition file <span class="keyword">for</span> extension development</span><br><span class="line">│   └── typescript              // compiler <span class="keyword">for</span> typescript (TypeScript only)</span><br><span class="line">├── out                         // compilation output (TypeScript only)</span><br><span class="line">│   ├── extension.js            // the extension entry point</span><br><span class="line">│   ├── extension.js.map</span><br><span class="line">│   └── <span class="built_in">test</span></span><br><span class="line">│       ├── extension.test.js</span><br><span class="line">│       ├── extension.test.js.map</span><br><span class="line">│       ├── index.js</span><br><span class="line">│       └── index.js.map</span><br><span class="line">├── package.json                // extension<span class="string">'s manifest</span></span><br><span class="line"><span class="string">├── tsconfig.json               // jsconfig.json, in case of JavaScript extension</span></span><br><span class="line"><span class="string">└── vsc-extension-quickstart.md // extension development quick start</span></span><br></pre></td></tr></table></figure>
+<p>让我们看看所有这些文件的用途，并解释它们的用途:</p>
+<h2 id="扩展清单-package-json"><a href="#扩展清单-package-json" class="headerlink" title="扩展清单:package.json"></a>扩展清单:<code>package.json</code></h2><ul>
+<li>每个VS Code扩展必须有一个package.json文件描述它和它的功能。</li>
+<li>VS Code在启动时读取此文件，并立即对每个投稿部分作出反应。</li>
+<li>请阅读<a href="https://code.visualstudio.com/docs/extensionAPI/extension-manifest" target="_blank" rel="noopener">package.json扩展清单参考</a>。</li>
+<li>更多关于<a href="https://code.visualstudio.com/docs/extensionAPI/extension-points" target="_blank" rel="noopener">package.json贡献点</a>的信息。</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"myFirstExtension"</span>,</span><br><span class="line">    <span class="attr">"description"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.0.1"</span>,</span><br><span class="line">    <span class="attr">"publisher"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="attr">"engines"</span>: &#123;</span><br><span class="line">        <span class="attr">"vscode"</span>: <span class="string">"^1.5.0"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"categories"</span>: [</span><br><span class="line">        <span class="string">"Other"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"activationEvents"</span>: [</span><br><span class="line">        <span class="string">"onCommand:extension.sayHello"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"main"</span>: <span class="string">"./out/extension"</span>,</span><br><span class="line">    <span class="attr">"contributes"</span>: &#123;</span><br><span class="line">        <span class="attr">"commands"</span>: [&#123;</span><br><span class="line">            <span class="attr">"command"</span>: <span class="string">"extension.sayHello"</span>,</span><br><span class="line">            <span class="attr">"title"</span>: <span class="string">"Hello World"</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">        <span class="attr">"vscode:prepublish"</span>: <span class="string">"tsc -p ./"</span>,</span><br><span class="line">        <span class="attr">"compile"</span>: <span class="string">"tsc -watch -p ./"</span>,</span><br><span class="line">        <span class="attr">"postinstall"</span>: <span class="string">"node ./node_modules/vscode/bin/install"</span>,</span><br><span class="line">        <span class="attr">"test"</span>: <span class="string">"node ./node_modules/vscode/bin/test"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"devDependencies"</span>: &#123;</span><br><span class="line">       <span class="attr">"typescript"</span>: <span class="string">"^2.0.3"</span>,</span><br><span class="line">        <span class="attr">"vscode"</span>: <span class="string">"^1.5.0"</span>,</span><br><span class="line">        <span class="attr">"mocha"</span>: <span class="string">"^2.3.3"</span>,</span><br><span class="line">        <span class="attr">"@types/node"</span>: <span class="string">"^6.0.40"</span>,</span><br><span class="line">        <span class="attr">"@types/mocha"</span>: <span class="string">"^2.2.32"</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意:JavaScript扩展不需要<code>scripts</code>字段，因为不需要编译。</p>
+</blockquote>
+<p>这个具体的<code>package.json</code>描述了一个扩展:</p>
+<ul>
+<li>一个条目有助于<code>命令面板(⇧⌘P)</code>的标签“Hello world”将调用命令<code>“extension.sayHello”</code>。</li>
+<li>当命令“extension.sayHello”被调用时，请求加载(activationEvents)。</li>
+<li>它的主要JavaScript代码在一个名为“./out/extension.js”的文件中。</li>
+</ul>
+<blockquote>
+<p>注意:VS代码在启动时并不急于加载扩展的代码。扩展必须通过<code>activationEvents</code>属性描述它在什么条件下应该被激活(加载)。</p>
+</blockquote>
+<h2 id="生成的代码"><a href="#生成的代码" class="headerlink" title="生成的代码"></a>生成的代码</h2><p>生成的扩展代码为<code>extension.ts</code>(或JavaScript扩展为<code>extension.js</code>):</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The module 'vscode' contains the VS Code extensibility API</span></span><br><span class="line"><span class="comment">// Import the module and reference it with the alias vscode in your code below</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> vscode <span class="keyword">from</span> <span class="string">'vscode'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// this method is called when your extension is activated</span></span><br><span class="line"><span class="comment">// your extension is activated the very first time the command is executed</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">activate</span>(<span class="params">context: vscode.ExtensionContext</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Use the console to output diagnostic information (console.log) and errors (console.error)</span></span><br><span class="line">    <span class="comment">// This line of code will only be executed once when your extension is activated</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Congratulations, your extension "my-first-extension" is now active!'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The command has been defined in the package.json file</span></span><br><span class="line">    <span class="comment">// Now provide the implementation of the command with  registerCommand</span></span><br><span class="line">    <span class="comment">// The commandId parameter must match the command field in package.json</span></span><br><span class="line">    <span class="keyword">let</span> disposable = vscode.commands.registerCommand(<span class="string">'extension.sayHello'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// The code you place here will be executed every time your command is executed</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Display a message box to the user</span></span><br><span class="line">        vscode.window.showInformationMessage(<span class="string">'Hello World!'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    context.subscriptions.push(disposable);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个扩展都应该从它的主文件导出一个名为activate()的函数，当package.json文件中描述的任何activationEvents发生时，VS Code只调用一次。</li>
+<li>如果扩展使用OS资源(例如spawns进程)，扩展可以从主文件导出一个名为deactivate()的函数，在这里它可以进行清理工作，VS Code将在关机时调用该函数。</li>
+<li>这个特定的扩展导入vscode API，然后注册一个命令，在调用命令“extension.sayHello”时关联要调用的函数。命令的实现在VS代码中显示“Hello world”消息。</li>
+</ul>
+<blockquote>
+<p>注意:package.json的贡献部分向命令调色板添加了一个条目。extension.ts/.js中的代码定义了“extension.sayHello”的实现。<br>注意:对于TypeScript扩展，生成的文件out/extension.js将在运行时加载并由VS代码执行。</p>
+</blockquote>
+<h2 id="其他文件的"><a href="#其他文件的" class="headerlink" title="其他文件的"></a>其他文件的</h2><ul>
+<li>.vscode/launch.json在扩展开发模式中定义了启动VS代码。它还将预启动任务指向运行TypeScript编译器的.vscode/tasks.json中定义的任务。</li>
+<li>默认情况下，.vscode/settings.json不包括out文件夹。可以修改要隐藏的文件类型。</li>
+<li>.gitignore - 告诉Git版本控制要忽略哪些模式</li>
+<li>.vscodeignore -告诉打包工具在发布扩展名时忽略哪些文件。</li>
+<li>README.md - 描述VS code用户扩展的README文件。</li>
+<li>vsc-extension-quickstart.md -一个快速开始指导你。</li>
+<li>test/extension.test.ts - 你可以把你的扩展单元测试放在这里，然后根据VSCode API运行你的测试(参见<a href="https://code.visualstudio.com/docs/extensions/testing-extensions" target="_blank" rel="noopener">测试你的扩展</a>)</li>
+</ul>
+<h1 id="扩展activation"><a href="#扩展activation" class="headerlink" title="扩展activation"></a>扩展activation</h1><p>现在，扩展中包含的文件的角色已经明确，下面是如何激活扩展的:</p>
+<ul>
+<li>扩展开发实例发现扩展并读取其package.json文件。</li>
+<li>以后当你按⇧⌘P:</li>
+<li>注册的命令显示在命令调色板中。</li>
+<li>在这个列表中，现在有一个条目“Hello world”在package.json中定义。</li>
+<li>选择“Hello world”命令:</li>
+<li>调用命令“extension.sayHello”:<ul>
+<li>创建一个激活事件“onCommand:extension.sayHello”。</li>
+<li>在activationEvents中列出此激活事件的所有扩展都被激活。<ul>
+<li>./out/extension.js处的文件被加载到JavaScript VM中。</li>
+<li>VS code寻找一个导出函数激活并调用它。</li>
+<li>已经注册了命令“extension.sayHello”，现在已经定义了它的实现。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>调用命令“extension.sayHello”实现函数。</li>
+<li>命令实现显示“Hello World”消息。</li>
+</ul>
+<h1 id="调试您的扩展"><a href="#调试您的扩展" class="headerlink" title="调试您的扩展"></a>调试您的扩展</h1><p>设置断点，例如在已注册的命令中，并在扩展开发VS代码实例中运行“Hello world”命令。</p>
+<p><img src="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/hitbp.png" alt="hitbp"></p>
+<blockquote>
+<p>注意:对于TypeScript扩展，即使VS Code加载并执行out/extension.js，由于生成的源代码映射out/extension.js.map，您实际上能够调试初始的TypeScript代码。map和VS Code对源代码映射的调试器支持。<br>提示:调试控制台将显示您登录到控制台的所有消息。</p>
+</blockquote>
+<p>了解更多关于扩展开发环境的信息。</p>
+<h1 id="一个简单的改变"><a href="#一个简单的改变" class="headerlink" title="一个简单的改变"></a>一个简单的改变</h1><p>在extension.ts(或extension.js，在JavaScript扩展中)中，尝试替换extension.sayHello命令实现，以显示编辑器中选择的字符数:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> disposable = vscode.commands.registerCommand(<span class="string">'extension.sayHello'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// The code you place here will be executed every time your command is executed</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> editor = vscode.window.activeTextEditor;</span><br><span class="line">        <span class="keyword">if</span> (!editor) &#123;</span><br><span class="line">            <span class="keyword">return</span>; <span class="comment">// No open text editor</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> selection = editor.selection;</span><br><span class="line">        <span class="keyword">let</span> text = editor.document.getText(selection);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Display a message box to the user</span></span><br><span class="line">        vscode.window.showInformationMessage(<span class="string">'Selected characters: '</span> + text.length);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提示:一旦对扩展源代码进行了更改，就需要重新启动VS Code的扩展开发主机实例。您可以在扩展开发主机实例中使用Ctrl+R (macOS: Cmd+R)，或者单击主VS Code实例顶部的Restart按钮。</p>
+</blockquote>
+<p>创建一个文件(文件&gt;新文件)，输入一些文本并选择它。在运行Hello World命令时，现在应该会看到所选字符的计数。</p>
+<p><img src="https://code.visualstudio.com/assets/docs/extensions/example-hello-world/selection-length.png" alt="selection"></p>
+<h1 id="在本地安装您的扩展"><a href="#在本地安装您的扩展" class="headerlink" title="在本地安装您的扩展"></a>在本地安装您的扩展</h1><p>到目前为止，您编写的扩展只在VSCode的一个特殊实例中运行，即扩展开发实例。要使您的扩展在VSCode的所有实例中运行，您需要将其复制到本地扩展文件夹下的新文件夹中:</p>
+<ul>
+<li>Windows: %USERPROFILE%.vscode\extensions</li>
+<li>macOS/Linux: $HOME/.vscode/extensions</li>
+</ul>
+<h1 id="发布您的扩展"><a href="#发布您的扩展" class="headerlink" title="发布您的扩展"></a>发布您的扩展</h1><p>阅读如何<a href="https://code.visualstudio.com/docs/extensions/publish-extension" target="_blank" rel="noopener">共享扩展</a>。</p>
+<h1 id="下一个步骤"><a href="#下一个步骤" class="headerlink" title="下一个步骤"></a>下一个步骤</h1><p>在本演练中，我们看到了一个非常简单的扩展。有关更详细的示例，请参阅<a href="https://code.visualstudio.com/docs/extensions/example-word-count" target="_blank" rel="noopener">单词计数示例</a>，该示例展示了如何以特定语言为目标(标记)，并侦听编辑器的文档更改事件。</p>
+<p>如果你想了解更多关于扩展api的内容，请尝试以下主题:</p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/extensionAPI/overview" target="_blank" rel="noopener">扩展API概述</a>-了解VS代码可扩展性的完整模型。</li>
+<li><a href="https://code.visualstudio.com/docs/extensionAPI/patterns-and-principles" target="_blank" rel="noopener">API原则和模式</a>——VS代码可扩展性基于几个指导原则和模式。</li>
+<li><a href="https://code.visualstudio.com/docs/extensionAPI/extension-points" target="_blank" rel="noopener">贡献点</a>——关于VS代码贡献点的详细信息。</li>
+<li><a href="https://code.visualstudio.com/docs/extensionAPI/activation-events" target="_blank" rel="noopener">激活事件</a>- VS代码激活事件引用</li>
+<li><a href="https://code.visualstudio.com/docs/extensions/samples" target="_blank" rel="noopener">其他扩展示例</a>—查看我们的示例扩展项目列表。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/11/vscode-extensions-2/" target="_blank" title="扩展 - Hello World">https://jigangduan.github.io/2018/08/11/vscode-extensions-2/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/extension/">extension</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vscode/">vscode</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/11/vscode-extensions-3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          例子——单词计数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/11/vscode-extensions-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Yo Code - 扩展生成器</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#你的第一个扩展"><span class="nav-number">1.</span> <span class="nav-text">你的第一个扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#先决条件"><span class="nav-number">2.</span> <span class="nav-text">先决条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成一个新的扩展"><span class="nav-number">3.</span> <span class="nav-text">生成一个新的扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行您的扩展"><span class="nav-number">4.</span> <span class="nav-text">运行您的扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展的结构"><span class="nav-number">5.</span> <span class="nav-text">扩展的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展清单-package-json"><span class="nav-number">5.1.</span> <span class="nav-text">扩展清单:package.json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成的代码"><span class="nav-number">5.2.</span> <span class="nav-text">生成的代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他文件的"><span class="nav-number">5.3.</span> <span class="nav-text">其他文件的</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展activation"><span class="nav-number">6.</span> <span class="nav-text">扩展activation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试您的扩展"><span class="nav-number">7.</span> <span class="nav-text">调试您的扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一个简单的改变"><span class="nav-number">8.</span> <span class="nav-text">一个简单的改变</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在本地安装您的扩展"><span class="nav-number">9.</span> <span class="nav-text">在本地安装您的扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发布您的扩展"><span class="nav-number">10.</span> <span class="nav-text">发布您的扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下一个步骤"><span class="nav-number">11.</span> <span class="nav-text">下一个步骤</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

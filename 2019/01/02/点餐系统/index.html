@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>点餐系统 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="实例">
+  
+  
+  
+  
+  <meta name="description" content="介绍基础介绍 买家（微信） 微信点餐 微信支付 微信通知（模版消息）   卖家（PC）管理系统 扫描登录 订单 商品 类目    技术要点前后端分离 —— RestFul 前端Vue —— WebApp 后端Spring Boot —— Bootstrap+Freemarker+JQuery Spring Boot —— 数据库 —— JPA —— MyBatis Spring Boot —— 缓">
+<meta name="keywords" content="实例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="点餐系统">
+<meta property="og:url" content="https://jigangduan.github.io/2019/01/02/点餐系统/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="介绍基础介绍 买家（微信） 微信点餐 微信支付 微信通知（模版消息）   卖家（PC）管理系统 扫描登录 订单 商品 类目    技术要点前后端分离 —— RestFul 前端Vue —— WebApp 后端Spring Boot —— Bootstrap+Freemarker+JQuery Spring Boot —— 数据库 —— JPA —— MyBatis Spring Boot —— 缓">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.236Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="点餐系统">
+<meta name="twitter:description" content="介绍基础介绍 买家（微信） 微信点餐 微信支付 微信通知（模版消息）   卖家（PC）管理系统 扫描登录 订单 商品 类目    技术要点前后端分离 —— RestFul 前端Vue —— WebApp 后端Spring Boot —— Bootstrap+Freemarker+JQuery Spring Boot —— 数据库 —— JPA —— MyBatis Spring Boot —— 缓">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-点餐系统" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      点餐系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/02/点餐系统/" class="article-date">
+	  <time datetime="2019-01-02T04:34:26.000Z" itemprop="datePublished">2019-01-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/实例/">实例</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="基础介绍"><a href="#基础介绍" class="headerlink" title="基础介绍"></a>基础介绍</h3><ul>
+<li>买家（微信）<ul>
+<li>微信点餐</li>
+<li>微信支付</li>
+<li>微信通知（模版消息）</li>
+</ul>
+</li>
+<li>卖家（PC）管理系统<ul>
+<li>扫描登录</li>
+<li>订单</li>
+<li>商品</li>
+<li>类目</li>
+</ul>
+</li>
+</ul>
+<h3 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h3><p>前后端分离 —— RestFul</p>
+<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><p>Vue —— WebApp</p>
+<h4 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h4><p>Spring Boot —— Bootstrap+Freemarker+JQuery</p>
+<p>Spring Boot —— 数据库 —— JPA —— MyBatis</p>
+<p>Spring Boot —— 缓存 —— Redis —— 分布式Session + 分布式锁</p>
+<p>Spring Boot —— 消息推送 —— WebSocket</p>
+<h4 id="微信技术"><a href="#微信技术" class="headerlink" title="微信技术"></a>微信技术</h4><ul>
+<li>微信扫描登录</li>
+<li>模版消息推送</li>
+<li>微信支付和退款</li>
+</ul>
+<h2 id="项目设计"><a href="#项目设计" class="headerlink" title="项目设计"></a>项目设计</h2><h3 id="角色划分"><a href="#角色划分" class="headerlink" title="角色划分"></a>角色划分</h3><ul>
+<li>买家<ul>
+<li>商品列表</li>
+<li>订单创建</li>
+<li>订单查询</li>
+<li>订单取消</li>
+<li>…</li>
+</ul>
+</li>
+<li>卖家<ul>
+<li>订单管理</li>
+<li>商品管理</li>
+<li>类目管理</li>
+</ul>
+</li>
+</ul>
+<h3 id="功能模块划分"><a href="#功能模块划分" class="headerlink" title="功能模块划分"></a>功能模块划分</h3><h4 id="商品"><a href="#商品" class="headerlink" title="商品"></a>商品</h4><ul>
+<li>买家<ul>
+<li>商品列表</li>
+</ul>
+</li>
+<li>卖家<ul>
+<li>商品管理</li>
+</ul>
+</li>
+</ul>
+<h4 id="订单"><a href="#订单" class="headerlink" title="订单"></a>订单</h4><ul>
+<li>买家<ul>
+<li>订单创建</li>
+<li>订单查询</li>
+<li>订单取消</li>
+<li>…</li>
+</ul>
+</li>
+<li>卖家<ul>
+<li>订单管理</li>
+</ul>
+</li>
+</ul>
+<h4 id="类目"><a href="#类目" class="headerlink" title="类目"></a>类目</h4><ul>
+<li>卖家<ul>
+<li>类目管理</li>
+</ul>
+</li>
+</ul>
+<h4 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h4><ul>
+<li>买家 ——查询——&gt; 商品</li>
+<li>卖家 ——管理——&gt; 商品</li>
+<li>买家 ——创建/查询——&gt; 订单</li>
+<li>买家 ——查询/接收——&gt; 订单</li>
+<li>买家 &lt;——消息——&gt; 卖家</li>
+</ul>
+<h3 id="部署架构"><a href="#部署架构" class="headerlink" title="部署架构"></a>部署架构</h3><p>微信 &amp; PC浏览器 ——&gt; NGINX ——&gt; Tomcat ——&gt; Redis &amp; MySQL</p>
+<h3 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h3><h4 id="表关系"><a href="#表关系" class="headerlink" title="表关系"></a>表关系</h4><p>类目表(product_category) ——&gt; 商品表(product_info) ——&gt; 订单详情表(order_detail) n——&gt;1 订单主表(order_master)</p>
+<p>卖家信息表(seller_info)</p>
+<h4 id="表结构"><a href="#表结构" class="headerlink" title="表结构"></a>表结构</h4><h5 id="商品表-product-info"><a href="#商品表-product-info" class="headerlink" title="商品表(product_info)"></a>商品表(product_info)</h5><ul>
+<li>名称</li>
+<li>单价</li>
+<li>库存</li>
+<li>描述</li>
+<li>图片</li>
+<li>目录编号</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">`product_info`</span> (</span><br><span class="line">    <span class="string">`product_id`</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    <span class="string">`product_name`</span> <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品名称'</span>,</span><br><span class="line">    <span class="string">`product_price`</span> <span class="built_in">DECIMAL</span>(<span class="number">8</span>, <span class="number">2</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'单价'</span>,</span><br><span class="line">    <span class="string">`product_stock`</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'库存'</span>,</span><br><span class="line">    <span class="string">`product_description`</span> <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">COMMENT</span> <span class="string">'描述'</span>,</span><br><span class="line">    <span class="string">`product_icon`</span> <span class="built_in">VARCHAR</span>(<span class="number">512</span>) <span class="keyword">COMMENT</span> <span class="string">'小图片'</span>,</span><br><span class="line">    <span class="string">`product_status`</span> <span class="built_in">TINYINT</span>(<span class="number">3</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> <span class="keyword">COMMENT</span> <span class="string">'商品状态: 0-默认未上架'</span>,</span><br><span class="line">    <span class="string">`category_type`</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'目录编号'</span>,</span><br><span class="line">    <span class="string">`creat_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">    <span class="string">`update_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'更新时间'</span>,</span><br><span class="line">    PRIMARY <span class="keyword">KEY</span> (<span class="string">`product_id`</span>)</span><br><span class="line">) <span class="keyword">COMMENT</span> <span class="string">'商品表'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="类目表-product-category"><a href="#类目表-product-category" class="headerlink" title="类目表(product_category)"></a>类目表(product_category)</h5><ul>
+<li>名称</li>
+<li>编号</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">`product_category`</span> (</span><br><span class="line">    <span class="string">`category_id`</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> auto_increment,</span><br><span class="line">    <span class="string">`category_name`</span> <span class="built_in">VARCHAR</span> ( <span class="number">64</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'类目名称'</span>,</span><br><span class="line">    <span class="string">`category_type`</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'编号'</span>,</span><br><span class="line">    <span class="string">`creat_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">    <span class="string">`update_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'更新时间'</span>,</span><br><span class="line">    PRIMARY <span class="keyword">KEY</span> ( <span class="string">`category_id`</span> ),</span><br><span class="line">    <span class="keyword">UNIQUE</span> <span class="keyword">KEY</span> <span class="string">`uqe_category_type`</span> ( <span class="string">`category_type`</span> ) </span><br><span class="line">) <span class="keyword">COMMENT</span> <span class="string">'类目表'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="订单表"><a href="#订单表" class="headerlink" title="订单表"></a>订单表</h5><ul>
+<li>买家名称</li>
+<li>买家电话</li>
+<li>买家地址</li>
+<li>买家微信id</li>
+<li>总金额</li>
+<li>订单状态</li>
+<li>支付状态</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">`order_master`</span> (</span><br><span class="line">    <span class="string">`order_id`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    <span class="string">`buyer_name`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'买家名称'</span>,</span><br><span class="line">    <span class="string">`buyer_phone`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'买家电话'</span>,</span><br><span class="line">    <span class="string">`buyer_address`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'买家地址'</span>,</span><br><span class="line">    <span class="string">`buyer_openid`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'买家微信id'</span>,</span><br><span class="line">    <span class="string">`order_amount`</span> <span class="built_in">DECIMAL</span> ( <span class="number">8</span>, <span class="number">2</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'总金额'</span>,</span><br><span class="line">    <span class="string">`order_status`</span> <span class="built_in">TINYINT</span> ( <span class="number">3</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> <span class="keyword">COMMENT</span> <span class="string">'订单状态： 0-默认新下单'</span>,</span><br><span class="line">    <span class="string">`pay_status`</span> <span class="built_in">TINYINT</span> ( <span class="number">3</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> <span class="keyword">COMMENT</span> <span class="string">'支付状态： 0-默认未支付'</span>,</span><br><span class="line">    <span class="string">`creat_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">    <span class="string">`update_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'更新时间'</span>,</span><br><span class="line">    PRIMARY <span class="keyword">KEY</span> ( <span class="string">`order_id`</span> ),</span><br><span class="line">    <span class="keyword">KEY</span> <span class="string">`idx_buyer_openid`</span> ( <span class="string">`buyer_openid`</span> ) </span><br><span class="line">) <span class="keyword">COMMENT</span> <span class="string">'订单表'</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>订单id</li>
+<li>商品id</li>
+<li>商品名字</li>
+<li>商品价格</li>
+<li>商品数量</li>
+<li>商品照片</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">`order_detail`</span> (</span><br><span class="line">    <span class="string">`detail_id`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    <span class="string">`order_id`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    <span class="string">`product_id`</span> <span class="built_in">VARCHAR</span> ( <span class="number">32</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    <span class="string">`product_name`</span> <span class="built_in">VARCHAR</span> ( <span class="number">64</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品名称'</span>,</span><br><span class="line">    <span class="string">`product_price`</span> <span class="built_in">DECIMAL</span> ( <span class="number">8</span>, <span class="number">2</span> ) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品单价'</span>,</span><br><span class="line">    <span class="string">`product_quantity`</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品数量'</span>,</span><br><span class="line">    <span class="string">`product_icon`</span> <span class="built_in">VARCHAR</span> ( <span class="number">512</span> ) <span class="keyword">COMMENT</span> <span class="string">'商品图片'</span>,</span><br><span class="line">    <span class="string">`creat_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">    <span class="string">`update_at`</span> <span class="built_in">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'更新时间'</span>,</span><br><span class="line">    PRIMARY <span class="keyword">KEY</span> ( <span class="string">`detail_id`</span> ),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`idx_order_id`</span> ( <span class="string">`order_id`</span> )</span><br><span class="line">) <span class="keyword">COMMENT</span> <span class="string">'订单详情表'</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ul>
+<li>JDK</li>
+<li>Maven</li>
+<li>Ide</li>
+</ul>
+<h2 id="日志使用"><a href="#日志使用" class="headerlink" title="日志使用"></a>日志使用</h2><h3 id="日志框架"><a href="#日志框架" class="headerlink" title="日志框架"></a>日志框架</h3><p>什么是日志框架？</p>
+<ul>
+<li>是一套能实现日志输出的工具包</li>
+<li>能够描述系统运行状态的所有时间都可以算作日志<ul>
+<li>用户下线</li>
+<li>接口超时</li>
+<li>数据库崩溃</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<p>能力：</p>
+<ul>
+<li>定制输出日志</li>
+<li>定制输出格式</li>
+<li>携带上下文信息</li>
+<li>运行时选择性输出</li>
+<li>灵活的配置</li>
+<li>优异的性能</li>
+</ul>
+<p>常见日志框架：</p>
+<ul>
+<li>日志门面<ul>
+<li>JUL</li>
+<li>JCL</li>
+<li><code>SLF4j</code></li>
+<li>jboss-logging</li>
+</ul>
+</li>
+<li><p>日志实现</p>
+<ul>
+<li>Log4j</li>
+<li>Log4j2</li>
+<li><code>Logback</code></li>
+</ul>
+</li>
+</ul>
+<p>使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">SpringBootTest</span></span></span><br><span class="line"><span class="class">@<span class="title">Slf4j</span></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">LoggerTests</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(LoggerTests<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 传统方式实现日志</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        logger.debug(<span class="string">"debug ..."</span>);</span><br><span class="line">        logger.info(<span class="string">"info ..."</span>);</span><br><span class="line">        logger.error(<span class="string">"error ..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Slf4j注解方式实现日志</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String name = <span class="string">"sell"</span>;</span><br><span class="line">        String password = <span class="string">"***"</span>;</span><br><span class="line">        log.debug(<span class="string">"debug ..."</span>);</span><br><span class="line">        log.info(<span class="string">"info ... name: &#123;&#125;, password: &#123;&#125;"</span>, name, password);</span><br><span class="line">        log.error(<span class="string">"error ..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Logback的配置"><a href="#Logback的配置" class="headerlink" title="Logback的配置"></a>Logback的配置</h3><ul>
+<li><p>application.yml</p>
+</li>
+<li><p>logback-spring.xml</p>
+</li>
+</ul>
+<p>需求：</p>
+<ul>
+<li>区分info和error日志</li>
+<li>每天产生一个日志文件</li>
+</ul>
+<p><code>logback-spring.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"consoleLog"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">layout</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.PatternLayout"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span></span><br><span class="line">                %date %level [%thread] %logger&#123;10&#125; [%file:%line] ------ %msg%n</span><br><span class="line">            <span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"fileInfoLog"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">pattern</span>&gt;</span></span><br><span class="line">               %d - %msg%n</span><br><span class="line">           <span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--滚动策略--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--路径--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>/Users/jigang.duan/logs/tomcat/sell/info.%d.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"fileErrorLog"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.ThresholdFilter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span></span><br><span class="line">                %d - %msg%n</span><br><span class="line">            <span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--滚动策略--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--路径--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>/Users/username/logs/tomcat/sell/error.%d.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"consoleLog"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"fileInfoLog"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"fileErrorLog"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="买家类目"><a href="#买家类目" class="headerlink" title="买家类目"></a>买家类目</h2><h3 id="DAD"><a href="#DAD" class="headerlink" title="DAD"></a>DAD</h3><h4 id="引入JPA依赖"><a href="#引入JPA依赖" class="headerlink" title="引入JPA依赖"></a>引入JPA依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">driver-class-name:</span> <span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql://localhost:8889/seil?characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">  <span class="attr">jpa:</span></span><br><span class="line">    <span class="attr">show-sql:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="Entity"><a href="#Entity" class="headerlink" title="Entity"></a>Entity</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@DynamicUpdate</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductCategory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"category_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"category_name"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"category_type"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer type;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date creatAt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date updateAt;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ProductCategory</span><span class="params">(String name, Integer type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ProductCategory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ProductCategoryRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">ProductCategory</span>, <span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;ProductCategory&gt; <span class="title">findByTypeIn</span><span class="params">(List&lt;Integer&gt; typeList)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">SpringBootTest</span></span></span><br><span class="line"><span class="class">@<span class="title">Slf4j</span></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">ProductCategoryRepositoryTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProductCategoryRepository repository;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findOneTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Optional&lt;ProductCategory&gt; category = repository.findById(<span class="number">1</span>);</span><br><span class="line">        String desc = category.map(ProductCategory::toString).orElse(<span class="string">"No value found"</span>);</span><br><span class="line">        log.info(desc);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ProductCategory category = <span class="keyword">new</span> ProductCategory(<span class="string">"测试类目"</span>, <span class="number">1</span>);</span><br><span class="line">        ProductCategory result = repository.save(category);</span><br><span class="line">        Assert.assertNotNull(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findByTypeInTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; list = Arrays.asList(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">        List&lt;ProductCategory&gt; result = repository.findByTypeIn(list);</span><br><span class="line">        log.info(result.toString());</span><br><span class="line">        Assert.assertNotEquals(<span class="number">0</span>, result.size());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>服务接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CategoryService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Optional&lt;ProductCategory&gt; <span class="title">findById</span><span class="params">(Integer id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;ProductCategory&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;ProductCategory&gt; <span class="title">findByTypeIn</span><span class="params">(List&lt;Integer&gt; typeList)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">ProductCategory <span class="title">save</span><span class="params">(ProductCategory category)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>服务实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CategoryServiceImpl</span> <span class="keyword">implements</span> <span class="title">CategoryService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProductCategoryRepository repository;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Optional&lt;ProductCategory&gt; <span class="title">findById</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> repository.findById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;ProductCategory&gt; <span class="title">findAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> repository.findAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;ProductCategory&gt; <span class="title">findByTypeIn</span><span class="params">(List&lt;Integer&gt; typeList)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> repository.findByTypeIn(typeList);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ProductCategory <span class="title">save</span><span class="params">(ProductCategory category)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> repository.save(category);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">SpringBootTest</span></span></span><br><span class="line"><span class="class">@<span class="title">Slf4j</span></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">CategoryServiceImplTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> CategoryServiceImpl categoryService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findById</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String result = categoryService.findById(<span class="number">1</span>).map(ProductCategory::toString).orElse(<span class="string">"No value found"</span>);</span><br><span class="line">        Assert.assertNotEquals(result, <span class="string">"No value found"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ProductCategory category = <span class="keyword">new</span> ProductCategory(<span class="string">"测试数据"</span>, <span class="number">0</span>);</span><br><span class="line">        ProductCategory save = categoryService.save(category);</span><br><span class="line">        Assert.assertNotNull(save);</span><br><span class="line"></span><br><span class="line">        List&lt;ProductCategory&gt; all = categoryService.findAll();</span><br><span class="line">        Assert.assertNotEquals(<span class="number">0</span>, all.size());</span><br><span class="line"></span><br><span class="line">        List&lt;ProductCategory&gt; byTypeIn = categoryService.findByTypeIn(Collections.singletonList(<span class="number">0</span>));</span><br><span class="line">        Assert.assertEquals(<span class="number">1</span>, byTypeIn.size());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="买家商品"><a href="#买家商品" class="headerlink" title="买家商品"></a>买家商品</h2><h2 id="微信特性"><a href="#微信特性" class="headerlink" title="微信特性"></a>微信特性</h2><h3 id="微信授权"><a href="#微信授权" class="headerlink" title="微信授权"></a>微信授权</h3><p>获取OpenID</p>
+<ul>
+<li>收到方式</li>
+<li>第三方SDK方式</li>
+</ul>
+<h4 id="微信"><a href="#微信" class="headerlink" title="微信"></a>微信</h4><h3 id="微信支付"><a href="#微信支付" class="headerlink" title="微信支付"></a>微信支付</h3><h3 id="微信退款"><a href="#微信退款" class="headerlink" title="微信退款"></a>微信退款</h3>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/01/02/点餐系统/" target="_blank" title="点餐系统">https://jigangduan.github.io/2019/01/02/点餐系统/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/实例/">实例</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/05/json-api/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          JSON:API规范
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/23/You-need-to-know-css/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Web开发者应该掌握的CSS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础介绍"><span class="nav-number">1.1.</span> <span class="nav-text">基础介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技术要点"><span class="nav-number">1.2.</span> <span class="nav-text">技术要点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端"><span class="nav-number">1.2.1.</span> <span class="nav-text">前端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后端"><span class="nav-number">1.2.2.</span> <span class="nav-text">后端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#微信技术"><span class="nav-number">1.2.3.</span> <span class="nav-text">微信技术</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目设计"><span class="nav-number">2.</span> <span class="nav-text">项目设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#角色划分"><span class="nav-number">2.1.</span> <span class="nav-text">角色划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能模块划分"><span class="nav-number">2.2.</span> <span class="nav-text">功能模块划分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#商品"><span class="nav-number">2.2.1.</span> <span class="nav-text">商品</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订单"><span class="nav-number">2.2.2.</span> <span class="nav-text">订单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类目"><span class="nav-number">2.2.3.</span> <span class="nav-text">类目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系"><span class="nav-number">2.2.4.</span> <span class="nav-text">关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署架构"><span class="nav-number">2.3.</span> <span class="nav-text">部署架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库设计"><span class="nav-number">2.4.</span> <span class="nav-text">数据库设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#表关系"><span class="nav-number">2.4.1.</span> <span class="nav-text">表关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表结构"><span class="nav-number">2.4.2.</span> <span class="nav-text">表结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#商品表-product-info"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">商品表(product_info)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类目表-product-category"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">类目表(product_category)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#订单表"><span class="nav-number">2.4.2.3.</span> <span class="nav-text">订单表</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发环境"><span class="nav-number">3.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志使用"><span class="nav-number">4.</span> <span class="nav-text">日志使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志框架"><span class="nav-number">4.1.</span> <span class="nav-text">日志框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Logback的配置"><span class="nav-number">4.2.</span> <span class="nav-text">Logback的配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#买家类目"><span class="nav-number">5.</span> <span class="nav-text">买家类目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DAD"><span class="nav-number">5.1.</span> <span class="nav-text">DAD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引入JPA依赖"><span class="nav-number">5.1.1.</span> <span class="nav-text">引入JPA依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库配置"><span class="nav-number">5.1.2.</span> <span class="nav-text">数据库配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Entity"><span class="nav-number">5.1.3.</span> <span class="nav-text">Entity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Repository"><span class="nav-number">5.1.4.</span> <span class="nav-text">Repository</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service"><span class="nav-number">5.2.</span> <span class="nav-text">Service</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#买家商品"><span class="nav-number">6.</span> <span class="nav-text">买家商品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微信特性"><span class="nav-number">7.</span> <span class="nav-text">微信特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#微信授权"><span class="nav-number">7.1.</span> <span class="nav-text">微信授权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#微信"><span class="nav-number">7.1.1.</span> <span class="nav-text">微信</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信支付"><span class="nav-number">7.2.</span> <span class="nav-text">微信支付</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信退款"><span class="nav-number">7.3.</span> <span class="nav-text">微信退款</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
