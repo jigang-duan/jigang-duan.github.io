@@ -20,15 +20,15 @@
 <meta property="og:description" content="某企业信用信息 使用了极限验证码，包括 滑块和点选 验证，这里尝试分析滑块验证  极限文档 搭建极限 demo 环境 下载 demo  1git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git  运行 demo  123cd gt3-server-python-flask-sdksudo pip install">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603505945986&di=0c392cab44dbae5e3af24d0a169097ee&imgtype=0&src=http%3A%2F%2Fattach.dataguru.cn%2Fattachments%2Fportal%2F201606%2F01%2F144259wjyddv0igvfyfyr8.jpg">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/C6A8D100-E2FC-453B-9F62-2793FAF23AFE.png">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/853E08D9-B26B-4039-B4E1-7B4A41B0FDDB.png">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/7BA8F28B-082C-4FE9-B5D8-86DAC2475616.png">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/3733C757-B620-42DE-A544-1B279C6FD3EE.png">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/AA32CD3A-5282-4040-A2AD-68CA3AD45CFE.png">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/AD8B903E-120B-4DB0-807F-0DD5E09C47BF.png">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/E9A00451-B2AD-41E3-9698-C112789B8139.png">
-<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/38C753B1-D3D2-4A01-8749-32C761EB2E9C.png">
-<meta property="og:updated_time" content="2020-10-23T23:32:08.477Z">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/C6A8D100-E2FC-453B-9F62-2793FAF23AFE.png">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/853E08D9-B26B-4039-B4E1-7B4A41B0FDDB.png">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/7BA8F28B-082C-4FE9-B5D8-86DAC2475616.png">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/3733C757-B620-42DE-A544-1B279C6FD3EE.png">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/AA32CD3A-5282-4040-A2AD-68CA3AD45CFE.png">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/AD8B903E-120B-4DB0-807F-0DD5E09C47BF.png">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/E9A00451-B2AD-41E3-9698-C112789B8139.png">
+<meta property="og:image" content="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/38C753B1-D3D2-4A01-8749-32C761EB2E9C.png">
+<meta property="og:updated_time" content="2020-10-23T23:53:07.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="反爬 __极限滑块验证码__ 分析过程">
 <meta name="twitter:description" content="某企业信用信息 使用了极限验证码，包括 滑块和点选 验证，这里尝试分析滑块验证  极限文档 搭建极限 demo 环境 下载 demo  1git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git  运行 demo  123cd gt3-server-python-flask-sdksudo pip install">
@@ -295,7 +295,7 @@
 <h4 id="请求-GET-register"><a href="#请求-GET-register" class="headerlink" title="请求 GET register:"></a>请求 GET register:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Request URL: http://0.0.0.0:5000/register?t=1600703538795</span><br><span class="line">Request Method: GET</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">&#123;</span><br><span class="line">    &quot;success&quot;:1,</span><br><span class="line">    &quot;gt&quot;:&quot;c9c4facd1a6feeb80802222cbb74ca8e&quot;,</span><br><span class="line">    &quot;challenge&quot;:&quot;f340a03dc45ca5a598ba928f6b103d54&quot;,</span><br><span class="line">    &quot;new_captcha&quot;:true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>Query参数 <code>t=1600703538795</code></p>
-<p>  <img src="images/C6A8D100-E2FC-453B-9F62-2793FAF23AFE.png" alt="t=1600703538795"></p>
+<p>  <img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/C6A8D100-E2FC-453B-9F62-2793FAF23AFE.png" alt="t=1600703538795"></p>
 </li>
 </ul>
 <p>可以看出<code>register 请求</code>里面有<code>gt</code>, <code>challenge</code></p>
@@ -305,7 +305,7 @@
 <p><strong>发现<code>gt</code>就是 <code>GEETEST_ID</code></strong></p>
 <p>但<code>challenge</code> 值和 <code>ajax.php</code> 请求的值是不一样的</p>
 <p>追踪<code>ajax.php</code>请求回调:</p>
-<p><img src="images/853E08D9-B26B-4039-B4E1-7B4A41B0FDDB.png" alt><br><img src="images/7BA8F28B-082C-4FE9-B5D8-86DAC2475616.png" alt><br><img src="images/3733C757-B620-42DE-A544-1B279C6FD3EE.png" alt><br><img src="images/AA32CD3A-5282-4040-A2AD-68CA3AD45CFE.png" alt><br><img src="images/AD8B903E-120B-4DB0-807F-0DD5E09C47BF.png" alt><br><img src="images/E9A00451-B2AD-41E3-9698-C112789B8139.png" alt><br><img src="images/38C753B1-D3D2-4A01-8749-32C761EB2E9C.png" alt></p>
+<p><img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/853E08D9-B26B-4039-B4E1-7B4A41B0FDDB.png" alt><br><img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/7BA8F28B-082C-4FE9-B5D8-86DAC2475616.png" alt><br><img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/3733C757-B620-42DE-A544-1B279C6FD3EE.png" alt><br><img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/AA32CD3A-5282-4040-A2AD-68CA3AD45CFE.png" alt><br><img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/AD8B903E-120B-4DB0-807F-0DD5E09C47BF.png" alt><br><img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/E9A00451-B2AD-41E3-9698-C112789B8139.png" alt><br><img src="https://gitee.com/oshoutian/gsxtgov_spider/raw/master/docs/images/38C753B1-D3D2-4A01-8749-32C761EB2E9C.png" alt></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">u = &#123;</span><br><span class="line">    <span class="string">"\u0067\u0074"</span>: o[$_CAICh(<span class="number">171</span>)],</span><br><span class="line">    <span class="string">"\u0063\u0068\u0061\u006c\u006c\u0065\u006e\u0067\u0065"</span>: o[$_CAIBT(<span class="number">128</span>)],</span><br><span class="line">    <span class="string">"\u006c\u0061\u006e\u0067"</span>: i[$_CAICh(<span class="number">111</span>)],</span><br><span class="line">    <span class="string">"\u0070\u0074"</span>: r[$_CAICh(<span class="number">630</span>)],</span><br><span class="line">    <span class="string">"\u0063\u006c\u0069\u0065\u006e\u0074\u005f\u0074\u0079\u0070\u0065"</span>: r[$_CAICh(<span class="number">663</span>)],</span><br><span class="line">    <span class="string">"\u0077"</span>: _ + s</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
