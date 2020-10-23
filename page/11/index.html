@@ -259,6 +259,65 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-things-queue-selection"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/11/01/things-queue-selection/">IIoT消息队列(IoT MQ)选型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/11/01/things-queue-selection/" class="article-date">
+	  <time datetime="2018-11-01T02:48:24.000Z" itemprop="datePublished">2018-11-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/IoT/">IoT</a><a class="article-category-link" href="/categories/IoT/消息队列/">消息队列</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+为什么被需要MQ？IIoT作为设备接入和业务层承上启下的作用，其最重要的职能在于提供一个统一接口:
+
+解耦上下各个不同系统的之间的关联性，使它们之间可以不直接依赖
+同构系统中每个结点上的一致性，是各个系统直接可以交流
+灵活地添加组件或适配系统，使其结构灵活，易于扩充
+
+为了达到这三个功能，门面模式+适配器+观察者模式 的设计模式非常适合，那么消息队列就是最佳选择了。消息队列作为门面，作为各个系统的接入点，解耦了它们之间的相互关联；我们还需要制定一套统一的消息标准，同构各个系统的接入方式；...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/11/01/things-queue-selection/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-github-paas"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -769,61 +828,6 @@ Visual Studio Code是一个用于Linux、macOS和Windows的图形化代码编辑
         </p>
         <p class="article-more-link">
           <a href="/2018/08/30/yeoman-authoring7/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-yeoman-authoring6"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/08/30/yeoman-authoring6/">编写自己的Yeoman生成器-6.使用文件系统</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/08/30/yeoman-authoring6/" class="article-date">
-	  <time datetime="2018-08-29T16:23:20.000Z" itemprop="datePublished">2018-08-30</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Node-js/">Node.js</a><a class="article-category-link" href="/categories/Node-js/编写自己的Yeoman生成器/">编写自己的Yeoman生成器</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          位置上下文和路径Yeoman文件实用程序基于您在磁盘上始终有两个位置上下文的想法。这些上下文是您的生成器最有可能读取和写入的文件夹。
-目标上下文第一个上下文是目标上下文。目标是Yeoman将脚手架新应用程序的文件夹。它是您的用户项目文件夹，它是您编写大部分脚手架的地方。
-目标上下文定义为当前工作目录或包含.yo-rc.json文件的最近父文件夹。该.yo-rc.json文件定义了Yeoman项目的根。此文件允许您的用户在子目录中运行命令并让它们在项目上工作。这确保了最终用户的一致行为。
-你...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/08/30/yeoman-authoring6/#more">阅读全文</a>
         </p>
       
     </div>

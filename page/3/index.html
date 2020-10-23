@@ -259,6 +259,66 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-mysql-notes-18"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-18/">MySQL 笔记 (18) SQL编程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-18/" class="article-date">
+	  <time datetime="2019-03-12T14:23:24.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          局部变量变量声明1declare var_name[,...] type [default value]
+这个语句被用来声明局部变量。要给变量提供一个默认值，请包含一个default子句。值可以被指定为一个表达式，不需要为一个常数。如果没有default子句，初始值为null。
+赋值使用 set 和 select into 语句为变量赋值。
+
+注意：在函数内是可以使用全局变量（用户自定义的变量）
+
+全局变量定义、赋值set 语句可以定义并为变量赋值。
+1set @var = value;
+...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-18/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-mysql-notes-17"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -781,62 +841,6 @@ where子查询内的表，不能直接用以更新。
         </p>
         <p class="article-more-link">
           <a href="/2019/03/12/mysql-notes-9/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-mysql-notes-8"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/12/mysql-notes-8/">MySQL 笔记 (8) SELECT</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/12/mysql-notes-8/" class="article-date">
-	  <time datetime="2019-03-12T11:48:11.000Z" itemprop="datePublished">2019-03-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          语法1SELECT [ALL|DISTINCT] select_expr FROM -&gt; WHERE -&gt; GROUP BY [合计函数] -&gt; HAVING -&gt; ORDER BY -&gt; LIMIT
-select_expr
-可以用  表示所有字段。  `select  from tb;`
-可以使用表达式（计算公式、函数调用、字段也是个表达式）  select stu, 29+25, now() from tb;
-可以为每个列使用别名。适用于简化列标识，避免多...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/03/12/mysql-notes-8/#more">阅读全文</a>
         </p>
       
     </div>

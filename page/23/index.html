@@ -259,6 +259,70 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-《App研发录》笔记-第一部分-高效App框架设计与重构"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/10/20/《App研发录》笔记-第一部分-高效App框架设计与重构/">App研发录 笔记(一): 高效App框架设计与重构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/20/《App研发录》笔记-第一部分-高效App框架设计与重构/" class="article-date">
+	  <time datetime="2017-10-20T08:11:59.000Z" itemprop="datePublished">2017-10-20</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/Android/读书笔记/App研发录/">App研发录</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+第一部分 高效App框架设计与重构
+第1章 重构
+对于 App 来说，要么就一次性把它设计好，否则，就只能重构了。
+
+重新规划 Android 项目的目录结构
+建立 AndroidLib 类库，将与业务无关的逻辑转移到 AndroidLib。
+
+com.infrastructure.activity: 业务无关的 Activity 基类
+
+AndroidLib 下的基类 BaseActivity 封装的是业务无关的公用逻辑
+AppBaseActivity 基类封装的是业务相关的公用逻辑
+...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/10/20/《App研发录》笔记-第一部分-高效App框架设计与重构/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-TCLMOVE-技术选型"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -845,63 +909,6 @@ Android 5.0 带来了新的功能，允许你为视图(以及任何后代)指定
         </p>
         <p class="article-more-link">
           <a href="/2017/08/13/custom-views-making-interactive/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-custom-views-custom-drawing"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/13/custom-views-custom-drawing/">自定义视图(2) —— 自定义绘制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/13/custom-views-custom-drawing/" class="article-date">
-	  <time datetime="2017-08-13T04:40:03.000Z" itemprop="datePublished">2017-08-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-用户界面的最佳实践/">Android 用户界面的最佳实践</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-自定义视图最重要的部分是它的外观。根据您的应用程序的需要，自定义绘制可以很简单或复杂。这一课涵盖了一些最常见的操作。
-
-覆写onDraw()绘制自定义视图最重要的步骤是覆盖onDraw())方法。onDraw()的参数是一个画布对象，视图可以使用它来绘制自己。Canvas类定义了用于绘制文本、行、位图和许多其他图形原语的方法。您可以在onDraw()中使用这些方法来创建定制的用户界面(UI)。
-不过，在您调用任何绘图方法之前，需要创建一个Paint对象。下一节将更详细地讨论Paint
-创...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/08/13/custom-views-custom-drawing/#more">阅读全文</a>
         </p>
       
     </div>

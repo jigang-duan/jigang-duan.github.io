@@ -259,6 +259,60 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-cas-architecture"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/07/12/cas-architecture/">CAS企业单点登录-架构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/12/cas-architecture/" class="article-date">
+	  <time datetime="2018-07-12T14:00:17.000Z" itemprop="datePublished">2018-07-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/CAS企业单点登录/">CAS企业单点登录</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+系统组件CAS服务器和客户端包含CAS系统体系结构的两个物理组件，通过各种协议进行通信。
+CAS服务器CAS服务器是构建在Spring框架上的Java servlet，其主要职责是通过发出和验证票据，对用户进行身份验证并授予对启用了casas的服务(通常称为CAS客户机)的访问权。当服务器在成功登录时向用户发出通知票(TGT)时，将创建SSO会话。服务票证(ST)是通过浏览器重定向使用TGT作为令牌来发送给服务的。ST随后通过后通道通信在CAS服务器上进行验证。在CAS协议文档中详细描述...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/07/12/cas-architecture/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-cas"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -760,63 +814,6 @@ RPC复兴REST已经在web上运行多年了，它已经迅速成为管理客户�
         </p>
         <p class="article-more-link">
           <a href="/2018/05/10/go-micro-tutorial-4/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-go-micro-tutorial-3"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/05/10/go-micro-tutorial-3/">Go微服务教程-第三部分</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/05/10/go-micro-tutorial-3/" class="article-date">
-	  <time datetime="2018-05-10T13:56:27.000Z" itemprop="datePublished">2018-05-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-在之前的文章中，我们介绍了go-micro和Docker的一些基础知识。我们还介绍了第二种服务。在这篇文章中，我们将讨论docker-compose，以及如何在本地更轻松地运行我们的服务。我们将介绍一些不同的数据库，最后我们将介绍第三种服务。
-
-先决条件安装docker-compose:https://docs.docker.com/compose/install/
-但是首先，让我们看看数据库。
-选择数据库到目前为止，我们的数据实际上并没有存储在任何地方，而是存储在我们的服务中，当我们的...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/05/10/go-micro-tutorial-3/#more">阅读全文</a>
         </p>
       
     </div>
