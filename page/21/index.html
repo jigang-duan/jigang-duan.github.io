@@ -259,6 +259,185 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-GuidetoAppArchitecture"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/08/GuidetoAppArchitecture/">Android 架构组件指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/08/GuidetoAppArchitecture/" class="article-date">
+	  <time datetime="2017-11-08T03:23:22.000Z" itemprop="datePublished">2017-11-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android架构组件/">Android架构组件</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+本指南适用于开发app的开发人员，现在希望了解最佳实践和推荐的体系结构，构建健壮、高质量的apps。
+
+注意:本指南假定读者熟悉Android框架。如果你是应用开发的新手，请查看入门培训系列，其中包含了本指南的必备主题。
+
+
+app开发人员面临的常见问题与传统的桌面应用不同，在大多数情况下，它们都有一个单一入口点，并作为一个单一的整体流程运行，而Android应用程序的结构要复杂得多。一个典型的Android应用程序是由多个应用组件组成的，包括activities、fragments、s...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/11/08/GuidetoAppArchitecture/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-AndroidArchitectectureComponents"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/08/AndroidArchitectectureComponents/">Android 架构组件简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/08/AndroidArchitectectureComponents/" class="article-date">
+	  <time datetime="2017-11-08T01:35:45.000Z" itemprop="datePublished">2017-11-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android架构组件/">Android架构组件</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+一组帮助您设计健壮的、可测试的和可维护的应用程序库。管理UI组件生命周期和处理数据持久性。
+
+应用架构指南
+添加组件到你的项目
+使用Lifecycle组件来处理生命周期
+LiveData
+ViewModel
+保存UI状态
+Room持久性库
+分页库
+
+轻松管理app的生命周期新的lifecycle组件感知生命周期，可以帮助您管理您的活动和片段生命周期。保存配置更改，避免内存泄漏，并使用LiveData、ViewModel、LifecycleObserver和LifecycleOwner，轻...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/11/08/AndroidArchitectectureComponents/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-GuideUIProgrammingCoroutines"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/06/GuideUIProgrammingCoroutines/">使用协程的UI编程指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/06/GuideUIProgrammingCoroutines/" class="article-date">
+	  <time datetime="2017-11-06T11:08:01.000Z" itemprop="datePublished">2017-11-06</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Kotlin/">Kotlin</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+本指南假定读者熟悉基本的协程概念，并给出了在UI应用程序中如何使用kotlinx.coroutines的具体示例。
+所有的UI应用程序库都有一个共同点。它们有一个线程，所有UI的状态都被限制，所有的UI更新都必须在这个特定的线程中发生。对于协程，这意味着您需要一个适当的协程分派器上下文，它将协程执行限制在这个UI线程中。
+特别是，kotlinx.coroutines 有三个模块为不同的UI应用程序库提供了协程上下文:
+
+kotlinx-coroutines-android – Andro...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/11/06/GuideUIProgrammingCoroutines/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-GuideToKotlinxCoroutinesByExample"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -726,188 +905,6 @@ ADB调试adb devices打印所有附加的模拟器/设备的列表
         </p>
         <p class="article-more-link">
           <a href="/2017/11/02/ADBShell/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-MasteringAndroidNDKBuildSystem2"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/02/MasteringAndroidNDKBuildSystem2/">掌握Android NDK构建系统——第2部分:独立的工具链</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/11/02/MasteringAndroidNDKBuildSystem2/" class="article-date">
-	  <time datetime="2017-11-02T03:31:23.000Z" itemprop="datePublished">2017-11-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/NDK/">NDK</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          [翻译]掌握Android NDK构建系统——第2部分:独立的工具链原英文文章
-
-这是“掌握NDK”的第2部分。在前面的部分(第1部分)中，我们介绍了如何使用ndk-build构建Android本地项目，我们还介绍了一些高级技术来管理和定制大型项目的构建脚本。
-尽管对于大多数Android本地项目来说，ndk-build可能已经足够了，但是在某些情况下仍然可能需要独立的工具链。例如，如果您已经有一个c/c++项目，它可能非常复杂，并且有一个复杂的makefile。在这种情况下，你可能不想把...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/11/02/MasteringAndroidNDKBuildSystem2/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-MasteringAndroidNDKBuildSystem1"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/01/MasteringAndroidNDKBuildSystem1/">掌握Android NDK构建系统——第1部分:使用ndk-build技巧</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/11/01/MasteringAndroidNDKBuildSystem1/" class="article-date">
-	  <time datetime="2017-11-01T10:31:23.000Z" itemprop="datePublished">2017-11-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/NDK/">NDK</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          [翻译]掌握Android NDK构建系统——第1部分:使用ndk-build技巧原英文文章
-
-这篇文章不是一个“Hello world!”类型的NDK”教程。尽管我仍将简要介绍ndk构建的基本知识，但这并不是本文的重点。相反，我将总结一些非常有用的NDK技巧和我在项目中使用的技巧。希望这些建议对于那些想要建立一些实际项目的人来说是非常有用的，而不是一个学习NDK的玩具项目。因此，目标读者是中或高级Android开发人员。这篇文章包含两个部分:
-
-第1部分:ndk-build 在这一部分中...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/11/01/MasteringAndroidNDKBuildSystem1/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-AndroidNDKNativeProgramLauncher"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/01/AndroidNDKNativeProgramLauncher/">Android原生程序启动工具</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/11/01/AndroidNDKNativeProgramLauncher/" class="article-date">
-	  <time datetime="2017-11-01T08:38:27.000Z" itemprop="datePublished">2017-11-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/NDK/">NDK</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          [翻译]Android原生程序启动工具
-
-介绍
-主要功能
-入门指南
-下载地址
-提供了什么?
-使用说明
-一些细节
-
-
-示例
-示例1
-示例2
-
-
-
-
-介绍在使用原生代码开发Android应用程序时，我们通常需要使用纯原生模式来调试它(使用NDK编译代码，生成可执行文件，并通过adb shell执行它)。有时，我们甚至不想花时间开发Android应用，因为我们只是想测试一些原生函数。
-以处理OpenCL和GPU为例。编写的程序中超过80%将是性能和基准代码。由于它们直接操作系统驱动程序或硬件，所...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/11/01/AndroidNDKNativeProgramLauncher/#more">阅读全文</a>
         </p>
       
     </div>

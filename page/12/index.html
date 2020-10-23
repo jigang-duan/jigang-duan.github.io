@@ -259,6 +259,173 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-yeoman-authoring9"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/08/30/yeoman-authoring9/">编写自己的Yeoman生成器-9.调试生成器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/30/yeoman-authoring9/" class="article-date">
+	  <time datetime="2018-08-29T16:50:40.000Z" itemprop="datePublished">2018-08-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Node-js/">Node.js</a><a class="article-category-link" href="/categories/Node-js/编写自己的Yeoman生成器/">编写自己的Yeoman生成器</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          要调试生成器，可以通过运行它来传递Node.js调试标志，如下所示：
+123456789101112# OS X / Linuxnode --inspect `which yo` &lt;generator&gt; [arguments]# Windows# Find the path to the yo binary in Command Promptwhere yo# Or find the path to the yo binary in PowerShellget-command ...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/08/30/yeoman-authoring9/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-yeoman-authoring8"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/08/30/yeoman-authoring8/">编写自己的Yeoman生成器-8.测试生成器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/30/yeoman-authoring8/" class="article-date">
+	  <time datetime="2018-08-29T16:40:40.000Z" itemprop="datePublished">2018-08-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Node-js/">Node.js</a><a class="article-category-link" href="/categories/Node-js/编写自己的Yeoman生成器/">编写自己的Yeoman生成器</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          继续阅读以了解有关Yeoman添加的测试助手的更多信息，以减轻单元测试生成器的痛苦。
+以下示例假设您在BDD模式下使用Mocha。全局概念应该很容易应用于您选择的单元测试框架
+组织你的测试保持测试简单易于编辑非常重要。
+通常，组织测试的最佳方法是将每个生成器和子生成器分隔为自己的describe块。然后，describe为您的生成器接受的每个选项添加一个块。然后，it为每个断言（或相关断言）使用一个块。
+在代码中，您应该得到类似于此的结构：
+12345678describe('backbo...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/08/30/yeoman-authoring8/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-yeoman-authoring7"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/08/30/yeoman-authoring7/">编写自己的Yeoman生成器-7.管理配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/30/yeoman-authoring7/" class="article-date">
+	  <time datetime="2018-08-29T16:23:40.000Z" itemprop="datePublished">2018-08-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Node-js/">Node.js</a><a class="article-category-link" href="/categories/Node-js/编写自己的Yeoman生成器/">编写自己的Yeoman生成器</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          存储用户配置选项并在子生成器之间共享它们是一项常见任务。例如，通常共享首选项，如语言（用户使用CoffeeScript吗？），样式选项（用空格或制表符缩进）等。
+这些配置可以通过Yeoman Storage API存储在.yo-rc.json文件中。可以通过generator.config对象访问此API 。
+以下是您将使用的一些常用方法。
+方法this.config.save()
+此方法将配置写入.yo-rc.json文件。如果该文件尚不存在，则该save方法将创建该文件。
+该.yo-r...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/08/30/yeoman-authoring7/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-yeoman-authoring6"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -635,176 +802,6 @@ Yeoman为生成器提供了多种方式来建立共同点。重写相同的功�
         </p>
         <p class="article-more-link">
           <a href="/2018/08/11/vscode-extensions-5/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-vscode-extensions-4"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/08/11/vscode-extensions-4/">例子——语言服务器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/08/11/vscode-extensions-4/" class="article-date">
-	  <time datetime="2018-08-11T08:01:10.000Z" itemprop="datePublished">2018-08-11</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          简要概述语言服务器和语言服务器协议语言服务器是一种特殊的扩展，支持VS代码中许多编程语言的编辑体验。使用语言服务器，您可以实现VS代码中支持的自动完成、错误检查(诊断)、快速定义和许多其他语言特性。
-然而，在VS代码中实现对语言特性的支持时，我们发现了三个常见问题:
-首先，语言服务器通常是用它们的本地编程语言实现的，这在将它们与具有节点的VS代码集成方面提出了挑战。js运行时。
-此外，语言特性可能是资源密集型的。例如，要正确地验证一个文件，Language Server需要解析大量文件，为...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/08/11/vscode-extensions-4/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-vscode-extensions-3"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/08/11/vscode-extensions-3/">例子——单词计数</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/08/11/vscode-extensions-3/" class="article-date">
-	  <time datetime="2018-08-11T07:08:46.000Z" itemprop="datePublished">2018-08-11</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          本文档假设您已经阅读了第一个扩展，它涵盖了VS Code可扩展性的基础知识。
-单词计数是一个端到端教程，向您展示如何创建一个扩展来帮助Markdown创作。在我们深入了解所有这些工作原理之前，让我们先快速演示一下您将要构建的核心特性，这样您就知道会发生什么了。
-无论何时编辑标记文件，都会添加状态栏消息。该消息包括当前的字数和更新，当您键入和移动到文件:
-
-
-提示:如果您有任何问题，可以从GitHub存储库中获得完成的示例。
-
-概述这个示例有三个部分，将带您了解一系列相关概念:
-更新状态栏-...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/08/11/vscode-extensions-3/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-vscode-extensions-2"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/08/11/vscode-extensions-2/">扩展 - Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/08/11/vscode-extensions-2/" class="article-date">
-	  <time datetime="2018-08-11T04:16:04.000Z" itemprop="datePublished">2018-08-11</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          你的第一个扩展本文档将指导您创建第一个VS Code扩展(“Hello World”)，并解释VS Code可扩展性的基本概念。
-在本演练中，您将向VS Code添加一个新命令，该命令将显示一个简单的“Hello World”消息。在随后的演练中，您将与VS Code编辑器交互，并查询用户当前选择的文本。
-先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, Node.js包管理器，它将用于安装扩展生成器。
-生成一个新的扩展向VS Code中添加自己的功能...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/08/11/vscode-extensions-2/#more">阅读全文</a>
         </p>
       
     </div>

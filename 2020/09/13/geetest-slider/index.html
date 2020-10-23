@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>反爬 __极限滑块验证码__ 分析过程 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="爬虫">
+  
+  
+  
+  
+  <meta name="description" content="某企业信用信息 使用了极限验证码，包括 滑块和点选 验证，这里尝试分析滑块验证  极限文档 搭建极限 demo 环境 下载 demo  1git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git  运行 demo  123cd gt3-server-python-flask-sdksudo pip install">
+<meta name="keywords" content="爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反爬 __极限滑块验证码__ 分析过程">
+<meta property="og:url" content="https://jigangduan.github.io/2020/09/13/geetest-slider/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="某企业信用信息 使用了极限验证码，包括 滑块和点选 验证，这里尝试分析滑块验证  极限文档 搭建极限 demo 环境 下载 demo  1git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git  运行 demo  123cd gt3-server-python-flask-sdksudo pip install">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603505945986&di=0c392cab44dbae5e3af24d0a169097ee&imgtype=0&src=http%3A%2F%2Fattach.dataguru.cn%2Fattachments%2Fportal%2F201606%2F01%2F144259wjyddv0igvfyfyr8.jpg">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/C6A8D100-E2FC-453B-9F62-2793FAF23AFE.png">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/853E08D9-B26B-4039-B4E1-7B4A41B0FDDB.png">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/7BA8F28B-082C-4FE9-B5D8-86DAC2475616.png">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/3733C757-B620-42DE-A544-1B279C6FD3EE.png">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/AA32CD3A-5282-4040-A2AD-68CA3AD45CFE.png">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/AD8B903E-120B-4DB0-807F-0DD5E09C47BF.png">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/E9A00451-B2AD-41E3-9698-C112789B8139.png">
+<meta property="og:image" content="https://jigangduan.github.io/2020/09/13/geetest-slider/images/38C753B1-D3D2-4A01-8749-32C761EB2E9C.png">
+<meta property="og:updated_time" content="2020-10-23T23:32:08.477Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="反爬 __极限滑块验证码__ 分析过程">
+<meta name="twitter:description" content="某企业信用信息 使用了极限验证码，包括 滑块和点选 验证，这里尝试分析滑块验证  极限文档 搭建极限 demo 环境 下载 demo  1git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git  运行 demo  123cd gt3-server-python-flask-sdksudo pip install">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603505945986&di=0c392cab44dbae5e3af24d0a169097ee&imgtype=0&src=http%3A%2F%2Fattach.dataguru.cn%2Fattachments%2Fportal%2F201606%2F01%2F144259wjyddv0igvfyfyr8.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-geetest-slider" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      反爬 __极限滑块验证码__ 分析过程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2020/09/13/geetest-slider/" class="article-date">
+	  <time datetime="2020-09-13T04:10:30.000Z" itemprop="datePublished">2020-09-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Crawler/">Crawler</a><a class="article-category-link" href="/categories/Crawler/Python/">Python</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1603505945986&amp;di=0c392cab44dbae5e3af24d0a169097ee&amp;imgtype=0&amp;src=http%3A%2F%2Fattach.dataguru.cn%2Fattachments%2Fportal%2F201606%2F01%2F144259wjyddv0igvfyfyr8.jpg" alt></p>
+<blockquote>
+<p><strong>某企业信用信息</strong> 使用了极限验证码，包括 <code>滑块</code>和<code>点选</code> 验证，这里尝试分析<code>滑块</code>验证</p>
+</blockquote>
+<p><a href="https://docs.geetest.com/" target="_blank" rel="noopener">极限文档</a></p>
+<h3 id="搭建极限-demo-环境"><a href="#搭建极限-demo-环境" class="headerlink" title="搭建极限 demo 环境"></a>搭建极限 <a href="https://docs.geetest.com/sensebot/deploy/server/python" target="_blank" rel="noopener">demo</a> 环境</h3><ul>
+<li>下载 demo</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行 demo</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd gt3-server-python-flask-sdk</span><br><span class="line">sudo pip install -r requirements.txt</span><br><span class="line">sudo python3 app.py</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在浏览器中访问<a href="http://localhost:5000]" target="_blank" rel="noopener">http://localhost:5000</a>即可看到demo界面。</p>
+</blockquote>
+<h3 id="验证操作"><a href="#验证操作" class="headerlink" title="验证操作"></a>验证操作</h3><p>点击验证会出现<code>滑动块</code>(也可以不是滑动块验证，不是就重新刷新)</p>
+<ul>
+<li>滑动滑块，<strong>失败一次</strong>，查看请求:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Request URL: http://api.geetest.com/ajax.php?gt=c9c4facd1a6feeb80802222cbb74ca8e&amp;challenge=0963aaa034f481209bcc2cea856f028ckm&amp;lang=zh-cn&amp;pt=0&amp;client_type=web&amp;w=lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHooIvkLJO(kx)4iwEXmKgB(pzX8hmTXVr7s0Cd8zlzLFRKByaxL9Xqebj4jpMbuGxSjMGbCucdrYjEs7hKdhGEHXxIHIrPbJCgS)HCfRtmiI3GeCdF7K7STWgxKzOpzF(osbFpJlFPHPyTq21Haj4LlTwW4PgOYeh(59qOX4aQrDVTLp6M2AonfdeXHlTi652p88Bh9o)blgbRptCo(Btz7JTkPgWBh4bRlBWzWwjxHtogBzRTKiFaQwe4HgvyTwAnxQRPFXt1iWmC7tOr6Ega)MGFZ941TfoV2Ky1yOPOvHAjWbIcCreU3NqYUCTlu3muFqfbdzgynuXQAd04ohUbNS(1MMsLsouhLxs(S4j0wHJWxOT(OBUrVWZ1NYzHNtJ71YoCpwu7LkEaL91cRO9XIYK(ahdEFL9RzWqavlNA(GZTPb8o6yZAEtbCZWFaQoThxcyrlkDluQDOavBCgVJ6LuJxCCjnXINAcNcQk4U6U6mWumJwwZKDGa1UEb2NuIi5Wa)VTMU5gI4YGA)r)FVhWQP9VFvW87MaeGUeDTIylzL1Ic3F7lzU6YqAlL65VzsNETMLw0aLy7x1ofwuZgYmMYrYJYkR1fKLjQULN7BJgH0m6m(TLOLKAt5FQeygWCuaJx54Fzg61XDE8qARsEuhotwezFFdxWUZ1rBQ0yGGfnurouJwsJYooujy(DMSaPeoSLs32ZdxUAdxWHGlnx3uwKLbNwM)KZfEMNyTD))C5ao96cxA3RwKrzH52CE7N9L4.3527385ff911fb8a8f47ab5b6b5b93632dbe721f7d4e80a60e3a4ff7ff8bc037ccffc02d460a5cd6851e6812fe9f15b39fe9dc0cbf2fefc740e2460efe9c4b31be06448b52eb98304bd65f43773f067579743e4f1f978d0bf66347f49f83d965132642922f49e9ef4d192470ef844824d6df28f0c271b9d7d6e47462c13c4a76&amp;callback=geetest_1600681650648</span><br><span class="line">Request Method: GET</span><br><span class="line">Status Code: 200 OK</span><br><span class="line">Remote Address: 203.107.32.16:80</span><br><span class="line">Referrer Policy: no-referrer-when-downgrade</span><br><span class="line"></span><br><span class="line">Query String Parameters -&gt;</span><br><span class="line">gt: c9c4facd1a6feeb80802222cbb74ca8e</span><br><span class="line">challenge: f340a03dc45ca5a598ba928f6b103d54k5</span><br><span class="line">lang: zh-cn</span><br><span class="line">pt: 0</span><br><span class="line">client_type: web</span><br><span class="line">w: lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHooIvkLJO(kx)4iwEXmKgB(pzX8hmTXVr7s0Cd8zlzLFRKByaxL9Xqebj4jpMbuGxSjMGbCucdrYjEs7hKdhGEHXxIHIrPbJCgS)HCfRtmiI3GeCdF7K7STWgxKzOpzF(osbFpJlFPHPyTq21Haj4LlTwW4PgOYeh(59qOX4aQrDVTLp6M2AonfdeXHlTi652p88Bh9o)blgbRptCo(Btz7JTkPgWBh4bRlBWzWwjxHtogBzRTKiFaQwe4HgvyTwAnxQRPFXt1iWmC7tOr6Ega)MGFZ941TfoV2Ky1yOPOvHAjWbIcCreU3NqYUCTlu3muFqfbdzgynuXQAd04ohUbNS(1MMsLsouhLxs(S4j0wHJWxOT(OBUrVWZ1NYzHNtJ71YoCpwu7LkEaL91cRO9XIYK(ahdEFL9RzWqavlNA(GZTPb8o6yZAEtbCZWFaQoThxcyrlkDluQDOavBCgVJ6LuJxCCjnXINAcNcQk4U6U6mWumJwwZKDGa1UEb2NuIi5Wa)VTMU5gI4YGA)r)FVhWQP9VFvW87MaeGUeDTIylzL1Ic3F7lzU6YqAlL65VzsNETMLw0aLy7x1ofwuZgYmMYrYJYkR1fKLjQULN7BJgH0m6m(TLOLKAt5FQeygWCuaJx54Fzg61XDE8qARsEuhotwezFFdxWUZ1rBQ0yGGfnurouJwsJYooujy(DMSaPeoSLs32ZdxUAdxWHGlnx3uwKLbNwM)KZfEMNyTD))C5ao96cxA3RwKrzH52CE7N9L4.3527385ff911fb8a8f47ab5b6b5b93632dbe721f7d4e80a60e3a4ff7ff8bc037ccffc02d460a5cd6851e6812fe9f15b39fe9dc0cbf2fefc740e2460efe9c4b31be06448b52eb98304bd65f43773f067579743e4f1f978d0bf66347f49f83d965132642922f49e9ef4d192470ef844824d6df28f0c271b9d7d6e47462c13c4a76</span><br><span class="line">callback: geetest_1600681650648</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">Headers -&gt;</span><br><span class="line">Cache-Control: no-cache, no-store, must-revalidate</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 56</span><br><span class="line">Content-Type: text/javascript;charset=UTF-8</span><br><span class="line">Date: Mon, 21 Sep 2020 09:47:24 GMT</span><br><span class="line">Etag: &quot;1dbd74d80dd411079f44b61057458859a2970afd&quot;</span><br><span class="line">Expires: 0</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Server: openresty</span><br><span class="line">Set-Cookie: GeeTestAjaxUser=68748bcc8d5e210678ab924a2d2f1043; expires=Tue, 21 Sep 2021 09:47:24 GMT; Path=/</span><br><span class="line"></span><br><span class="line">Body -&gt;</span><br><span class="line">geetest_1600681650648(&#123;&quot;success&quot;: 0, &quot;message&quot;: &quot;fail&quot;&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>滑动滑块到指定位置，<strong>成功验证</strong>，查看请求:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Request URL: http://api.geetest.com/ajax.php?gt=c9c4facd1a6feeb80802222cbb74ca8e&amp;challenge=0963aaa034f481209bcc2cea856f028ckm&amp;lang=zh-cn&amp;pt=0&amp;client_type=web&amp;w=lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHpwPSUixa377V2sfcEsuY)g5K0mchqtk(AOV5EcQzckO9(fpM0Nmgc2DFA(lCFNEhCgIqgR7uVwzrEkAhRUyGGui90EXJPerk5aJtf(XTFPQIha9YoXFKWl8KMlhkc5Y3m6G1jFSr19sBF3Z8IGpU2QINew3Nmeb(04bYoYD(s6keOfCSqJvYos6(HbkL)EUDMoZXolzFtLq39fHDZMLdkkvUZy)IenedIr9EnVYk5sdw1BUHlzlbXOjuo1tHiDJcZEeK7RQdodzPFOi8XgTn)8LDNjJftVeKWsjZ7qN)vgvAHZTCjDJkqVwtJJWGJnFKRMlaBfwgf8SNtMWPFts8(DUldMyHMoxEZlHQymWykbweLRFQvUCc3ZbnpG1v14BEp)9EauzMum5I8w(5ENDWGTAtt7fE3CoCuaYK8j2wSKFnzBxssv1kZiJFEbthpk1pGFm8w)O1ZOlehVSePtBYmbGWd)sn1sLUYjB5YISR597W2FdizbmZR0EkXRcIVBZpA(X7moz(FVfGvmWUPDmUCHLjvzC5TY6PMxX6rshBvJx75OdpFlepmBpwM)dJhDvngX4MTiQiilZjEmOQA(gBDOhbSlu4hQuNvlD2R4OkqZp8zyXsCqZTKp0Z9mtd0rP3b(UXeFGfCdaq2gX)Ag0jK9gn)YF8D5KhqUQ6Gfsg8sZNYGAkcJm0tC5rGqewTsD0vM0618aiSZWNouqV7QTBB2G7EmqQt0w7YVc3gu4RmoJmoBU(Kcj8TqkeXLfHww3YeYt(w2vXKKXAt(6xqIbKxpidRTB2InYyhSQOvf5QWQK3r(PL583LQhR3XyOYhUJGSrkDWIzO4mhFMtkxsCRavcA0D365tEM5oHa9vsvY9PTTreDn8olXHqx7hh(e7hRHuNCgVKXzJ0yLIodXP4d5Xed4zuJ6opPB)z4eH5LVxzNQ..ab6515b108b14112eeb500e7c27231f168deded0c0e96572273be4913e1320bf1d485710462c57221e2b95a51a60ce3135a791ea47799450d05c6a0757339931a882b3711363be98f3adb3b0aa05e454b85a542e932553916d10f319db493284c8e038c3a358702df6928de72627d679534af60051172c6024e4c9e72bbebe17&amp;callback=geetest_1600681688549</span><br><span class="line">Request Method: GET</span><br><span class="line">Status Code: 200 OK</span><br><span class="line">Remote Address: 203.107.32.16:80</span><br><span class="line">Referrer Policy: no-referrer-when-downgrade</span><br><span class="line"></span><br><span class="line">Query String Parameters -&gt;</span><br><span class="line">gt: c9c4facd1a6feeb80802222cbb74ca8e</span><br><span class="line">challenge: f340a03dc45ca5a598ba928f6b103d54k5</span><br><span class="line">lang: zh-cn</span><br><span class="line">pt: 0</span><br><span class="line">client_type: web</span><br><span class="line">w: lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHpwPSUixa377V2sfcEsuY)g5K0mchqtk(AOV5EcQzckO9(fpM0Nmgc2DFA(lCFNEhCgIqgR7uVwzrEkAhRUyGGui90EXJPerk5aJtf(XTFPQIha9YoXFKWl8KMlhkc5Y3m6G1jFSr19sBF3Z8IGpU2QINew3Nmeb(04bYoYD(s6keOfCSqJvYos6(HbkL)EUDMoZXolzFtLq39fHDZMLdkkvUZy)IenedIr9EnVYk5sdw1BUHlzlbXOjuo1tHiDJcZEeK7RQdodzPFOi8XgTn)8LDNjJftVeKWsjZ7qN)vgvAHZTCjDJkqVwtJJWGJnFKRMlaBfwgf8SNtMWPFts8(DUldMyHMoxEZlHQymWykbweLRFQvUCc3ZbnpG1v14BEp)9EauzMum5I8w(5ENDWGTAtt7fE3CoCuaYK8j2wSKFnzBxssv1kZiJFEbthpk1pGFm8w)O1ZOlehVSePtBYmbGWd)sn1sLUYjB5YISR597W2FdizbmZR0EkXRcIVBZpA(X7moz(FVfGvmWUPDmUCHLjvzC5TY6PMxX6rshBvJx75OdpFlepmBpwM)dJhDvngX4MTiQiilZjEmOQA(gBDOhbSlu4hQuNvlD2R4OkqZp8zyXsCqZTKp0Z9mtd0rP3b(UXeFGfCdaq2gX)Ag0jK9gn)YF8D5KhqUQ6Gfsg8sZNYGAkcJm0tC5rGqewTsD0vM0618aiSZWNouqV7QTBB2G7EmqQt0w7YVc3gu4RmoJmoBU(Kcj8TqkeXLfHww3YeYt(w2vXKKXAt(6xqIbKxpidRTB2InYyhSQOvf5QWQK3r(PL583LQhR3XyOYhUJGSrkDWIzO4mhFMtkxsCRavcA0D365tEM5oHa9vsvY9PTTreDn8olXHqx7hh(e7hRHuNCgVKXzJ0yLIodXP4d5Xed4zuJ6opPB)z4eH5LVxzNQ..ab6515b108b14112eeb500e7c27231f168deded0c0e96572273be4913e1320bf1d485710462c57221e2b95a51a60ce3135a791ea47799450d05c6a0757339931a882b3711363be98f3adb3b0aa05e454b85a542e932553916d10f319db493284c8e038c3a358702df6928de72627d679534af60051172c6024e4c9e72bbebe17</span><br><span class="line">callback: geetest_1600681688549</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">Headers -&gt;</span><br><span class="line">Cache-Control: no-cache, no-store, must-revalidate</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 122</span><br><span class="line">Content-Type: text/javascript;charset=UTF-8</span><br><span class="line">Date: Mon, 21 Sep 2020 09:47:59 GMT</span><br><span class="line">Etag: &quot;4a84b96c134bca4790a492cd523901cacbd03e42&quot;</span><br><span class="line">Expires: 0</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Server: openresty</span><br><span class="line">Set-Cookie: GeeTestAjaxUser=1d06456d0b40269eb520a07cba20918d; expires=Tue, 21 Sep 2021 09:47:59 GMT; Path=/</span><br><span class="line"></span><br><span class="line">Body -&gt;</span><br><span class="line">geetest_1600681688549(&#123;&quot;validate&quot;: &quot;44829c7e0b5085bbab69eeb0946880d2&quot;, &quot;message&quot;: &quot;success&quot;, &quot;success&quot;: 1, &quot;score&quot;: &quot;12&quot;&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="对比两个响应"><a href="#对比两个响应" class="headerlink" title="对比两个响应"></a>对比两个响应</h4><ul>
+<li>成功响应 返回携带 <code>validate</code></li>
+</ul>
+<p><code>validate</code>验证码应该就是我们需要的，请求是通过 <code>GET</code> <code>ajax.php</code>获取，携带Query参数，看看几个参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 失败时</span><br><span class="line">gt: c9c4facd1a6feeb80802222cbb74ca8e</span><br><span class="line">challenge: f340a03dc45ca5a598ba928f6b103d54k5</span><br><span class="line">lang: zh-cn</span><br><span class="line">pt: 0</span><br><span class="line">client_type: web</span><br><span class="line">w: lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHooIvkLJO(kx)4iwEXmKgB(pzX8hmTXVr7s0Cd8zlzLFRKByaxL9Xqebj4jpMbuGxSjMGbCucdrYjEs7hKdhGEHXxIHIrPbJCgS)HCfRtmiI3GeCdF7K7STWgxKzOpzF(osbFpJlFPHPyTq21Haj4LlTwW4PgOYeh(59qOX4aQrDVTLp6M2AonfdeXHlTi652p88Bh9o)blgbRptCo(Btz7JTkPgWBh4bRlBWzWwjxHtogBzRTKiFaQwe4HgvyTwAnxQRPFXt1iWmC7tOr6Ega)MGFZ941TfoV2Ky1yOPOvHAjWbIcCreU3NqYUCTlu3muFqfbdzgynuXQAd04ohUbNS(1MMsLsouhLxs(S4j0wHJWxOT(OBUrVWZ1NYzHNtJ71YoCpwu7LkEaL91cRO9XIYK(ahdEFL9RzWqavlNA(GZTPb8o6yZAEtbCZWFaQoThxcyrlkDluQDOavBCgVJ6LuJxCCjnXINAcNcQk4U6U6mWumJwwZKDGa1UEb2NuIi5Wa)VTMU5gI4YGA)r)FVhWQP9VFvW87MaeGUeDTIylzL1Ic3F7lzU6YqAlL65VzsNETMLw0aLy7x1ofwuZgYmMYrYJYkR1fKLjQULN7BJgH0m6m(TLOLKAt5FQeygWCuaJx54Fzg61XDE8qARsEuhotwezFFdxWUZ1rBQ0yGGfnurouJwsJYooujy(DMSaPeoSLs32ZdxUAdxWHGlnx3uwKLbNwM)KZfEMNyTD))C5ao96cxA3RwKrzH52CE7N9L4.3527385ff911fb8a8f47ab5b6b5b93632dbe721f7d4e80a60e3a4ff7ff8bc037ccffc02d460a5cd6851e6812fe9f15b39fe9dc0cbf2fefc740e2460efe9c4b31be06448b52eb98304bd65f43773f067579743e4f1f978d0bf66347f49f83d965132642922f49e9ef4d192470ef844824d6df28f0c271b9d7d6e47462c13c4a76</span><br><span class="line">callback: geetest_1600681650648</span><br><span class="line"></span><br><span class="line">// 成功时</span><br><span class="line">gt: c9c4facd1a6feeb80802222cbb74ca8e</span><br><span class="line">challenge: f340a03dc45ca5a598ba928f6b103d54k5</span><br><span class="line">lang: zh-cn</span><br><span class="line">pt: 0</span><br><span class="line">client_type: web</span><br><span class="line">w: lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHpwPSUixa377V2sfcEsuY)g5K0mchqtk(AOV5EcQzckO9(fpM0Nmgc2DFA(lCFNEhCgIqgR7uVwzrEkAhRUyGGui90EXJPerk5aJtf(XTFPQIha9YoXFKWl8KMlhkc5Y3m6G1jFSr19sBF3Z8IGpU2QINew3Nmeb(04bYoYD(s6keOfCSqJvYos6(HbkL)EUDMoZXolzFtLq39fHDZMLdkkvUZy)IenedIr9EnVYk5sdw1BUHlzlbXOjuo1tHiDJcZEeK7RQdodzPFOi8XgTn)8LDNjJftVeKWsjZ7qN)vgvAHZTCjDJkqVwtJJWGJnFKRMlaBfwgf8SNtMWPFts8(DUldMyHMoxEZlHQymWykbweLRFQvUCc3ZbnpG1v14BEp)9EauzMum5I8w(5ENDWGTAtt7fE3CoCuaYK8j2wSKFnzBxssv1kZiJFEbthpk1pGFm8w)O1ZOlehVSePtBYmbGWd)sn1sLUYjB5YISR597W2FdizbmZR0EkXRcIVBZpA(X7moz(FVfGvmWUPDmUCHLjvzC5TY6PMxX6rshBvJx75OdpFlepmBpwM)dJhDvngX4MTiQiilZjEmOQA(gBDOhbSlu4hQuNvlD2R4OkqZp8zyXsCqZTKp0Z9mtd0rP3b(UXeFGfCdaq2gX)Ag0jK9gn)YF8D5KhqUQ6Gfsg8sZNYGAkcJm0tC5rGqewTsD0vM0618aiSZWNouqV7QTBB2G7EmqQt0w7YVc3gu4RmoJmoBU(Kcj8TqkeXLfHww3YeYt(w2vXKKXAt(6xqIbKxpidRTB2InYyhSQOvf5QWQK3r(PL583LQhR3XyOYhUJGSrkDWIzO4mhFMtkxsCRavcA0D365tEM5oHa9vsvY9PTTreDn8olXHqx7hh(e7hRHuNCgVKXzJ0yLIodXP4d5Xed4zuJ6opPB)z4eH5LVxzNQ..ab6515b108b14112eeb500e7c27231f168deded0c0e96572273be4913e1320bf1d485710462c57221e2b95a51a60ce3135a791ea47799450d05c6a0757339931a882b3711363be98f3adb3b0aa05e454b85a542e932553916d10f319db493284c8e038c3a358702df6928de72627d679534af60051172c6024e4c9e72bbebe17</span><br><span class="line">callback: geetest_1600681688549</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>ok</th>
+<th>fail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gt</td>
+<td>c9c4facd1a6feeb80802222cbb74ca8e</td>
+<td>c9c4facd1a6feeb80802222cbb74ca8e</td>
+</tr>
+<tr>
+<td>challenge</td>
+<td>f340a03dc45ca5a598ba928f6b103d54k5</td>
+<td>f340a03dc45ca5a598ba928f6b103d54k5</td>
+</tr>
+<tr>
+<td>lang</td>
+<td>zh-cn</td>
+<td>zh-cn</td>
+</tr>
+<tr>
+<td>pt</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>client_type</td>
+<td>web</td>
+<td>web</td>
+</tr>
+<tr>
+<td>w</td>
+<td>lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHooIvkLJO(kx)4iwEXmKgB(pzX8hmTXVr7s0Cd8zlzLFRKByaxL9Xqebj4jpMbuGxSjMGbCucdrYjEs7hKdhGEHXxIHIrPbJCgS)HCfRtmiI3GeCdF7K7STWgxKzOpzF(osbFpJlFPHPyTq21Haj4LlTwW4PgOYeh(59qOX4aQrDVTLp6M2AonfdeXHlTi652p88Bh9o)blgbRptCo(Btz7JTkPgWBh4bRlBWzWwjxHtogBzRTKiFaQwe4HgvyTwAnxQRPFXt1iWmC7tOr6Ega)MGFZ941TfoV2Ky1yOPOvHAjWbIcCreU3NqYUCTlu3muFqfbdzgynuXQAd04ohUbNS(1MMsLsouhLxs(S4j0wHJWxOT(OBUrVWZ1NYzHNtJ71YoCpwu7LkEaL91cRO9XIYK(ahdEFL9RzWqavlNA(GZTPb8o6yZAEtbCZWFaQoThxcyrlkDluQDOavBCgVJ6LuJxCCjnXINAcNcQk4U6U6mWumJwwZKDGa1UEb2NuIi5Wa)VTMU5gI4YGA)r)FVhWQP9VFvW87MaeGUeDTIylzL1Ic3F7lzU6YqAlL65VzsNETMLw0aLy7x1ofwuZgYmMYrYJYkR1fKLjQULN7BJgH0m6m(TLOLKAt5FQeygWCuaJx54Fzg61XDE8qARsEuhotwezFFdxWUZ1rBQ0yGGfnurouJwsJYooujy(DMSaPeoSLs32ZdxUAdxWHGlnx3uwKLbNwM)KZfEMNyTD))C5ao96cxA3RwKrzH52CE7N9L4.3527385ff911fb8a8f47ab5b6b5b93632dbe721f7d4e80a60e3a4ff7ff8bc037ccffc02d460a5cd6851e6812fe9f15b39fe9dc0cbf2fefc740e2460efe9c4b31be06448b52eb98304bd65f43773f067579743e4f1f978d0bf66347f49f83d965132642922f49e9ef4d192470ef844824d6df28f0c271b9d7d6e47462c13c4a76</td>
+<td>lBwc475p8UVMBWJIGvguOBDGO2XBUVAWcyDMF(cCyHpwPSUixa377V2sfcEsuY)g5K0mchqtk(AOV5EcQzckO9(fpM0Nmgc2DFA(lCFNEhCgIqgR7uVwzrEkAhRUyGGui90EXJPerk5aJtf(XTFPQIha9YoXFKWl8KMlhkc5Y3m6G1jFSr19sBF3Z8IGpU2QINew3Nmeb(04bYoYD(s6keOfCSqJvYos6(HbkL)EUDMoZXolzFtLq39fHDZMLdkkvUZy)IenedIr9EnVYk5sdw1BUHlzlbXOjuo1tHiDJcZEeK7RQdodzPFOi8XgTn)8LDNjJftVeKWsjZ7qN)vgvAHZTCjDJkqVwtJJWGJnFKRMlaBfwgf8SNtMWPFts8(DUldMyHMoxEZlHQymWykbweLRFQvUCc3ZbnpG1v14BEp)9EauzMum5I8w(5ENDWGTAtt7fE3CoCuaYK8j2wSKFnzBxssv1kZiJFEbthpk1pGFm8w)O1ZOlehVSePtBYmbGWd)sn1sLUYjB5YISR597W2FdizbmZR0EkXRcIVBZpA(X7moz(FVfGvmWUPDmUCHLjvzC5TY6PMxX6rshBvJx75OdpFlepmBpwM)dJhDvngX4MTiQiilZjEmOQA(gBDOhbSlu4hQuNvlD2R4OkqZp8zyXsCqZTKp0Z9mtd0rP3b(UXeFGfCdaq2gX)Ag0jK9gn)YF8D5KhqUQ6Gfsg8sZNYGAkcJm0tC5rGqewTsD0vM0618aiSZWNouqV7QTBB2G7EmqQt0w7YVc3gu4RmoJmoBU(Kcj8TqkeXLfHww3YeYt(w2vXKKXAt(6xqIbKxpidRTB2InYyhSQOvf5QWQK3r(PL583LQhR3XyOYhUJGSrkDWIzO4mhFMtkxsCRavcA0D365tEM5oHa9vsvY9PTTreDn8olXHqx7hh(e7hRHuNCgVKXzJ0yLIodXP4d5Xed4zuJ6opPB)z4eH5LVxzNQ..ab6515b108b14112eeb500e7c27231f168deded0c0e96572273be4913e1320bf1d485710462c57221e2b95a51a60ce3135a791ea47799450d05c6a0757339931a882b3711363be98f3adb3b0aa05e454b85a542e932553916d10f319db493284c8e038c3a358702df6928de72627d679534af60051172c6024e4c9e72bbebe17</td>
+</tr>
+<tr>
+<td>callback</td>
+<td>geetest_1600681650648</td>
+<td>geetest_1600681688549</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>gt</code>, <code>challenge</code> 是一样的，主要需要分析它们是来自哪里</li>
+<li><code>lang</code>, <code>pt</code>, <code>client_type</code> 是固定值</li>
+<li><code>callback</code> 是<strong>geetest_[时间戳]</strong>，返回响应就是对应的<strong>geetest_[时间戳]</strong></li>
+<li><code>w</code> 值很复杂，应该就是 滑块的<code>运动轨迹</code>相关生成的</li>
+</ul>
+<h3 id="分析参数来历"><a href="#分析参数来历" class="headerlink" title="分析参数来历"></a>分析参数来历</h3><p>刷新网页，查看<code>Chrome</code>的<code>Network</code></p>
+<h4 id="请求-GET-register"><a href="#请求-GET-register" class="headerlink" title="请求 GET register:"></a>请求 GET register:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Request URL: http://0.0.0.0:5000/register?t=1600703538795</span><br><span class="line">Request Method: GET</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line">&#123;</span><br><span class="line">    &quot;success&quot;:1,</span><br><span class="line">    &quot;gt&quot;:&quot;c9c4facd1a6feeb80802222cbb74ca8e&quot;,</span><br><span class="line">    &quot;challenge&quot;:&quot;f340a03dc45ca5a598ba928f6b103d54&quot;,</span><br><span class="line">    &quot;new_captcha&quot;:true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Query参数 <code>t=1600703538795</code></p>
+<p>  <img src="images/C6A8D100-E2FC-453B-9F62-2793FAF23AFE.png" alt="t=1600703538795"></p>
+</li>
+</ul>
+<p>可以看出<code>register 请求</code>里面有<code>gt</code>, <code>challenge</code></p>
+<p>gt 是不变的，而且每次请求都是一样的</p>
+<p>查看 <code>gt3-server-python-flask-sdk</code> 的 <code>geetest_config.py</code>:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GEETEST_ID = <span class="string">"c9c4facd1a6feeb80802222cbb74ca8e"</span></span><br><span class="line">GEETEST_KEY = <span class="string">"e4e298788aa8c768397639deb9b249a9"</span></span><br></pre></td></tr></table></figure>
+<p><strong>发现<code>gt</code>就是 <code>GEETEST_ID</code></strong></p>
+<p>但<code>challenge</code> 值和 <code>ajax.php</code> 请求的值是不一样的</p>
+<p>追踪<code>ajax.php</code>请求回调:</p>
+<p><img src="images/853E08D9-B26B-4039-B4E1-7B4A41B0FDDB.png" alt><br><img src="images/7BA8F28B-082C-4FE9-B5D8-86DAC2475616.png" alt><br><img src="images/3733C757-B620-42DE-A544-1B279C6FD3EE.png" alt><br><img src="images/AA32CD3A-5282-4040-A2AD-68CA3AD45CFE.png" alt><br><img src="images/AD8B903E-120B-4DB0-807F-0DD5E09C47BF.png" alt><br><img src="images/E9A00451-B2AD-41E3-9698-C112789B8139.png" alt><br><img src="images/38C753B1-D3D2-4A01-8749-32C761EB2E9C.png" alt></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">u = &#123;</span><br><span class="line">    <span class="string">"\u0067\u0074"</span>: o[$_CAICh(<span class="number">171</span>)],</span><br><span class="line">    <span class="string">"\u0063\u0068\u0061\u006c\u006c\u0065\u006e\u0067\u0065"</span>: o[$_CAIBT(<span class="number">128</span>)],</span><br><span class="line">    <span class="string">"\u006c\u0061\u006e\u0067"</span>: i[$_CAICh(<span class="number">111</span>)],</span><br><span class="line">    <span class="string">"\u0070\u0074"</span>: r[$_CAICh(<span class="number">630</span>)],</span><br><span class="line">    <span class="string">"\u0063\u006c\u0069\u0065\u006e\u0074\u005f\u0074\u0079\u0070\u0065"</span>: r[$_CAICh(<span class="number">663</span>)],</span><br><span class="line">    <span class="string">"\u0077"</span>: _ + s</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Unicode</th>
+<th>字符串 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\u0067\u0074</td>
+<td>gt</td>
+</tr>
+<tr>
+<td>\u0063\u0068\u0061\u006c\u006c\u0065\u006e\u0067\u0065</td>
+<td>challenge</td>
+</tr>
+<tr>
+<td>\u006c\u0061\u006e\u0067</td>
+<td>lang</td>
+</tr>
+<tr>
+<td>\u0070\u0074</td>
+<td>pt</td>
+</tr>
+<tr>
+<td>\u0063\u006c\u0069\u0065\u006e\u0074\u005f\u0074\u0079\u0070\u0065</td>
+<td>client_type</td>
+</tr>
+<tr>
+<td>\u0077</td>
+<td>w</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>查看<code>gt</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="variable">$_CAICh</span>(171)</span><br><span class="line"><span class="string">"gt"</span></span><br><span class="line">&gt; o[<span class="variable">$_CAICh</span>(171)]</span><br><span class="line"><span class="string">"c9c4facd1a6feeb80802222cbb74ca8e"</span></span><br></pre></td></tr></table></figure>
+<p><code>gt</code> 就是取<code>o</code>对象中的 <strong>gt</strong> 属性，等效 <code>u.gt = o.gt</code></p>
+<ul>
+<li>查看<code>challenge</code>:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="variable">$_CAIBT</span>(128)</span><br><span class="line"><span class="string">"challenge"</span></span><br><span class="line">&gt; o[<span class="variable">$_CAIBT</span>(128)]</span><br><span class="line"><span class="string">"f5ec9b7bf21fa0e8bcc78bad646a60298e"</span></span><br></pre></td></tr></table></figure>
+<p>在此<code>challenge</code>已经生成好了，但它是怎么生成的呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">o = r[$_CAIBT(<span class="number">24</span>)]</span><br><span class="line"></span><br><span class="line">&gt; $_CAIBT(<span class="number">24</span>)</span><br><span class="line"><span class="string">"$_IGz"</span></span><br><span class="line"></span><br><span class="line">o = r.$_IGz</span><br><span class="line"></span><br><span class="line">&gt; r.$_IGz</span><br><span class="line">$_GIK</span><br></pre></td></tr></table></figure>
+<p>搜索<code>$_GIK</code>相关的代码</p>
+<p><code>challenge</code> 的Unicode值是<br><code>\u0063\u0068\u0061\u006c\u006c\u0065\u006e\u0067\u0065</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AGWEz.$_Cc(<span class="number">128</span>) == <span class="string">`challenge`</span></span><br></pre></td></tr></table></figure>
+<p>源码有<code>challenge</code> 相关的属性都是其它对象的<code>challenge</code>的属性获得<br>猜测需要的<code>challenge</code>可能是从服务器返回对象中获得</p>
+<p>查看其它请求，发现<code>get.php</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">Request URL: http:<span class="comment">//api.geetest.com/get.php?is_next=true&amp;type=slide3&amp;gt=c9c4facd1a6feeb80802222cbb74ca8e&amp;challenge=f7efd292522ee8db244f04e74d95e7f4&amp;lang=zh-cn&amp;https=false&amp;protocol=http%3A%2F%2F&amp;offline=false&amp;product=embed&amp;api_server=api.geetest.com&amp;isPC=true&amp;width=100%25&amp;callback=geetest_1600829591801</span></span><br><span class="line">Request Method: GET</span><br><span class="line">Status Code: <span class="number">200</span> OK</span><br><span class="line"></span><br><span class="line">Query Parameters:</span><br><span class="line">is_next: <span class="literal">true</span></span><br><span class="line">type: slide3</span><br><span class="line">gt: c9c4facd1a6feeb80802222cbb74ca8e</span><br><span class="line">challenge: f7efd292522ee8db244f04e74d95e7f4</span><br><span class="line">lang: zh-cn</span><br><span class="line">https: <span class="literal">false</span></span><br><span class="line">protocol: http:<span class="comment">//</span></span><br><span class="line">offline: <span class="literal">false</span></span><br><span class="line">product: embed</span><br><span class="line">api_server: api.geetest.com</span><br><span class="line">isPC: <span class="literal">true</span></span><br><span class="line">width: <span class="number">100</span>%</span><br><span class="line">callback: geetest_1600829591801</span><br><span class="line"></span><br><span class="line">Response:</span><br><span class="line"></span><br><span class="line">Headers -&gt;</span><br><span class="line">Cache-Control: no-cache, no-store, must-revalidate</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: <span class="number">1546</span></span><br><span class="line">Content-Type: text/javascript;charset=UTF<span class="number">-8</span></span><br><span class="line"><span class="built_in">Date</span>: Wed, <span class="number">23</span> Sep <span class="number">2020</span> <span class="number">02</span>:<span class="number">53</span>:<span class="number">07</span> GMT</span><br><span class="line">Etag: <span class="string">"974d863efd7b406d9d1d80807c5d9db5960ed5ef"</span></span><br><span class="line">Expires: <span class="number">0</span></span><br><span class="line">Pragma: no-cache</span><br><span class="line">Server: openresty</span><br><span class="line"><span class="built_in">Set</span>-Cookie: GeeTestUser=<span class="number">7</span>dd27d058b44300de889a2f9ac14a0d1; expires=Thu, <span class="number">23</span> Sep <span class="number">2021</span> <span class="number">02</span>:<span class="number">53</span>:<span class="number">07</span> GMT; Path=<span class="regexp">/</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">Body -&gt;</span></span><br><span class="line"><span class="regexp">geetest_1600829591801(&#123;</span></span><br><span class="line"><span class="regexp">    "benchmark": false,</span></span><br><span class="line"><span class="regexp">    "c": [12, 58, 98, 36, 43, 95, 62, 15, 12],</span></span><br><span class="line"><span class="regexp">    "id": "af7efd292522ee8db244f04e74d95e7f4",</span></span><br><span class="line"><span class="regexp">    "version": "6.0.9",</span></span><br><span class="line"><span class="regexp">    "show_delay": 250,</span></span><br><span class="line"><span class="regexp">    "mobile": true,</span></span><br><span class="line"><span class="regexp">    "challenge": "f7efd292522ee8db244f04e74d95e7f4fn",</span></span><br><span class="line"><span class="regexp">    "bg": "pictures/g</span>t/d49a453dc/bg/<span class="number">655</span>b485ef.jpg<span class="string">",</span></span><br><span class="line"><span class="string">    "</span>clean<span class="string">": false,</span></span><br><span class="line"><span class="string">    "</span>static_servers<span class="string">": ["</span><span class="keyword">static</span>.geetest.com/<span class="string">", "</span>dn-staticdown.qbox.me/<span class="string">"],</span></span><br><span class="line"><span class="string">    "</span>type<span class="string">": "</span>multilink<span class="string">",</span></span><br><span class="line"><span class="string">    "</span>fullbg<span class="string">": "</span>pictures/gt/d49a453dc/d49a453dc.jpg<span class="string">",</span></span><br><span class="line"><span class="string">    "</span>theme<span class="string">": "</span>ant<span class="string">",</span></span><br><span class="line"><span class="string">    "</span>gt<span class="string">": "</span>c9c4facd1a6feeb80802222cbb74ca8e<span class="string">",</span></span><br><span class="line"><span class="string">    "</span>so<span class="string">": 0,</span></span><br><span class="line"><span class="string">    "</span>xpos<span class="string">": 0,</span></span><br><span class="line"><span class="string">    "</span>s<span class="string">": "</span><span class="number">62775164</span><span class="string">",</span></span><br><span class="line"><span class="string">    "</span>theme_version<span class="string">": "</span><span class="number">1.2</span><span class="number">.4</span><span class="string">",</span></span><br><span class="line"><span class="string">    "</span>api_server<span class="string">": "</span>http:<span class="comment">//api.geetest.com/",</span></span><br><span class="line">    <span class="string">"template"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"hide_delay"</span>: <span class="number">800</span>,</span><br><span class="line">    <span class="string">"link"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"ypos"</span>: <span class="number">65</span>,</span><br><span class="line">    <span class="string">"i18n_labels"</span>: &#123;</span><br><span class="line">        <span class="string">"fail"</span>: <span class="string">"\u8bf7\u6b63\u786e\u62fc\u5408\u56fe\u50cf"</span>,</span><br><span class="line">        <span class="string">"voice"</span>: <span class="string">"\u89c6\u89c9\u969c\u788d"</span>,</span><br><span class="line">        <span class="string">"loading"</span>: <span class="string">"\u52a0\u8f7d\u4e2d..."</span>,</span><br><span class="line">        <span class="string">"feedback"</span>: <span class="string">"\u5e2e\u52a9\u53cd\u9988"</span>,</span><br><span class="line">        <span class="string">"close"</span>: <span class="string">"\u5173\u95ed\u9a8c\u8bc1"</span>,</span><br><span class="line">        <span class="string">"error"</span>: <span class="string">"\u8bf7\u91cd\u8bd5"</span>,</span><br><span class="line">        <span class="string">"logo"</span>: <span class="string">"\u7531\u6781\u9a8c\u63d0\u4f9b\u6280\u672f\u652f\u6301"</span>,</span><br><span class="line">        <span class="string">"slide"</span>: <span class="string">"\u62d6\u52a8\u6ed1\u5757\u5b8c\u6210\u62fc\u56fe"</span>,</span><br><span class="line">        <span class="string">"cancel"</span>: <span class="string">"\u53d6\u6d88"</span>,</span><br><span class="line">        <span class="string">"success"</span>: <span class="string">"sec \u79d2\u7684\u901f\u5ea6\u8d85\u8fc7 score% \u7684\u7528\u6237"</span>,</span><br><span class="line">        <span class="string">"refresh"</span>: <span class="string">"\u5237\u65b0\u9a8c\u8bc1"</span>,</span><br><span class="line">        <span class="string">"read_reversed"</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">"forbidden"</span>: <span class="string">"\u602a\u7269\u5403\u4e86\u62fc\u56fe\uff0c\u8bf7\u91cd\u8bd5"</span>,</span><br><span class="line">        <span class="string">"tip"</span>: <span class="string">"\u8bf7\u5b8c\u6210\u4e0b\u65b9\u9a8c\u8bc1"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"slice"</span>: <span class="string">"pictures/gt/d49a453dc/slice/655b485ef.png"</span>,</span><br><span class="line">    <span class="string">"logo"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"width"</span>: <span class="string">"100%"</span>,</span><br><span class="line">    <span class="string">"feedback"</span>: <span class="string">"http://www.geetest.com/contact#report"</span>,</span><br><span class="line">    <span class="string">"product"</span>: <span class="string">"embed"</span>,</span><br><span class="line">    <span class="string">"height"</span>: <span class="number">160</span>,</span><br><span class="line">    <span class="string">"https"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"fullpage"</span>: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>响应的<code>challenge</code>值即为需要的</p>
+<blockquote>
+<p><code>get.php</code>请求发送了两次，两次的请求参数不一样，第一次的响应没有携带<code>challenge</code>值<br>第一次是刷新</p>
+</blockquote>
+<ul>
+<li>查看<code>lang</code>:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="variable">$_CAICh</span>(111)</span><br><span class="line"><span class="string">"lang"</span></span><br><span class="line">&gt; i[<span class="variable">$_CAICh</span>(111)]</span><br><span class="line"><span class="string">"zh-cn"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看<code>pt</code>:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="variable">$_CAICh</span>(630)</span><br><span class="line"><span class="string">"<span class="variable">$_CDGy</span>"</span></span><br><span class="line">&gt; r[<span class="variable">$_CAICh</span>(630)]</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看<code>client_type</code>:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="variable">$_CAICh</span>(663)</span><br><span class="line"><span class="string">"<span class="variable">$_CDHI</span>"</span></span><br><span class="line">&gt; r[<span class="variable">$_CAICh</span>(663)]</span><br><span class="line"><span class="string">"web"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看<code>w</code>:</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = r[$_CAIBT(<span class="number">795</span>)]()</span><br><span class="line">    , a = AES[$_CAIBT(<span class="number">339</span>)](gjson[$_CAICh(<span class="number">242</span>)](i), r[$_CAICh(<span class="number">774</span>)]())</span><br><span class="line">    , _ = Base64[$_CAICh(<span class="number">725</span>)](a)</span><br><span class="line">w = _ + s</span><br></pre></td></tr></table></figure>
+<p>查看对应的值:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&gt; $_CAIBT(<span class="number">795</span>)</span><br><span class="line"><span class="string">"$_CIAc"</span></span><br><span class="line">&gt; $_CAIBT(<span class="number">339</span>)</span><br><span class="line"><span class="string">"encrypt"</span></span><br><span class="line">&gt; $_CAICh(<span class="number">725</span>)</span><br><span class="line"><span class="string">"$_BBAI"</span></span><br><span class="line">&gt; $_CAICh(<span class="number">242</span>)</span><br><span class="line"><span class="string">"stringify"</span></span><br><span class="line">&gt; $_CAICh(<span class="number">774</span>)</span><br><span class="line"><span class="string">"$_CIBb"</span></span><br><span class="line"></span><br><span class="line">&gt; i</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"lang"</span>:<span class="string">"zh-cn"</span>,</span><br><span class="line">    <span class="string">"userresponse"</span>:<span class="string">"aa4a49166"</span>,</span><br><span class="line">    <span class="string">"passtime"</span>:<span class="number">610</span>,</span><br><span class="line">    <span class="string">"imgload"</span>:<span class="number">15915</span>,</span><br><span class="line">    <span class="string">"aa"</span>:<span class="string">"Lw(!!Ktsyttstststsossts:sss(!!($*H2191111203/4/3827?-$-6"</span>,</span><br><span class="line">    <span class="string">"ep"</span>:&#123;</span><br><span class="line">        <span class="string">"v"</span>:<span class="string">"7.7.4"</span>,</span><br><span class="line">        <span class="string">"te"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">"me"</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">"tm"</span>:&#123;</span><br><span class="line">            <span class="string">"a"</span>:<span class="number">1600754998393</span>,</span><br><span class="line">            <span class="string">"b"</span>:<span class="number">1600754998444</span>,</span><br><span class="line">            <span class="string">"c"</span>:<span class="number">1600754998444</span>,</span><br><span class="line">            <span class="string">"d"</span>:<span class="number">0</span>,</span><br><span class="line">            <span class="string">"e"</span>:<span class="number">0</span>,</span><br><span class="line">            <span class="string">"f"</span>:<span class="number">1600754998398</span>,</span><br><span class="line">            <span class="string">"g"</span>:<span class="number">1600754998398</span>,</span><br><span class="line">            <span class="string">"h"</span>:<span class="number">1600754998398</span>,</span><br><span class="line">            <span class="string">"i"</span>:<span class="number">1600754998398</span>,</span><br><span class="line">            <span class="string">"j"</span>:<span class="number">1600754998398</span>,</span><br><span class="line">            <span class="string">"k"</span>:<span class="number">0</span>,</span><br><span class="line">            <span class="string">"l"</span>:<span class="number">1600754998419</span>,</span><br><span class="line">            <span class="string">"m"</span>:<span class="number">1600754998436</span>,</span><br><span class="line">            <span class="string">"n"</span>:<span class="number">1600754998438</span>,</span><br><span class="line">            <span class="string">"o"</span>:<span class="number">1600754998493</span>,</span><br><span class="line">            <span class="string">"p"</span>:<span class="number">1600755004551</span>,</span><br><span class="line">            <span class="string">"q"</span>:<span class="number">1600755004551</span>,</span><br><span class="line">            <span class="string">"r"</span>:<span class="number">1600755004553</span>,</span><br><span class="line">            <span class="string">"s"</span>:<span class="number">1600755004574</span>,</span><br><span class="line">            <span class="string">"t"</span>:<span class="number">1600755004574</span>,</span><br><span class="line">            <span class="string">"u"</span>:<span class="number">1600755004574</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"td"</span>:<span class="number">-1</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"rp"</span>:<span class="string">"af19f9fedba491ac4c017780ca07db72"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单的反混淆后的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = r.$_CIAc(),</span><br><span class="line">    a = AES.encrypt(gjson.stringify(i), r.$_CIBb()),</span><br><span class="line">    _ = Base64.$_BBAI(a)</span><br><span class="line">w = _ + s</span><br></pre></td></tr></table></figure>
+<p>获取<code>s</code>值的函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; r.$_CIAc</span><br><span class="line">ƒ (t)&#123;<span class="keyword">var</span> $_CBEGF=AGWEz.$_Cc,$_CBEFR=[<span class="string">'$_CBEJN'</span>].concat($_CBEGF),$_CBEHp=$_CBEFR[<span class="number">1</span>];$_CBEFR.shift();<span class="keyword">var</span> $_CBEIS=$_CBEFR[<span class="number">0</span>];<span class="keyword">var</span> e=<span class="keyword">new</span> RSAKey()[$_CBEHp(<span class="number">339</span>)](<span class="keyword">this</span>[$_CBEHp(<span class="number">774</span>)](t));<span class="keyword">while</span>(!e||<span class="number">256</span>!==e[$_CB…</span><br></pre></td></tr></table></figure>
+<p>点击函数可以跳转的函数对应的位置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"\u0024\u005f\u0043\u0049\u0041\u0063"</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $_CBEGF = AGWEz.$_Cc</span><br><span class="line">        , $_CBEFR = [<span class="string">'$_CBEJN'</span>].concat($_CBEGF)</span><br><span class="line">        , $_CBEHp = $_CBEFR[<span class="number">1</span>];</span><br><span class="line">    $_CBEFR.shift();</span><br><span class="line">    <span class="keyword">var</span> $_CBEIS = $_CBEFR[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">var</span> e = <span class="keyword">new</span> RSAKey()[$_CBEHp(<span class="number">339</span>)](<span class="keyword">this</span>[$_CBEHp(<span class="number">774</span>)](t));</span><br><span class="line">    <span class="keyword">while</span> (!e || <span class="number">256</span> !== e[$_CBEGF(<span class="number">124</span>)])</span><br><span class="line">        e = <span class="keyword">new</span> RSAKey()[$_CBEHp(<span class="number">339</span>)](<span class="keyword">this</span>[$_CBEGF(<span class="number">774</span>)](!<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">return</span> e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>翻译一下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$_CIAc: <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> e = <span class="keyword">new</span> RSAKey().encrypt(<span class="keyword">this</span>.$_CIBb(t));</span><br><span class="line">    <span class="keyword">while</span> (!e || <span class="number">256</span> !== e.length)</span><br><span class="line">        e = <span class="keyword">new</span> RSAKey().encrypt(<span class="keyword">this</span>.$_CIBb(<span class="literal">true</span>));</span><br><span class="line">    <span class="keyword">return</span> e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当<code>var s = r.$_CIAc()</code>, <em>t == undefined</em> 可以简化：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$_CIAc: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RSAKey().encrypt(<span class="keyword">this</span>.$_CIBb(<span class="literal">true</span>));;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>this.$_CIBb</code> 函数:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $_CBEBD = AGWEz.$_Cc</span><br><span class="line">        , $_CBEA_ = [<span class="string">'$_CBEEQ'</span>].concat($_CBEBD)</span><br><span class="line">        , $_CBECX = $_CBEA_[<span class="number">1</span>];</span><br><span class="line">    $_CBEA_.shift();</span><br><span class="line">    <span class="keyword">var</span> $_CBEDZ = $_CBEA_[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> !<span class="number">0</span> === t &amp;&amp; (Ez = $_DJn()), Ez;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 翻译</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span> === t &amp;&amp; (Ez = $_DJn()), Ez;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$_DJn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Gr() + Gr() + Gr() + Gr();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Gr</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">65536</span> * (<span class="number">1</span> + <span class="built_in">Math</span>.random()) | <span class="number">0</span>).toString(<span class="number">16</span>).substring(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取<code>a</code>值的函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = AES.encrypt(gjson.stringify(i), r.$_CIBb())</span><br><span class="line"></span><br><span class="line"><span class="comment">// 翻译</span></span><br><span class="line">a = AES.encrypt(gjson.stringify(i), randomKey())</span><br></pre></td></tr></table></figure>
+<p>以中<code>i</code>的值:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// r = $_GGL的实例</span></span><br><span class="line">i = &#123;</span><br><span class="line">    <span class="string">"\u006c\u0061\u006e\u0067"</span>: o[$_CAIBT(<span class="number">111</span>)] || $_CAIBT(<span class="number">198</span>),</span><br><span class="line">    <span class="string">"\u0075\u0073\u0065\u0072\u0072\u0065\u0073\u0070\u006f\u006e\u0073\u0065"</span>: $_DDc(t, o[$_CAIBT(<span class="number">128</span>)]),</span><br><span class="line">    <span class="string">"\u0070\u0061\u0073\u0073\u0074\u0069\u006d\u0065"</span>: n,</span><br><span class="line">    <span class="string">"\u0069\u006d\u0067\u006c\u006f\u0061\u0064"</span>: r[$_CAICh(<span class="number">790</span>)],</span><br><span class="line">    <span class="string">"\u0061\u0061"</span>: e,</span><br><span class="line">    <span class="string">"\u0065\u0070"</span>: r[$_CAIBT(<span class="number">757</span>)]()</span><br><span class="line">&#125;;</span><br><span class="line">i[$_CAICh(<span class="number">729</span>)] = $_DCF(o[$_CAIBT(<span class="number">171</span>)] + o[$_CAICh(<span class="number">128</span>)][$_CAICh(<span class="number">62</span>)](<span class="number">0</span>, <span class="number">32</span>) + i[$_CAIBT(<span class="number">722</span>)]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 翻译</span></span><br><span class="line">i = &#123;</span><br><span class="line">    lang: <span class="string">"zh-cn"</span>,</span><br><span class="line">    userresponse: $_DDc(t, o.challenge),</span><br><span class="line">    passtime: n,</span><br><span class="line">    imgload: r.$_CGDi,</span><br><span class="line">    aa: e,</span><br><span class="line">    ep: r.$_CHJF()</span><br><span class="line">&#125;</span><br><span class="line">i.rp = $_DCF(o.gt) + o.challenge.slice(<span class="number">0</span>, <span class="number">32</span>) + i.passtime</span><br></pre></td></tr></table></figure>
+<p><code>o.challenge 是第二次请求get.php获取的challenge值</code><br><code>e</code>, <code>n</code> 来自函数参数， 通过 Call Stack 向上追踪 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = n[$_CJHHV(<span class="number">844</span>)]</span><br><span class="line">    , _ = e ? n[$_CJHHV(<span class="number">999</span>)][$_CJHHV(<span class="number">351</span>)] : t[$_CJHHV(<span class="number">936</span>)]() / a - n[$_CJHGj(<span class="number">935</span>)]</span><br><span class="line">    , u = e ? n[$_CJHHV(<span class="number">999</span>)][$_CJHGj(<span class="number">385</span>)] : n[$_CJHGj(<span class="number">995</span>)] - t[$_CJHHV(<span class="number">945</span>)]() / a;</span><br><span class="line">n[$_CJHHV(<span class="number">808</span>)] = $_EGb() - n[$_CJHHV(<span class="number">937</span>)],</span><br><span class="line">                    n[$_CJHHV(<span class="number">981</span>)][$_CJHGj(<span class="number">994</span>)]([<span class="built_in">Math</span>[$_CJHHV(<span class="number">293</span>)](_), <span class="built_in">Math</span>[$_CJHHV(<span class="number">293</span>)](u), n[$_CJHGj(<span class="number">808</span>)]]);</span><br><span class="line"></span><br><span class="line">l = n[$_CJHHV(<span class="number">981</span>)][$_CJHHV(<span class="number">980</span>)](n[$_CJHHV(<span class="number">981</span>)][$_CJHHV(<span class="number">903</span>)](), n[$_CJHHV(<span class="number">24</span>)][$_CJHHV(<span class="number">1071</span>)], n[$_CJHGj(<span class="number">24</span>)][$_CJHGj(<span class="number">343</span>)]);  <span class="comment">// e</span></span><br><span class="line">n[$_CJHHV(<span class="number">808</span>)]                <span class="comment">// n</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 翻译</span></span><br><span class="line"><span class="keyword">var</span> a = n.$_DBBS  <span class="comment">// 1</span></span><br><span class="line">    , _ = e ? n.lastPoint.x : t.$_CCAe() / a - n.$_DDHK</span><br><span class="line">    , u = e ? n.lastPoint.y : n.$_DDIF - t.$_CCBs() / a;</span><br><span class="line">n._DAAt = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime - n.$_DDGR, </span><br><span class="line">        n.$_DDJm.$_BHFA([<span class="built_in">Math</span>.round(_), <span class="built_in">Math</span>.round(u), n.$_DAAt);</span><br><span class="line"></span><br><span class="line">l = n.$_DDJm.$_BHGu(n.$_DDJm.$_BAJk(), n.$_IGz.c, n.$_IGz.s) <span class="comment">// e</span></span><br><span class="line">n.$_DAAt                        <span class="comment">// n</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line">&gt; n.$_IGz.c</span><br><span class="line">(<span class="number">9</span>) [<span class="number">12</span>, <span class="number">58</span>, <span class="number">98</span>, <span class="number">36</span>, <span class="number">43</span>, <span class="number">95</span>, <span class="number">62</span>, <span class="number">15</span>, <span class="number">12</span>]</span><br><span class="line">&gt; n.$_IGz.s</span><br><span class="line"><span class="string">"52657746"</span></span><br><span class="line">&gt; n.$_DDHK</span><br><span class="line"><span class="number">567.26953125</span></span><br><span class="line">&gt; n.$_DDGR</span><br><span class="line"><span class="number">1600852141886</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"\u0024\u005f\u0042\u0048\u0047\u0075"</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, e, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $_BEJGY = AGWEz.$_Cc</span><br><span class="line">        , $_BEJF_ = [<span class="string">'$_BEJJh'</span>].concat($_BEJGY)</span><br><span class="line">        , $_BEJHQ = $_BEJF_[<span class="number">1</span>];</span><br><span class="line">    $_BEJF_.shift();</span><br><span class="line">    <span class="keyword">var</span> $_BEJIP = $_BEJF_[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span> (!e || !n)</span><br><span class="line">        <span class="keyword">return</span> t;</span><br><span class="line">    <span class="keyword">var</span> r, o = <span class="number">0</span>, i = t, s = e[<span class="number">0</span>], a = e[<span class="number">2</span>], _ = e[<span class="number">4</span>];</span><br><span class="line">    <span class="keyword">while</span> (r = n[$_BEJHQ(<span class="number">283</span>)](o, <span class="number">2</span>)) &#123;</span><br><span class="line">        o += <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">var</span> u = <span class="built_in">parseInt</span>(r, <span class="number">16</span>)</span><br><span class="line">            , c = <span class="built_in">String</span>[$_BEJHQ(<span class="number">273</span>)](u)</span><br><span class="line">            , l = (s * u * u + a * u + _) % t[$_BEJHQ(<span class="number">124</span>)];</span><br><span class="line">        i = i[$_BEJGY(<span class="number">283</span>)](<span class="number">0</span>, l) + c + i[$_BEJGY(<span class="number">283</span>)](l);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 翻译：</span></span><br><span class="line"><span class="comment">// "T(!!Gtttsyttsss(!!($)R5-6,30111$.b", [12, 58, 98, 36, 43, 95, 62, 15, 12], "52657746"</span></span><br><span class="line">$_BHGu: <span class="function"><span class="keyword">function</span>(<span class="params">aa, e, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!e || !n)</span><br><span class="line">        <span class="keyword">return</span> aa;</span><br><span class="line">    <span class="keyword">var</span> r, index = <span class="number">0</span>, str = aa, s = e[<span class="number">0</span>], a = e[<span class="number">2</span>], _ = e[<span class="number">4</span>];</span><br><span class="line">    <span class="keyword">while</span> (r = n.substr(index, <span class="number">2</span>)) &#123;</span><br><span class="line">        index += <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">var</span> u = <span class="built_in">parseInt</span>(r, <span class="number">16</span>)</span><br><span class="line">            , c = <span class="built_in">String</span>.fromCharCode(u)</span><br><span class="line">            , l = (s * u * u + a * u + _) % aa.length;</span><br><span class="line">        str = str.substr(<span class="number">0</span>, l) + c + str.substr(l);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// "\u0024\u005f\u0042\u0041\u004a\u006b": function() &#123;</span></span><br><span class="line">$_BAJk: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> e = <span class="string">"()*,-./0123456789:?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqr"</span>,</span><br><span class="line">            n = e.length,</span><br><span class="line">            r = <span class="string">""</span>,</span><br><span class="line">            o = <span class="built_in">Math</span>.abs(t),</span><br><span class="line">            i = <span class="built_in">parseInt</span>(o / n);</span><br><span class="line">        n &lt;= i &amp;&amp; (i = n - <span class="number">1</span>), i &amp;&amp; (r = e.charAt(i));</span><br><span class="line">        <span class="keyword">var</span> s = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">return</span> t &lt; <span class="number">0</span> &amp;&amp; (s += <span class="string">"!"</span>), r &amp;&amp; (s += <span class="string">"$"</span>, s + r + e.charAt(o %= n);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> t = <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> e, n, r, o = [], i = <span class="number">0</span>, s = <span class="number">0</span>, a = t.length - <span class="number">1</span>; s &lt; a; s++) &#123;</span><br><span class="line">                e = <span class="built_in">Math</span>.round(t[s + <span class="number">1</span>][<span class="number">0</span>] - t[s][<span class="number">0</span>]), </span><br><span class="line">                n = <span class="built_in">Math</span>.round(t[s + <span class="number">1</span>][<span class="number">1</span>] - t[s][<span class="number">1</span>]), </span><br><span class="line">                r = <span class="built_in">Math</span>.round(t[s + <span class="number">1</span>][<span class="number">2</span>] - t[s][<span class="number">2</span>]), </span><br><span class="line">                <span class="number">0</span> == e &amp;&amp; <span class="number">0</span> == n &amp;&amp; <span class="number">0</span> == r || (<span class="number">0</span> == e &amp;&amp; <span class="number">0</span> == n ? i += r : (o.push([e, n, r + i]), i = <span class="number">0</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span> !== i &amp;&amp; o.push([e, n, i]), o;</span><br><span class="line">        &#125;(<span class="keyword">this</span>.$_BDA_),</span><br><span class="line">        r = [],</span><br><span class="line">        o = [],</span><br><span class="line">        i = [];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> $_FAU(t).$_HFd(<span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> e = <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> e = [</span><br><span class="line">                    [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">                    [<span class="number">2</span>, <span class="number">0</span>],</span><br><span class="line">                    [<span class="number">1</span>, <span class="number">-1</span>],</span><br><span class="line">                    [<span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                    [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                    [<span class="number">0</span>, <span class="number">-1</span>],</span><br><span class="line">                    [<span class="number">3</span>, <span class="number">0</span>],</span><br><span class="line">                    [<span class="number">2</span>, <span class="number">-1</span>],</span><br><span class="line">                    [<span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">                ], n = <span class="number">0</span>, r = e.length; n &lt; r; n++) </span><br><span class="line">                <span class="keyword">if</span> (t[<span class="number">0</span>] == e[n][<span class="number">0</span>] &amp;&amp; t[<span class="number">1</span>] == e[n][<span class="number">1</span>]) <span class="keyword">return</span> <span class="string">"stuvwxyz~"</span>[n]; </span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;(t);</span><br><span class="line">        e ? o.push(e) : (r.push(n(t[<span class="number">0</span>])), o.push(n(t[<span class="number">1</span>]))), i.push(n(t[<span class="number">2</span>]));</span><br><span class="line">    &#125;), r.join(<span class="string">""</span>) + <span class="string">"!!"</span> + o.join(<span class="string">""</span>) + <span class="string">"!!"</span> + i.join(<span class="string">""</span>);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$_FAU</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.$_BHIa = e || [];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// $_FAU.prototype.$_HFd</span></span><br><span class="line"><span class="comment">// f 回调函数</span></span><br><span class="line"><span class="comment">//"\u0024\u005f\u0048\u0046\u0064": function(t) &#123;</span></span><br><span class="line">$_HFd: <span class="function"><span class="keyword">function</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> e = <span class="keyword">this</span>.$_BHIa; <span class="comment">// 是 Array(26)</span></span><br><span class="line">    <span class="keyword">if</span> (e.map)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> $_FAU(e.map(f));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> n = [], r = <span class="number">0</span>, o = e.length; r &lt; o; r += <span class="number">1</span>)</span><br><span class="line">        n[r] = f(e[r], r, <span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> $_FAU(n);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 整理：</span></span><br><span class="line">$_BHGu: <span class="function"><span class="keyword">function</span>(<span class="params">aa, e, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!e || !n)</span><br><span class="line">        <span class="keyword">return</span> aa;</span><br><span class="line">    <span class="keyword">var</span> r, index = <span class="number">0</span>, str = aa, s = e[<span class="number">0</span>], a = e[<span class="number">2</span>], _ = e[<span class="number">4</span>];</span><br><span class="line">    <span class="keyword">while</span> (r = n.substr(index, <span class="number">2</span>)) &#123;</span><br><span class="line">        index += <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">var</span> u = <span class="built_in">parseInt</span>(r, <span class="number">16</span>)</span><br><span class="line">            , c = <span class="built_in">String</span>.fromCharCode(u)</span><br><span class="line">            , l = (s * u * u + a * u + _) % aa.length;</span><br><span class="line">        str = str.substr(<span class="number">0</span>, l) + c + str.substr(l);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// "\u0024\u005f\u0042\u0041\u004a\u006b": function() &#123;</span></span><br><span class="line">$_BAJk: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> e = <span class="string">"()*,-./0123456789:?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqr"</span>,</span><br><span class="line">            n = e.length,</span><br><span class="line">            r = <span class="string">""</span>,</span><br><span class="line">            o = <span class="built_in">Math</span>.abs(t),</span><br><span class="line">            i = <span class="built_in">parseInt</span>(o / n);</span><br><span class="line">        n &lt;= i &amp;&amp; (i = n - <span class="number">1</span>), i &amp;&amp; (r = e.charAt(i));</span><br><span class="line">        <span class="keyword">var</span> s = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">return</span> t &lt; <span class="number">0</span> &amp;&amp; (s += <span class="string">"!"</span>), r &amp;&amp; (s += <span class="string">"$"</span>, s + r + e.charAt(o %= n);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> t = <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> e, n, r, o = [], i = <span class="number">0</span>, s = <span class="number">0</span>, a = t.length - <span class="number">1</span>; s &lt; a; s++) &#123;</span><br><span class="line">                e = <span class="built_in">Math</span>.round(t[s + <span class="number">1</span>][<span class="number">0</span>] - t[s][<span class="number">0</span>]), </span><br><span class="line">                n = <span class="built_in">Math</span>.round(t[s + <span class="number">1</span>][<span class="number">1</span>] - t[s][<span class="number">1</span>]), </span><br><span class="line">                r = <span class="built_in">Math</span>.round(t[s + <span class="number">1</span>][<span class="number">2</span>] - t[s][<span class="number">2</span>]), </span><br><span class="line">                <span class="number">0</span> == e &amp;&amp; <span class="number">0</span> == n &amp;&amp; <span class="number">0</span> == r || (<span class="number">0</span> == e &amp;&amp; <span class="number">0</span> == n ? i += r : (o.push([e, n, r + i]), i = <span class="number">0</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span> !== i &amp;&amp; o.push([e, n, i]), o;</span><br><span class="line">        &#125;(<span class="keyword">this</span>.$_BDA_),</span><br><span class="line">        r = [],</span><br><span class="line">        o = [],</span><br><span class="line">        i = [];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> t.map(<span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> e = <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> e = [</span><br><span class="line">                    [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">                    [<span class="number">2</span>, <span class="number">0</span>],</span><br><span class="line">                    [<span class="number">1</span>, <span class="number">-1</span>],</span><br><span class="line">                    [<span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                    [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                    [<span class="number">0</span>, <span class="number">-1</span>],</span><br><span class="line">                    [<span class="number">3</span>, <span class="number">0</span>],</span><br><span class="line">                    [<span class="number">2</span>, <span class="number">-1</span>],</span><br><span class="line">                    [<span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">                ], n = <span class="number">0</span>, r = e.length; n &lt; r; n++) </span><br><span class="line">                <span class="keyword">if</span> (t[<span class="number">0</span>] == e[n][<span class="number">0</span>] &amp;&amp; t[<span class="number">1</span>] == e[n][<span class="number">1</span>]) <span class="keyword">return</span> <span class="string">"stuvwxyz~"</span>[n]; </span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;(t);</span><br><span class="line">        e ? o.push(e) : (r.push(n(t[<span class="number">0</span>])), o.push(n(t[<span class="number">1</span>]))), i.push(n(t[<span class="number">2</span>]));</span><br><span class="line">    &#125;), r.join(<span class="string">""</span>) + <span class="string">"!!"</span> + o.join(<span class="string">""</span>) + <span class="string">"!!"</span> + i.join(<span class="string">""</span>);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">this</span>.$_BDA_</span><br><span class="line"><span class="number">0</span>: (<span class="number">3</span>) [<span class="number">-36</span>, <span class="number">-27</span>, <span class="number">0</span>]</span><br><span class="line"><span class="number">1</span>: (<span class="number">3</span>) [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line"><span class="number">2</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">226</span>]</span><br><span class="line"><span class="number">3</span>: (<span class="number">3</span>) [<span class="number">3</span>, <span class="number">0</span>, <span class="number">233</span>]</span><br><span class="line"><span class="number">4</span>: (<span class="number">3</span>) [<span class="number">6</span>, <span class="number">0</span>, <span class="number">241</span>]</span><br><span class="line"><span class="number">5</span>: (<span class="number">3</span>) [<span class="number">6</span>, <span class="number">0</span>, <span class="number">249</span>]</span><br><span class="line"><span class="number">6</span>: (<span class="number">3</span>) [<span class="number">7</span>, <span class="number">0</span>, <span class="number">257</span>]</span><br><span class="line"><span class="number">7</span>: (<span class="number">3</span>) [<span class="number">9</span>, <span class="number">0</span>, <span class="number">265</span>]</span><br><span class="line"><span class="number">8</span>: (<span class="number">3</span>) [<span class="number">10</span>, <span class="number">0</span>, <span class="number">274</span>]</span><br><span class="line"><span class="number">9</span>: (<span class="number">3</span>) [<span class="number">11</span>, <span class="number">0</span>, <span class="number">283</span>]</span><br><span class="line"><span class="number">10</span>: (<span class="number">3</span>) [<span class="number">12</span>, <span class="number">0</span>, <span class="number">289</span>]</span><br><span class="line"><span class="number">11</span>: (<span class="number">3</span>) [<span class="number">13</span>, <span class="number">0</span>, <span class="number">299</span>]</span><br><span class="line"><span class="number">12</span>: (<span class="number">3</span>) [<span class="number">14</span>, <span class="number">0</span>, <span class="number">305</span>]</span><br><span class="line"><span class="number">13</span>: (<span class="number">3</span>) [<span class="number">15</span>, <span class="number">0</span>, <span class="number">316</span>]</span><br><span class="line"><span class="number">14</span>: (<span class="number">3</span>) [<span class="number">16</span>, <span class="number">0</span>, <span class="number">321</span>]</span><br><span class="line"><span class="number">15</span>: (<span class="number">3</span>) [<span class="number">17</span>, <span class="number">0</span>, <span class="number">333</span>]</span><br><span class="line"><span class="number">16</span>: (<span class="number">3</span>) [<span class="number">18</span>, <span class="number">0</span>, <span class="number">338</span>]</span><br><span class="line"><span class="number">17</span>: (<span class="number">3</span>) [<span class="number">20</span>, <span class="number">0</span>, <span class="number">350</span>]</span><br><span class="line"><span class="number">18</span>: (<span class="number">3</span>) [<span class="number">21</span>, <span class="number">0</span>, <span class="number">354</span>]</span><br><span class="line"><span class="number">19</span>: (<span class="number">3</span>) [<span class="number">22</span>, <span class="number">0</span>, <span class="number">367</span>]</span><br><span class="line"><span class="number">20</span>: (<span class="number">3</span>) [<span class="number">23</span>, <span class="number">0</span>, <span class="number">370</span>]</span><br><span class="line"><span class="number">21</span>: (<span class="number">3</span>) [<span class="number">24</span>, <span class="number">0</span>, <span class="number">383</span>]</span><br><span class="line"><span class="number">22</span>: (<span class="number">3</span>) [<span class="number">25</span>, <span class="number">0</span>, <span class="number">386</span>]</span><br><span class="line"><span class="number">23</span>: (<span class="number">3</span>) [<span class="number">25</span>, <span class="number">0</span>, <span class="number">394</span>]</span><br><span class="line"><span class="number">24</span>: (<span class="number">3</span>) [<span class="number">26</span>, <span class="number">0</span>, <span class="number">402</span>]</span><br><span class="line"><span class="number">25</span>: (<span class="number">3</span>) [<span class="number">26</span>, <span class="number">0</span>, <span class="number">412</span>]</span><br><span class="line"><span class="number">26</span>: (<span class="number">3</span>) [<span class="number">27</span>, <span class="number">0</span>, <span class="number">418</span>]</span><br><span class="line"><span class="number">27</span>: (<span class="number">3</span>) [<span class="number">27</span>, <span class="number">0</span>, <span class="number">427</span>]</span><br><span class="line"><span class="number">28</span>: (<span class="number">3</span>) [<span class="number">28</span>, <span class="number">0</span>, <span class="number">434</span>]</span><br><span class="line"><span class="number">29</span>: (<span class="number">3</span>) [<span class="number">28</span>, <span class="number">0</span>, <span class="number">443</span>]</span><br><span class="line"><span class="number">30</span>: (<span class="number">3</span>) [<span class="number">28</span>, <span class="number">0</span>, <span class="number">450</span>]</span><br><span class="line"><span class="number">31</span>: (<span class="number">3</span>) [<span class="number">28</span>, <span class="number">0</span>, <span class="number">475</span>]</span><br><span class="line"><span class="number">32</span>: (<span class="number">3</span>) [<span class="number">29</span>, <span class="number">0</span>, <span class="number">533</span>]</span><br><span class="line"><span class="number">33</span>: (<span class="number">3</span>) [<span class="number">29</span>, <span class="number">0</span>, <span class="number">588</span>]</span><br><span class="line">length: <span class="number">34</span></span><br><span class="line"></span><br><span class="line">&gt; t = t(<span class="keyword">this</span>.$_BDA_)</span><br><span class="line">&gt; t</span><br><span class="line"><span class="number">0</span>: (<span class="number">3</span>) [<span class="number">36</span>, <span class="number">27</span>, <span class="number">0</span>]</span><br><span class="line"><span class="number">1</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">226</span>]</span><br><span class="line"><span class="number">2</span>: (<span class="number">3</span>) [<span class="number">2</span>, <span class="number">0</span>, <span class="number">7</span>]</span><br><span class="line"><span class="number">3</span>: (<span class="number">3</span>) [<span class="number">3</span>, <span class="number">0</span>, <span class="number">8</span>]</span><br><span class="line"><span class="number">4</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">16</span>]</span><br><span class="line"><span class="number">5</span>: (<span class="number">3</span>) [<span class="number">2</span>, <span class="number">0</span>, <span class="number">8</span>]</span><br><span class="line"><span class="number">6</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">9</span>]</span><br><span class="line"><span class="number">7</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">9</span>]</span><br><span class="line"><span class="number">8</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>]</span><br><span class="line"><span class="number">9</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">10</span>]</span><br><span class="line"><span class="number">10</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>]</span><br><span class="line"><span class="number">11</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">11</span>]</span><br><span class="line"><span class="number">12</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">5</span>]</span><br><span class="line"><span class="number">13</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">12</span>]</span><br><span class="line"><span class="number">14</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">5</span>]</span><br><span class="line"><span class="number">15</span>: (<span class="number">3</span>) [<span class="number">2</span>, <span class="number">0</span>, <span class="number">12</span>]</span><br><span class="line"><span class="number">16</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">4</span>]</span><br><span class="line"><span class="number">17</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">13</span>]</span><br><span class="line"><span class="number">18</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">3</span>]</span><br><span class="line"><span class="number">19</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">13</span>]</span><br><span class="line"><span class="number">20</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">3</span>]</span><br><span class="line"><span class="number">21</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">16</span>]</span><br><span class="line"><span class="number">22</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">16</span>]</span><br><span class="line"><span class="number">23</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">16</span>]</span><br><span class="line"><span class="number">24</span>: (<span class="number">3</span>) [<span class="number">1</span>, <span class="number">0</span>, <span class="number">99</span>]</span><br><span class="line"><span class="number">25</span>: (<span class="number">3</span>) [<span class="number">0</span>, <span class="number">0</span>, <span class="number">55</span>]</span><br><span class="line">length: <span class="number">26</span></span><br></pre></td></tr></table></figure>
+<p><code>n.$_IGz.c</code>:</p>
+<p>第二次 <code>get.php</code>请求的 <code>c</code>属性</p>
+<p><code>n.$_IGz.s</code>:</p>
+<p>第二次 <code>get.php</code>请求的 <code>s</code>属性</p>
+<p><code>n._DAAt</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = n.$_DBBS  <span class="comment">// 1</span></span><br><span class="line">    , _ = e ? n.lastPoint.x : t.$_CCAe() / a - n.$_DDHK</span><br><span class="line">    , u = e ? n.lastPoint.y : n.$_DDIF - t.$_CCBs() / a;</span><br><span class="line">n._DAAt = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime - n.$_DDGR, </span><br><span class="line">        n.$_DDJm.$_BHFA([<span class="built_in">Math</span>.round(_), <span class="built_in">Math</span>.round(u), n.$_DAAt);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// "\u0024\u005f\u0043\u0043\u0041\u0065": function() &#123;</span></span><br><span class="line">$_CCAe: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> t = <span class="keyword">this</span>.$_BBIM; <span class="comment">// PointerEvent &#123;isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0.5, …&#125;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="string">"number"</span> == <span class="keyword">typeof</span> (t.clientX))</span><br><span class="line">        <span class="keyword">return</span> t.clientX;</span><br><span class="line">    <span class="keyword">var</span> e = t.changedTouches &amp;&amp; t.changedTouches[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> e ? e.clientX : <span class="number">-1</span>;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// "\u0024\u005f\u0043\u0043\u0042\u0073": function() &#123;</span></span><br><span class="line">$_CCBs: : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> t = <span class="keyword">this</span>.$_BBIM; <span class="comment">// PointerEvent &#123;isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …&#125;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="string">"number"</span> == <span class="keyword">typeof</span> (t.clientY))</span><br><span class="line">        <span class="keyword">return</span> t.clientY;</span><br><span class="line">    <span class="keyword">var</span> e = t.changedTouches &amp;&amp; t.changedTouches[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> e ? e.clientY : <span class="number">-1</span>;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// "\u0024\u005f\u0042\u0048\u0046\u0041": function(t) &#123;</span></span><br><span class="line"><span class="comment">// t -&gt; [22, -2, 8911]</span></span><br><span class="line">$_BHFA: <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.$_BDA_.push(t), <span class="keyword">this</span>;   <span class="comment">// </span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>猜测 鼠标落下时事件的值:<br><code>n.$_DDHK</code> 就是获取 PointerEvent的clientX<br><code>n.$_DDIF</code> 就是获取 PointerEvent的clientY<br><code>n.$_DDGR</code> 是<code>new Date().getTime</code></p>
+<p>整理：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">i = &#123;</span><br><span class="line">    lang: <span class="string">"zh-cn"</span>,</span><br><span class="line">    userresponse: $_DDc(t, o.challenge),</span><br><span class="line">    passtime: n,</span><br><span class="line">    imgload: r.$_CGDi,</span><br><span class="line">    aa: e,</span><br><span class="line">    ep: r.$_CHJF()</span><br><span class="line">&#125;</span><br><span class="line">i.rp = $_DCF(o.gt) + o.challenge.slice(<span class="number">0</span>, <span class="number">32</span>) + i.passtime</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> RSAKey().encrypt(randomKey()),</span><br><span class="line">    a = AES.encrypt(gjson.stringify(i), randomKey()),</span><br><span class="line">    _ = Base64.$_BBAI(a)</span><br><span class="line">w = _ + s </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">randomKey</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Gr() + Gr() + Gr() + Gr();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Gr</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">65536</span> * (<span class="number">1</span> + <span class="built_in">Math</span>.random()) | <span class="number">0</span>).toString(<span class="number">16</span>).substring(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="滑块"><a href="#滑块" class="headerlink" title="滑块"></a>滑块</h4><hr>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/108207751" target="_blank" rel="noopener">js逆向技巧分享</a></li>
+<li><a href="https://www.jianshu.com/p/c8df1194b514" target="_blank" rel="noopener">极验验证码破解之selenium</a></li>
+<li><a href="https://www.kancloud.cn/abcabc123/yiyunapi/1879968" target="_blank" rel="noopener">极验证码识别http接口</a>(打码平台)</li>
+<li><a href="https://docs.geetest.com/sensebot/deploy/server/python" target="_blank" rel="noopener">极验证码文档</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/28493013" target="_blank" rel="noopener">极验验证码破解</a></li>
+<li><a href="https://www.zhihu.com/people/boris-97-17/posts" target="_blank" rel="noopener">反爬经验</a></li>
+<li><a href="https://www.zhihu.com/question/267204109/answer/320502511" target="_blank" rel="noopener">学web安全去哪里找各种各样的靶场？</a></li>
+<li><a href="https://github.com/We5ter/Awesome-Platforms/blob/master/CTF-Platforms.md" target="_blank" rel="noopener">CTF-Platforms</a></li>
+<li><a href="https://blog.csdn.net/weixin_47202458/article/details/106952539?utm_medium=distribute.pc_relevant.none-task-blog-title-5&amp;spm=1001.2101.3001.4242" target="_blank" rel="noopener">JS逆向：极验滑块验证码加密分析</a></li>
+<li><a href="http://bbs.nightteam.cn" target="_blank" rel="noopener">夜幕爬虫安全论坛</a></li>
+<li><a href="http://www.520monkey.com/" target="_blank" rel="noopener">尼古拉斯 赵四大神的博客</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2020/09/13/geetest-slider/" target="_blank" title="反爬 __极限滑块验证码__ 分析过程">https://jigangduan.github.io/2020/09/13/geetest-slider/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/10/23/numpy-100/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Numpy-100
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/12/geetest-type/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">反爬 __验证码类型__ 分析过程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建极限-demo-环境"><span class="nav-number">1.</span> <span class="nav-text">搭建极限 demo 环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证操作"><span class="nav-number">2.</span> <span class="nav-text">验证操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对比两个响应"><span class="nav-number">2.1.</span> <span class="nav-text">对比两个响应</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析参数来历"><span class="nav-number">3.</span> <span class="nav-text">分析参数来历</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#请求-GET-register"><span class="nav-number">3.1.</span> <span class="nav-text">请求 GET register:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#滑块"><span class="nav-number">3.2.</span> <span class="nav-text">滑块</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

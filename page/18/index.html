@@ -259,6 +259,182 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-merge-odex-apk"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/14/merge-odex-apk/">Android中odex和apk文件的合并方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/14/merge-odex-apk/" class="article-date">
+	  <time datetime="2017-12-14T03:48:01.000Z" itemprop="datePublished">2017-12-14</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/逆向/">逆向</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+Android Rom中的APK是被分开的，分为apk和odex。APK中的dex被分离出来成了单独的文件odex,包括了Java编译的文件，而apk包含了资源文件和.so。
+这样做可以使其厂商保证一定的反盗版，因为没有dex文件的apk是无法正常安装的，而厂商直接将odex和不完整的apk文件放到手机rom固化到/system/bin中可以让一般用户无法正常导出使用。
+可能想到的是合并odex和apk变成apk中包含dex文件的，这样合并后最终apk文件安装在/data/中，而rom存...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/12/14/merge-odex-apk/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-my-common-grammar11"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/09/my-common-grammar11/">MySQL简单操作(11)-管理工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/09/my-common-grammar11/" class="article-date">
+	  <time datetime="2017-12-09T08:25:25.000Z" itemprop="datePublished">2017-12-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL简单操作/">MySQL简单操作</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          phpMyAdminNavicat for MySQLMySQL Workbench
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/12/09/my-common-grammar11/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-my-common-grammar10"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/09/my-common-grammar10/">MySQL简单操作(10)-存储引擎</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/09/my-common-grammar10/" class="article-date">
+	  <time datetime="2017-12-09T07:25:25.000Z" itemprop="datePublished">2017-12-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL简单操作/">MySQL简单操作</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          查看数据表的创建命令：
+1SHOW CREATE table tal_name
+MySQL可以将数据以不同的技术存储在文件（内存）中，这种技术就称为存储引擎
+每一种存储引擎使用不同的存储机制，索引技巧，锁定水平，最终提供广泛且不同的功能
+MySQL支持类型：
+
+MyISAM
+InnoDB
+Memory
+CSV
+Archive
+
+并发控制当多个连接对记录进行修改时保证数据的一致性和完整性
+
+锁
+
+共享锁（读锁）：在同一时间段内，多个用户可以读取同一个资源，读取过程中数据不会发生任何变化
+排他...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/12/09/my-common-grammar10/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-my-common-grammar9"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -716,233 +892,6 @@ FOREIGN KEY(外键约束)
         </p>
         <p class="article-more-link">
           <a href="/2017/12/08/my-common-grammar3/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-my-common-grammar2"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/08/my-common-grammar2/">MySQL简单操作(2)-数据类型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/12/08/my-common-grammar2/" class="article-date">
-	  <time datetime="2017-12-08T13:25:25.000Z" itemprop="datePublished">2017-12-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL简单操作/">MySQL简单操作</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          整型
-
-
-数据类型
-存储范围
-字节
-
-
-
-
-TINYINT
-有符号：-128～127；无符号：0～255
-1
-
-
-SMALLINT
-有符号：-32768～32767；无符号：0～65535
-2
-
-
-MEDIUMINT
-有符号：-8388608～8388607；无符号：0～16777215
-3
-
-
-INT
-有符号：-2^31～2^31-1；无符号：0～2^32-1
-4
-
-
-BIGINT
-有符号：-2^63～2^63-1；无符号：0～2^64-1
-8
-
-
-
-浮点型FLOAT[M,D]DOUBL...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/12/08/my-common-grammar2/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-my-common-grammar"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/08/my-common-grammar/">MySQL简单操作(1)-数据库</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/12/08/my-common-grammar/" class="article-date">
-	  <time datetime="2017-12-08T12:25:25.000Z" itemprop="datePublished">2017-12-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL简单操作/">MySQL简单操作</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          登陆/退出1mysql -u`username` -p`password` -P`port` -h`host`
-
-MySQL默认端口号 3306
-MySQL超级用户名 root
-
-退出
-
-mysql &gt; exit;
-mysql &gt; quit;
-mysql &gt; \q;
-
-修改提示符1shell&gt;mysql -uroot -proot --prompt 提示符
-或
-1mysql&gt;prompt 提示符
-
-
-
-参数
-描述
-
-
-
-
-\D
-日期
-
-
-\d
-当前数据库
-
-
-...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/12/08/my-common-grammar/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-BrowserPlugin"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/04/BrowserPlugin/">SampleBrowserPlugin介绍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/12/04/BrowserPlugin/" class="article-date">
-	  <time datetime="2017-12-04T14:56:21.000Z" itemprop="datePublished">2017-12-04</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Browser-Plugin/">Browser Plugin</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-对于Android浏览器插件的开发可以参考源码的实例,development/samples/browseplugin实例。本文对此实例进行介绍。
-
-介绍这个示例插件是为了给插件开发者一个参考点，看看android浏览器插件是如何创建的，以及如何使用可用的APIs。一个插件就像标准的apk一样被打包，可以通过市场或adb安装。示例插件尝试尽可能多地使用APIs，但不幸的是，并不是所有的APIs都被覆盖。
-试图让一个插件演示一个屏幕上所有可能的API交互是不现实的。另一方面，我们也不希望每...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/12/04/BrowserPlugin/#more">阅读全文</a>
         </p>
       
     </div>

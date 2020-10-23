@@ -259,6 +259,202 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-RxSwift-Examples"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/10/26/RxSwift-Examples/">RxSwift 例子</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/26/RxSwift-Examples/" class="article-date">
+	  <time datetime="2017-10-26T02:21:15.000Z" itemprop="datePublished">2017-10-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+
+计算变量
+简单的UI绑定
+自动输入验证
+
+
+计算变量首先，让我们从一些命令式代码开始。本例的目的是将标识符c绑定到从a和b计算的值，在满足某些条件下。
+下面是计算c值的命令式代码:
+12345678// 标准的命令式代码var c: Stringvar a = 1       // 只是赋值`1`到`a`一次var b = 2       // 只是赋值`2`到`b`一次if a + b &gt;= 0 &#123;    c = "\(a + b) is positive" // 只...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/10/26/RxSwift-Examples/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-RxSwift-DesignRationale"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/10/26/RxSwift-DesignRationale/">RxSwift 设计原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/26/RxSwift-DesignRationale/" class="article-date">
+	  <time datetime="2017-10-26T02:13:53.000Z" itemprop="datePublished">2017-10-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+为什么不使用普通的错误类型
+12345enum Event&lt;Element&gt;  &#123;    case next(Element)      // next element of a sequence    case error(Error)   // sequence failed with error    case completed          // sequence terminated successfully&#125;
+让我们讨论一下Error的优...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/10/26/RxSwift-DesignRationale/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-RxSwift"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/10/24/RxSwift/">RxSwift</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/24/RxSwift/" class="article-date">
+	  <time datetime="2017-10-24T06:36:35.000Z" itemprop="datePublished">2017-10-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+
+介绍
+为什么使用RxSwift
+概念
+Observables和observers(观察者)(aka subscribers 订阅者)(aka subscribers 订阅者))
+
+
+
+
+创建和订阅Observables
+never
+empty
+just
+of
+from
+create
+range
+repeatElement
+generate
+deferred
+error
+doOn
+
+
+Subjects
+PublishSubject
+ReplaySubject
+BehaviorSubjec...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/10/24/RxSwift/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-《App研发录》笔记-第一部分-高效App框架设计与重构"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -744,171 +940,6 @@ Android 5.0 带来了新的功能，允许你为视图(以及任何后代)指定
         </p>
         <p class="article-more-link">
           <a href="/2017/10/09/android-theme-style/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-Java界的神器-使用Lombok来消除你的冗余代码量"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/10/09/Java界的神器-使用Lombok来消除你的冗余代码量/">Java界的神器-使用Lombok来消除你的冗余代码量</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/10/09/Java界的神器-使用Lombok来消除你的冗余代码量/" class="article-date">
-	  <time datetime="2017-10-09T03:23:46.000Z" itemprop="datePublished">2017-10-09</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Java/">Java</a><a class="article-category-link" href="/categories/Java/第三方库/">第三方库</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          简介他是一个通过注解方式来减少你的POJO类的getter和setter等方法的一个工具，我这里演示的在Android Studio中的使用方式，当然如果你使用的是idea那么这方法也通用，如果你用的是eclipse，那么官网也有视频教程，我这里就不演示了
-
-安装依赖众所周知在在Android Studio中添加依赖有直接下载jar包和使用cradle的dependencies方法，我们这里直接使用dependencies方法
-添加gradle依赖在你的项目的build.grade文件中添...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/10/09/Java界的神器-使用Lombok来消除你的冗余代码量/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-custom-views-optimizing-view"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/13/custom-views-optimizing-view/">自定义视图(4) —— 优化视图</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/13/custom-views-optimizing-view/" class="article-date">
-	  <time datetime="2017-08-13T06:50:46.000Z" itemprop="datePublished">2017-08-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-用户界面的最佳实践/">Android 用户界面的最佳实践</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-现在，您已经有了一个设计良好的视图，可以响应状态之间的手势和转换，确保视图运行得很快。为了避免在回放期间感觉迟钝或停滞的UI，确保动画始终以每秒60帧的速度运行。
-
-少做事，频率少为了加快视图的速度，从经常调用的例程中删除不必要的代码。先从onDraw()开始，这将给你最大的回报。特别是您应该消除onDraw()中的分配，因为分配可能会导致垃圾收集，从而导致口吃。在初始化期间或在动画之间分配对象。当动画运行时，不要进行分配。
-除了使onDraw()更精简，也要确保它被尽可能少地调用。大多...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/08/13/custom-views-optimizing-view/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-custom-views-making-interactive"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/13/custom-views-making-interactive/">自定义视图(3) —— 视图交互</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/13/custom-views-making-interactive/" class="article-date">
-	  <time datetime="2017-08-13T05:28:45.000Z" itemprop="datePublished">2017-08-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-用户界面的最佳实践/">Android 用户界面的最佳实践</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-绘制UI只是创建自定义视图的一部分。您还需要让您的视图以一种与您模拟的实际操作非常相似的方式对用户输入作出响应。对象应该以与实际对象相同的方式操作。例如，图像不应该立即跳出存在并重新出现在其他地方，因为现实世界中的物体不这样做。相反，图像应该从一个地方移动到另一个地方。
-用户还可以在界面中感知微妙的行为或感觉，并对模仿真实世界的细微差别做出最好的反应。例如，当用户fling一个UI对象时，他们应该在开始时感觉到摩擦力，从而延迟了这个动作，然后在结束时感觉的动量，使这个动作超越了fling...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/08/13/custom-views-making-interactive/#more">阅读全文</a>
         </p>
       
     </div>

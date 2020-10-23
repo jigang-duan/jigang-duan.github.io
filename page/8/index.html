@@ -259,6 +259,220 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-kafka-easy-3"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/12/23/kafka-easy-3/">Kafka并不难学 (3) 基本操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/23/kafka-easy-3/" class="article-date">
+	  <time datetime="2018-12-23T07:42:49.000Z" itemprop="datePublished">2018-12-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Kafka/">Kafka</a><a class="article-category-link" href="/categories/Kafka/Kafka并不难学/">Kafka并不难学</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          Zookeeper的作用及背景
+管理代码中的变量的配置
+设置命名服务
+提升系统的可用性和安全性
+管理Kafka集群
+
+Zookeeper单机模式和分布式模式单机模式
+
+zkServer.sh start
+zkServer.sh status
+zkServer.sh stop
+
+分布式模式
+Kafka单机模式和分布式模式如何操作主题？创建：
+1kafka-topics.sh --create --zookeeper dn1:2181 --replication-factor 1 --part...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/12/23/kafka-easy-3/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-kafka-easy-2"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/12/23/kafka-easy-2/">Kafka并不难学 (2) 安装和配置Kafka</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/23/kafka-easy-2/" class="article-date">
+	  <time datetime="2018-12-23T07:01:52.000Z" itemprop="datePublished">2018-12-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Kafka/">Kafka</a><a class="article-category-link" href="/categories/Kafka/Kafka并不难学/">Kafka并不难学</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          安装JDKJDK
+Kafka为什么需要JDKKafka的源码是基于Scala语言编写的，运行在Java虚拟机上
+配置Linux操作系统免密码登陆Linux免密码SSH - 专为远程登陆会话和其它网络服务提供安全性的协议
+Kafka集群在启动的时候，需要保证各个主机之间实现免密码。这样在启动时就可以避免去输入密码，减少了不必要的麻烦
+如何配置：
+
+创建密钥
+认证授权
+文件赋权
+在其它主机上创建钥并同步认证文件
+
+Kafka单机模式和分布式模式的安装步骤及注意事项单机模式
+Zookeeper以...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/12/23/kafka-easy-2/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-kafka-easy-1"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/12/23/kafka-easy-1/">Kafka并不难学 (1) 了解消息队列和Kafka</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/23/kafka-easy-1/" class="article-date">
+	  <time datetime="2018-12-23T06:40:49.000Z" itemprop="datePublished">2018-12-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Kafka/">Kafka</a><a class="article-category-link" href="/categories/Kafka/Kafka并不难学/">Kafka并不难学</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          什么事消息队列？如何理解消息队列的概念？
+MQ，拥有先进先出(FIFO)的特性
+
+异步通信机制，包含详细的数据说明
+
+
+作用:
+
+应用解耦
+异步处理
+数据限流
+消息通信
+
+Kafka的基本概念
+代理 Broker
+生产者 Producer
+消费者 Consumer
+消费者组 Consumer Group
+
+Topic 主题
+
+Partition 分区
+Replication 副本
+Record 记录
+
+kafka 使用范围设计初衷
+高吞吐量
+高可用队列
+低延时
+分布式机制
+
+特性
+异步生产...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/12/23/kafka-easy-1/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-leafletjs"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -661,181 +875,6 @@ redis-...
         </p>
         <p class="article-more-link">
           <a href="/2018/12/22/SpringBoot2-C/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-SpringBoot2-B"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/22/SpringBoot2-B/">Spring Boot 2精髓 - (11) MongoDB</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/22/SpringBoot2-B/" class="article-date">
-	  <time datetime="2018-12-22T07:43:19.000Z" itemprop="datePublished">2018-12-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/精髓/">精髓</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-
-支持各种编程语言， Java、 C++、 PHP、 C#、 Python 等
-面向文档存储，文档格式是类似 JSON 的 BSON 格式
-提供丰富的查询功能，支持对数据建立索引
-模式自由，不需要事先定义文档格式，可以任意改变文档格式
-
-安装 MongoDB进入 bin 目录，有以下常用命令:
-
-mongod，启动 MongoDB 数据库。通常需要指定一个数据存放的目录，默认是/data/db。 如果启动的时候没有创建/data/巾 ，则会启动失败。可以通过--dbpath 参数指定特定...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/12/22/SpringBoot2-B/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-SpringBoot2-A"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/22/SpringBoot2-A/">Spring Boot 2精髓 - (10) REST</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/22/SpringBoot2-A/" class="article-date">
-	  <time datetime="2018-12-22T07:16:11.000Z" itemprop="datePublished">2018-12-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/精髓/">精髓</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-REST 简介REST，即Representational State Transfer的缩写，翻译为表现层状态转化
-
-资源: 网络上的一个实体, 以用 一个 U阳(统一 资源定位符〉指向它，每种资源对应一个特定的 URI
-表现层: “资源”具体呈现出来的 形式称为它的“表现层”( Representation) 
-状态转化: 服务器端发生“状态转化”( State Transfer)。 而这种转化是建立在表现层之上的
-
-REST 风格的架构
-使用api作为Web上下文
-增加版本标识
-标...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/12/22/SpringBoot2-A/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-SpringBoot2-9"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/22/SpringBoot2-9/">Spring Boot 2精髓 - (9) 单元测试</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/22/SpringBoot2-9/" class="article-date">
-	  <time datetime="2018-12-22T07:13:40.000Z" itemprop="datePublished">2018-12-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/精髓/">精髓</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/12/22/SpringBoot2-9/#more">阅读全文</a>
         </p>
       
     </div>

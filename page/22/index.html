@@ -259,6 +259,188 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-MasteringAndroidNDKBuildSystem2"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/02/MasteringAndroidNDKBuildSystem2/">掌握Android NDK构建系统——第2部分:独立的工具链</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/02/MasteringAndroidNDKBuildSystem2/" class="article-date">
+	  <time datetime="2017-11-02T03:31:23.000Z" itemprop="datePublished">2017-11-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/NDK/">NDK</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          [翻译]掌握Android NDK构建系统——第2部分:独立的工具链原英文文章
+
+这是“掌握NDK”的第2部分。在前面的部分(第1部分)中，我们介绍了如何使用ndk-build构建Android本地项目，我们还介绍了一些高级技术来管理和定制大型项目的构建脚本。
+尽管对于大多数Android本地项目来说，ndk-build可能已经足够了，但是在某些情况下仍然可能需要独立的工具链。例如，如果您已经有一个c/c++项目，它可能非常复杂，并且有一个复杂的makefile。在这种情况下，你可能不想把...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/11/02/MasteringAndroidNDKBuildSystem2/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-MasteringAndroidNDKBuildSystem1"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/01/MasteringAndroidNDKBuildSystem1/">掌握Android NDK构建系统——第1部分:使用ndk-build技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/01/MasteringAndroidNDKBuildSystem1/" class="article-date">
+	  <time datetime="2017-11-01T10:31:23.000Z" itemprop="datePublished">2017-11-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/NDK/">NDK</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          [翻译]掌握Android NDK构建系统——第1部分:使用ndk-build技巧原英文文章
+
+这篇文章不是一个“Hello world!”类型的NDK”教程。尽管我仍将简要介绍ndk构建的基本知识，但这并不是本文的重点。相反，我将总结一些非常有用的NDK技巧和我在项目中使用的技巧。希望这些建议对于那些想要建立一些实际项目的人来说是非常有用的，而不是一个学习NDK的玩具项目。因此，目标读者是中或高级Android开发人员。这篇文章包含两个部分:
+
+第1部分:ndk-build 在这一部分中...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/11/01/MasteringAndroidNDKBuildSystem1/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-AndroidNDKNativeProgramLauncher"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/01/AndroidNDKNativeProgramLauncher/">Android原生程序启动工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/01/AndroidNDKNativeProgramLauncher/" class="article-date">
+	  <time datetime="2017-11-01T08:38:27.000Z" itemprop="datePublished">2017-11-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/NDK/">NDK</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          [翻译]Android原生程序启动工具
+
+介绍
+主要功能
+入门指南
+下载地址
+提供了什么?
+使用说明
+一些细节
+
+
+示例
+示例1
+示例2
+
+
+
+
+介绍在使用原生代码开发Android应用程序时，我们通常需要使用纯原生模式来调试它(使用NDK编译代码，生成可执行文件，并通过adb shell执行它)。有时，我们甚至不想花时间开发Android应用，因为我们只是想测试一些原生函数。
+以处理OpenCL和GPU为例。编写的程序中超过80%将是性能和基准代码。由于它们直接操作系统驱动程序或硬件，所...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/11/01/AndroidNDKNativeProgramLauncher/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-App研发录-笔记-二"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -695,202 +877,6 @@ HTTP请求
         </p>
         <p class="article-more-link">
           <a href="/2017/10/26/RxSwift-GettingStarted/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-RxSwift-Examples"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/10/26/RxSwift-Examples/">RxSwift 例子</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/10/26/RxSwift-Examples/" class="article-date">
-	  <time datetime="2017-10-26T02:21:15.000Z" itemprop="datePublished">2017-10-26</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-
-计算变量
-简单的UI绑定
-自动输入验证
-
-
-计算变量首先，让我们从一些命令式代码开始。本例的目的是将标识符c绑定到从a和b计算的值，在满足某些条件下。
-下面是计算c值的命令式代码:
-12345678// 标准的命令式代码var c: Stringvar a = 1       // 只是赋值`1`到`a`一次var b = 2       // 只是赋值`2`到`b`一次if a + b &gt;= 0 &#123;    c = "\(a + b) is positive" // 只...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/10/26/RxSwift-Examples/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-RxSwift-DesignRationale"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/10/26/RxSwift-DesignRationale/">RxSwift 设计原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/10/26/RxSwift-DesignRationale/" class="article-date">
-	  <time datetime="2017-10-26T02:13:53.000Z" itemprop="datePublished">2017-10-26</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-为什么不使用普通的错误类型
-12345enum Event&lt;Element&gt;  &#123;    case next(Element)      // next element of a sequence    case error(Error)   // sequence failed with error    case completed          // sequence terminated successfully&#125;
-让我们讨论一下Error的优...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/10/26/RxSwift-DesignRationale/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-RxSwift"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/10/24/RxSwift/">RxSwift</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/10/24/RxSwift/" class="article-date">
-	  <time datetime="2017-10-24T06:36:35.000Z" itemprop="datePublished">2017-10-24</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-
-介绍
-为什么使用RxSwift
-概念
-Observables和observers(观察者)(aka subscribers 订阅者)(aka subscribers 订阅者))
-
-
-
-
-创建和订阅Observables
-never
-empty
-just
-of
-from
-create
-range
-repeatElement
-generate
-deferred
-error
-doOn
-
-
-Subjects
-PublishSubject
-ReplaySubject
-BehaviorSubjec...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/10/24/RxSwift/#more">阅读全文</a>
         </p>
       
     </div>

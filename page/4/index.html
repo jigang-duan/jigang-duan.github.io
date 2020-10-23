@@ -259,6 +259,189 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-mysql-notes-11"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-11/">MySQL 笔记 (11) 导入导出</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-11/" class="article-date">
+	  <time datetime="2019-03-12T13:27:53.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          导出表数据1select * into outfile 文件地址 [控制格式] from 表名;
+导入数据1load data [local] infile 文件地址 [replace|ignore] into table 表名 [控制格式];
+生成的数据默认的分隔符是制表符local未指定，则数据文件必须在服务器上replace 和 ignore 关键词控制对现有的唯一键记录的重复的处理
+控制格式fields  控制字段格式
+默认：fields terminated by ‘\t’ en...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-11/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-mysql-notes-10"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-10/">MySQL 笔记 (10) 连接查询(join)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-10/" class="article-date">
+	  <time datetime="2019-03-12T13:09:05.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          将多个表的字段进行连接，可以指定连接条件。
+内连接(inner join)
+默认就是内连接，可省略inner。
+只有数据存在时才能发送连接。即连接结果不能出现空行。
+
+on 表示连接条件。其条件表达式与where类似。也可以省略条件（表示条件永远为真）也可用where表示连接条件。还有 using, 但需字段名相同。 using(字段名)
+
+交叉连接 cross join即，没有条件的内连接。
+
+1select * from tb1 cross join tb2;
+外连接(outer jo...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-10/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-mysql-notes-9"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-9/">MySQL 笔记 (9) 子查询</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-9/" class="article-date">
+	  <time datetime="2019-03-12T12:52:45.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          子查询需用括号包裹。
+from型from后要求是一个表，必须给子查询结果取个别名。
+
+简化每个查询内的条件。
+from型需将结果生成一个临时表格，可用以原表的锁定的释放。
+子查询返回一个表，表型子查询。
+
+1select * from (select * from tb where id&gt;0) as subfrom where id&gt;1;
+where型
+子查询返回一个值，标量子查询。
+不需要给子查询取别名。
+where子查询内的表，不能直接用以更新。
+
+1select * fr...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-9/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-mysql-notes-8"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -703,256 +886,6 @@ TEMPORARY 临时表，会话结束时表自动消失
         </p>
         <p class="article-more-link">
           <a href="/2019/03/12/mysql-notes-2/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-mysql-notes-1"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/12/mysql-notes-1/">MySQL 笔记 (1) MySQL服务</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/12/mysql-notes-1/" class="article-date">
-	  <time datetime="2019-03-12T04:31:53.000Z" itemprop="datePublished">2019-03-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          MySQL 基本的知识点
-启动/关闭/重启
-Windows下
-
-启动服务
-1mysqld --console
-或
-1net start mysql
-
-关闭服务
-1mysqladmin -uroot shudown
-或　　
-1net stop mysql
-
-
-
-Linux下
-
-启动服务
-1service mysql start
-
-关闭服务
-1service mysql stop
-
-重启服务
-1service restart stop
-
-
-
-Mac下
-
-启动MySQL服务
-1sudo /usr...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/03/12/mysql-notes-1/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-CSS讲解-10"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/02/10/CSS讲解-10/">CSS讲解(10) 三大框架中的CSS</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/02/10/CSS讲解-10/" class="article-date">
-	  <time datetime="2019-02-10T10:18:56.000Z" itemprop="datePublished">2019-02-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/CSS/">CSS</a><a class="article-category-link" href="/categories/前端/CSS/CSS讲解/">CSS讲解</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-
-Angular Vue React 三大框架
-Angular Vue 内置样式集成
-React 一些业界实践
-
-Angular
-Angular.js (1.x)
-没有样式集成能力
-
-
-Angular (2+)
-提供了样式封装能力
-与组件深度集成
-
-
-
-几个概念知识：
-
-ShadowDOM
-
-逻辑上一个DOM
-结构上存在子集结构
-
-
-Scoped CSS
-
-限定了范围的CSS
-无法影响外部元素
-外部样式一般不影响内部
-可以通过/deep/或&gt;&gt;&gt;穿透
-
-
-模拟Scope...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/02/10/CSS讲解-10/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-CSS讲解-9"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/02/10/CSS讲解-9/">CSS讲解(9) 工程化</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/02/10/CSS讲解-9/" class="article-date">
-	  <time datetime="2019-02-10T08:46:32.000Z" itemprop="datePublished">2019-02-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/CSS/">CSS</a><a class="article-category-link" href="/categories/前端/CSS/CSS讲解/">CSS讲解</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-工程化关注:
-
-组织
-优化
-构建
-维护
-
-PostCSSCSS –&gt; PostCSS(解析转换) –&gt; CSS
-可以作:
-
-模块化
-加前缀
-兼容性
-…
-
-PostCSS本身只有解析能力
-各种神奇的特性全靠插件
-目前至少有200多个插件
-常用的插件：
-
-import模块合并
-autoperfixier 自动加前缀
-cssnnao 压缩代码
-cssnext 使用CSS新特性
-precss 变量, mixin, 循环等
-
-安装：
-1npm install postcss-cli
-使...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/02/10/CSS讲解-9/#more">阅读全文</a>
         </p>
       
     </div>

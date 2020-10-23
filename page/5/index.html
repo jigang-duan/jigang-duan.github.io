@@ -259,6 +259,256 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-mysql-notes-1"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-1/">MySQL 笔记 (1) MySQL服务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-1/" class="article-date">
+	  <time datetime="2019-03-12T04:31:53.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          MySQL 基本的知识点
+启动/关闭/重启
+Windows下
+
+启动服务
+1mysqld --console
+或
+1net start mysql
+
+关闭服务
+1mysqladmin -uroot shudown
+或　　
+1net stop mysql
+
+
+
+Linux下
+
+启动服务
+1service mysql start
+
+关闭服务
+1service mysql stop
+
+重启服务
+1service restart stop
+
+
+
+Mac下
+
+启动MySQL服务
+1sudo /usr...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-1/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-CSS讲解-10"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/02/10/CSS讲解-10/">CSS讲解(10) 三大框架中的CSS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/02/10/CSS讲解-10/" class="article-date">
+	  <time datetime="2019-02-10T10:18:56.000Z" itemprop="datePublished">2019-02-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/CSS/">CSS</a><a class="article-category-link" href="/categories/前端/CSS/CSS讲解/">CSS讲解</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+
+Angular Vue React 三大框架
+Angular Vue 内置样式集成
+React 一些业界实践
+
+Angular
+Angular.js (1.x)
+没有样式集成能力
+
+
+Angular (2+)
+提供了样式封装能力
+与组件深度集成
+
+
+
+几个概念知识：
+
+ShadowDOM
+
+逻辑上一个DOM
+结构上存在子集结构
+
+
+Scoped CSS
+
+限定了范围的CSS
+无法影响外部元素
+外部样式一般不影响内部
+可以通过/deep/或&gt;&gt;&gt;穿透
+
+
+模拟Scope...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/02/10/CSS讲解-10/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-CSS讲解-9"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/02/10/CSS讲解-9/">CSS讲解(9) 工程化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/02/10/CSS讲解-9/" class="article-date">
+	  <time datetime="2019-02-10T08:46:32.000Z" itemprop="datePublished">2019-02-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/CSS/">CSS</a><a class="article-category-link" href="/categories/前端/CSS/CSS讲解/">CSS讲解</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+工程化关注:
+
+组织
+优化
+构建
+维护
+
+PostCSSCSS –&gt; PostCSS(解析转换) –&gt; CSS
+可以作:
+
+模块化
+加前缀
+兼容性
+…
+
+PostCSS本身只有解析能力
+各种神奇的特性全靠插件
+目前至少有200多个插件
+常用的插件：
+
+import模块合并
+autoperfixier 自动加前缀
+cssnnao 压缩代码
+cssnext 使用CSS新特性
+precss 变量, mixin, 循环等
+
+安装：
+1npm install postcss-cli
+使...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/02/10/CSS讲解-9/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-CSS讲解-8"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -763,206 +1013,6 @@ base
         </p>
         <p class="article-more-link">
           <a href="/2019/02/05/CSS讲解-2/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-CSS讲解-1-1"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/02/05/CSS讲解-1-1/">CSS讲解(1) 介绍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/02/05/CSS讲解-1-1/" class="article-date">
-	  <time datetime="2019-02-05T13:22:38.000Z" itemprop="datePublished">2019-02-05</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/CSS/">CSS</a><a class="article-category-link" href="/categories/前端/CSS/CSS讲解/">CSS讲解</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-前端三大件
-
-HTML
-CSS
-JavaScript
-
-
-不会CSS的前端只能叫作伪前端
-
-内容
-HTML和CSS基础知识
-HTML元素的分类和特性
-HTML元素默认样式和定制化
-CSS选择器全解析
-CSS常见属性
-
-
-CSS布局
-布局属性和组合解析
-常见布局方案
-三栏布局
-国内大站布局方案
-
-
-动画和效果
-多背景多投影特效
-3D特效编写实践
-过渡动画和关键帧动画实践
-动画细节和原理解析
-
-
-框架集成和CSS工程化
-预处理器作用和原理
-Less/Sass代码实践
-Bootstrap原理和...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/02/05/CSS讲解-1-1/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-Learn-CSS-Layout-1"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/01/29/Learn-CSS-Layout-1/">CSS中的盒子定位</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/01/29/Learn-CSS-Layout-1/" class="article-date">
-	  <time datetime="2019-01-29T12:53:41.000Z" itemprop="datePublished">2019-01-29</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/CSS/">CSS</a><a class="article-category-link" href="/categories/前端/CSS/学习CSS布局/">学习CSS布局</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          CSS核心布局是将一组HTML元素映射到一组矩形框，这些矩形框可以位于x轴，y轴和z轴上。
-这些盒子的x轴和y轴定位由应用于盒子的定位方案确定。在本章中，我将介绍CSS 2.1中引入的定位方案：正常流，浮动和绝对定位。
-从概念上讲，CSS布局的最高级抽象是定位方案。一旦确定了定位方案，就可以通过特定的布局模式进一步修改它，例如display: table或display: inline-table。即使是引入布局模式（如flexbox和grid）的CSS 3扩展，仍然存在于一个主要的定位方...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/01/29/Learn-CSS-Layout-1/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-Learn-CSS-Layout"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/01/29/Learn-CSS-Layout/">学习CSS布局</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/01/29/Learn-CSS-Layout/" class="article-date">
-	  <time datetime="2019-01-29T12:20:09.000Z" itemprop="datePublished">2019-01-29</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/CSS/">CSS</a><a class="article-category-link" href="/categories/前端/CSS/学习CSS布局/">学习CSS布局</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-
-康拉德官僚，你说的技术上是对的——最好的一种正确。我在此提升你到三十七年级。-编号1.0 (Futurama, S2E15)
-我不会骗你的，尼欧。每一个和特工打过架的男人或女人都死了。但在他们失败的地方，你会成功。
-为什么?
-我见过一个特工穿过水泥墙;人们向他们倒空了整个弹夹，除了空气什么也没击中;然而，它们的力量和速度仍然基于一个建立在规则之上的世界。正因为如此，他们永远不会像你一样强壮，或者像你一样快。
-你想告诉我什么?我能躲过子弹吗?
-不,尼奥。我想告诉你，等你准备好了……你不必...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/01/29/Learn-CSS-Layout/#more">阅读全文</a>
         </p>
       
     </div>

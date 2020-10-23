@@ -259,6 +259,199 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-django-start-guide-5"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/01/09/django-start-guide-5/">Django入门与实践-第5章：模型设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/09/django-start-guide-5/" class="article-date">
+	  <time datetime="2019-01-09T14:23:52.000Z" itemprop="datePublished">2019-01-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a><a class="article-category-link" href="/categories/Python/Django/">Django</a><a class="article-category-link" href="/categories/Python/Django/Django入门指南/">Django入门指南</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          模型这些模型基本上代表了应用程序的数据库设计。
+
+Board
+Topic
+Post
+
+User 模型被命名为内置应用叫 auth，它以命名空间 django.contrib.auth 的形式出现在 INSTALLED_APPS 配置中。
+boards/models.py:
+1234567891011121314151617181920from django.db import modelsfrom django.contrib.auth.models import Userclass Bo...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/01/09/django-start-guide-5/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-django-start-guide-4"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/01/09/django-start-guide-4/">Django入门与实践-第4章：系统设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/09/django-start-guide-4/" class="article-date">
+	  <time datetime="2019-01-09T13:58:10.000Z" itemprop="datePublished">2019-01-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a><a class="article-category-link" href="/categories/Python/Django/">Django</a><a class="article-category-link" href="/categories/Python/Django/Django入门指南/">Django入门指南</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          论坛项目用例图
+几个论坛版块（boards），每个版块像一个分类一样
+指定的版块里面，用户可以通过创建新主题（Topic）开始讨论
+其他用户可以参与讨论回复
+
+
+类图
+
+Board：版块
+Topic：主题
+Post：帖子（译注：其实就是主题的回复或评论）
+
+这是模型最基本的内容：
+
+
+Board 模型
+
+name字段必须是唯一的，为了避免有重复的名称。
+description 用于说明这个版块是做什么用的。
+
+
+Topic 模型
+
+subject 表示主题内容，
+last_update 用...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/01/09/django-start-guide-4/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-django-start-guide-3"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/01/09/django-start-guide-3/">Django入门与实践-第3章：Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/09/django-start-guide-3/" class="article-date">
+	  <time datetime="2019-01-09T13:33:36.000Z" itemprop="datePublished">2019-01-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a><a class="article-category-link" href="/categories/Python/Django/">Django</a><a class="article-category-link" href="/categories/Python/Django/Django入门指南/">Django入门指南</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          现在来写我们的第一个视图(view)
+boards应用程序中的views.py文件
+views.py
+1234from django.http import HttpResponsedef home(request):    return HttpResponse('Hello, World!')
+urls.py
+123456789from django.conf.urls import urlfrom django.contrib import adminfrom boards impo...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/01/09/django-start-guide-3/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-django-start-guide-2"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -676,220 +869,6 @@ Android 向日葵 (alpha)Android向日葵目前是作为一个alpha版本发布�
         </p>
         <p class="article-more-link">
           <a href="/2018/12/23/android-sunflower/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-kafka-easy-3"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/23/kafka-easy-3/">Kafka并不难学 (3) 基本操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/23/kafka-easy-3/" class="article-date">
-	  <time datetime="2018-12-23T07:42:49.000Z" itemprop="datePublished">2018-12-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Kafka/">Kafka</a><a class="article-category-link" href="/categories/Kafka/Kafka并不难学/">Kafka并不难学</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          Zookeeper的作用及背景
-管理代码中的变量的配置
-设置命名服务
-提升系统的可用性和安全性
-管理Kafka集群
-
-Zookeeper单机模式和分布式模式单机模式
-
-zkServer.sh start
-zkServer.sh status
-zkServer.sh stop
-
-分布式模式
-Kafka单机模式和分布式模式如何操作主题？创建：
-1kafka-topics.sh --create --zookeeper dn1:2181 --replication-factor 1 --part...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/12/23/kafka-easy-3/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-kafka-easy-2"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/23/kafka-easy-2/">Kafka并不难学 (2) 安装和配置Kafka</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/23/kafka-easy-2/" class="article-date">
-	  <time datetime="2018-12-23T07:01:52.000Z" itemprop="datePublished">2018-12-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Kafka/">Kafka</a><a class="article-category-link" href="/categories/Kafka/Kafka并不难学/">Kafka并不难学</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          安装JDKJDK
-Kafka为什么需要JDKKafka的源码是基于Scala语言编写的，运行在Java虚拟机上
-配置Linux操作系统免密码登陆Linux免密码SSH - 专为远程登陆会话和其它网络服务提供安全性的协议
-Kafka集群在启动的时候，需要保证各个主机之间实现免密码。这样在启动时就可以避免去输入密码，减少了不必要的麻烦
-如何配置：
-
-创建密钥
-认证授权
-文件赋权
-在其它主机上创建钥并同步认证文件
-
-Kafka单机模式和分布式模式的安装步骤及注意事项单机模式
-Zookeeper以...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/12/23/kafka-easy-2/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-kafka-easy-1"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/23/kafka-easy-1/">Kafka并不难学 (1) 了解消息队列和Kafka</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/23/kafka-easy-1/" class="article-date">
-	  <time datetime="2018-12-23T06:40:49.000Z" itemprop="datePublished">2018-12-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Kafka/">Kafka</a><a class="article-category-link" href="/categories/Kafka/Kafka并不难学/">Kafka并不难学</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          什么事消息队列？如何理解消息队列的概念？
-MQ，拥有先进先出(FIFO)的特性
-
-异步通信机制，包含详细的数据说明
-
-
-作用:
-
-应用解耦
-异步处理
-数据限流
-消息通信
-
-Kafka的基本概念
-代理 Broker
-生产者 Producer
-消费者 Consumer
-消费者组 Consumer Group
-
-Topic 主题
-
-Partition 分区
-Replication 副本
-Record 记录
-
-kafka 使用范围设计初衷
-高吞吐量
-高可用队列
-低延时
-分布式机制
-
-特性
-异步生产...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/12/23/kafka-easy-1/#more">阅读全文</a>
         </p>
       
     </div>

@@ -259,6 +259,198 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-mysql-specification"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/13/mysql-specification/">MySQL 规范</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/13/mysql-specification/" class="article-date">
+	  <time datetime="2019-03-13T04:53:32.000Z" itemprop="datePublished">2019-03-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+数据库命名
+数据库基本设计
+所有表必须使用Innodb存储引擎
+数据库和表的字符集统一使用UTF8
+所有表和字段都需要添加注释
+尽量控制单表数据量的大小，建议控制在500万以内
+谨慎使用MySQL分区表
+尽量做到冷热数据分离，减小表的宽度
+禁止在表中建立预留字段
+禁止在数据库中存储图片，文件等大的二进制数据
+禁止在线上做数据库压力测试
+禁止从开发环境，测试环境直接连接生成环境数据库
+
+
+数据库字段
+优先选择符合存储需要的最小的数据类型
+避免使用TEXT、BLOB数据类型，最常见的TEXT...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/13/mysql-specification/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-mysql-notes-20"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-20/">MySQL 笔记 (20) 表维护/杂项</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-20/" class="article-date">
+	  <time datetime="2019-03-12T14:54:24.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          表维护
+分析和存储表的关键字分布
+
+1ANALYZE [LOCAL | NO_WRITE_TO_BINLOG] TABLE 表名 ...
+
+检查一个或多个表是否有错误
+
+12CHECK TABLE tbl_name [, tbl_name] ... [option] ...option = &#123;QUICK | FAST | MEDIUM | EXTENDED | CHANGED&#125;
+
+整理数据文件的碎片
+
+1OPTIMIZE [LOCAL | NO_WRITE_TO_BIN...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-20/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-mysql-notes-19"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-19/">MySQL 笔记 (19) 用户和权限管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-19/" class="article-date">
+	  <time datetime="2019-03-12T14:46:21.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          root密码重置
+停止MySQL服务
+[Linux] /usr/local/mysql/bin/safe_mysqld –skip-grant-tables &amp; [Windows] mysqld –skip-grant-tables
+use mysql;
+UPDATE user SET PASSWORD=PASSWORD(“密码”) WHERE user = “root”;
+FLUSH PRIVILEGES;
+
+用户信息表：mysql.user
+刷新权限1FLUSH PRIVILE...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-19/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-mysql-notes-18"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -658,189 +850,6 @@ TRUNCATE1TRUNCATE [TABLE] tbl_name
         </p>
         <p class="article-more-link">
           <a href="/2019/03/12/mysql-notes-12/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-mysql-notes-11"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/12/mysql-notes-11/">MySQL 笔记 (11) 导入导出</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/12/mysql-notes-11/" class="article-date">
-	  <time datetime="2019-03-12T13:27:53.000Z" itemprop="datePublished">2019-03-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          导出表数据1select * into outfile 文件地址 [控制格式] from 表名;
-导入数据1load data [local] infile 文件地址 [replace|ignore] into table 表名 [控制格式];
-生成的数据默认的分隔符是制表符local未指定，则数据文件必须在服务器上replace 和 ignore 关键词控制对现有的唯一键记录的重复的处理
-控制格式fields  控制字段格式
-默认：fields terminated by ‘\t’ en...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/03/12/mysql-notes-11/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-mysql-notes-10"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/12/mysql-notes-10/">MySQL 笔记 (10) 连接查询(join)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/12/mysql-notes-10/" class="article-date">
-	  <time datetime="2019-03-12T13:09:05.000Z" itemprop="datePublished">2019-03-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          将多个表的字段进行连接，可以指定连接条件。
-内连接(inner join)
-默认就是内连接，可省略inner。
-只有数据存在时才能发送连接。即连接结果不能出现空行。
-
-on 表示连接条件。其条件表达式与where类似。也可以省略条件（表示条件永远为真）也可用where表示连接条件。还有 using, 但需字段名相同。 using(字段名)
-
-交叉连接 cross join即，没有条件的内连接。
-
-1select * from tb1 cross join tb2;
-外连接(outer jo...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/03/12/mysql-notes-10/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-mysql-notes-9"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/12/mysql-notes-9/">MySQL 笔记 (9) 子查询</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/12/mysql-notes-9/" class="article-date">
-	  <time datetime="2019-03-12T12:52:45.000Z" itemprop="datePublished">2019-03-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          子查询需用括号包裹。
-from型from后要求是一个表，必须给子查询结果取个别名。
-
-简化每个查询内的条件。
-from型需将结果生成一个临时表格，可用以原表的锁定的释放。
-子查询返回一个表，表型子查询。
-
-1select * from (select * from tb where id&gt;0) as subfrom where id&gt;1;
-where型
-子查询返回一个值，标量子查询。
-不需要给子查询取别名。
-where子查询内的表，不能直接用以更新。
-
-1select * fr...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/03/12/mysql-notes-9/#more">阅读全文</a>
         </p>
       
     </div>

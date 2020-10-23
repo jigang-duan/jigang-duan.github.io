@@ -259,6 +259,168 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-cas-Maven-Overlay-Installation"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/07/13/cas-Maven-Overlay-Installation/">CAS企业单点登录-安装(Maven)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/13/cas-Maven-Overlay-Installation/" class="article-date">
+	  <time datetime="2018-07-13T02:03:13.000Z" itemprop="datePublished">2018-07-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/CAS企业单点登录/">CAS企业单点登录</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          CAS安装基本上是一个面向源的过程，我们推荐一个WAR overlay(1)项目来组织定制，比如组件配置和UI设计。WAR覆盖构建的输出是cas。可以部署到servlet容器(如Apache Tomcat)的war文件。
+需求参见本指南了解更多信息。
+什么是WAR覆盖覆盖是一种对抗重复代码和/或资源的策略。覆盖允许您下载由项目本身提供的预构建的普通CAS web应用服务器，并覆盖/插入特定的行为，而不是从源代码下载CAS代码库和构建。在构建时，Maven/Gradle安装过程将首先尝试下载...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/07/13/cas-Maven-Overlay-Installation/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-cas-Installation-Requirements"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/07/13/cas-Installation-Requirements/">CAS企业单点登录-安装要求</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/13/cas-Installation-Requirements/" class="article-date">
+	  <time datetime="2018-07-13T01:21:07.000Z" itemprop="datePublished">2018-07-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/CAS企业单点登录/">CAS企业单点登录</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          根据配置组件的选择，可能会有其他需求，如LDAP目录、数据库和缓存基础设施。然而，在大多数情况下，对于选择具有明确硬件和软件依赖关系的组件的部署人员来说，需求应该是不言而喻的。在任何其他需求不明显的情况下，组件配置的讨论都应该提到系统、软件、硬件和其他需求。
+JavaCAS的核心是一个基于java的web应用程序。在部署之前，需要安装JDK v1.8
+Servlet容器没有官方支持的CAS的servlet容器，但是Apache Tomcat是最常用的。对特定servlet容器的支持取决于社...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/07/13/cas-Installation-Requirements/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-cas-Getting-Started"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/07/12/cas-Getting-Started/">CAS企业单点登录-入门指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/12/cas-Getting-Started/" class="article-date">
+	  <time datetime="2018-07-12T14:33:48.000Z" itemprop="datePublished">2018-07-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/CAS企业单点登录/">CAS企业单点登录</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          本文档提供了关于如何开始使用CAS服务器部署的高级指南。该指南的唯一重点是描述CAS部署人员必须遵循和采用的过程，以便获得成功和可持续的体系结构和部署。
+收集用例在部署之前，记录、编目和分析所需的用例和需求是非常重要的。一旦您有了一些想法，请与CAS社区讨论并分享那些可能已经解决了您今天面临的相同问题的共同趋势、实践和模式。
+学习架构了解什么是CAS，可以做什么。这将帮助您开发一个基础，以实现您的哪些用例和需求在CAS中可能已经是可能的。看一下CAS架构的基本原理，看看部署和应用程序集成可...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/07/12/cas-Getting-Started/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-cas-architecture"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -641,179 +803,6 @@ Kubernetes首先,Kubernetes是什么?Kubernetes是一个开源的容器管理框
         </p>
         <p class="article-more-link">
           <a href="/2018/05/10/go-micro-tutorial-7/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-go-micro-tutorial-6"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/05/10/go-micro-tutorial-6/">Go微服务教程-第六部分</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/05/10/go-micro-tutorial-6/" class="article-date">
-	  <time datetime="2018-05-10T13:56:52.000Z" itemprop="datePublished">2018-05-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-在上一篇文章中，我们讨论了一些在go-micro和go中事件驱动架构的各种方法。这一部分，我们将深入到客户端，看看如何创建与我们的平台交互的web客户端。
-我们将研究微型工具包，使您能够将内部rpc方法从外部代理到web客户端。
-我们将为我们的平台创建一个用户界面，一个登录界面，以及一个创建委托界面。这将把以前的一些帖子联系在一起。
-所以让我们开始吧!
-
-RPC复兴REST已经在web上运行多年了，它已经迅速成为管理客户端和服务器之间资源的goto方式。REST的出现，取代了RPC和SO...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/05/10/go-micro-tutorial-6/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-go-micro-tutorial-5"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/05/10/go-micro-tutorial-5/">Go微服务教程-第五部分</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/05/10/go-micro-tutorial-5/" class="article-date">
-	  <time datetime="2018-05-10T13:56:48.000Z" itemprop="datePublished">2018-05-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-在本系列的前一部分中，我们讨论了用户身份验证和JWT。在这节课中，我们将快速浏览一下go-micro的代理功能，甚至是代理。
-正如前文所提到的，go-micro是一个可插拔的框架，它接口许多不同的常用技术。如果您查看一下plugins repo，您会看到它支持了多少个插件。
-在我们的例子中，我们将使用NATS代理插件。
-
-事件驱动架构事件驱动的体系结构是一个非常简单的概念。我们通常认为好的体系结构是可以解耦的;这些服务不应该与其他服务相耦合。当我们使用gRPC这样的协议时，这在某些情况下...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/05/10/go-micro-tutorial-5/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-go-micro-tutorial-4"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/05/10/go-micro-tutorial-4/">Go微服务教程-第四部分</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/05/10/go-micro-tutorial-4/" class="article-date">
-	  <time datetime="2018-05-10T13:56:32.000Z" itemprop="datePublished">2018-05-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-在本系列的前一部分中，我们研究了创建用户服务并开始存储一些用户。现在我们需要考虑使我们的用户服务存储用户密码安全，并创建一些功能来验证用户，并在我们的微服务中发布安全令牌。
-
-注意，我现在已经将我们的服务分离到单独的存储库中。我发现这更容易部署。最初，我打算尝试做一个monorepo，但是我发现用Go的dep管理来设置它太麻烦了，不会有各种冲突。我还将开始演示如何独立运行和测试微服务。
-不幸的是，使用这种方法，我们将会失去docker。但现在还好。
-现在需要手动运行数据库:
-12$ do...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/05/10/go-micro-tutorial-4/#more">阅读全文</a>
         </p>
       
     </div>

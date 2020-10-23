@@ -259,6 +259,179 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-go-micro-tutorial-6"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/05/10/go-micro-tutorial-6/">Go微服务教程-第六部分</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/10/go-micro-tutorial-6/" class="article-date">
+	  <time datetime="2018-05-10T13:56:52.000Z" itemprop="datePublished">2018-05-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+在上一篇文章中，我们讨论了一些在go-micro和go中事件驱动架构的各种方法。这一部分，我们将深入到客户端，看看如何创建与我们的平台交互的web客户端。
+我们将研究微型工具包，使您能够将内部rpc方法从外部代理到web客户端。
+我们将为我们的平台创建一个用户界面，一个登录界面，以及一个创建委托界面。这将把以前的一些帖子联系在一起。
+所以让我们开始吧!
+
+RPC复兴REST已经在web上运行多年了，它已经迅速成为管理客户端和服务器之间资源的goto方式。REST的出现，取代了RPC和SO...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/05/10/go-micro-tutorial-6/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-go-micro-tutorial-5"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/05/10/go-micro-tutorial-5/">Go微服务教程-第五部分</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/10/go-micro-tutorial-5/" class="article-date">
+	  <time datetime="2018-05-10T13:56:48.000Z" itemprop="datePublished">2018-05-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+在本系列的前一部分中，我们讨论了用户身份验证和JWT。在这节课中，我们将快速浏览一下go-micro的代理功能，甚至是代理。
+正如前文所提到的，go-micro是一个可插拔的框架，它接口许多不同的常用技术。如果您查看一下plugins repo，您会看到它支持了多少个插件。
+在我们的例子中，我们将使用NATS代理插件。
+
+事件驱动架构事件驱动的体系结构是一个非常简单的概念。我们通常认为好的体系结构是可以解耦的;这些服务不应该与其他服务相耦合。当我们使用gRPC这样的协议时，这在某些情况下...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/05/10/go-micro-tutorial-5/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-go-micro-tutorial-4"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/05/10/go-micro-tutorial-4/">Go微服务教程-第四部分</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/10/go-micro-tutorial-4/" class="article-date">
+	  <time datetime="2018-05-10T13:56:32.000Z" itemprop="datePublished">2018-05-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+在本系列的前一部分中，我们研究了创建用户服务并开始存储一些用户。现在我们需要考虑使我们的用户服务存储用户密码安全，并创建一些功能来验证用户，并在我们的微服务中发布安全令牌。
+
+注意，我现在已经将我们的服务分离到单独的存储库中。我发现这更容易部署。最初，我打算尝试做一个monorepo，但是我发现用Go的dep管理来设置它太麻烦了，不会有各种冲突。我还将开始演示如何独立运行和测试微服务。
+不幸的是，使用这种方法，我们将会失去docker。但现在还好。
+现在需要手动运行数据库:
+12$ do...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/05/10/go-micro-tutorial-4/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-go-micro-tutorial-3"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -672,210 +845,6 @@ type key
         </p>
         <p class="article-more-link">
           <a href="/2018/04/19/redis-devops-2/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-redis-devops-1"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/04/19/redis-devops-1/">Redis开发和运维 (1) - 初识</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/04/19/redis-devops-1/" class="article-date">
-	  <time datetime="2018-04-19T12:41:55.000Z" itemprop="datePublished">2018-04-19</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Redis/">Redis</a><a class="article-category-link" href="/categories/Redis/数据库/">数据库</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          导学盛赞Redis
-高性能 Key-Value服务器
-支持多种数据结构
-丰富的功能
-高可用分布式支持
-
-介绍Redis是什么
-
-开源
-基于键值的存储服务系统
-多种数据结构
-高性能，功能丰富
-
-Redis的前世今生
-作者：Salvaore Sanfilippo（antirez）
-脱胎于项目LLOOGG.com
-支持的数据结构：
-
-Strings/Blobs/Bitmaps
-Hash Tables(objects)
-Linked Lists
-Sets
-Sorted Sets
-
-谁再使用Redi...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/04/19/redis-devops-1/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-webapp-update-ios"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/04/19/webapp-update-ios/">WebAPP升级方案(iOS版)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/04/19/webapp-update-ios/" class="article-date">
-	  <time datetime="2018-04-19T03:33:51.000Z" itemprop="datePublished">2018-04-19</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/前端/">前端</a><a class="article-category-link" href="/categories/前端/WebAPP/">WebAPP</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-
-服务器部分服务端提供:
-
-版本检测接口e.g. http://192.168.11.1:3000/version
-H5+包下载地址e.g. http://192.168.11.1:3000/download/HelloH5.wgtu
-
-H5+包命名： Supervisor.wgtu格式： package_name.wgtu
-
-H5+包使用zip压缩
-
-JS部分执行步骤:
-
-版本检测
-下载wgtu包
-安装wgtu包
-重启
-
-版本检测1234567891011121314151617181...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/04/19/webapp-update-ios/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-micro-heartbeat"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/24/micro-heartbeat/">micro-heartbeat</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/24/micro-heartbeat/" class="article-date">
-	  <time datetime="2018-03-24T13:36:35.000Z" itemprop="datePublished">2018-03-24</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/go-micro/">go-micro</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-演示服务发现使用心跳。
-
-依据服务发现在启动和注销时提供服务发现。有时，这些服务可能会意外地死亡或被强行杀死或面临暂时的网络问题。在这些情况下，将在服务发现中保留陈旧的节点。如果自动删除服务，那将是理想的。
-解决方案Micro支持一个注册器TTL的选项，并为这个确切的原因注册间隔。TTL指定一个注册在发现之后应该存在多长时间，它会过期并被删除。间隔是服务重新注册以保存其在服务发现中的注册的时间。
-这些选项都可以在go-micro和micro Toolkit中使用。
-Toolkit使用像这...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/03/24/micro-heartbeat/#more">阅读全文</a>
         </p>
       
     </div>

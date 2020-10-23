@@ -259,6 +259,176 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-vscode-extensions-4"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/08/11/vscode-extensions-4/">例子——语言服务器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/11/vscode-extensions-4/" class="article-date">
+	  <time datetime="2018-08-11T08:01:10.000Z" itemprop="datePublished">2018-08-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          简要概述语言服务器和语言服务器协议语言服务器是一种特殊的扩展，支持VS代码中许多编程语言的编辑体验。使用语言服务器，您可以实现VS代码中支持的自动完成、错误检查(诊断)、快速定义和许多其他语言特性。
+然而，在VS代码中实现对语言特性的支持时，我们发现了三个常见问题:
+首先，语言服务器通常是用它们的本地编程语言实现的，这在将它们与具有节点的VS代码集成方面提出了挑战。js运行时。
+此外，语言特性可能是资源密集型的。例如，要正确地验证一个文件，Language Server需要解析大量文件，为...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/08/11/vscode-extensions-4/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-vscode-extensions-3"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/08/11/vscode-extensions-3/">例子——单词计数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/11/vscode-extensions-3/" class="article-date">
+	  <time datetime="2018-08-11T07:08:46.000Z" itemprop="datePublished">2018-08-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          本文档假设您已经阅读了第一个扩展，它涵盖了VS Code可扩展性的基础知识。
+单词计数是一个端到端教程，向您展示如何创建一个扩展来帮助Markdown创作。在我们深入了解所有这些工作原理之前，让我们先快速演示一下您将要构建的核心特性，这样您就知道会发生什么了。
+无论何时编辑标记文件，都会添加状态栏消息。该消息包括当前的字数和更新，当您键入和移动到文件:
+
+
+提示:如果您有任何问题，可以从GitHub存储库中获得完成的示例。
+
+概述这个示例有三个部分，将带您了解一系列相关概念:
+更新状态栏-...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/08/11/vscode-extensions-3/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-vscode-extensions-2"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/08/11/vscode-extensions-2/">扩展 - Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/11/vscode-extensions-2/" class="article-date">
+	  <time datetime="2018-08-11T04:16:04.000Z" itemprop="datePublished">2018-08-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/插件/">插件</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          你的第一个扩展本文档将指导您创建第一个VS Code扩展(“Hello World”)，并解释VS Code可扩展性的基本概念。
+在本演练中，您将向VS Code添加一个新命令，该命令将显示一个简单的“Hello World”消息。在随后的演练中，您将与VS Code编辑器交互，并查询用户当前选择的文本。
+先决条件你需要的节点。在您的$PATH中安装并可用js。Node.js安装包括npm, Node.js包管理器，它将用于安装扩展生成器。
+生成一个新的扩展向VS Code中添加自己的功能...
+        </p>
+        <p class="article-more-link">
+          <a href="/2018/08/11/vscode-extensions-2/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-vscode-extensions-1"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -634,168 +804,6 @@ Inte...
         </p>
         <p class="article-more-link">
           <a href="/2018/07/29/Spring-5-Recipes/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-cas-Maven-Overlay-Installation"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/07/13/cas-Maven-Overlay-Installation/">CAS企业单点登录-安装(Maven)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/07/13/cas-Maven-Overlay-Installation/" class="article-date">
-	  <time datetime="2018-07-13T02:03:13.000Z" itemprop="datePublished">2018-07-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/CAS企业单点登录/">CAS企业单点登录</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          CAS安装基本上是一个面向源的过程，我们推荐一个WAR overlay(1)项目来组织定制，比如组件配置和UI设计。WAR覆盖构建的输出是cas。可以部署到servlet容器(如Apache Tomcat)的war文件。
-需求参见本指南了解更多信息。
-什么是WAR覆盖覆盖是一种对抗重复代码和/或资源的策略。覆盖允许您下载由项目本身提供的预构建的普通CAS web应用服务器，并覆盖/插入特定的行为，而不是从源代码下载CAS代码库和构建。在构建时，Maven/Gradle安装过程将首先尝试下载...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/07/13/cas-Maven-Overlay-Installation/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-cas-Installation-Requirements"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/07/13/cas-Installation-Requirements/">CAS企业单点登录-安装要求</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/07/13/cas-Installation-Requirements/" class="article-date">
-	  <time datetime="2018-07-13T01:21:07.000Z" itemprop="datePublished">2018-07-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/CAS企业单点登录/">CAS企业单点登录</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          根据配置组件的选择，可能会有其他需求，如LDAP目录、数据库和缓存基础设施。然而，在大多数情况下，对于选择具有明确硬件和软件依赖关系的组件的部署人员来说，需求应该是不言而喻的。在任何其他需求不明显的情况下，组件配置的讨论都应该提到系统、软件、硬件和其他需求。
-JavaCAS的核心是一个基于java的web应用程序。在部署之前，需要安装JDK v1.8
-Servlet容器没有官方支持的CAS的servlet容器，但是Apache Tomcat是最常用的。对特定servlet容器的支持取决于社...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/07/13/cas-Installation-Requirements/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-cas-Getting-Started"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/07/12/cas-Getting-Started/">CAS企业单点登录-入门指南</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/07/12/cas-Getting-Started/" class="article-date">
-	  <time datetime="2018-07-12T14:33:48.000Z" itemprop="datePublished">2018-07-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/CAS企业单点登录/">CAS企业单点登录</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          本文档提供了关于如何开始使用CAS服务器部署的高级指南。该指南的唯一重点是描述CAS部署人员必须遵循和采用的过程，以便获得成功和可持续的体系结构和部署。
-收集用例在部署之前，记录、编目和分析所需的用例和需求是非常重要的。一旦您有了一些想法，请与CAS社区讨论并分享那些可能已经解决了您今天面临的相同问题的共同趋势、实践和模式。
-学习架构了解什么是CAS，可以做什么。这将帮助您开发一个基础，以实现您的哪些用例和需求在CAS中可能已经是可能的。看一下CAS架构的基本原理，看看部署和应用程序集成可...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/07/12/cas-Getting-Started/#more">阅读全文</a>
         </p>
       
     </div>

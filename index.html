@@ -280,7 +280,7 @@
 	</a>
 
       
-    <a class="article-category-link" href="/categories/numpy/">numpy</a><a class="article-category-link" href="/categories/numpy/Python/">Python</a>
+    <a class="article-category-link" href="/categories/Numpy/">Numpy</a><a class="article-category-link" href="/categories/Numpy/Python/">Python</a>
 
       
       
@@ -309,6 +309,196 @@ openblas_info:
         </p>
         <p class="article-more-link">
           <a href="/2020/10/23/numpy-100/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-geetest-slider"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2020/09/13/geetest-slider/">反爬 __极限滑块验证码__ 分析过程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2020/09/13/geetest-slider/" class="article-date">
+	  <time datetime="2020-09-13T04:10:30.000Z" itemprop="datePublished">2020-09-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Crawler/">Crawler</a><a class="article-category-link" href="/categories/Crawler/Python/">Python</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+
+某企业信用信息 使用了极限验证码，包括 滑块和点选 验证，这里尝试分析滑块验证
+
+极限文档
+搭建极限 demo 环境
+下载 demo
+
+1git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git
+
+运行 demo
+
+123cd gt3-server-python-flask-sdksudo pip install -r requirements.txtsudo python3 app.py
+
+在浏览器中访问...
+        </p>
+        <p class="article-more-link">
+          <a href="/2020/09/13/geetest-slider/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-geetest-type"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2020/09/12/geetest-type/">反爬 __验证码类型__ 分析过程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2020/09/12/geetest-type/" class="article-date">
+	  <time datetime="2020-09-12T14:12:30.000Z" itemprop="datePublished">2020-09-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Crawler/">Crawler</a><a class="article-category-link" href="/categories/Crawler/Python/">Python</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+
+某企业信用信息 使用了极限验证码，包括 滑块和点选 验证，这里尝试分析滑块验证
+
+极限文档
+准备工作搭建极限 demo 环境
+下载 demo
+
+1git clone https://github.com/GeeTeam/gt3-server-python-flask-sdk.git
+
+运行 demo
+
+123cd gt3-server-python-flask-sdksudo pip install -r requirements.txtsudo python3 app.py
+
+在浏览...
+        </p>
+        <p class="article-more-link">
+          <a href="/2020/09/12/geetest-type/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-gsxtgov"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2020/09/11/gsxtgov/">反爬(某企业信用信息) Js逆向分析过程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2020/09/11/gsxtgov/" class="article-date">
+	  <time datetime="2020-09-11T08:20:33.000Z" itemprop="datePublished">2020-09-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Crawler/">Crawler</a><a class="article-category-link" href="/categories/Crawler/Python/">Python</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+请先关闭 ROBOTSTXT_OBEY
+
+如果 ROBOTSTXT_OBEY 是打开的，下载器会先请求 http://www.gsxt.gov.cn/robots.txt, 第一次请求会被服务器携带 Set-Cookie
+
+用 scrapy shell 启动第一次请求携带User-Agent 头:
+1scrapy shell -s USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 F...
+        </p>
+        <p class="article-more-link">
+          <a href="/2020/09/11/gsxtgov/#more">阅读全文</a>
         </p>
       
     </div>
@@ -636,194 +826,6 @@ QtQMLQLMBookQmlBook-In-Chinese
         </p>
         <p class="article-more-link">
           <a href="/2020/01/15/prefix_cc4fe649cad80b981be6647f61f06695/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-node-web"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/23/node-web/">Node.js Web 介绍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/23/node-web/" class="article-date">
-	  <time datetime="2019-10-23T07:12:30.000Z" itemprop="datePublished">2019-10-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Node-js/">Node.js</a><a class="article-category-link" href="/categories/Node-js/Web/">Web</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-Node.jsNode.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。 Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型。1
-Node.js作者认为 Web服务器的几个要点:
-
-事件驱动
-非阻塞I/O
-
-特性JavaScript对比其它语言，选择JavaScript的原因：
-
-对比语言：
-C的开发门槛高，业务开发困难
-Haskell太过复杂
-Lua本身有很多阻塞IO库
-Ruby虚拟机性能不好
-
-
-JavaScript的优势：
-开发门槛低
-没有阻...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/10/23/node-web/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-programming-with-errors"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/09/18/programming-with-errors/">errors 编程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/09/18/programming-with-errors/" class="article-date">
-	  <time datetime="2019-09-18T02:17:37.000Z" itemprop="datePublished">2019-09-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/golang/">golang</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          Go 1.13引入了一个增强的package errors(即xerrors)，它大致标准化了带有错误的编程。就我个人而言，我觉得这个API令人困惑。这是一个如何有效使用它的快速参考。
-创建errors前哨错误的工作原理与以前相同。将它们命名为ErrXxx，并使用errors.New创建它们。
-1var ErrFoo = errors.New("foo error")
-错误类型的工作原理与以前基本相同。将它们命名为XxxError，并确保它们有一个错误方法，以满足错误接口。
-1234567...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/09/18/programming-with-errors/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-edustack"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/05/04/edustack/">开源教育技术栈</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/05/04/edustack/" class="article-date">
-	  <time datetime="2019-05-04T02:36:49.000Z" itemprop="datePublished">2019-05-04</time>
-	</a>
-
-      
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          应用目录
-基础软件
-虚拟化 openstack
-操作系统 Unbuntu Centos
-邮件 RoundCube
-web服务器 Apache Nginx
-数据库服务器Mysql phpmyadmin / Postgresql postgresqlstudio
-单点登录 Apereo CAS
-轻型目录访问协议LDAP OpenLDAP
-云盘 ownCloud Seafile pydio
-API平台 Dreamfactory Swagger
-移动后端开发 Parse
-证书 LetsEncryp...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/05/04/edustack/#more">阅读全文</a>
         </p>
       
     </div>
