@@ -259,6 +259,70 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-mysql-notes-12"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/12/mysql-notes-12/">MySQL 笔记 (12) INSERT</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-12/" class="article-date">
+	  <time datetime="2019-03-12T13:36:01.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          select语句获得的数据可以用insert插入。
+
+可以省略对列的指定，要求 values () 括号内，提供给了按照列顺序出现的所有字段的值。或者使用set语法。
+
+1INSERT INTO tbl_name SET field=value,...；
+
+可以一次性使用多个值，采用(), (), ();的形式。
+
+1INSERT INTO tbl_name VALUES (), (), ();
+
+可以在列值指定时，使用表达式。
+
+1INSERT INTO tbl_name VALUES ...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/12/mysql-notes-12/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-mysql-notes-11"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -829,63 +893,6 @@ TEMPORARY 临时表，会话结束时表自动消失
         </p>
         <p class="article-more-link">
           <a href="/2019/03/12/mysql-notes-3/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-mysql-notes-2"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/12/mysql-notes-2/">MySQL 笔记 (2) 数据库操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/12/mysql-notes-2/" class="article-date">
-	  <time datetime="2019-03-12T05:32:22.000Z" itemprop="datePublished">2019-03-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          查看当前数据库1SELECT DATABASE();
-显示当前时间、用户名、数据库版本1SELECT now(), user(), version();
-创建库1CREATE DATABASE[ IF NOT EXISTS] 数据库名 数据库选项
-数据库选项：    CHARACTER SET charset_name    COLLATE collation_name
-查看已有库1SHOW DATABASES[ LIKE 'PATTERN']
-查看当前库信息1SHOW CREATE DA...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/03/12/mysql-notes-2/#more">阅读全文</a>
         </p>
       
     </div>

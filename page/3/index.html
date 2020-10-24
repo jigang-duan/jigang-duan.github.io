@@ -259,6 +259,76 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-react-parsing"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/03/18/react-parsing/">React 解析(1) - API</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/18/react-parsing/" class="article-date">
+	  <time datetime="2019-03-18T11:30:16.000Z" itemprop="datePublished">2019-03-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/React/">React</a><a class="article-category-link" href="/categories/React/React-解析/">React 解析</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          React 的特色
+React 是纯粹的框架
+
+1UI = fn(x)
+只能使用setState，没有双向数据绑定
+
+思想超强，React16重写了底层但一点都不影响上层代码
+
+Fiber: 改变了之前react的组件渲染机制，新的架构使原来同步渲染的组件现在可以异步化，可中途中断渲染，执行更高优先级的任务，释放浏览器主线程。
+
+
+React API
+createElement
+createContext
+JSX =&gt; JS
+ConcurrentMode
+Ref
+Component
+...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/03/18/react-parsing/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-mysql-specification"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -786,70 +856,6 @@ TRUNCATE1TRUNCATE [TABLE] tbl_name
         </p>
         <p class="article-more-link">
           <a href="/2019/03/12/mysql-notes-13/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-mysql-notes-12"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/12/mysql-notes-12/">MySQL 笔记 (12) INSERT</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/12/mysql-notes-12/" class="article-date">
-	  <time datetime="2019-03-12T13:36:01.000Z" itemprop="datePublished">2019-03-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          select语句获得的数据可以用insert插入。
-
-可以省略对列的指定，要求 values () 括号内，提供给了按照列顺序出现的所有字段的值。或者使用set语法。
-
-1INSERT INTO tbl_name SET field=value,...；
-
-可以一次性使用多个值，采用(), (), ();的形式。
-
-1INSERT INTO tbl_name VALUES (), (), ();
-
-可以在列值指定时，使用表达式。
-
-1INSERT INTO tbl_name VALUES ...
-        </p>
-        <p class="article-more-link">
-          <a href="/2019/03/12/mysql-notes-12/#more">阅读全文</a>
         </p>
       
     </div>

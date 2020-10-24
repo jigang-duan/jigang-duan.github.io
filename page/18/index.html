@@ -259,6 +259,69 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-WebPage-Get-SMS"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/18/WebPage-Get-SMS/">Android 网页获取短信验证码 可行性预研</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/18/WebPage-Get-SMS/" class="article-date">
+	  <time datetime="2017-12-18T08:09:01.000Z" itemprop="datePublished">2017-12-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/预研/">预研</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          
+目标： Android 网页获取短信验证码
+目前状态： 预言阶段（技术上未实现）
+
+网页端方案： Android WebKit插件开发 SMS-BrowserPlugin
+
+方案描述： WebKit插件包括PluginService和Plugin.so动态库, Plugin.so提供与WebKit的交互，提供JS的接口；PluginService静态注册WebKit插件action，实现短信拦截功能。
+
+Android端拦截短信方案
+
+方案一： 监听SMS广播
+方案二： Notifica...
+        </p>
+        <p class="article-more-link">
+          <a href="/2017/12/18/WebPage-Get-SMS/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-merge-odex-apk"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -836,62 +899,6 @@ FOREIGN KEY(外键约束)
         </p>
         <p class="article-more-link">
           <a href="/2017/12/08/my-common-grammar4/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-my-common-grammar3"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/08/my-common-grammar3/">MySQL简单操作(3)-数据表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/12/08/my-common-grammar3/" class="article-date">
-	  <time datetime="2017-12-08T14:25:25.000Z" itemprop="datePublished">2017-12-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL简单操作/">MySQL简单操作</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          
-创建数据表
-  1234CREATE TABLE [IF NOT EXISTS] table_name (    column_name data_type [NULL | NOT NULL | [AUTO_INCREMENT] PRIMARY KEY] [UNIQUE KEY] [DEFAULT default_value],    ...);
-  举例：
-  12345CREATE TABLE tb1 (    username VARCHAR(20),    age TINYINT...
-        </p>
-        <p class="article-more-link">
-          <a href="/2017/12/08/my-common-grammar3/#more">阅读全文</a>
         </p>
       
     </div>

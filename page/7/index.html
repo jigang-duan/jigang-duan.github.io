@@ -259,6 +259,59 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-django-start-guide-6"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/01/09/django-start-guide-6/">Django入门与实践-第6章：第一个视图函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/09/django-start-guide-6/" class="article-date">
+	  <time datetime="2019-01-09T15:12:57.000Z" itemprop="datePublished">2019-01-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a><a class="article-category-link" href="/categories/Python/Django/">Django</a><a class="article-category-link" href="/categories/Python/Django/Django入门指南/">Django入门指南</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          boards/views.py
+12345678910111213from django.http import HttpResponsefrom .models import Boarddef home(request):    boards = Board.objects.all()    boards_names = list()    for board in boards:        boards_names.append(board.name)    response_ht...
+        </p>
+        <p class="article-more-link">
+          <a href="/2019/01/09/django-start-guide-6/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-django-start-guide-5"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -815,60 +868,6 @@ clone 这个仓库: https://github.com/l-hammer/You-need-to-know-css.git
         </p>
         <p class="article-more-link">
           <a href="/2018/12/23/frontend-tech-list/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-android-sunflower"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/23/android-sunflower/">Android 向日葵</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/23/android-sunflower/" class="article-date">
-	  <time datetime="2018-12-23T13:22:33.000Z" itemprop="datePublished">2018-12-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-Jetpack/">Android Jetpack</a><a class="article-category-link" href="/categories/Android/Android-Jetpack/GitHub-精选/">GitHub 精选</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          一个园艺应用程序说明Android开发最佳实践与Android Jetpack.
-Android 向日葵 (alpha)Android向日葵目前是作为一个alpha版本发布的，正在进行大量的开发。要查看最新的更改，请访问版本页面.请注意，一些更改(如数据库模式修改)在此alpha期间不向后兼容，可能会导致应用程序崩溃。在这种情况下，请卸载并重新安装应用程序.
-介绍Android Jetpack是一套组件、工具和指南，用来制作优秀的Android应用程序。它们将现有的支持库和体系结构组件组合...
-        </p>
-        <p class="article-more-link">
-          <a href="/2018/12/23/android-sunflower/#more">阅读全文</a>
         </p>
       
     </div>
