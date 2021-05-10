@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>sql server - 使用visual studio code创建和运行transact-sql脚本 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="sqlvscodesql-server">
+  
+  
+  
+  
+  <meta name="description" content="本文展示了如何使用Visual Studio Code(VS Code)的mssql扩展来开发SQL Server数据库。 Visual Studio Code是一个用于Linux、macOS和Windows的图形化代码编辑器，支持扩展。VS Code的mssql扩展允许您连接到SQL服务器，使用Transact-SQL (T-SQL)查询，并查看结果。 安装 VS Code 如果您还没有安装VS">
+<meta name="keywords" content="sql,vscode,sql-server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL Server - 使用Visual Studio Code创建和运行Transact-SQL脚本">
+<meta property="og:url" content="https://jigangduan.github.io/2018/10/02/mysql-vscode/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="本文展示了如何使用Visual Studio Code(VS Code)的mssql扩展来开发SQL Server数据库。 Visual Studio Code是一个用于Linux、macOS和Windows的图形化代码编辑器，支持扩展。VS Code的mssql扩展允许您连接到SQL服务器，使用Transact-SQL (T-SQL)查询，并查看结果。 安装 VS Code 如果您还没有安装VS">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-extension.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-install-success-notification.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-language-mode.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-commands.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-connection-status.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-sql-snippets.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-create-database-messages.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-use-database.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-intellisense.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-result-grid.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-toggle-split.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-toggle-messages-pannel.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-maximize-grid.png?view=sql-server-2017">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-save-as-json.png?view=sql-server-2017">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.223Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL Server - 使用Visual Studio Code创建和运行Transact-SQL脚本">
+<meta name="twitter:description" content="本文展示了如何使用Visual Studio Code(VS Code)的mssql扩展来开发SQL Server数据库。 Visual Studio Code是一个用于Linux、macOS和Windows的图形化代码编辑器，支持扩展。VS Code的mssql扩展允许您连接到SQL服务器，使用Transact-SQL (T-SQL)查询，并查看结果。 安装 VS Code 如果您还没有安装VS">
+<meta name="twitter:image" content="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-extension.png?view=sql-server-2017">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-mysql-vscode" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      SQL Server - 使用Visual Studio Code创建和运行Transact-SQL脚本
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/10/02/mysql-vscode/" class="article-date">
+	  <time datetime="2018-10-02T01:20:02.000Z" itemprop="datePublished">2018-10-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/VS-Code/">VS Code</a><a class="article-category-link" href="/categories/VS-Code/SQL-Server/">SQL Server</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文展示了如何使用Visual Studio Code(VS Code)的mssql扩展来开发SQL Server数据库。</p>
+<p>Visual Studio Code是一个用于Linux、macOS和Windows的图形化代码编辑器，支持扩展。<a href="https://aka.ms/mssql-marketplace" target="_blank" rel="noopener">VS Code的mssql扩展</a>允许您连接到SQL服务器，使用Transact-SQL (T-SQL)查询，并查看结果。</p>
+<h2 id="安装-VS-Code"><a href="#安装-VS-Code" class="headerlink" title="安装 VS Code"></a>安装 VS Code</h2><ol>
+<li><p>如果您还没有安装VS Code，请<a href="https://code.visualstudio.com/Download" target="_blank" rel="noopener">下载并安装VS Code</a>。</p>
+</li>
+<li><p>启动VS Code</p>
+</li>
+</ol>
+<h2 id="安装mssql扩展"><a href="#安装mssql扩展" class="headerlink" title="安装mssql扩展"></a>安装mssql扩展</h2><p>以下步骤说明如何安装mssql扩展:</p>
+<ol>
+<li><p>按 <strong>CTRL+SHIFT+P</strong> (或 <strong>F1</strong>)打开VS Code中的命令面板。</p>
+</li>
+<li><p>选择Install Extension并输入mssql。</p>
+<blockquote>
+<p>提示<br> 对于macOS, CMD键相当于Linux和Windows上的CTRL键。</p>
+</blockquote>
+</li>
+<li><p>点击安装<code>mssql</code></p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-extension.png?view=sql-server-2017" alt="vscode-extension"></p>
+</li>
+<li><p><strong>mssql扩展</strong> 最多需要一分钟的安装时间。等待提示告诉您它已成功安装。</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-install-success-notification.png?view=sql-server-2017" alt="vscode-install-success-notification"></p>
+<blockquote>
+<p>请注意<br>对于macOS，您必须安装OpenSSL。这是mssql扩展所使用的.Net Core的先决条件。按照<a href="https://www.microsoft.com/net/core" target="_blank" rel="noopener">.Net Core说明</a>中的安装必备步骤。或者，您可以在macOS终端运行以下命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br><span class="line">brew install openssl</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/<span class="built_in">local</span>/lib/</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/opt/openssl/lib/libssl.1.0.0.dylib /usr/<span class="built_in">local</span>/lib/</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>请注意<br>对于Windows 8.1、Windows Server 2012或更低版本，您必须下载并安装<a href="https://github.com/Microsoft/vscode-mssql/wiki/windows10-universal-c-runtime-requirement" target="_blank" rel="noopener">Windows 10 Universal C Runtime</a>。下载并打开zip文件。然后运行安装程序(. msu文件)针对您当前的操作系统配置。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="创建或打开SQL文件"><a href="#创建或打开SQL文件" class="headerlink" title="创建或打开SQL文件"></a>创建或打开SQL文件</h2><p>当语言模式设置为SQL时，mssql扩展支持编辑器中的mssql命令和T-SQL智能感知。</p>
+<ol>
+<li>按<code>CTRL + N</code>。Visual Studio Code默认打开一个新的<code>纯文本</code>文件。</li>
+<li>按<code>CTRL+K,M</code>，将语言模式改为<code>SQL</code>。<br> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-language-mode.png?view=sql-server-2017" alt="vscode-language-mode"></li>
+<li>或者，使用.sql文件扩展名打开现有文件。语言模式为具有sql扩展名的文件自动SQL。</li>
+</ol>
+<h2 id="连接到SQL-Server"><a href="#连接到SQL-Server" class="headerlink" title="连接到SQL Server"></a>连接到SQL Server</h2><p>下面的步骤展示了如何使用VS Code连接到SQL Server。</p>
+<ol>
+<li>在VS Code中，按CTRL+SHIFT+P(或F1)打开命令面板。</li>
+<li><p>输入sql以显示mssql命令。</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-commands.png?view=sql-server-2017" alt="vscode-commands"></p>
+</li>
+<li><p>选择<code>MS SQL: Connect</code>命令。您可以简单地键入sqlcon并按ENTER键。</p>
+</li>
+<li><p>选择<code>Create Connection Profile</code>。这将为SQL服务器实例创建一个连接概要文件。</p>
+</li>
+<li><p>按照提示指定新连接概要文件的连接属性。指定每个值之后，按ENTER键继续。</p>
+<p> 下表描述连接概要属性。</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>服务器名称</td>
+<td>SQL服务器实例名。对于本教程，使用localhost连接到机器上的本地SQL服务器实例。如果连接到远程SQL服务器，请输入目标SQL服务器机器的名称或其IP地址。如果需要为SQL Server实例指定端口，请使用逗号将其与名称分离。例如，对于运行在端口1401上的本地服务器，您将输入<code>localhost,1401</code>。</td>
+</tr>
+<tr>
+<td>(可选的)数据库名称</td>
+<td>您想要使用的数据库。对于本教程，不要指定数据库并按ENTER键继续。</td>
+</tr>
+<tr>
+<td>用户名</td>
+<td>输入访问服务器上数据库的用户名。对于本教程，使用在SQL Server设置期间创建的默认SA帐户。</td>
+</tr>
+<tr>
+<td>密码(SQL登录)</td>
+<td>输入指定用户的密码</td>
+</tr>
+<tr>
+<td>保存密码?</td>
+<td>输入Yes以保存密码。否则，每次使用连接配置文件时都会提示输入No以输入密码</td>
+</tr>
+<tr>
+<td>[可选的]为这个概要文件输入一个名称</td>
+<td>连接概要名称。例如，您可以将概要文件命名为<code>localhost profile</code>。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>提示<br>您可以在用户设置文件(settings.json)中创建和编辑连接配置文件。通过在VS Code菜单中选择首选项和用户设置来打开设置文件。有关更多信息，请参见<a href="https://github.com/Microsoft/vscode-mssql/wiki/manage-connection-profiles" target="_blank" rel="noopener">manage connection配置文件</a>。</p>
+</blockquote>
+<ol start="6">
+<li><p>按ESC键关闭通知创建和连接概要文件的info消息</p>
+<blockquote>
+<p>提示<br>如果连接失败，首先尝试从VS Code的输出面板中的错误消息诊断问题(在视图菜单中选择Output)。然后检查连接故障排除建议。</p>
+</blockquote>
+</li>
+<li><p>验证您在状态栏中的连接</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-connection-status.png?view=sql-server-2017" alt="vscode-connection-status"></p>
+</li>
+</ol>
+<h2 id="创建一个数据库"><a href="#创建一个数据库" class="headerlink" title="创建一个数据库"></a>创建一个数据库</h2><ol>
+<li><p>在编辑器中，键入<code>sql</code>以打开可编辑代码片段列表。</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-sql-snippets.png?view=sql-server-2017" alt="vscode-sql-snippets"></p>
+</li>
+<li><p>选择<code>sqlCreateDatabase</code></p>
+</li>
+<li><p>在代码片段中，输入<code>TutorialDB</code>作为数据库名</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> <span class="keyword">master</span></span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span></span><br><span class="line"><span class="keyword">FROM</span> sys.databases</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">name</span> = N<span class="string">'TutorialDB'</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> [TutorialDB]</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按<code>CTRL+SHIFT+E</code>执行Transact-SQL命令。在查询窗口中查看结果。</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-create-database-messages.png?view=sql-server-2017" alt="vscode-create-database-messages"></p>
+<blockquote>
+<p>提示<br>您可以为mssql扩展命令定制快捷键绑定。看到<a href="https://github.com/Microsoft/vscode-mssql/wiki/customize-shortcuts" target="_blank" rel="noopener">自定义快捷键</a>。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><ol>
+<li>删除编辑器窗口的内容。</li>
+<li>按F1以显示命令面板。</li>
+<li>在命令面板中键入sql命令来显示sql命令或键入sqluse(用于MS sql:Use Database命令)。</li>
+<li><p>单击MS SQL:Use Database，并选择TutorialDB数据库。这将更改上一节中创建的新数据库的上下文。</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-use-database.png?view=sql-server-2017" alt="vscode-use-database"></p>
+</li>
+<li><p>在编辑器中，键入<code>sql</code>以显示片段，然后选择<code>sqlCreateTable</code>并按<code>enter</code>键。</p>
+</li>
+<li>在代码片段中，为表名输入<code>Employees</code>。</li>
+<li><p>按<code>Tab</code>键，然后为模式名输入<code>dbo</code>。</p>
+<blockquote>
+<p>请注意<br>添加代码片段之后，您必须键入表和模式名称，而不需要将焦点从VS Code编辑器移开。</p>
+</blockquote>
+</li>
+<li><p>将<code>Column1</code>的列名更改为<code>Name</code>，而<code>Column2</code>更改为<code>Location</code>。</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 在模式`dbo`中创建一个名为`Employees`的新表</span></span><br><span class="line"><span class="comment">-- 如果表已经存在，则删除它</span></span><br><span class="line">IF OBJECT_ID('dbo.Employees', 'U') IS NOT NULL</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> dbo.Employees</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="comment">-- 在指定的模式中创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> dbo.Employees</span><br><span class="line">(</span><br><span class="line">    EmployeesId        <span class="built_in">INT</span>    <span class="keyword">NOT</span> <span class="literal">NULL</span>   PRIMARY <span class="keyword">KEY</span>, <span class="comment">-- 主键列</span></span><br><span class="line">    <span class="keyword">Name</span>      [<span class="keyword">NVARCHAR</span>](<span class="number">50</span>)  <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    Location   [<span class="keyword">NVARCHAR</span>](<span class="number">50</span>)  <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">);</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按<code>CTRL+SHIFT+E</code>创建表</p>
+</li>
+</ol>
+<h2 id="插入和查询"><a href="#插入和查询" class="headerlink" title="插入和查询"></a>插入和查询</h2><ol>
+<li><p>添加以下语句以向Employees表插入4行。然后选择所有的行。</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 在`Employees`表中插入行</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Employees</span><br><span class="line">    ([EmployeesId],[<span class="keyword">Name</span>],[Location])</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    ( <span class="number">1</span>, N<span class="string">'Jared'</span>, N<span class="string">'Australia'</span>),</span><br><span class="line">    ( <span class="number">2</span>, N<span class="string">'Nikita'</span>, N<span class="string">'India'</span>),</span><br><span class="line">    ( <span class="number">3</span>, N<span class="string">'Tom'</span>, N<span class="string">'Germany'</span>),</span><br><span class="line">    ( <span class="number">4</span>, N<span class="string">'Jake'</span>, N<span class="string">'United States'</span>)</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="comment">-- 查询员工总数</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(*) <span class="keyword">as</span> EmployeeCount <span class="keyword">FROM</span> dbo.Employees;</span><br><span class="line"><span class="comment">-- 查询所有员工信息</span></span><br><span class="line"><span class="keyword">SELECT</span> e.EmployeesId, e.Name, e.Location</span><br><span class="line"><span class="keyword">FROM</span> dbo.Employees <span class="keyword">as</span> e</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提示<br>在键入时，使用T-SQL智能感知的帮助<br><img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-intellisense.png?view=sql-server-2017" alt="vscode-intellisense"></p>
+</blockquote>
+</li>
+<li><p>按<code>CTRL+SHIFT+E</code>执行命令。这两个结果集显示在结果窗口中。</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-result-grid.png?view=sql-server-2017" alt="vscode-result-grid.png"></p>
+</li>
+</ol>
+<h2 id="查看并保存结果"><a href="#查看并保存结果" class="headerlink" title="查看并保存结果"></a>查看并保存结果</h2><ol>
+<li><p>在<code>视图</code>菜单上，选择<code>切换编辑器组布局</code>切换到<code>垂直或水平分割布局</code>。</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-toggle-split.png?view=sql-server-2017" alt="vscode-toggle-split"></p>
+</li>
+<li><p>单击结果和消息面板标题折叠并展开面板</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-toggle-messages-pannel.png?view=sql-server-2017" alt="vscode-toggle-messages-pannel"></p>
+<blockquote>
+<p>提示<br>您可以定制mssql扩展的默认行为。请参阅自定义扩展选项。</p>
+</blockquote>
+</li>
+<li><p>单击第二个结果网格上的maximize grid图标来放大</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-maximize-grid.png?view=sql-server-2017" alt="vscode-maximize-grid.png"></p>
+<blockquote>
+<p>请注意<br>当T-SQL脚本具有两个或多个结果网格时，将显示最大化图标。</p>
+</blockquote>
+</li>
+<li><p>在网格上用鼠标右键打开网格上下文菜单</p>
+</li>
+<li><p>选择Select All</p>
+</li>
+<li>打开grid上下文菜单并选择Save as JSON将结果保存到.json文件中</li>
+<li>为JSON文件指定文件名。对于本教程，输入employees.json</li>
+<li><p>验证JSON文件是否保存并以VS Code打开</p>
+<p> <img src="https://docs.microsoft.com/en-us/sql/linux/media/sql-server-linux-develop-use-vscode/vscode-save-as-json.png?view=sql-server-2017" alt="vscode-save-as-json"></p>
+</li>
+</ol>
+<h2 id="下一个步骤"><a href="#下一个步骤" class="headerlink" title="下一个步骤"></a>下一个步骤</h2><p>在真实的场景中，您可能会创建一个脚本，您需要保存并在以后运行它(用于管理或作为更大的开发项目的一部分)。在本例中，您可以使用<code>.sql</code>扩展名保存脚本。</p>
+<p>如果您对T-SQL不熟悉，请参阅<a href="https://msdn.microsoft.com/library/ms365303.aspx" target="_blank" rel="noopener">教程:编写Transact-SQL语句</a>和<a href="https://msdn.microsoft.com/library/bb510741.aspx" target="_blank" rel="noopener">Transact-SQL引用(数据库引擎)</a>。</p>
+<p>有关使用或贡献mssql扩展的更多信息，请参阅<a href="https://github.com/Microsoft/vscode-mssql/wiki" target="_blank" rel="noopener">mssql扩展项目wiki</a>。</p>
+<p>有关使用VS Code的更多信息，请<a href="https://code.visualstudio.com/docs" target="_blank" rel="noopener">参阅Visual Studio Code文档</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/10/02/mysql-vscode/" target="_blank" title="SQL Server - 使用Visual Studio Code创建和运行Transact-SQL脚本">https://jigangduan.github.io/2018/10/02/mysql-vscode/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql-server/">sql-server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vscode/">vscode</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/24/oh-my-zsh/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          oh-my-zsh
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/18/go-for-industrial-programming/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Go 工业级编程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-VS-Code"><span class="nav-number">1.</span> <span class="nav-text">安装 VS Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装mssql扩展"><span class="nav-number">2.</span> <span class="nav-text">安装mssql扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建或打开SQL文件"><span class="nav-number">3.</span> <span class="nav-text">创建或打开SQL文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接到SQL-Server"><span class="nav-number">4.</span> <span class="nav-text">连接到SQL Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个数据库"><span class="nav-number">5.</span> <span class="nav-text">创建一个数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建表"><span class="nav-number">6.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入和查询"><span class="nav-number">7.</span> <span class="nav-text">插入和查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看并保存结果"><span class="nav-number">8.</span> <span class="nav-text">查看并保存结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下一个步骤"><span class="nav-number">9.</span> <span class="nav-text">下一个步骤</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

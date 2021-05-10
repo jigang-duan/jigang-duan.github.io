@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>tclmove 技术选型 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="ios">
+  
+  
+  
+  
+  <meta name="description" content="Swift Storyboard RxSwfit Rleam R.Swfit Moya+Alamofire+ObjectMapper SwiftyBeaver Kingfisher CocoPod …">
+<meta name="keywords" content="ios">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCLMOVE 技术选型">
+<meta property="og:url" content="https://jigangduan.github.io/2017/10/19/TCLMOVE-技术选型/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="Swift Storyboard RxSwfit Rleam R.Swfit Moya+Alamofire+ObjectMapper SwiftyBeaver Kingfisher CocoPod …">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://qiniu.jigangduan.xyz/2017/10/20/tclmove1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Moya/Moya/master/web/diagram.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCLMOVE 技术选型">
+<meta name="twitter:description" content="Swift Storyboard RxSwfit Rleam R.Swfit Moya+Alamofire+ObjectMapper SwiftyBeaver Kingfisher CocoPod …">
+<meta name="twitter:image" content="http://qiniu.jigangduan.xyz/2017/10/20/tclmove1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-TCLMOVE-技术选型" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      TCLMOVE 技术选型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/19/TCLMOVE-技术选型/" class="article-date">
+	  <time datetime="2017-10-19T11:50:15.000Z" itemprop="datePublished">2017-10-19</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/架构设计/">架构设计</a><a class="article-category-link" href="/categories/iOS/架构设计/TCLMOVE/">TCLMOVE</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://qiniu.jigangduan.xyz/2017/10/20/tclmove1.png" alt="TCLMOVE"></p>
+<ul>
+<li>Swift</li>
+<li>Storyboard</li>
+<li>RxSwfit</li>
+<li>Rleam</li>
+<li>R.Swfit</li>
+<li>Moya+Alamofire+ObjectMapper</li>
+<li>SwiftyBeaver</li>
+<li>Kingfisher</li>
+<li>CocoPod</li>
+<li>…</li>
+</ul>
+<a id="more"></a>
+<h4 id="编程语言选择"><a href="#编程语言选择" class="headerlink" title="编程语言选择"></a>编程语言选择</h4><ul>
+<li>Swift</li>
+<li>Object-C</li>
+</ul>
+<p>Swift的优势：</p>
+<blockquote>
+<ol>
+<li>趋势 苹果已经明确，Swift将是未来的主力开发语言</li>
+<li>Swift定位是安全，快速，跨平台的语言</li>
+<li>gitHub上新增的第三方开源库，Swift版本要多余Object-C的版本</li>
+</ol>
+</blockquote>
+<p>Swift的缺点：</p>
+<blockquote>
+<ol>
+<li>不支持Runtime</li>
+<li>编译速度慢</li>
+<li>Swift核心库会打包在APP中，增加了APP体积</li>
+</ol>
+</blockquote>
+<p><strong><em>建议：</em></strong>  对于新项目尽量采用Swift，对于业务复杂的旧项目Object-C继续维持</p>
+<h4 id="代码手写-UI-和-Storyboard-之间的取舍"><a href="#代码手写-UI-和-Storyboard-之间的取舍" class="headerlink" title="代码手写 UI 和 Storyboard 之间的取舍"></a>代码手写 UI 和 Storyboard 之间的取舍</h4><p>构建 UI 方式的争论就在 Cocoa 开发者社区里一直发生着，Storyboard 被诟病最多的 是<code>冲突风险</code>和<code>加载速度</code>。</p>
+<p><strong>冲突风险</strong></p>
+<p>Storyboard 一直在进步，在 Xcode 7 引入了 SB reference 以后，「SB 容易冲突」已经得到很好的解决了。</p>
+<p><strong>加载速度</strong></p>
+<p>编译过程中，项目里用到的 SB 文件也会被编译，并以 storyboardc 为扩展名保存在最终的 app 包内。这个是一个文件夹，里面存储了一系列 .nib 文件。SB 中的每个对象将会被编译为一个单独的 .nib。</p>
+<p><strong>Storyboard 优势</strong></p>
+<p>Storyboard可以简化UI的开发，属性设置和布局都可以简单化，实现和逻辑代码的分离，不会污染代码。</p>
+<p><strong><em>建议：</em></strong>  采用Storyboard</p>
+<h4 id="RxSwift"><a href="#RxSwift" class="headerlink" title="RxSwift"></a>RxSwift</h4><p>RxSwift是Swift函数响应式编程的一个开源库，由Github的ReactiveX组织开发，维护。</p>
+<p><strong>RxSwift的优点</strong></p>
+<ul>
+<li>Composable 可组合，在设计模式中有一种模式叫做组合模式，你可以方便的用不同的组合实现不同的类</li>
+<li>Reusable 代码可重用，原因很简单，对应RxSwift，就是一堆Obserable</li>
+<li>Declarative 响应式的，因为状态不可变，只有数据变化</li>
+<li>Understandable and concise 简洁，容易理解。</li>
+<li>Stable 稳定，因为RxSwift写出的代码，单元测试时分方便</li>
+<li>Less stateful “无”状态性，因为对于响应式编程，你的应用程序就是一堆数据流</li>
+<li>Without leaks 没有泄漏，因为资源管理非常简单</li>
+</ul>
+<h4 id="Rleam"><a href="#Rleam" class="headerlink" title="Rleam"></a>Rleam</h4><p><a href="https://realm.io" target="_blank" rel="noopener">Realm</a>是由Y Combinator孵化的创业团队开源出来的一款可以用于iOS(同样适用于Swift&amp;Objective-C)和Android的跨平台移动数据库。</p>
+<ul>
+<li>跨平台：支持的平台包括Java，Objective-C，Swift，React Native，Xamarin。</li>
+<li>简单易用：Core Data 和 SQLite 冗余、繁杂的知识和代码，而Realm，可以极大地减少学习成本，立即学会本地化存储的方法。</li>
+<li>可视化：Realm 还提供了一个轻量级的数据库查看工具，可以查看数据库当中的内容，执行简单的插入和删除数据的操作。</li>
+</ul>
+<h4 id="R-Swfit"><a href="#R-Swfit" class="headerlink" title="R.Swfit"></a>R.Swfit</h4><p><a href="https://github.com/mac-cain13/R.swift" target="_blank" rel="noopener">R.Swfit</a> 在Swift项目中自动生成资源（像图片，字体，转场）相关的强类型变量，可以优雅的获取资源，仿Android资源文件使用的方法。</p>
+<p>相关资源：</p>
+<ul>
+<li><a href="http://blog.csdn.net/mazy_ma/article/details/73024576" target="_blank" rel="noopener">Swift-颜色设置技巧和(.clr)文件的创建和使用</a></li>
+<li><a href="https://www.waerfa.com/sip-color-picker" target="_blank" rel="noopener">Sip：做屏幕取色没人比我强</a></li>
+</ul>
+<h4 id="Moya-Alamofire-ObjectMapper"><a href="#Moya-Alamofire-ObjectMapper" class="headerlink" title="Moya+Alamofire+ObjectMapper"></a>Moya+Alamofire+ObjectMapper</h4><p><a href="https://github.com/Moya/Moya" target="_blank" rel="noopener">Moya</a>的基本思想是，提供一些网络抽象层，它们被充分的封装了且实际上直接调用了Alamofire. 它不仅在普通的简单的事情上很容易使用，而且在综合的复杂的事情上也容易使用</p>
+<p>如果你使用 Alamofire 来抽象 URLSession, 那为什么不使用一些方式来抽象URLs和parameters等等的本质呢?<br>Moya的一些特色功能:</p>
+<ul>
+<li>对正确的API端点访问进行编译时检查.</li>
+<li>让您使用关联的枚举值定义不同端点的清晰用法.</li>
+<li>把test stub作为一等公民，所以单元测试超级简单.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/Moya/Moya/master/web/diagram.png" alt="Moya Overview"></p>
+<p><a href="https://github.com/Alamofire/Alamofire" target="_blank" rel="noopener">Alamofire</a> 是一个用Swift编写的HTTP网络库.</p>
+<p>特性：</p>
+<ul>
+<li>链式的请求/响应方法</li>
+<li>URL/JSON/plist参数编码</li>
+<li>上传文件/数据/流/MultipartFormData</li>
+<li>使用请求或恢复数据下载文件</li>
+<li>身份验证使用URLCredential</li>
+<li>HTTP响应验证</li>
+<li>上传和下载进度闭包</li>
+<li>cURL命令输出</li>
+<li>动态调整和重试请求</li>
+<li>TLS证书和公钥固定</li>
+<li>网络可达性</li>
+<li>综合单元和集成测试覆盖</li>
+<li>完整的文档</li>
+</ul>
+<p><a href="https://github.com/Hearst-DD/ObjectMapper" target="_blank" rel="noopener">ObjectMapper</a>是一个用Swift编写的框架，它使您可以很容易地将模型对象(类和结构)转换为JSON。</p>
+<p>特性：</p>
+<ul>
+<li>JSON对象映射</li>
+<li>将对象映射到JSON</li>
+<li>嵌套对象(在数组或字典中单独使用)</li>
+<li>自定义转换期间映射</li>
+<li>结构支持</li>
+<li>常量的支持</li>
+</ul>
+<h4 id="SwiftyBeaver"><a href="#SwiftyBeaver" class="headerlink" title="SwiftyBeaver"></a>SwiftyBeaver</h4><p><a href="https://github.com/SwiftyBeaver/SwiftyBeaver" target="_blank" rel="noopener">SwiftyBeaver</a>，Swift多彩日志记录。</p>
+<p>特性:</p>
+<ul>
+<li>开发期间: 彩色记录到Xcode控制台</li>
+<li>开发期间: 彩色记录文件</li>
+<li>发布期间: 加密记录到SwiftyBeaver平台</li>
+<li>通过Mac App来浏览、搜索和过滤</li>
+</ul>
+<h4 id="Kingfisher"><a href="#Kingfisher" class="headerlink" title="Kingfisher"></a>Kingfisher</h4><p><a href="https://github.com/onevcat/Kingfisher" target="_blank" rel="noopener">Kingfisher</a>是一个轻量级的、纯Swift的库，用于从web上下载和缓存图像。这个项目深受流行的SDWebImage的启发。</p>
+<p>特性:</p>
+<ul>
+<li>异步图像下载和缓存。</li>
+<li>基于URLSession。基本的图像处理器和过滤器。</li>
+<li>用于内存和磁盘的多层缓存。</li>
+<li>可取消下载和处理任务以提高性能。</li>
+<li>独立的组件。根据需要分别使用下载程序或缓存系统。</li>
+<li>预取图像并在必要时从缓存中显示它们。</li>
+<li>用于UIImageView、NSImage和UIButton的扩展，可以直接从URL中设置图像。</li>
+<li>设置映像时内置的转换动画。</li>
+<li>可定制的占位符，同时载入图片。</li>
+<li>可扩展的图像处理和图像格式支持</li>
+</ul>
+<h4 id="CocoPods"><a href="#CocoPods" class="headerlink" title="CocoPods"></a>CocoPods</h4><p><a href="https://cocoapods.org" target="_blank" rel="noopener">CocoaPods</a> iOS端的依赖管理工具。</p>
+<p>使用CocoPods作项目依赖库的管理工具，包括第三方和本地的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/10/19/TCLMOVE-技术选型/" target="_blank" title="TCLMOVE 技术选型">https://jigangduan.github.io/2017/10/19/TCLMOVE-技术选型/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/">ios</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/20/《App研发录》笔记-第一部分-高效App框架设计与重构/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          App研发录 笔记(一): 高效App框架设计与重构
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/19/TCLMOVE-架构设计/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">TCLMOVE 架构设计</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#编程语言选择"><span class="nav-number">1.</span> <span class="nav-text">编程语言选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码手写-UI-和-Storyboard-之间的取舍"><span class="nav-number">2.</span> <span class="nav-text">代码手写 UI 和 Storyboard 之间的取舍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RxSwift"><span class="nav-number">3.</span> <span class="nav-text">RxSwift</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rleam"><span class="nav-number">4.</span> <span class="nav-text">Rleam</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#R-Swfit"><span class="nav-number">5.</span> <span class="nav-text">R.Swfit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Moya-Alamofire-ObjectMapper"><span class="nav-number">6.</span> <span class="nav-text">Moya+Alamofire+ObjectMapper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SwiftyBeaver"><span class="nav-number">7.</span> <span class="nav-text">SwiftyBeaver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kingfisher"><span class="nav-number">8.</span> <span class="nav-text">Kingfisher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CocoPods"><span class="nav-number">9.</span> <span class="nav-text">CocoPods</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

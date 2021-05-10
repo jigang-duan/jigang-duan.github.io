@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>spring boot 2精髓 - (2) 基础 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javaspringspring-boot">
+  
+  
+  
+  
+  <meta name="description" content="开发工具 JDK8+  Maven  使构建项目变得很容易， Maven 屏蔽了构建的复杂过程。比如，你只需要输入 maven package 就可以构建整个 Java 项目。 统一了构建项目的方式，不同人、不同公司的项目都有同样的描述项目和构建项目的 方式， Maven 通过 pom.xml 来描述项目，井提供一系列插件来构建项目 。只要熟悉了 Maven，就熟悉了所有项目的构建方式 。 提出">
+<meta name="keywords" content="java,spring,spring-boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 2精髓 - (2) 基础">
+<meta property="og:url" content="https://jigangduan.github.io/2018/12/21/SpringBoot2-2/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="开发工具 JDK8+  Maven  使构建项目变得很容易， Maven 屏蔽了构建的复杂过程。比如，你只需要输入 maven package 就可以构建整个 Java 项目。 统一了构建项目的方式，不同人、不同公司的项目都有同样的描述项目和构建项目的 方式， Maven 通过 pom.xml 来描述项目，井提供一系列插件来构建项目 。只要熟悉了 Maven，就熟悉了所有项目的构建方式 。 提出">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545416256131&di=e95967b63f8bf7ad8fe7fa41d1740c58&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.166Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Boot 2精髓 - (2) 基础">
+<meta name="twitter:description" content="开发工具 JDK8+  Maven  使构建项目变得很容易， Maven 屏蔽了构建的复杂过程。比如，你只需要输入 maven package 就可以构建整个 Java 项目。 统一了构建项目的方式，不同人、不同公司的项目都有同样的描述项目和构建项目的 方式， Maven 通过 pom.xml 来描述项目，井提供一系列插件来构建项目 。只要熟悉了 Maven，就熟悉了所有项目的构建方式 。 提出">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545416256131&di=e95967b63f8bf7ad8fe7fa41d1740c58&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-SpringBoot2-2" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Spring Boot 2精髓 - (2) 基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/21/SpringBoot2-2/" class="article-date">
+	  <time datetime="2018-12-21T15:27:17.000Z" itemprop="datePublished">2018-12-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/精髓/">精髓</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1545416256131&amp;di=e95967b63f8bf7ad8fe7fa41d1740c58&amp;imgtype=0&amp;src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg" alt="spring boot"></p>
+<h2 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h2><ul>
+<li><p>JDK8+</p>
+</li>
+<li><p>Maven</p>
+<ul>
+<li>使构建项目变得很容易， Maven 屏蔽了构建的复杂过程。比如，你只需要输入 <code>maven package</code> 就可以构建整个 Java 项目。</li>
+<li>统一了构建项目的方式，不同人、不同公司的项目都有同样的描述项目和构建项目的 方式， Maven 通过 <code>pom.xml</code> 来描述项目，井提供一系列插件来构建项目 。只要熟悉了 Maven，就熟悉了所有项目的构建方式 。</li>
+<li>提出了一套开发项目的最佳实践，而不用每个项目都有不同结构和构建方式，比如源 代码在 <code>src/main/iava</code> 中，测试代码则在 <code>src/test/iava</code> 中，项目需要的配置文件则放在 <code>src/main/resources</code> 中。</li>
+<li>包含不同环境项目的构建方式。</li>
+<li>解决了类库依赖的问题，只需要声明使用的类库， Maven 会自动从仓库下载依赖的 jar包，并能协助你管理 jar包之间的冲突。</li>
+</ul>
+<p>pom.xrnl，用 XML 方式描述了项目模型， porn通常有以下元素:</p>
+<ul>
+<li><code>groupId</code>: 表示项目所属的组，通常是一个公司或者组织的名称，如 org叩ringframework。</li>
+<li><code>artifactld</code>: 项目唯一的标识，比如，有 <code>spring-boot-starter-web</code>、 <code>spring-boot-devtools</code>、groupId 和 artifactld 能唯一标识一个项目或者一个库，我们通常称之为项目坐标 。</li>
+<li><code>packaging</code>: 项目的类型，常用的有jar和 war两种， jar表示项目会打包成一个jar包， 这是 SpringBoot的默认使用方式。</li>
+<li><code>version</code>: 项目的版本号 ，比如 0β.1割 APSHOT、 1.5.2.RELEASE。<ul>
+<li>SNAPSHOT 表示开发中的版本，会修复 bug 和添加新 功能</li>
+<li>RELEASE 表示的是一个正式发布版</li>
+<li>M1,M2(M 指 里程碑 ， 即将发布)</li>
+<li>RC(Release Candidate，发布候选)</li>
+<li>GA(general availability，基本可用版本)<br><code>SNAPSHOT&lt;ml&lt;m2...&lt;RC&lt;GA&lt;Realease</code></li>
+</ul>
+</li>
+<li><code>modelVersion</code>: 代表 pom 文件的 Maven 的版本，如写作的时候 Maven 的 modelVersion是 4.0.0。</li>
+<li><code>dependencies</code>:此元素下包含了多个 dependency，用来声明项目 的依赖，这是 porn 最 核心的部分。</li>
+<li><code>dependency</code>: 包含在 dependencies 中，用 来声 明项目的依赖，比如项目用到的 MySQL 驱动。</li>
+<li><code>scope</code>: scope 代表此类库与项目的关系<ul>
+<li><code>compile</code> 默认,编译和打包都需要此 类库</li>
+<li><code>test</code> 表示仅仅在单元测试的时候需要</li>
+<li><code>provided</code> 表示在编译阶段需要此类库，但 打包阶段不需要，这是因为项目的目标环境己经提供了</li>
+<li><code>runtime</code>表示在编译和打包的 时候都不需要，但在运行的时候需要，比如某个指定的数据库驱动，编译和打包都不 需要 ，但测试应用要连到数据库 时就 需要此数据库驱动 。</li>
+</ul>
+</li>
+<li><code>build</code>: 此项在 pom 中可边， build包含了多个插件 plugin，用来辅助项目构建</li>
+</ul>
+</li>
+</ul>
+<h3 id="Maven-常用命令"><a href="#Maven-常用命令" class="headerlink" title="Maven 常用命令"></a>Maven 常用命令</h3><ul>
+<li><p><code>mvn compile</code>: 编译 Maven 工程</p>
+</li>
+<li><p><code>mvn package</code>: 编译井打包工程， 根据 pom.xml 中元素 packaging是jar还是 war进行打包</p>
+</li>
+<li><p><code>mvn install</code>:打包井安装到本地仓库</p>
+</li>
+<li><p><code>mvn deploy</code>: 同 install，但打包井安装到远程仓库</p>
+</li>
+<li><p><code>mvn clean</code>: 删除 target 目录</p>
+</li>
+</ul>
+<h2 id="Spring-核心技术"><a href="#Spring-核心技术" class="headerlink" title="Spring 核心技术"></a>Spring 核心技术</h2><h3 id="Spring-容器"><a href="#Spring-容器" class="headerlink" title="Spring 容器"></a>Spring 容器</h3><h4 id="Spring-IoC"><a href="#Spring-IoC" class="headerlink" title="Spring IoC"></a>Spring IoC</h4><p>IoC (Inversion ofControl，反向控制〉原则，更为形象的称呼是 DI (dependency injection，依赖注入)。相对于Bean直接构造依赖的对象， Spring框架则根据Bean之间的依赖关系创建对象，并注入到 Bean 中。</p>
+<h4 id="Spring-常用注解"><a href="#Spring-常用注解" class="headerlink" title="Spring 常用注解"></a>Spring 常用注解</h4><ul>
+<li><code>Controller</code>: 声明此类是一个 MVC 类，通常与<code>@RequestMapping</code> 一起使用</li>
+<li><code>Service</code>: 声 明此类是一个业务处理类，通常与<code>@Transactional</code> 一起配合使用</li>
+<li><code>Repository</code>: 声明此类是一个数据库或者其他 NoSQL 出问类。</li>
+<li><code>RestController</code>: 同 Controller， 用于 REST 服务。</li>
+<li><code>Component</code>:声明此类是一个 Spring管理的类，通常用于无法用上述注解描述的 Spring管理类。</li>
+<li><code>Configuration</code>: 声明此类是 一个配置类，通常与注解@Bean 配合使用。</li>
+<li><code>Bean</code>: 作用在方法上，声明该方法执行的返回结果是一个 Spring 容器管理的 Bean。</li>
+</ul>
+<p>Spring 负责实例化 Bean， 开发者可 以提供一系列回调函数 ，用于进一步配置 Bean， 包括<br>@PostConstruct 注解和@PreDestory 注解。</p>
+<ul>
+<li>当 Bean 被容器初始化后，会调用@PostConstruct 的注解方法</li>
+<li>在容器被销毁之前，调用被 @PreDestory 注解的方法</li>
+</ul>
+<p>引用Bean:</p>
+<ol>
+<li>使用注解@Qualifier来引用, 根据名字</li>
+<li>过@Autowired 声明对其他 Bean 的引用, 作用于属性或者构造函数参数，甚至是方法调用参数上。</li>
+</ol>
+<h3 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h3><p>AOP (Aspect-Oriented Programming，面向切面编程)提供了另外一种思路来实现应用系统 的公共服务 。</p>
+<ul>
+<li>每个业务方法调用的权限管理: 在用户调用方法前判断用户是否有权调用此方法</li>
+<li>每个方法调用的审计: 记录谁调用了什么业务方法，传入参数是什么，操作是否成功。</li>
+<li>数据库事务的管理: 在执行数据库一系列操作前，先开启事务，在执行完后提交事务: 如果执行出错，则回滚事务。</li>
+<li>缓存: 对业务方法返回的数据进行缓存，下次调用的时候，如果参数未变，直接从缓 存中获取数据，而不再调取应用方法。</li>
+</ul>
+<p>AOP 有如下术语:</p>
+<ul>
+<li>Aspect: Aspect声明类似于 Java 中的类声明，在 Aspect 中会包含一些 Pointcut及相应 的 Advice</li>
+<li>Jointpoint: 表示在程序中明确定义的点，典型的包括方法调用、对类成员的访问， 以及异常处理程序块的执行等。 Spring 中的 Jointpoint 只支持方法调用。</li>
+<li>Pointcut: 表示一组 Joint point， 如方法名、参数类型、返回类型等，这些 Joint point 通过逻辑关系组合起来， 它定义了相应的 Advice将要发生的地方。简单理解 Pointcut(一种表达式) 一一用来判断在 Jointpoint (方法调用)中执行 Advice (操作)。</li>
+<li>Advice: Advice 定义了在 Pointcut里面定义的程序点具体要做的操作， 它通过 before、 around、 after ( return、 throw、 finally)来区 别 是在每个 Joint point 之前 、 之后还是执 行前后要调用的代码。<ul>
+<li>before: 在执行方法前调用 Advice，比如 cache功能可以在执行方法前先判断是否 有缓存。</li>
+<li>around: 在执行方法前后调用 Advice， 这是 Spring 框架和应用系统一种最为常用 的方法， </li>
+<li>after: 在执行方法后调用 Advice, after return是方法正常返回后调用 ， after throw 是方法抛出异常后调用 。</li>
+<li>finally: 方法调用后执行 Advice， 无论是否抛出异常还是正常返回</li>
+</ul>
+</li>
+<li>AOPproxy: AOPProxy也是Java对象，由AOP框架创建， 用来完成上述的动作， AOP对象通常可以通过 JDKd归amicproxy完成，或者使用 CGLib完成。</li>
+<li>Weaving: 实现上述切面编程的代码织入， 可以在编译时刻(通过 AspectJ compiler),也可以在运行时刻， Spring和其他大多数Java框架都是在运行时刻生成代理。</li>
+</ul>
+<h4 id="spring-boot-starter-aop"><a href="#spring-boot-starter-aop" class="headerlink" title="spring-boot-starter-aop"></a>spring-boot-starter-aop</h4>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/21/SpringBoot2-2/" target="_blank" title="Spring Boot 2精髓 - (2) 基础">https://jigangduan.github.io/2018/12/21/SpringBoot2-2/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/">spring-boot</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/22/SpringBoot2-3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Spring Boot 2精髓 - (3) MVC
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/21/SpringBoot2-1-JavaEE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Spring Boot 2精髓 - (1) JavaEE简介</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开发工具"><span class="nav-number">1.</span> <span class="nav-text">开发工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven-常用命令"><span class="nav-number">1.1.</span> <span class="nav-text">Maven 常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-核心技术"><span class="nav-number">2.</span> <span class="nav-text">Spring 核心技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-容器"><span class="nav-number">2.1.</span> <span class="nav-text">Spring 容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-IoC"><span class="nav-number">2.1.1.</span> <span class="nav-text">Spring IoC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-常用注解"><span class="nav-number">2.1.2.</span> <span class="nav-text">Spring 常用注解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-AOP"><span class="nav-number">2.2.</span> <span class="nav-text">Spring AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-boot-starter-aop"><span class="nav-number">2.2.1.</span> <span class="nav-text">spring-boot-starter-aop</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

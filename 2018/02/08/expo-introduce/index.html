@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>expo 介绍 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javascriptreactjsreact-nativeexpo">
+  
+  
+  
+  
+  <meta name="description" content="how-to-become-a-react-native-developer   介绍Expo是一套工具、库和服务，让你可以通过编写JavaScript来构建本地的iOS和Android应用程序。  使用Expo工作详细介绍如何使用Expo开发环境和工具的各个方面。如果你对Expo完全陌生，一定要确保你已经安装好了工具并四处看看。在此之后，您可能想要阅读并运行以创建您的第一个项目。">
+<meta name="keywords" content="javascript,reactjs,react-native,expo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Expo 介绍">
+<meta property="og:url" content="https://jigangduan.github.io/2018/02/08/expo-introduce/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="how-to-become-a-react-native-developer   介绍Expo是一套工具、库和服务，让你可以通过编写JavaScript来构建本地的iOS和Android应用程序。  使用Expo工作详细介绍如何使用Expo开发环境和工具的各个方面。如果你对Expo完全陌生，一定要确保你已经安装好了工具并四处看看。在此之后，您可能想要阅读并运行以创建您的第一个项目。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://d30j33t1r58ioz.cloudfront.net/static/images/spots/docs.gif?f560592076320441267576e0dae10968">
+<meta property="og:image" content="https://docs.expo.io/static/3e6b623e795fdb7aa26ac4ea708ceb03-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/3b06fec065fc43a319c50f3bf6bdfe29-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/54eabb01a078ee0a37fd20f2c4e12709-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/aa6d11a7cb8249b27c608177824c9c52-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/ba5e8f002e9c4763c6c47d903e6a7952-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/e0769f3e3d13565ff8d0a38c1a544e98-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/0af285921a2776b12f3d758cf811b529-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/a69ee61b65016412b4e2b91249cc524d-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/ba5e8f002e9c4763c6c47d903e6a7952-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/cea8b37eddf1a301c7be3677971231c8-d94ef.png">
+<meta property="og:image" content="https://docs.expo.io/static/9b488f03170d123590d9ebc0fbf67f64-cca32.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.200Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Expo 介绍">
+<meta name="twitter:description" content="how-to-become-a-react-native-developer   介绍Expo是一套工具、库和服务，让你可以通过编写JavaScript来构建本地的iOS和Android应用程序。  使用Expo工作详细介绍如何使用Expo开发环境和工具的各个方面。如果你对Expo完全陌生，一定要确保你已经安装好了工具并四处看看。在此之后，您可能想要阅读并运行以创建您的第一个项目。">
+<meta name="twitter:image" content="https://d30j33t1r58ioz.cloudfront.net/static/images/spots/docs.gif?f560592076320441267576e0dae10968">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-expo-introduce" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Expo 介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/02/08/expo-introduce/" class="article-date">
+	  <time datetime="2018-02-08T03:38:08.000Z" itemprop="datePublished">2018-02-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/React/">React</a><a class="article-category-link" href="/categories/React/React-Native/">React Native</a><a class="article-category-link" href="/categories/React/React-Native/Expo/">Expo</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>how-to-become-a-react-native-developer</p>
+<p><img src="https://d30j33t1r58ioz.cloudfront.net/static/images/spots/docs.gif?f560592076320441267576e0dae10968" alt></p>
+<ul>
+<li><p><a href="#">介绍</a><br><a href="http://expo.io/" target="_blank" rel="noopener">Expo</a>是一套工具、库和服务，让你可以通过编写JavaScript来构建本地的iOS和Android应用程序。</p>
+</li>
+<li><p>使用Expo工作<br>详细介绍如何使用Expo开发环境和工具的各个方面。<br>如果你对Expo完全陌生，一定要确保你已经<a href="/2018/02/06/expo-installation/">安装好了工具</a>并<a href="/2018/02/06/expo-xde-tour/">四处看看</a>。在此之后，您可能想要阅读并<a href="/2018/02/07/expo-up-and-running/">运行</a>以创建您的第一个项目。</p>
+</li>
+</ul>
+<a id="more"></a>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Expo应用程序是带有<a href="https://docs.expo.io/versions/latest/sdk/index.html#expo-sdk" target="_blank" rel="noopener">Expo SDK</a>的本地应用程序。SDK是一个native-and-JS库，它提供了对设备的系统功能的访问(像照相机、联系人、本地存储和其他硬件)。这意味着您不需要使用Xcode或Android Studio，也不需要编写任何本地代码，而且它也使您的纯js项目非常便于移植，因为它可以在包含世博会SDK的任何本地环境中运行。</p>
+<p>Expo还提供了UI组件来处理各种各样的用例，这些用例几乎所有的应用都能覆盖，但没有被融入到React Native中，比如图标、模糊视图等等。</p>
+<p>最后，Expo SDK提供了对服务的访问，这些服务通常是一种很难管理的服务，但几乎每个应用都需要它。<br>其中最受欢迎的是:Expo可以为你管理你的资产，它可以帮你处理推送通知，它还可以构建原生二进制文件，这些二进制文件已经准备好部署到app store中。</p>
+<h2 id="考虑使用Expo吗"><a href="#考虑使用Expo吗" class="headerlink" title="考虑使用Expo吗?"></a>考虑使用Expo吗?</h2><ul>
+<li>如果你想了解一下Expo提供了什么，你可能想要熟悉一下<a href>Expo项目的生命周期</a>，它描述了你是如何进入一个产品的iOS和Android应用的场景。</li>
+<li>为了进一步解释，检查<a href>经常被问到的问题</a>也很好。</li>
+</ul>
+<h2 id="准备好开始了吗"><a href="#准备好开始了吗" class="headerlink" title="准备好开始了吗?"></a>准备好开始了吗?</h2><ul>
+<li>首先<a href>安装</a>工具，看看周围的情况。</li>
+<li>通过<a href>跟踪和运行指南</a>来完成你的第一个项目。</li>
+<li>如果您还不熟悉React和React Native，那么您可以使用<a href="http://www.reactnativeexpress.com/" target="_blank" rel="noopener">React Native Express</a>来引导您的知识。</li>
+</ul>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>开发应用程序你需要有两种工具——一个桌面开发工具和一个移动客户端来打开你的应用程序。</p>
+<h2 id="桌面开发工具-XDE"><a href="#桌面开发工具-XDE" class="headerlink" title="桌面开发工具:XDE"></a>桌面开发工具:XDE</h2><p>XDE代表Expo开发环境。它是一个独立的桌面应用程序，包含了所有需要启动的依赖项。</p>
+<p>为<a href="https://xde-updates.exponentjs.com/download/mac" target="_blank" rel="noopener">macOS</a>、<a href="https://xde-updates.exponentjs.com/download/win32" target="_blank" rel="noopener">Windows(64位)</a>或<a href="https://xde-updates.exponentjs.com/download/linux-x86_64" target="_blank" rel="noopener">Linux</a>下载最新版本的XDE。</p>
+<p>在Linux上，打开chmod a+x xde<em>.AppImage 和 ./xde</em>.AppImage。</p>
+<h2 id="移动客户端-iOS和Android-Expo"><a href="#移动客户端-iOS和Android-Expo" class="headerlink" title="移动客户端:iOS和Android Expo"></a>移动客户端:iOS和Android Expo</h2><p>Expo客户端就像一个用Expo搭建的应用的浏览器。当你在你的项目上启动XDE时，它会为你生成一个独特的开发URL，你可以从iOS或Android的世博会客户端访问它，无论是在真实的设备上，还是在模拟器上。</p>
+<h3 id="在你的设备"><a href="#在你的设备" class="headerlink" title="在你的设备"></a>在你的设备</h3><p><a href="https://play.google.com/store/apps/details?id=host.exp.exponent" target="_blank" rel="noopener">下载Android从Play Store</a> 或 <a href="https://itunes.com/apps/exponent" target="_blank" rel="noopener">iOS从App Store</a></p>
+<blockquote>
+<p>所需的Android和iOS版本:最低的Android版本支持是Android 4.4，最小的iOS版本是iOS 9.0。</p>
+</blockquote>
+<p>您不需要在模拟器上手动安装世博会客户端，因为XDE会自动完成这个操作。请参阅本指南的下一部分。</p>
+<h3 id="iOS模拟器"><a href="#iOS模拟器" class="headerlink" title="iOS模拟器"></a>iOS模拟器</h3><p>通过苹果App Store安装Xcode。需要一段时间，去打个盹。接下来，打开Xcode，进入首选项并单击组件选项卡，从列表中安装模拟器。</p>
+<p>一旦模拟器打开，你在XDE中打开了一个项目，你可以在XDE上打开iOS模拟器，它会将Expo客户端安装到模拟器上，并在里面打开你的应用。</p>
+<blockquote>
+<p><strong>不工作吗?</strong> 有时XDE会自动安装世博客户端，通常是由于你的环境或Xcode工具链上的小差异造成的。如果您需要手动在模拟器上安装世博会客户端，您可以遵循以下步骤:</p>
+<ul>
+<li>下载最新的模拟器构建。</li>
+<li>提取存档的内容。你应该得到一个像指数.x.xxx这样的目录。</li>
+<li>确保模拟器正在运行。</li>
+<li>在终端中，运行 <code>xcrun simctl install booted [path to extracted directory]</code></li>
+</ul>
+</blockquote>
+<h3 id="Android模拟器"><a href="#Android模拟器" class="headerlink" title="Android模拟器"></a>Android模拟器</h3><p><a href="https://www.genymotion.com/fun-zone/" target="_blank" rel="noopener">下载Genymotion</a>(免费版)，并遵循<a href="https://docs.genymotion.com/Content/01_Get_Started/Installation.htm" target="_blank" rel="noopener">Genymotion安装指南</a>。一旦你安装了Genymotion，创建了一个虚拟设备——我们推荐Nexus 5，Android版本就会由你来决定。在准备好时启动虚拟设备。</p>
+<p>一旦模拟器打开，你在XDE中打开了一个项目，你就可以在XDE的Android平台上发布开放项目，它会将Expo客户端安装到模拟器上，并在里面打开你的应用程序。如果你遇到任何问题，请遵循我们的<a href="https://docs.expo.io/versions/latest/guides/genymotion.html#genymotion" target="_blank" rel="noopener">Genymotion指南</a>。</p>
+<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>要想开始Expo，你不一定需要安装了Node.js，但一旦你开始构建东西，你就会想要拥有它。<a href="https://nodejs.org/en/" target="_blank" rel="noopener">下载最新版本的Node.js</a>。</p>
+<h2 id="Watchman"><a href="#Watchman" class="headerlink" title="Watchman"></a>Watchman</h2><p>一些macOS用户会遇到问题，如果他们没有安装在他们的机器上，那么我们建议您安装Watchman。当用户改变时，他们会观察文件和记录，然后触发相应的动作，并在内部进行反应。<a href="https://facebook.github.io/watchman/docs/install.html" target="_blank" rel="noopener">下载并安装Watchman</a>。</p>
+<h1 id="XDE之旅"><a href="#XDE之旅" class="headerlink" title="XDE之旅"></a>XDE之旅</h1><h2 id="登录屏幕"><a href="#登录屏幕" class="headerlink" title="登录屏幕"></a>登录屏幕</h2><p>当你第一次打开XDE时，你会在屏幕上看到这个标志。如果你已经有了一个账户，请继续登录。如果你不这样做，要么和Github签约，要么注册一个账户。</p>
+<p><img src="https://docs.expo.io/static/3e6b623e795fdb7aa26ac4ea708ceb03-d94ef.png" alt></p>
+<h2 id="主屏幕"><a href="#主屏幕" class="headerlink" title="主屏幕"></a>主屏幕</h2><p>成功,你签署!在这个屏幕上，您可能想要创建一个新项目，或者打开一个现有的项目。为了方便，我们列出了一些最近开放的项目。</p>
+<p><img src="https://docs.expo.io/static/3b06fec065fc43a319c50f3bf6bdfe29-d94ef.png" alt></p>
+<h2 id="项目对话框"><a href="#项目对话框" class="headerlink" title="项目对话框"></a>项目对话框</h2><p>点击项目，你就会看到你能做的一切。当然，你不能关闭一个项目或者在finder中显示它，因为你还没有打开一个项目。</p>
+<p><img src="https://docs.expo.io/static/54eabb01a078ee0a37fd20f2c4e12709-d94ef.png" alt></p>
+<h2 id="退出-如果你想要"><a href="#退出-如果你想要" class="headerlink" title="退出,如果你想要"></a>退出,如果你想要</h2><p>在任何时候，你都可以点击右上方的用户名并退出。或注销。谁能真正同意这一看法呢?</p>
+<p><img src="https://docs.expo.io/static/aa6d11a7cb8249b27c608177824c9c52-d94ef.png" alt></p>
+<h2 id="项目屏幕"><a href="#项目屏幕" class="headerlink" title="项目屏幕"></a>项目屏幕</h2><p>所以我们已经开放了一个新项目。左边的窗格是React包装器，您可以在它的<a href>启动和运行</a>中了解更多关于<a href>Expo的工作</a>。右边的面板是用于设备日志的，您可以在<a href>查看日志</a>中看到更多的内容。</p>
+<p><img src="https://docs.expo.io/static/ba5e8f002e9c4763c6c47d903e6a7952-d94ef.png" alt></p>
+<h2 id="分享"><a href="#分享" class="headerlink" title="分享"></a>分享</h2><p>向任何有互联网连接的人发送你的应用程序的链接。如果你的设备没有连接到你的电脑上，这也很有用。</p>
+<p><img src="https://docs.expo.io/static/e0769f3e3d13565ff8d0a38c1a544e98-d94ef.png" alt></p>
+<h2 id="设备上打开"><a href="#设备上打开" class="headerlink" title="设备上打开"></a>设备上打开</h2><p>设备按钮可以让你在设备或模拟器上快速打开你的应用。更多的阅读<a href>启动和运行</a>。</p>
+<p><img src="https://docs.expo.io/static/0af285921a2776b12f3d758cf811b529-d94ef.png" alt></p>
+<h2 id="开发模式"><a href="#开发模式" class="headerlink" title="开发模式"></a>开发模式</h2><p>您通常希望在开发模式中使用您的项目。这使它运行得稍微慢一些，因为它增加了很多运行时验证的代码来警告您潜在的问题，但是它也提供了实时重载、热重载、远程调试和元素检查器的访问权。如果你想测试与性能相关的任何东西，禁用开发模式并重新加载你的应用。</p>
+<p><img src="https://docs.expo.io/static/a69ee61b65016412b4e2b91249cc524d-d94ef.png" alt></p>
+<h2 id="项目对话框-与项目打开"><a href="#项目对话框-与项目打开" class="headerlink" title="项目对话框(与项目打开)"></a>项目对话框(与项目打开)</h2><p>除了主屏幕提供的选项外，我们还提供了一些快捷方式，比如在finder中显示项目目录。</p>
+<p><img src="https://docs.expo.io/static/ba5e8f002e9c4763c6c47d903e6a7952-d94ef.png" alt></p>
+<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>当你在你的项目上工作的时候，它会得到一个临时的URL，从你的电脑上提供。当你准备好与他人分享这个项目时，你可以 <strong>发布</strong> 这个项目来获得一个永久的URL(类似expo.io/@your-username/your-app-slug)，任何人都可以和Expo的客户一起开放。</p>
+<p>当您点击XDE中的Publish按钮时，您将被要求确认您希望您的项目对公众开放。XDE需要花一些时间来生成你的迷你JS包，并将你的资产上传到我们的服务器上，一旦完成，打印出你的应用发布的URL。你可以读到更多的细节，关于在<a href>Expo如何运作</a>和<a href>发布指南</a>方面，发布是如何运作的。</p>
+<p><img src="https://docs.expo.io/static/cea8b37eddf1a301c7be3677971231c8-d94ef.png" alt></p>
+<h1 id="项目生命周期"><a href="#项目生命周期" class="headerlink" title="项目生命周期"></a>项目生命周期</h1><p>Expo让你很容易开始编写应用程序，但Expo也可以将你的项目带向生产。以下是您可能在此过程中使用的工具和服务的概述。</p>
+<p>本指南旨在对Expo提供的内容进行高层次的解释。出于好奇，这些主题的技术实现将在<a href="https://docs.expo.io/versions/latest/guides/how-expo-works.html" target="_blank" rel="noopener">这里</a>更详细地介绍。</p>
+<p><img src="https://docs.expo.io/static/9b488f03170d123590d9ebc0fbf67f64-cca32.png" alt></p>
+<h2 id="创建一个世博会项目"><a href="#创建一个世博会项目" class="headerlink" title="创建一个世博会项目"></a>创建一个世博会项目</h2><p>您可以使用我们的桌面工具和文本编辑器创建一个新的Expo项目。查看<a href>启动并运行</a>一个快速指南来创建一个项目，在一个设备上运行它，并进行更改。</p>
+<p>Expo应用程序是本地应用程序。最快的方法是使用<a href>启动并运行</a>指南，但是你也可以转换一个已有的React Native应用，或者使用一个由create-react-native-app生成的项目。</p>
+<h2 id="本地开发"><a href="#本地开发" class="headerlink" title="本地开发"></a>本地开发</h2><p>当你在一个Expo项目上工作时，我们会从你的本地电脑上为你的项目提供一个实例。如果你关闭了这个项目或者关闭了你的电脑，你的开发项目就会停止。</p>
+<p>在这段时间里，你可以使用一个叫做<a href>Expo Client</a>的预构建的iOS/Android应用来测试你的项目。它要求您的计算机为您的项目的本地副本(通过localhost、LAN或隧道)，下载它，并运行它。您可以利用各种开发工具，如<a href>调试</a>、<a href>流设备日志</a>、检查元素、热模块重新加载等等。</p>
+<h2 id="发布您的项目"><a href="#发布您的项目" class="headerlink" title="发布您的项目"></a>发布您的项目</h2><p>如果你点击XDE的 <strong>发布</strong> 按钮，我们就会将你的应用的一个迷你版复制到我们的CDN上，并给你一个可分享的网址，你的地址，<code>expo.io/@your-username/your-app-slug</code>。</p>
+<p>你可以立即与任何拥有Expo Client应用程序的人分享这个链接，<a href>阅读更多关于这里的发布</a>。</p>
+<h2 id="更新应用程序"><a href="#更新应用程序" class="headerlink" title="更新应用程序"></a>更新应用程序</h2><p>您可以在不影响用户的情况下继续在本地进行更改。任何时候你发布应用程序的修改，你的新版本就会立即被任何有链接的人使用。</p>
+<p>我们经常发布对<a href>Expo SDK</a>的更新。每次更新包括说明如何升级你的项目。如果您决定更新我们的SDK的更新版本，那么旧版本的副本将继续正常工作。用户将下载他们的客户端支持的最新版本。</p>
+<h2 id="部署到苹果应用商店和Google-Play商店"><a href="#部署到苹果应用商店和Google-Play商店" class="headerlink" title="部署到苹果应用商店和Google Play商店"></a>部署到苹果应用商店和Google Play商店</h2><p>当你准备在苹果应用商店和Google Play商店正式发布你的应用时，世博会就可以为你带来部署了<code>.ipa</code>和<code>.apk</code>，准备提交给苹果和谷歌。我们在我们的服务器上生成它们，所以你仍然不需要任何苹果或谷歌软件。参见关于分发应用程序的文档。</p>
+<h2 id="更改本地代码"><a href="#更改本地代码" class="headerlink" title="更改本地代码"></a>更改本地代码</h2><p>你可以在app Store和Play商店中使用你的应用程序，同时只编写JS。然而，如果你遇到了Expo所没有的特殊的高级需求，我们就提供了分离到ExpoKit的能力，这是你的Expo项目的本地Xcode和Android工作室的代表。</p>
+<blockquote>
+<p>⚠️:如果您选择与Expo分开，一些Expo服务将不复存在。例如，我们不能再为您生成独立的构建。您需要自己管理本机构建。</p>
+</blockquote>
+<h1 id="额外的资源"><a href="#额外的资源" class="headerlink" title="额外的资源"></a>额外的资源</h1><p>以下资源对于学习Expo和它所依赖的一些项目是非常有用的。</p>
+<h2 id="Expo-博客"><a href="#Expo-博客" class="headerlink" title="Expo 博客"></a>Expo 博客</h2><ul>
+<li><a href="https://blog.expo.io/" target="_blank" rel="noopener">Exposition</a>——官方博客，每个月我们都会发布新闻稿和其他与Expo相关的内容。</li>
+</ul>
+<h2 id="课程-使用Expo"><a href="#课程-使用Expo" class="headerlink" title="课程 使用Expo"></a>课程 使用Expo</h2><ul>
+<li><a href="https://repl.it/site/react_native" target="_blank" rel="noopener">repl.it - React Native - 在接下来的5分钟内构建你的第一个应用程序</a> (免费)</li>
+<li><a href="https://www.youtube.com/playlist?list=PLCC436JpVnK2RFms3NG9ubPToWCNbMLbT" target="_blank" rel="noopener">React Europe - React Native工作室视频在YouTube的介绍</a> (免费)</li>
+<li><a href="https://rmotr.com/introduction-to-react-native-and-expo" target="_blank" rel="noopener">RMOTR - React Native &amp; Expo 移动开发</a> (付费)</li>
+<li><a href="https://www.udemy.com/react-native-advanced/" target="_blank" rel="noopener">Udemy - React Native: Stephen Grider的高级概念</a> (付费)</li>
+<li><a href="https://www.udacity.com/course/react-nanodegree--nd019" target="_blank" rel="noopener">Udacity - React Nanodegree</a> (付费)</li>
+</ul>
+<h2 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h2><ul>
+<li><a href="http://www.reactnativeexpress.com/" target="_blank" rel="noopener">React Native Express</a> - React Native最佳实践入门! 这是对 React 和 React Native的构建块的一次演练.</li>
+<li><a href="https://facebook.github.io/react-native/docs/sample-application-movies.html" target="_blank" rel="noopener">官方 React Native 文档</a></li>
+<li><a href="https://egghead.io/courses/react-native-fundamentals" target="_blank" rel="noopener">React Native 基本原理</a> (egadad.io视频课程)</li>
+<li><a href="https://egghead.io/courses/animate-react-native-ui-elements" target="_blank" rel="noopener">动态 React Native UI 元素</a> (egadad.io的视频课程)</li>
+<li><a href="http://shop.oreilly.com/product/0636920041511.do" target="_blank" rel="noopener">学习 React Native</a> (书)</li>
+<li><a href="https://github.com/jevakallio/react-native-chat-tutorial" target="_blank" rel="noopener">Jani Eväkallio的聊天教程</a></li>
+</ul>
+<h2 id="会谈"><a href="#会谈" class="headerlink" title="会谈"></a>会谈</h2><ul>
+<li><a href="https://www.youtube.com/watch?v=Uk45O6AygH8" target="_blank" rel="noopener">React Native Europe - Snack的建立</a></li>
+<li><a href="https://www.youtube.com/watch?v=U0vnAW4UNXE" target="_blank" rel="noopener">React Europe - Expo Snack</a></li>
+<li><a href="https://www.youtube.com/watch?v=9baaVjGdBqs" target="_blank" rel="noopener">React Conf - 创建 React Native App</a></li>
+<li><a href="https://www.youtube.com/watch?v=-XxSCi8TKuk" target="_blank" rel="noopener">Reactive - 从React web 到本地移动</a></li>
+<li><a href="https://www.youtube.com/watch?v=cI9bDvDEsYE" target="_blank" rel="noopener">React Europe - 建造 Android的 li.st以 Expo 和 React Native</a></li>
+<li><a href="https://www.youtube.com/watch?v=uFrAZfPW9JY" target="_blank" rel="noopener">哈佛大学CS50课程 - 很容易就能建立React Native应用</a></li>
+<li><a href="https://www.youtube.com/watch?v=E398q4HGRBA" target="_blank" rel="noopener">Apollo Day - GraphQL at Expo</a></li>
+</ul>
+<h2 id="React"><a href="#React" class="headerlink" title="React"></a>React</h2><ul>
+<li><a href="http://www.react.express/" target="_blank" rel="noopener">React Express</a></li>
+<li><a href="https://egghead.io/technologies/react" target="_blank" rel="noopener">React 课程 Egghead.io</a> - 几个播放列表，包括React和Redux基本原理.</li>
+<li><a href="https://facebook.github.io/react/docs/getting-started.html" target="_blank" rel="noopener">官方 React 文档</a></li>
+</ul>
+<h2 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h2><ul>
+<li><a href="http://es6katas.org/" target="_blank" rel="noopener">ES6 Katas</a> - 为了让自己熟悉新JavaScript特性，可以让自己熟悉使用React Native的新JavaScript特性</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/02/08/expo-introduce/" target="_blank" title="Expo 介绍">https://jigangduan.github.io/2018/02/08/expo-introduce/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/expo/">expo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react-native/">react-native</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reactjs/">reactjs</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/02/08/expo-working-with-expo/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          使用Expo工作
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/06/jsforcats/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">猫的JavaScript</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快速入门"><span class="nav-number">1.</span> <span class="nav-text">快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#考虑使用Expo吗"><span class="nav-number">1.2.</span> <span class="nav-text">考虑使用Expo吗?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备好开始了吗"><span class="nav-number">1.3.</span> <span class="nav-text">准备好开始了吗?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#桌面开发工具-XDE"><span class="nav-number">2.1.</span> <span class="nav-text">桌面开发工具:XDE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动客户端-iOS和Android-Expo"><span class="nav-number">2.2.</span> <span class="nav-text">移动客户端:iOS和Android Expo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在你的设备"><span class="nav-number">2.2.1.</span> <span class="nav-text">在你的设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS模拟器"><span class="nav-number">2.2.2.</span> <span class="nav-text">iOS模拟器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android模拟器"><span class="nav-number">2.2.3.</span> <span class="nav-text">Android模拟器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-js"><span class="nav-number">2.3.</span> <span class="nav-text">Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Watchman"><span class="nav-number">2.4.</span> <span class="nav-text">Watchman</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XDE之旅"><span class="nav-number">3.</span> <span class="nav-text">XDE之旅</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录屏幕"><span class="nav-number">3.1.</span> <span class="nav-text">登录屏幕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主屏幕"><span class="nav-number">3.2.</span> <span class="nav-text">主屏幕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目对话框"><span class="nav-number">3.3.</span> <span class="nav-text">项目对话框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#退出-如果你想要"><span class="nav-number">3.4.</span> <span class="nav-text">退出,如果你想要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目屏幕"><span class="nav-number">3.5.</span> <span class="nav-text">项目屏幕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分享"><span class="nav-number">3.6.</span> <span class="nav-text">分享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设备上打开"><span class="nav-number">3.7.</span> <span class="nav-text">设备上打开</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发模式"><span class="nav-number">3.8.</span> <span class="nav-text">开发模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目对话框-与项目打开"><span class="nav-number">3.9.</span> <span class="nav-text">项目对话框(与项目打开)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布"><span class="nav-number">3.10.</span> <span class="nav-text">发布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目生命周期"><span class="nav-number">4.</span> <span class="nav-text">项目生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个世博会项目"><span class="nav-number">4.1.</span> <span class="nav-text">创建一个世博会项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地开发"><span class="nav-number">4.2.</span> <span class="nav-text">本地开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布您的项目"><span class="nav-number">4.3.</span> <span class="nav-text">发布您的项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新应用程序"><span class="nav-number">4.4.</span> <span class="nav-text">更新应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署到苹果应用商店和Google-Play商店"><span class="nav-number">4.5.</span> <span class="nav-text">部署到苹果应用商店和Google Play商店</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改本地代码"><span class="nav-number">4.6.</span> <span class="nav-text">更改本地代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#额外的资源"><span class="nav-number">5.</span> <span class="nav-text">额外的资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Expo-博客"><span class="nav-number">5.1.</span> <span class="nav-text">Expo 博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#课程-使用Expo"><span class="nav-number">5.2.</span> <span class="nav-text">课程 使用Expo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Native"><span class="nav-number">5.3.</span> <span class="nav-text">React Native</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会谈"><span class="nav-number">5.4.</span> <span class="nav-text">会谈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React"><span class="nav-number">5.5.</span> <span class="nav-text">React</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript"><span class="nav-number">5.6.</span> <span class="nav-text">JavaScript</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

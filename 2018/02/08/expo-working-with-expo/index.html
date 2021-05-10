@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>使用expo工作 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javascriptreactjsreact-nativeexpo">
+  
+  
+  
+  
+  <meta name="keywords" content="javascript,reactjs,react-native,expo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Expo工作">
+<meta property="og:url" content="https://jigangduan.github.io/2018/02/08/expo-working-with-expo/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://d30j33t1r58ioz.cloudfront.net/static/images/spots/docs.gif?f560592076320441267576e0dae10968">
+<meta property="og:image" content="https://docs.expo.io/static/3dcb381ef2f1f8117424ddd3b156514b-57ef1.png">
+<meta property="og:image" content="https://docs.expo.io/static/2bbe2eb78d5256a2a6f26e3926d28f9a-6544b.png">
+<meta property="og:image" content="https://docs.expo.io/static/6f6446f29d456d65316879ceb11f2bc9-640d6.png">
+<meta property="og:image" content="https://docs.expo.io/static/5a9f2406d395981fd83ca2dd1a6c2213-97f44.png">
+<meta property="og:image" content="https://docs.expo.io/static/6e16643410992b1e7bd3f39f6f604ef4-cca32.png">
+<meta property="og:image" content="https://docs.expo.io/static/6c8db7841722e4eeb57c4b14fcaee869-cca32.png">
+<meta property="og:image" content="https://docs.expo.io/static/0af875d134c9a8835b71baaa0e1791bc-d94ef.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Expo工作">
+<meta name="twitter:image" content="https://d30j33t1r58ioz.cloudfront.net/static/images/spots/docs.gif?f560592076320441267576e0dae10968">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-expo-working-with-expo" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      使用Expo工作
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/02/08/expo-working-with-expo/" class="article-date">
+	  <time datetime="2018-02-08T04:15:06.000Z" itemprop="datePublished">2018-02-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/React/">React</a><a class="article-category-link" href="/categories/React/React-Native/">React Native</a><a class="article-category-link" href="/categories/React/React-Native/Expo/">Expo</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://d30j33t1r58ioz.cloudfront.net/static/images/spots/docs.gif?f560592076320441267576e0dae10968" alt></p>
+<a id="more"></a>
+<hr>
+<h1 id="启动和运行"><a href="#启动和运行" class="headerlink" title="启动和运行"></a>启动和运行</h1><h2 id="创建一个帐户"><a href="#创建一个帐户" class="headerlink" title="创建一个帐户"></a>创建一个帐户</h2><p>打开XDE后，将提示输入用户名和密码。填入你想要的用户名和密码，然后点击继续-如果用户名还没有被使用，我们会自动为你创建帐户。</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>按下<code>Project</code>并选择<code>New Project</code>，然后选择选项<code>Tab Navigation</code>选项，这将为我们提供一个良好的起点，然后在弹出的对话框中输入项目名称。我将调用我的<code>first-project</code>，并按下创建。</p>
+<p>接下来，选择保存项目的位置。我把所有有趣的项目都保存在<code>~/coding</code>中，所以我导航到那个目录并按下打开。</p>
+<p>XDE现在在选择的目录中初始化一个新项目:它复制一个基本的模板，并安装<code>react</code>、<code>react-native</code>和<code>expo</code>。</p>
+<p>当项目初始化并准备好时，您将在XDE日志中看到<code>&quot;React packager ready&quot;</code>的消息。</p>
+<p>“React packager”是一个简单的HTTP服务器，它使用<a href="https://babeljs.io/" target="_blank" rel="noopener">Babel</a>编译我们的应用JavaScript代码，并将其应用到世博会应用程序中。</p>
+<blockquote>
+<p>注意:如果你在MacOS上，XDE被困在“Waiting for packager and tunnel to start”的时候，你可能需要<a href="https://facebook.github.io/watchman/docs/install.html#build-install" target="_blank" rel="noopener">在你的机器上安装watchman</a>。最简单的方法是使用Homebrew，<code>brew install watchman</code>。</p>
+</blockquote>
+<h2 id="在你的手机或模拟器上打开应用"><a href="#在你的手机或模拟器上打开应用" class="headerlink" title="在你的手机或模拟器上打开应用"></a>在你的手机或模拟器上打开应用</h2><p>你会发现XDE显示你一个URL <code>http://4v-9wa.notbrent.mynewproject.exp.direct:80</code>-可以在浏览器中打开它，你会看到它提供了一些JSON。这个JSON是Expo的清单。我们可以在我们的手机上打开应用程序，把这个URL输入地址栏。或者，按下分享，输入你的电话号码，然后按发送链接。打开你的手机上的信息，点击链接，在Expo上打开它。你可以和任何安装了Expo app的人分享这个链接，但是只要你在XDE中打开这个项目，它就会被使用。</p>
+<p>要在iOS模拟器中打开应用，你可以按下<code>Device</code>按钮，选择<code>Open on iOS Simulator</code>(macOS)。要在Android模拟器中打开应用程序，首先要启动它，然后按下<code>Device</code>，然后在<code>Open on Android</code>。</p>
+<h2 id="第一次修改"><a href="#第一次修改" class="headerlink" title="第一次修改"></a>第一次修改</h2><p>在您的新项目中打开<code>screens/HomeScreen.js</code>，并更改<code>render()</code>函数中的任何文本。你应该看到你的应用重新载入你的改变。</p>
+<h3 id="看不出你的变化吗"><a href="#看不出你的变化吗" class="headerlink" title="看不出你的变化吗?"></a>看不出你的变化吗?</h3><p>Live重载是默认启用的，但是让我们确保我们可以通过这些步骤来启用它，以防止在某种情况下无法正常工作。</p>
+<ul>
+<li>首先，确保在XDE中<a href>启用了开发模式</a>。</li>
+<li>接下来，关闭应用程序并重新打开它。</li>
+<li>一旦应用再次打开，你就可以摇晃你的设备来显示开发者菜单。如果你使用的是模拟器，请按下<code>⌘+d</code>在iOS或<code>ctrl+m</code>在Android。</li>
+<li>如果你看到<code>Enable Live Reload</code>，按下它，你的应用就会重新加载。如果您看到了<code>Disable Live Reload</code>，那么退出开发人员菜单并尝试进行另一个更改。</li>
+</ul>
+<p><img src="https://docs.expo.io/static/3dcb381ef2f1f8117424ddd3b156514b-57ef1.png" alt></p>
+<h4 id="手动重新加载应用程序"><a href="#手动重新加载应用程序" class="headerlink" title="手动重新加载应用程序"></a>手动重新加载应用程序</h4><ul>
+<li>如果您已经按照上面的步骤进行了重新加载，仍然没有工作，请按下XDE右下角的按钮来发送一个支持请求。在我们解决这个问题之前，您可以摇动设备并按下Reload，或者使用以下工具之一，它可以同时使用没有开发模式的工具。</li>
+</ul>
+<p><img src="https://docs.expo.io/static/2bbe2eb78d5256a2a6f26e3926d28f9a-6544b.png" alt></p>
+<h4 id="祝贺你"><a href="#祝贺你" class="headerlink" title="祝贺你"></a>祝贺你</h4><p>您已经创建了一个新的Expo项目，进行了更改，并看到了它的更新。</p>
+<hr>
+<h1 id="术语表"><a href="#术语表" class="headerlink" title="术语表"></a>术语表</h1><h3 id="app-json"><a href="#app-json" class="headerlink" title="app.json"></a>app.json</h3><p><code>app.json</code>是一个为每个Expo项目而存在的文件，它被用来配置你的项目，例如名字、图标和splash screen。更多信息请阅读<a href>“app.json的配置”</a></p>
+<h3 id="create-react-native-app"><a href="#create-react-native-app" class="headerlink" title="create-react-native-app"></a>create-react-native-app</h3><p>React Native与<a href="https://github.com/facebookincubator/create-react-app" target="_blank" rel="noopener">create-react-app</a>是一样的。您可以设置并创建一个无需构建配置的React Native app，并使用Expo来完成这一任务。请阅读更多的<a href>“Expo和创造React Native App”</a>。</p>
+<h3 id="分离"><a href="#分离" class="headerlink" title="分离"></a>分离</h3><p>“分离”一词在Expo上被用于描述离开舒适的标准Expo开发环境，在这里你不必处理构建配置或本地代码。当你从Expo“分离”的时候，你会得到<a href="#expokit">ExpoKit</a>的原生项目，所以你可以继续使用Expo的api来建造你的项目，但是你的工作流程和你在没有Expo的情况下建立一个反应的本地应用是一样的。详情请阅读<a href>“分离ExpoKit”</a>。</p>
+<h3 id="eject"><a href="#eject" class="headerlink" title="eject"></a>eject</h3><p>“eject”这个词是由create-react-app推广的，它被用于create-react-native-app。当你“eject”你的项目时，你会采取更极端的步骤，而不仅仅是分离——你失去了对Expo APIs的访问，完全离开了Expo的环境。阅读更多关于ejecting。</p>
+<h3 id="Emulator"><a href="#Emulator" class="headerlink" title="Emulator"></a>Emulator</h3><p>Emulator用于描述您的计算机上的Android设备的软件仿真器。通常，iOS模拟器被称为Simulators。</p>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><p>用于与Expo合作的命令行工具。阅读<a href>更多</a>。</p>
+<h3 id="体验"><a href="#体验" class="headerlink" title="体验"></a>体验</h3><p>应用程序的同义词通常意味着更单一的用途和更小的范围，有时是艺术的和异想天开的</p>
+<h3 id="Expo-Client"><a href="#Expo-Client" class="headerlink" title="Expo Client"></a>Expo Client</h3><h3 id="Expo-SDK"><a href="#Expo-SDK" class="headerlink" title="Expo SDK"></a>Expo SDK</h3><h3 id="ExpoKit"><a href="#ExpoKit" class="headerlink" title="ExpoKit"></a>ExpoKit</h3><p>ExpoKit是一个Objective-C和Java库，它允许你使用Expo SDK和平台以及你现有的Expo项目，作为一个更大的标准原生项目的一部分——你通常会用Xcode、Android Studio或者<code>react-native init</code>来创建这个项目。阅读更多。</p>
+<h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><p>在iPhone、iPad和苹果电视上使用的操作系统。Expo目前在iOS版iPhone和iPad上运行。</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><h3 id="Manifest"><a href="#Manifest" class="headerlink" title="Manifest"></a>Manifest</h3><h3 id="本地目录"><a href="#本地目录" class="headerlink" title="本地目录"></a>本地目录</h3><h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><h3 id="Over-the-Air-updates"><a href="#Over-the-Air-updates" class="headerlink" title="Over the Air updates"></a>Over the Air updates</h3><h3 id="包管理器"><a href="#包管理器" class="headerlink" title="包管理器"></a>包管理器</h3><h3 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h3><h3 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h3><h3 id="Shell-app"><a href="#Shell-app" class="headerlink" title="Shell app"></a>Shell app</h3><h3 id="Simulator"><a href="#Simulator" class="headerlink" title="Simulator"></a>Simulator</h3><h3 id="Slug"><a href="#Slug" class="headerlink" title="Slug"></a>Slug</h3><p>我们在<a href>app.json</a>中使用“slug”这个词，指的是它的url中应用程序的名称。例如，Native Component列表应用程序就生活在<a href="https://expo.io/@community/native-component-list和slug是native-component-list。" target="_blank" rel="noopener">https://expo.io/@community/native-component-list和slug是native-component-list。</a></p>
+<h3 id="Snack"><a href="#Snack" class="headerlink" title="Snack"></a>Snack</h3><p><a href="https://snack.expo.io/" target="_blank" rel="noopener">Snack</a>是一种浏览器开发环境，你可以在你的手机或电脑上不安装任何工具，就可以在这里建立Expo<a href="#experience">体验</a>。</p>
+<h3 id="独立app"><a href="#独立app" class="headerlink" title="独立app"></a>独立app</h3><p>一个可以提交到iOS应用商店或Android Play商店的应用程序二进制文件。<a href="https://docs.expo.io/versions/latest/guides/building-standalone-apps.html" target="_blank" rel="noopener">更多地阅读“构建独立应用”</a>。</p>
+<h3 id="XDE"><a href="#XDE" class="headerlink" title="XDE"></a>XDE</h3><p>一个带有图形用户界面(GUI)的桌面工具，用于与Expo项目合作。它与<a href>exp CLI工具</a>的功能基本相同，但适用于更熟悉GUI的人。</p>
+<h3 id="yarn"><a href="#yarn" class="headerlink" title="yarn"></a>yarn</h3><p>一个用于JavaScript的包管理器。<a href="https://yarnpkg.com/" target="_blank" rel="noopener">更多</a></p>
+<hr>
+<h1 id="使用app-json配置"><a href="#使用app-json配置" class="headerlink" title="使用app.json配置"></a>使用app.json配置</h1><p><code>app.json</code>是你用来配置不属于代码的部分应用程序的首选之地。它位于您的项目的根目录下，紧邻您的<code>package.json</code>。它看起来是这样的:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"expo"</span>: &#123;</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"My app"</span>,</span><br><span class="line">    <span class="attr">"slug"</span>: <span class="string">"my-app"</span>,</span><br><span class="line">    <span class="attr">"sdkVersion"</span>: <span class="string">"25.0.0"</span>,</span><br><span class="line">    <span class="attr">"privacy"</span>: <span class="string">"public"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>app.json</code>之前被称为<code>exp.json</code>，但是为了保持与<a href="https://github.com/react-community/create-react-native-app" target="_blank" rel="noopener"> Create React Native App</a>的一致性，它已经被合并到一个文件中。<br>如果您正在将您的应用程序从使用<code>exp.json</code>转换为<code>app.json</code>，那么您所需要做的就是在<code>app.json</code>的根上添加一个“expo”键，作为所有其他键的父元素。</p>
+<p>大多数来自app.json的配置在运行时都可以通过<a href="https://docs.expo.io/versions/latest/sdk/constants.html#expoconstantsmanifest" target="_blank" rel="noopener">Expo.Constants.manifest</a>的JavaScript代码访问。<br>诸如密匙之类的敏感信息被删除。有关如何将任意配置数据传递给应用程序的信息，请参阅下面的<code>&quot;extra&quot;</code>键。</p>
+<p>下面是在<code>app.json</code>的<code>&quot;extra&quot;</code>关键字下面提供的属性列表:</p>
+<ul>
+<li><p><code>name</code></p>
+<p><strong>必需</strong>。你的app的名字在Expo上和你的home屏幕上都是一个独立app。</p>
+</li>
+<li><p><code>description</code></p>
+<p>简短地描述一下你的应用是什么，以及它为什么很棒。</p>
+</li>
+<li><p><code>slug</code></p>
+<p><strong>必需</strong>。用于发布的友好url名称。例如:expo.io/@your-username/slug。</p>
+</li>
+<li><p><code>privacy</code></p>
+<p><code>public</code>或<code>unlisted</code>。如果没有提供，则默认为<code>unlisted</code>。在未来，<code>private</code>将得到支持。<code>unlisted</code>隐藏了搜索结果的经验。有效值:<code>public</code>、<code>unlisted</code></p>
+</li>
+<li><p><code>sdkVersion</code></p>
+<p><strong>必需</strong>。运行项目的Expo sdkVersion。这应该与您的<code>package.json</code>中指定的版本一致。</p>
+</li>
+<li><p><code>version</code></p>
+<p>你的app版本，使用你喜欢的任何版本控制方案。</p>
+</li>
+<li><p><code>platforms</code></p>
+<p>您的项目明确支持的平台。如果没有指定，它会默认为<code>[&quot;ios&quot;, &quot;android&quot;]</code>。</p>
+</li>
+<li><p><code>githubUrl</code></p>
+<p>如果你想在Github上分享你的应用程序的源代码，那么在这里输入存储库的URL，它将链接到你的Expo项目页面。</p>
+</li>
+<li><p><code>orientation</code></p>
+<p>把你的应用程序锁定在一个特定的方向上，用<code>portrait</code>或<code>landscape</code>。默认为没有锁。有效值:<code>‘default’</code>, <code>‘portrait’</code>, <code>‘landscape’</code></p>
+</li>
+<li><p><code>primaryColor</code></p>
+<p>在Android上，这将决定你的应用在多任务的颜色。目前这款应用还没有在iOS上使用，但将来可能会用于其他用途。6个字符长的十六进制颜色字符串，如:<code>&#39;#000000&#39;</code></p>
+</li>
+<li><p><code>icon</code></p>
+<p>本地路径或远程url到应用程序图标的图像。我们建议您使用1024x1024 png文件。这个图标将会出现在主屏和Expo应用程序中。</p>
+</li>
+<li><p><code>notification</code></p>
+<p>远程(推送)通知的配置</p>
+<ul>
+<li><code>icon</code><br>本地路径或远程url到一个图像，用作推送通知的图标。透明的48x48 png灰度图。</li>
+<li><code>color</code><br>当它出现在通知托盘中时，为推送通知图像着色。6个字符长的十六进制颜色字符串，如:<code>&#39;#000000&#39;</code></li>
+<li><code>androidMode</code><br>分别显示每个推送通知(default)或collapse为一个(collapse)。有效值:‘default’, ‘collapse’</li>
+<li><code>androidCollapsedTitle</code><br>如果<code>androidMode</code>被设置为<code>collapse</code>，这个标题将被用于崩溃的通知消息。例如:<code>’#{unread_notifications} new interactions’</code></li>
+</ul>
+</li>
+<li><p><code>loading</code></p>
+<p><strong>弃用</strong>:使用<code>splash</code>代替。用户在打开应用程序时看到的加载屏幕的配置，同时获取和缓存捆绑包和资产。</p>
+<ul>
+<li><code>icon</code><br>在启动应用程序时，本地路径或远程url显示的图像。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>exponentIconColor</code><br>如果没有提供icon，我们将展示Expo标志。你可以在white和blue之间选择。有效值:‘white’, ‘blue’</li>
+<li><code>exponentIconGrayscale</code><br>类似于<code>exponentIconColor</code>，但表示它应该是灰度<code>(1)</code>还是不<code>(0)</code>。</li>
+<li><code>backgroundImage</code><br>本地路径或远程url到图像以填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>backgroundColor</code><br>颜色填充加载屏幕背景6字符长的十六进制颜色字符串， eg: <code>&#39;#000000&#39;</code></li>
+<li><code>hideExponentText</code><br>在默认情况下，Expo在加载屏幕的底部显示了一些文本。设置为true，禁用</li>
+</ul>
+</li>
+<li><p><code>appKey</code></p>
+<p>在默认情况下，世博会将作为<code>main</code>的注册地申请注册。如果您想要更改这个属性，您可以在该属性中指定名称。</p>
+</li>
+<li><p><code>androidStatusBarColor</code></p>
+<p><strong>弃用</strong>。使用<code>androidStatusBar</code>代替。6个字符长的十六进制颜色字符串，如:’#000000’</p>
+</li>
+<li><p><code>androidStatusBar</code></p>
+<p>配置android状态栏。</p>
+<ul>
+<li><code>barStyle</code><br>配置状态栏图标，以有亮或暗颜色。有效值:‘light-content’, ‘dark-content’</li>
+<li><code>backgroundColor</code><br>配置android状态栏。6字符长十六进制颜色字符串，eg: ‘#000000’</li>
+</ul>
+</li>
+<li><p><code>androidShowExponentNotificationInShellApp</code></p>
+<p>使用refresh按钮和调试信息向您的独立应用程序添加一个通知。</p>
+</li>
+<li><p><code>scheme</code></p>
+<p>独立的应用程序。链接到你的应用程序的URL方案。例如，如果我们把它设置为’demo’，那么demo:// URLs会在点击时打开你的应用。字符串以字母开头，然后是字母、数字、”+”, ”.” or ”-” 的组合。</p>
+</li>
+<li><p><code>entryPoint</code></p>
+<p>相对路径到您的主JavaScript文件。</p>
+</li>
+<li><p><code>extra</code></p>
+<p>你想要传递给你的经验的任何额外的领域。值可以通过<code>Expo.Constants.manifest.extra</code>。(<a href="https://docs.expo.io/versions/latest/sdk/constants.html#expoconstantsmanifest" target="_blank" rel="noopener">了解更多</a>)</p>
+</li>
+<li><p><code>rnCliPath</code></p>
+</li>
+<li><code>packagerOpts</code></li>
+<li><code>ignoreNodeModulesValidation</code></li>
+<li><p><code>nodeModulesPath</code></p>
+</li>
+<li><p><code>ios</code></p>
+<p><strong>独立的应用程序</strong>。iOS独立应用特定配置</p>
+<ul>
+<li><code>bundleIdentifier</code><br>这是你的iOS独立应用的bundle id，你可以在app Store中使用它，但它必须是独一无二的。看到这个StackOverflow问题。iOS绑定标识符标记为您的应用程序的唯一名称。例如，exp.host。我们的Expo是我们的域名，而Expo就是我们的应用。</li>
+<li><code>buildNumber</code><br>为你的iOS独立应用构建数字，必须是一个匹配苹果格式的<a href="https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html#//apple_ref/doc/uid/20001431-102364" target="_blank" rel="noopener">CFBundleVersion格式</a>的字符串</li>
+<li><code>icon</code><br>本地路径或远程URL到你的应用在iOS上的图标。如果指定了，这将覆盖顶级的图标键。使用一个1024x1024的图标，遵循苹果的图标的界面指南，包括颜色配置和透明度。世博会将产生其他所需的规模。这个图标将会出现在主屏和Expo应用程序中。</li>
+<li><code>merchantId</code><br>在你的独立应用中使用Apple Pay的商家ID。</li>
+<li><code>appStoreUrl</code><br>如果你已经把它部署到苹果应用商店，你可以在苹果app Store上使用它。如果你的应用是公开的，你可以在你的世博会项目页面上链接到你的商店页面。</li>
+<li><code>config</code><ul>
+<li><code>branch</code><br><a href="https://branch.io/" target="_blank" rel="noopener">分支</a>键连接分支连接服务。<ul>
+<li><code>apiKey</code><br>你的分支API Key</li>
+</ul>
+</li>
+<li><code>usesNonExemptEncryption</code><br>设置独立ipa’s Info.plist <code>ITSAppUsesNonExemptEncryption</code>,给定的布尔值。</li>
+<li><code>googleMapsApiKey</code><br>为你的独立应用提供的<a href="https://developers.google.com/maps/documentation/ios-sdk/start" target="_blank" rel="noopener">Google Maps iOS SDK key</a>。</li>
+<li><code>googleSignIn</code><br>为你的独立应用提供的<a href="https://developers.google.com/identity/sign-in/ios/start-integrating" target="_blank" rel="noopener">Google Sign-In iOS SDK</a></li>
+<li><code>reservedClientId</code><br>保留的客户端ID URL方案。可以在<code>GoogeService-Info.plist</code>中找到</li>
+</ul>
+</li>
+<li><code>isRemoteJSEnabled</code><br>如果设置为false，您的独立应用程序将永远不会下载任何代码，并且只会使用在设备上本地绑定的代码。在这种情况下，你的应用的所有更新都必须通过苹果审核提交。默认值为true。(请注意，这将无法通过ExpoKit项目来实现)</li>
+<li><code>loadJSInBackgroundExperimental</code><br>如果是这样的话，你的独立应用程序会立即运行它的缓存JS包，如果存在的话，并在后台请求一个新的。</li>
+<li><code>supportsTablet</code><br>你的独立iOS应用是否支持平板电脑的尺寸。默认值为false。</li>
+<li><code>isTabletOnly</code><br>如果这是true，说明你的独立iOS应用不支持手机，只支持平板电脑。</li>
+<li><code>infoPlist</code><br>任意配置的字典，添加到您的独立应用程序的本地Info.plist。适用于所有其他特定于Expo配置。没有执行其他验证，所以在应用程序商店的拒绝中使用它。</li>
+<li><code>associatedDomains</code><br>一个包含独立应用程序的相关域的数组。</li>
+<li><code>usesIcloudStorage</code><br>一个布尔值，指示该应用是否使用用于DocumentPicker的iCloud存储。有关详细信息，请参阅DocumentPicker文档。</li>
+<li><p><code>splash</code><br>为独立的iOS应用提供加载和启动屏幕的配置。</p>
+<ul>
+<li><code>backgroundColor</code><br>颜色填充屏幕背景6个字符的长十六进制颜色字符串，如:’#000000’</li>
+<li><code>resizeMode</code><br>确定图像将如何显示在弹出的加载屏幕中。必须是一个包含或包含的默认值。有效值:‘cover’, ‘contain’</li>
+<li><code>image</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>tabletImage</code><br>本地路径或远程url到图像以填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+</ul>
+</li>
+<li><p><code>android</code><br>独立的应用程序。Android独立应用程序特定配置</p>
+<ul>
+<li><code>package</code><br>的Android独立应用程序的包名，你可以做，但它需要在Play Store中是独一无二的。看到这个StackOverflow问题。反向DNS标记为您的应用程序的唯一名称。例如，host.exp.exponent。我们的域名是我们的域名，而Expo就是我们的应用。</li>
+<li><code>versionCode</code><br>Google Play需要的版本号。每个版本增加一个。必须是一个整数。<a href="https://developer.android.com/studio/publish/versioning.html" target="_blank" rel="noopener">https://developer.android.com/studio/publish/versioning.html</a></li>
+<li><code>icon</code><br>本地路径或远程url到你的应用程序在Android上的图标。如果指定了，这将覆盖顶级的图标键。我们建议您使用1024x1024 png文件(Google Play商店推荐使用透明度)。这个图标将会出现在主屏和世博会应用程序中。</li>
+<li><code>playStoreUrl</code><br>如果你已经部署在Google Play Store，那么你的应用程序的URL。如果你的应用程序是公开的，这是用来链接到你的商店页面的。</li>
+<li><code>permissions</code><br>独立应用程序使用的权限列表。删除该字段以使用默认的权限列表。<br>示例: <code>[ &quot;CAMERA&quot;, &quot;ACCESS_FINE_LOCATION&quot; ]</code>.<br>您可以根据需要指定以下权限:<ul>
+<li>ACCESS_COARSE_LOCATION</li>
+<li>ACCESS_FINE_LOCATION</li>
+<li>CAMERA</li>
+<li>MANAGE_DOCUMENTS</li>
+<li>READ_CONTACTS</li>
+<li>READ_CALENDAR</li>
+<li>WRITE_CALENDAR</li>
+<li>READ_EXTERNAL_STORAGE</li>
+<li>READ_INTERNAL_STORAGE</li>
+<li>READ_PHONE_STATE</li>
+<li>RECORD_AUDIO</li>
+<li>USE_FINGERPRINT</li>
+<li>VIBRATE</li>
+<li>WAKE_LOCK</li>
+<li>WRITE_EXTERNAL_STORAGE</li>
+<li>com.anddoes.launcher.permission.UPDATE_COUNT</li>
+<li>com.android.launcher.permission.INSTALL_SHORTCUT</li>
+<li>com.google.android.c2dm.permission.RECEIVE</li>
+<li>com.google.android.gms.permission.ACTIVITY_RECOGNITION</li>
+<li>com.google.android.providers.gsf.permission.READ_GSERVICES</li>
+<li>com.htc.launcher.permission.READ_SETTINGS</li>
+<li>com.htc.launcher.permission.UPDATE_SHORTCUT</li>
+<li>com.majeur.launcher.permission.UPDATE_BADGE</li>
+<li>com.sec.android.provider.badge.permission.READ</li>
+<li>com.sec.android.provider.badge.permission.WRITE</li>
+<li>com.sonyericsson.home.permission.BROADCAST_BADGE</li>
+</ul>
+</li>
+<li><code>config</code><ul>
+<li><code>branch</code><br><a href="https://branch.io/" target="_blank" rel="noopener">分支</a>键连接分支链接服务。<ul>
+<li><code>apiKey</code><br>你分支API key</li>
+</ul>
+</li>
+<li><code>fabric</code><br><a href="https://get.fabric.io/" target="_blank" rel="noopener">Google Developers Fabric</a> keys连接Crashlytics和其他服务。<ul>
+<li><code>apiKey</code><br>你Fabric API key</li>
+<li><code>buildSecret</code><br>Fabric build secret</li>
+</ul>
+</li>
+<li><code>googleMaps</code><br>你的独立app的<a href="https://developers.google.com/maps/documentation/android-api/signup" target="_blank" rel="noopener">Google Maps Android SDK</a> key。<ul>
+<li><code>apiKey</code><br>Google Maps Android SDK API key</li>
+</ul>
+</li>
+<li><code>googleSignIn</code><br>为你的独立应用提供的<a href="https://developers.google.com/identity/sign-in/ios/start-integrating" target="_blank" rel="noopener">Google Sign-In iOS SDK</a><ul>
+<li><code>apiKey</code><br>Android API key。可以在开发人员控制台的凭据部分或在<code>google-services.json</code>中找到。</li>
+<li><code>certificateHash</code><br>用于构建apk的签名证书的SHA-1哈希，没有任何分隔符:。可以在<code>google-service.json</code>中找到。<a href="https://developers.google.com/android/guides/client-auth" target="_blank" rel="noopener">https://developers.google.com/android/guides/client-auth</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>splash</code><br>为独立的Android应用程序加载和启动屏幕的配置。<ul>
+<li><code>backgroundColor</code><br>颜色填充屏幕背景6个字符的长十六进制颜色字符串，如: ‘#000000’</li>
+<li><code>resizeMode</code><br>确定图像将如何显示在弹出的加载屏幕中。必须是一个<code>cover</code>或<code>contain</code>,默认值<code>contain</code>。有效值:‘cover’, ‘contain’</li>
+<li><code>ldpi</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>mdpi</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>hdpi</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>xhdpi</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>xxhdpi</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+<li><code>xxxhdpi</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>facebookAppId</code></p>
+<p>用于所有的Facebook库。在<a href="https://developers.facebook.com上设置你的Facebook应用程序ID。" target="_blank" rel="noopener">https://developers.facebook.com上设置你的Facebook应用程序ID。</a></p>
+</li>
+<li><p><code>facebookDisplayName</code></p>
+<p>用于原生的Facebook登录。</p>
+</li>
+<li><p><code>facebookScheme</code></p>
+<p>用于Facebook本地登录。从“fb”开始，接着是一系列的数字，比如“fb1234567890”。你可以在<a href="https://developers.facebook.com/docs/facebook-login/ios找到你的方案的配置信息。plist”部分。" target="_blank" rel="noopener">https://developers.facebook.com/docs/facebook-login/ios找到你的方案的配置信息。plist”部分。</a></p>
+</li>
+<li><p><code>splash</code></p>
+<p>为独立应用程序加载和启动屏幕的配置。</p>
+<ul>
+<li><code>backgroundColor</code><br>颜色填充屏幕背景6个字符的长十六进制颜色字符串，如:’#000000’</li>
+<li><code>resizeMode</code><br>确定图像将如何显示在弹出的加载屏幕中。必须是一个包含或包含的默认值。有效值:‘cover’, ‘contain’</li>
+<li><code>image</code><br>本地路径或远程url到一个图像来填充加载屏幕的背景。图像大小和纵横比取决于你。必须是一个.png。</li>
+</ul>
+</li>
+<li><p><code>hooks</code></p>
+<p>对脚本的配置，以将其连接到发布过程中</p>
+<ul>
+<li><code>postPublish</code></li>
+</ul>
+</li>
+<li><p><code>assetBundlePatterns</code></p>
+<p>一组文件glob字符串，它指向的资产将被绑定到独立的应用程序二进制文件中。在<a href="https://docs.expo.io/versions/latest/guides/offline-support.html" target="_blank" rel="noopener">离线支持指南</a>中阅读更多信息</p>
+</li>
+</ul>
+<hr>
+<h1 id="开发模式"><a href="#开发模式" class="headerlink" title="开发模式"></a>开发模式</h1><p>React Native包括一些非常有用的开发工具:在Chrome中进行远程JavaScript调试、实时重载、热重加载，以及一个类似于您在Chrome中使用的受欢迎的检查器的元素检查器。它还执行一些验证，当您的应用程序正在运行时，如果您使用的是不赞成的属性，或者您忘记将必需的属性传递到组件中，那么它将给您发出警告。</p>
+<p><img src="https://docs.expo.io/static/6f6446f29d456d65316879ceb11f2bc9-640d6.png" alt></p>
+<p><strong>这是有代价的</strong>:你的应用在开发模式下运行得比较慢。你可以在XDE上来回切换。当你打开它时，关闭并重新打开你的应用程序，让它生效。<strong>在测试应用程序的性能时，一定要禁用开发模式</strong>。</p>
+<h2 id="在XDE中切换开发模式"><a href="#在XDE中切换开发模式" class="headerlink" title="在XDE中切换开发模式"></a>在XDE中切换开发模式</h2><p><img src="https://docs.expo.io/static/5a9f2406d395981fd83ca2dd1a6c2213-97f44.png" alt></p>
+<hr>
+<h1 id="exp命令行接口"><a href="#exp命令行接口" class="headerlink" title="exp命令行接口"></a>exp命令行接口</h1><p>除了XDE之外，我们还有一个CLI <code>exp</code>，如果您喜欢在命令行上工作，或者想要在测试或持续集成(CI)中使用Expo。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>运行 <code>npm install -g exp</code> 安装全局<code>exp</code>.</p>
+<p>如果您以前没有使用过exp或XDE，那么您需要做的第一件事就是使用<code>exp login</code>登录您的Expo帐户。</p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>查看使用<code>exp --help</code>的命令列表:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Usage: exp [options] [command]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line"></span><br><span class="line">  -V, --version          output the version number</span><br><span class="line">  -o, --output [format]  Output format. pretty (default), raw</span><br><span class="line">  -h, --help             output usage information</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line"></span><br><span class="line">  android [options] [project-dir]                 Opens your app in Expo on a connected Android device</span><br><span class="line">  build:ios|bi [options] [project-dir]            Build a standalone IPA for your project, signed and ready for submission to the Apple App Store.</span><br><span class="line">  build:android|ba [options] [project-dir]        Build a standalone APK for your project, signed and ready for submission to the Google Play Store.</span><br><span class="line">  build:status|bs [options] [project-dir]         Gets the status of a current (or most recently finished) build for your project.</span><br><span class="line">  convert|onentize [options] [project-dir]        Initialize Expo project files within an existing React Native project</span><br><span class="line">  detach [options] [project-dir]                  Creates Xcode and Android Studio projects for your app. Use this if you need to add custom native functionality.</span><br><span class="line">  diagnostics [options] [project-dir]             Uploads diagnostics information and returns a url to share with the Expo team.</span><br><span class="line">  doctor [options] [project-dir]                  Diagnoses issues with your Expo project.</span><br><span class="line">  fetch:ios:certs [options] [project-dir]         Fetch this project&apos; iOS certificates. Writes to PROJECT_DIR/PROJECT_NAME_(dist|push).p12 and prints passwords to stdout.</span><br><span class="line">  fetch:android:keystore [options] [project-dir]  Fetch this project&apos;s Android keystore. Writes keystore to PROJECT_DIR/PROJECT_NAME.jks and prints passwords to stdout.</span><br><span class="line">  init|i [options] [project-dir]                  Initializes a directory with an example project. Run it without any options and you will be prompted for the name and type.</span><br><span class="line">  install:ios [options]                           Install the latest version of Expo Client for iOS on the simulator</span><br><span class="line">  install:android [options]                       Install the latest version of Expo Client for Android on a connected device or emulator</span><br><span class="line">  ios [options] [project-dir]                     Opens your app in Expo in an iOS simulator on your computer</span><br><span class="line">  login|signin [options]                          Login to Expo</span><br><span class="line">  logout [options]                                Logout from exp.host</span><br><span class="line">  path [options]                                  Sets PATH for XDE</span><br><span class="line">  prepare-detached-build [options] [project-dir]  Prepares a detached project for building</span><br><span class="line">  publish:history|ph [options] [project-dir]      View a log of your published releases.</span><br><span class="line">  publish:details|pd [options] [project-dir]      View the details of a published release.</span><br><span class="line">  publish:set|ps [options] [project-dir]          Set a published release to be served from a specified channel.</span><br><span class="line">  publish:rollback|pr [options] [project-dir]     Rollback an update to a channel.</span><br><span class="line">  publish|p [options] [project-dir]               Publishes your project to exp.host</span><br><span class="line">  register [options]                              Sign up for a new Expo account</span><br><span class="line">  send [options] [project-dir]                    Sends a link to your project to a phone number or e-mail address</span><br><span class="line">  start|r [options] [project-dir]                 Starts or restarts a local server for your app and gives you a URL to it</span><br><span class="line">  url|u [options] [project-dir]                   Displays the URL you can use to view your project in Expo</span><br><span class="line">  whoami|w [options]                              Checks with the server and then says who you are logged in as</span><br></pre></td></tr></table></figure>
+<p>通过传递–help标志查看关于特定命令的其他信息。例如，<code>exp start --help</code>输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Usage: start|r [options] [project-dir]</span><br><span class="line"></span><br><span class="line">Starts or restarts a local server for your app and gives you a URL to it</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line"></span><br><span class="line">  -s, --send-to [dest]   A phone number or e-mail address to send a link to</span><br><span class="line">  -c, --clear            Clear the React Native packager cache</span><br><span class="line">  -a, --android          Opens your app in Expo on a connected Android device</span><br><span class="line">  -i, --ios              Opens your app in Expo in a currently running iOS simulator on your computer</span><br><span class="line">  -m, --host [mode]      tunnel (default), lan, localhost. Type of host to use. &quot;tunnel&quot; allows you to view your link on other networks</span><br><span class="line">  -p, --protocol [mode]  exp (default), http, redirect. Type of protocol. &quot;exp&quot; is recommended right now</span><br><span class="line">  --tunnel               Same as --host tunnel</span><br><span class="line">  --lan                  Same as --host lan</span><br><span class="line">  --localhost            Same as --host localhost</span><br><span class="line">  --dev                  Turns dev flag on</span><br><span class="line">  --no-dev               Turns dev flag off</span><br><span class="line">  --strict               Turns strict flag on</span><br><span class="line">  --no-strict            Turns strict flag off</span><br><span class="line">  --minify               Turns minify flag on</span><br><span class="line">  --no-minify            Turns minify flag off</span><br><span class="line">  --exp                  Same as --protocol exp</span><br><span class="line">  --http                 Same as --protocol http</span><br><span class="line">  --redirect             Same as --protocol redirect</span><br><span class="line">  --non-interactive      Fails if an interactive prompt would be required to continue.</span><br><span class="line">  --offline              Allows this command to run while offline</span><br><span class="line">  -h, --help             output usage information</span><br></pre></td></tr></table></figure>
+<p>另外，你可以在离线模式下运行，将离线标志传递给android、ios或启动命令。</p>
+<hr>
+<h1 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h1><p>在Expo应用程序中写入日志就像在浏览器中一样:使用<code>console.log</code>, <code>console.warn</code>, <code>console.error</code>。<br>注意:我们目前不支持远程调试模式之外的<code>console.table</code>。</p>
+<h2 id="推荐-使用Expo工具查看日志"><a href="#推荐-使用Expo工具查看日志" class="headerlink" title="推荐:使用Expo工具查看日志"></a>推荐:使用Expo工具查看日志</h2><p>当你打开一个从XDE或exp中服务的应用程序时，该应用会将日志发送到服务器，并让它们方便地提供给你。这意味着你甚至不需要把你的设备连接到你的电脑上查看日志——事实上，如果有人打开了世界另一端的应用，你仍然可以从他们的设备上看到你的应用的日志。</p>
+<h3 id="XDE日志面板"><a href="#XDE日志面板" class="headerlink" title="XDE日志面板"></a>XDE日志面板</h3><p>当您在XDE中打开一个项目时，日志窗口将被一分为二。您的应用程序日志显示在右边，而packager日志显示在左边。</p>
+<p><img src="https://docs.expo.io/static/6e16643410992b1e7bd3f39f6f604ef4-cca32.png" alt></p>
+<p>XDE还允许您在任何打开应用程序的设备之间切换日志。</p>
+<p><img src="https://docs.expo.io/static/6c8db7841722e4eeb57c4b14fcaee869-cca32.png" alt></p>
+<h3 id="使用exp查看日志"><a href="#使用exp查看日志" class="headerlink" title="使用exp查看日志"></a>使用<code>exp</code>查看日志</h3><p>如果您使用我们的命令行工具exp，那么当您的项目运行时，packager日志和应用日志都将自动地流。为了停止您的项目(并结束日志流)，使用<code>ctrl+c</code>终止进程。</p>
+<h2 id="可选-手动访问设备日志"><a href="#可选-手动访问设备日志" class="headerlink" title="可选:手动访问设备日志"></a>可选:手动访问设备日志</h2><p>虽然这通常是不必要的，但是如果你想看到你的设备上发生的所有事情，甚至是来自其他应用和操作系统本身的日志，你可以使用以下方法之一</p>
+<h3 id="查看iOS模拟器的日志"><a href="#查看iOS模拟器的日志" class="headerlink" title="查看iOS模拟器的日志"></a>查看iOS模拟器的日志</h3><h4 id="选项1-使用GUI日志"><a href="#选项1-使用GUI日志" class="headerlink" title="选项1:使用GUI日志"></a>选项1:使用GUI日志</h4><ul>
+<li>在模拟器中，按<code>⌘ + /</code>或进入<code>Debug -&gt; Open System Log</code>-这两个打开一个日志窗口，显示设备上的所有日志，包括Expo应用程序的日志。</li>
+</ul>
+<h4 id="选项2-在终端打开它"><a href="#选项2-在终端打开它" class="headerlink" title="选项2:在终端打开它"></a>选项2:在终端打开它</h4><ul>
+<li>运行<code>instruments -s devices</code></li>
+<li>找到你正在使用的模拟器的设备/操作系统版本，eg: <code>iPhone 6s (9.2) [5083E2F9-29B4-421C-BDB5-893952F2B780]</code></li>
+<li>括号中的部分结束时设备代码,因此您现在可以这样做: <code>tail -f ~/Library/Logs/CoreSimulator/DEVICE_CODE/system.log</code>, 如: <code>tail -f ~/Library/Logs/CoreSimulator/5083E2F9-29B4-421C-BDB5-893952F2B780/system.log</code></li>
+</ul>
+<h3 id="查看iPhone的日志"><a href="#查看iPhone的日志" class="headerlink" title="查看iPhone的日志"></a>查看iPhone的日志</h3><ul>
+<li><code>brew install libimobiledevice</code></li>
+<li>代入你的手机</li>
+<li><code>idevicepair pair</code></li>
+<li>在你的设备上按下 accept</li>
+<li>运行 <code>idevicesyslog</code></li>
+</ul>
+<h3 id="从Android设备或模拟器查看日志"><a href="#从Android设备或模拟器查看日志" class="headerlink" title="从Android设备或模拟器查看日志"></a>从Android设备或模拟器查看日志</h3><ul>
+<li>确保安装了Android SDK</li>
+<li>确保在您的设备上启用了USB调试(对于仿真器来说没有必要)。</li>
+<li>运行<code>adb logcat</code></li>
+</ul>
+<hr>
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><h2 id="使用-Simulator-Emulator"><a href="#使用-Simulator-Emulator" class="headerlink" title="使用 Simulator / Emulator"></a>使用 Simulator / Emulator</h2><p>在一个实际的设备上测试你的应用程序的性能和感觉是没有任何替代的，但是在调试过程中，你可能会更容易使用模拟器。</p>
+<p>苹果将他们的模拟器称为“Simulator”，而谷歌将他们的模拟器称为“Emulator”。</p>
+<h3 id="iOS-1"><a href="#iOS-1" class="headerlink" title="iOS"></a>iOS</h3><p>确保你有最新的Xcode(比如Mac App Store)。这包括iOS模拟器，以及其他一些工具。</p>
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>在Android上，我们推荐使用标准模拟器的Genymotion模拟器——我们发现它更完整、更快、更容易使用。</p>
+<p><a href="https://www.genymotion.com/fun-zone/" target="_blank" rel="noopener">下载Genymotion</a>(免费版本)并遵循<a href="https://docs.genymotion.com/Content/01_Get_Started/Installation.htm" target="_blank" rel="noopener">Genymotion安装指南</a>。一旦你安装了Genymotion，创建一个虚拟设备——我们推荐一个Nexus 5, Android版本由你决定。启动虚拟设备时，它已经准备好了。如果你遇到任何问题，请遵循我们的<a href="https://docs.expo.io/versions/latest/guides/genymotion.html#genymotion" target="_blank" rel="noopener">Genymotion指南</a>。</p>
+<h2 id="开发者菜单"><a href="#开发者菜单" class="headerlink" title="开发者菜单"></a>开发者菜单</h2><p>这个菜单使您能够访问几个对调试有用的函数。它也被称为调试菜单。调用它取决于您正在运行应用程序的设备。</p>
+<h3 id="iOS设备上"><a href="#iOS设备上" class="headerlink" title="iOS设备上"></a>iOS设备上</h3><p>摇一下这个装置。</p>
+<h3 id="在iOS模拟器"><a href="#在iOS模拟器" class="headerlink" title="在iOS模拟器"></a>在iOS模拟器</h3><p>在模拟器上的Mac上按<code>Ctrl-Cmd-Z</code>来模拟握手动作，或者按下<code>Cmd+D</code>。</p>
+<h3 id="在Genymotion"><a href="#在Genymotion" class="headerlink" title="在Genymotion"></a>在Genymotion</h3><p>在Genymotion的工具栏中按下“菜单”按钮，或者直接点击<code>Cmd-m</code>。</p>
+<h2 id="调试Javascript"><a href="#调试Javascript" class="headerlink" title="调试Javascript"></a>调试Javascript</h2><p>你可以使用Chrome调试器工具来调试Expo应用程序。与其在你的手机上运行你的应用程序的JavaScript，不如将它运行在Chrome浏览器的一个webworker中。然后，您可以设置断点、检查变量、执行代码等等，就像调试web应用程序时所做的那样。</p>
+<ul>
+<li>为了确保最佳调试体验，首先将您的主机类型更改为LAN或localhost。如果你使用了启用调试的隧道，那么你很可能会经历太多的延迟，以至于你的应用无法使用。在这里，也确保检查开发模式。</li>
+</ul>
+<p><img src="https://docs.expo.io/static/0af875d134c9a8835b71baaa0e1791bc-d94ef.png" alt></p>
+<ul>
+<li><p>如果你正在使用局域网，请确保你的设备与你的开发机器在同一个wifi网络上。这可能不会在某些公共网络上奏效。除非你在模拟器中，否则本地主机将无法工作，而且只有在你的设备通过usb连接到你的机器时，它才会在Android上运行。</p>
+</li>
+<li><p>在你的设备上打开这个应用，打开开发者菜单，然后点击<code>Debug JS Remotely</code>。这将打开一个浏览器选项卡URL <code>http://localhost:19001/debugger-ui</code>。从那里，您可以设置断点，并通过JavaScript控制台进行交互。当你完成的时候，摇动这个设备，停止Chrome的调试。</p>
+</li>
+<li><p>当使用Chrome调试时，<code>console.log</code>语句的行号在默认情况下不会起作用。要获得正确的行号，打开Chrome开发工具设置，进入“black装箱”选项卡，确保选中“Blackbox内容脚本”，并将<code>expo/src/Logs.js</code>添加为带有“Blackbox”选项的模式。</p>
+</li>
+</ul>
+<h3 id="故障主机调试"><a href="#故障主机调试" class="headerlink" title="故障主机调试"></a>故障主机调试</h3><p>当您在XDE中打开一个项目时，当您在Android上打开时，XDE将自动告诉您的设备转发localhost:19000和19001到您的开发机器，只要您的设备被插入或模拟器正在运行。如果您正在使用localhost进行调试，并且它没有工作，关闭应用程序并在Android上再次打开它。或者，如果您安装了Android开发工具，您可以使用以下命令手动转发端口:<code>adb reverse tcp:19000 tcp:19000</code> - <code>adb reverse tcp:19001 tcp:19001</code></p>
+<h3 id="源码映射和异步函数"><a href="#源码映射和异步函数" class="headerlink" title="源码映射和异步函数"></a>源码映射和异步函数</h3><p>源码映射和异步函数不是100%可靠的。在每种情况下，本地的响应都不能很好地使用Chrome的源代码映射，所以如果你想要确保你在正确的地方使用了断点，你应该直接从你的代码中使用调试器调用。</p>
+<h2 id="HTTP调试"><a href="#HTTP调试" class="headerlink" title="HTTP调试"></a>HTTP调试</h2><p>要调试应用程序的HTTP请求，您应该使用代理。以下的选项将全部奏效:</p>
+<ul>
+<li><a href="https://www.charlesproxy.com/documentation/configuration/browser-and-system-configuration/" target="_blank" rel="noopener">Charles Proxy</a></li>
+<li><a href="https://medium.com/@rotxed/how-to-debug-http-s-traffic-on-android-7fbe5d2a34#.hnhanhyoz" target="_blank" rel="noopener">mitmproxy</a></li>
+<li><a href="http://www.telerik.com/fiddler" target="_blank" rel="noopener">Fiddler</a></li>
+</ul>
+<p>在Android上，<a href="https://play.google.com/store/apps/details?id=com.lechucksoftware.proxy.proxysettings" target="_blank" rel="noopener">代理设置</a>应用程序有助于在调试和非调试模式之间切换。不幸的是，它还不能与Android M兼容。</p>
+<p>未来的工作是在Chrome DevTools中显示网络请求。</p>
+<h2 id="热加载和重新加载"><a href="#热加载和重新加载" class="headerlink" title="热加载和重新加载"></a>热加载和重新加载</h2><p><a href="http://facebook.github.io/react-native/blog/2016/03/24/introducing-hot-reloading.html" target="_blank" rel="noopener">热模块重载</a>是一种快速重载更改的方法，不会在屏幕或导航堆栈中丢失状态。要启用，请调用开发人员菜单并点击“启用热重加载”项。而Live Reload将重新加载整个JS上下文，热模块重载将使您的调试周期更快。但是，确保您没有打开两个选项，因为这是不支持的行为。</p>
+<h2 id="其他调试技巧"><a href="#其他调试技巧" class="headerlink" title="其他调试技巧"></a>其他调试技巧</h2><p>Dotan Nahum在他的“<a href="https://medium.com/reactnativeacademy/debugging-react-native-applications-6bff3f28c375" target="_blank" rel="noopener">Debugging React Native Applications</a>”中概述了其他有用的工具，比如监视桥梁信息和JSEventLoopWatchdog。</p>
+<hr>
+<h1 id="Genymotion"><a href="#Genymotion" class="headerlink" title="Genymotion"></a>Genymotion</h1><hr>
+<h1 id="发布-1"><a href="#发布-1" class="headerlink" title="发布"></a>发布</h1><p>当您在开发项目时，您正在计算机上编写代码，当您使用XDE或exp时，服务器和本地包装器会在您的机器上运行，并将所有的源代码打包，并使其从URL中获得。您正在处理的项目的URL可能是这样的:<code>exp://i3-kvb.ccheever.an-example.exp.direct:80</code>。</p>
+<p><code>exp.direct</code>是我们用来进行隧道挖掘的领域，所以即使你在VPN或防火墙后面，任何有你的URL的设备都应该能够访问你的项目。这使得在你的手机上打开你的项目或发送给你正在和谁不在同一局域网的其他人更容易。</p>
+<p>但是由于包装器和服务器在您的计算机上运行，如果您关闭了您的笔记本或关闭XDE，您将无法从该URL加载您的项目。“发布”是我们用来部署您的项目的术语。它使您的项目可以在一个持久的URL中使用，例如<code>https://expo.io/@community/native-component-list</code>。它还会将你的所有应用图片、字体和视频上传至CDN(在这里阅读更多)。</p>
+<h2 id="如何发布"><a href="#如何发布" class="headerlink" title="如何发布"></a>如何发布</h2><p>要发布项目，请单击XDE中的发布按钮。(在窗户的右上角。)如果您正在使用exp cli工具，则运行<code>exp publish</code>。不需要设置，继续创建一个新项目，并在不发生任何更改的情况下发布它，您将看到它是有效的。</p>
+<p>当你这么做的时候，packager会将你所有的代码都缩小，并生成两个版本的代码(一个用于iOS，一个用于Android)，然后将这些代码上传到CDN上。您将获得一个链接，如<code>https://exp.host/@ccheever/an-example</code>，任何人都可以从这个项目中加载您的项目。</p>
+<p>任何时候您想要部署一个更新，再次点击发布，新的版本将会在用户下一次打开它的时候立即可用。</p>
+<h2 id="部署到App-Store和Play-Store"><a href="#部署到App-Store和Play-Store" class="headerlink" title="部署到App Store和Play Store"></a>部署到App Store和Play Store</h2><p>当你准备好将你的应用分发给最终用户时，你可以创建一个独立的应用程序二进制文件(ipa或apk文件)，然后将它放到iOS应用商店和Google Play商店中。看到分发应用程序。</p>
+<p>这个独立的应用程序知道在你的应用发布的url中寻找更新，如果你发布了一个更新，那么下次用户打开你的应用时，他们会自动下载这个新版本。这些通常被称为“空中”(OTA)更新，其功能类似于<a href="https://microsoft.github.io/code-push/" target="_blank" rel="noopener">CodePush</a>，但它是内置在Expo上的，所以你不需要安装任何东西。</p>
+<p>要配置你的应用程序处理JS更新的方式，请参见<a href="https://docs.expo.io/versions/latest/guides/offline-support.html" target="_blank" rel="noopener">离线支持</a>。</p>
+<h2 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h2><p>如果您在app.json中做出以下任何更改，您将需要重新构建应用程序的二进制文件，以便更改生效:</p>
+<ul>
+<li>增加Expo SDK版本</li>
+<li>在ios或安卓系统下修改任何东西</li>
+<li>改变你的应用程序启动</li>
+<li>改变你的应用程序图标</li>
+<li>改变你的应用程序的名字</li>
+<li>改变你的应用方案</li>
+<li>改变你的facebookScheme</li>
+<li>在assetBundlePatterns下改变你的捆绑资产</li>
+</ul>
+<h2 id="隐私"><a href="#隐私" class="headerlink" title="隐私"></a>隐私</h2><p>您可以将项目的隐私设置在您的<code>app.json</code>配置文件中，将关键的<code>“privacy”</code>设置为<code>“public”</code>或<code>“unlisted”</code>。</p>
+<p>这些选项的工作方式与YouTube上类似。未列出的项目url将是秘密的，除非您告诉人们关于它们或共享它们。公共项目可能会出现在其他开发人员身上。</p>
+<hr>
+<h1 id="链接-1"><a href="#链接-1" class="headerlink" title="链接"></a>链接</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>每个好的网站都有<code>https://</code>，https就是所谓的URL方案。不安全的网站使用<code>http://</code>，http是URL方案。我们把它叫做短期计划。</p>
+<p>要从一个网站导航到另一个网站，你可以在网络上使用一个锚标签(<code>&lt;a&gt;</code>)。您还可以使用像窗口这样的JavaScript APIs <code>window.history</code>和<code>window.location</code>。</p>
+<p>除了<code>https</code>之外，您可能还熟悉<code>mailto</code> scheme。当您打开mailto scheme的链接时，您的操作系统将打开一个已安装的邮件应用程序。如果您安装了多个邮件应用程序，那么您的操作系统可能会提示您选择一个。类似地，也有打电话和发短信的计划。请阅读下面关于<a href="https://docs.expo.io/versions/latest/guides/linking.html#built-in-url-schemes" target="_blank" rel="noopener">内置URL方案</a>的更多信息。</p>
+<p>https和http是由您的浏览器处理的，但是可以通过使用不同的url方案链接到其他应用程序。例如，当你从Slack获得一个“神奇链接”的电子邮件时，“启动Slack”按钮是一个带有href的锚标签，它看起来像是:<code>slack://secret/magic-login/other-secret</code>。就像Slack一样，你可以告诉操作系统你想要处理一个定制的方案。请阅读有关<a href="https://docs.expo.io/versions/latest/guides/linking.html#in-a-standalone-app" target="_blank" rel="noopener">配置方案</a>的更多信息。当Slack应用打开时，它会收到用于打开它的URL，然后可以对通过URL提供的数据进行操作——在这种情况下，是一个将用户登录到特定服务器的秘密字符串。这通常被称为深度链接。阅读更多关于如何<a href="https://docs.expo.io/versions/latest/guides/linking.html#handling-links-into-your-app" target="_blank" rel="noopener">处理你的应用的深度链接</a>。</p>
+<p>深度链接与scheme并不是唯一可用的链接工具——我们正在努力为iOS上的通用链接添加支持，我们还支持与分支的延迟深度链接。我们将在未来的sdk中更新更多的信息。</p>
+<h2 id="从你的应用程序到其他应用程序"><a href="#从你的应用程序到其他应用程序" class="headerlink" title="从你的应用程序到其他应用程序"></a>从你的应用程序到其他应用程序</h2><h3 id="内置的URL方案"><a href="#内置的URL方案" class="headerlink" title="内置的URL方案"></a>内置的URL方案</h3><p>正如在简介中提到的，在每个平台上都存在一些核心功能的URL方案。下面是一个不完整的列表，但是涵盖了最常用的方案。</p>
+<table>
+<thead>
+<tr>
+<th>Scheme</th>
+<th>描述</th>
+<th>iOS</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mailto</code></td>
+<td>打开邮件应用，如:<code>mailto: support@expo.io</code></td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>tel</code></td>
+<td>打开phone app, eg: tel:+123456789</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>sms</code></td>
+<td>打开SMS app, eg: sms:+123456789</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>https</code> / <code>http</code></td>
+<td>打开web浏览器app, eg: <a href="https://expo.io" target="_blank" rel="noopener">https://expo.io</a></td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="打开你的应用程序的链接"><a href="#打开你的应用程序的链接" class="headerlink" title="打开你的应用程序的链接"></a>打开你的应用程序的链接</h3><p>React Native中没有锚标记，所以我们不能写<code>&lt;a href=&quot;https://expo.io&quot;&gt;</code>。相反，我们必须使用<code>Linking.openURL</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Linking &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line">Linking.openURL(<span class="string">'https://expo.io'</span>);</span><br></pre></td></tr></table></figure>
+<p>通常，如果没有用户的请求，您就不会打开URL，这是一个简单的<code>Anchor</code>组件示例，当它被按下时，它将打开一个URL。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Linking, Text &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Anchor</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  _handlePress = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    Linking.openURL(<span class="keyword">this</span>.props.href);</span><br><span class="line">    <span class="keyword">this</span>.props.onPress &amp;&amp; <span class="keyword">this</span>.props.onPress();</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;Text &#123;...this.props&#125; onPress=&#123;<span class="keyword">this</span>._handlePress&#125;&gt;</span><br><span class="line">        &#123;<span class="keyword">this</span>.props.children&#125;</span><br><span class="line">      &lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ &lt;Anchor href="https:/</span><span class="regexp">/google.com"&gt;Go to Google&lt;/</span>Anchor&gt;</span><br><span class="line"><span class="comment">// &lt;Anchor href="mailto://support@expo.io"&gt;Go to Google&lt;/Anchor&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用Expo-WebBrowser，而不是链接打开web链接"><a href="#使用Expo-WebBrowser，而不是链接打开web链接" class="headerlink" title="使用Expo.WebBrowser，而不是链接打开web链接"></a>使用<code>Expo.WebBrowser</code>，而不是链接打开web链接</h3><p>下面的例子说明了打开一个web链接使用<code>Expo.WebBrowser.openBrowserAsync</code>和<code>React Native’s Linking.openURL</code>的的区别。<br>通常，WebBrowser是一个更好的选择，因为它是你的应用中的一个模式，用户可以很容易地关闭它并返回到你的应用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; Component &#125; from &apos;react&apos;;</span><br><span class="line">import &#123; Button, Linking, View, StyleSheet &#125; from &apos;react-native&apos;;</span><br><span class="line">import &#123; Constants, WebBrowser &#125; from &apos;expo&apos;;</span><br><span class="line"></span><br><span class="line">export default class App extends Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">        &lt;Button</span><br><span class="line">          title=&quot;Open URL with ReactNative.Linking&quot;</span><br><span class="line">          onPress=&#123;this._handleOpenWithLinking&#125;</span><br><span class="line">          style=&#123;styles.button&#125;</span><br><span class="line">        /&gt;</span><br><span class="line">        &lt;Button</span><br><span class="line">          title=&quot;Open URL with Expo.WebBrowser&quot;</span><br><span class="line">          onPress=&#123;this._handleOpenWithWebBrowser&#125;</span><br><span class="line">          style=&#123;styles.button&#125;</span><br><span class="line">        /&gt;</span><br><span class="line">      &lt;/View&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="打开其他应用程序的链接"><a href="#打开其他应用程序的链接" class="headerlink" title="打开其他应用程序的链接"></a>打开其他应用程序的链接</h3><p>如果你知道另一款应用的定制方案，你可以链接到它。一些服务提供了深度链接的文档，例如<a href="https://developer.lyft.com/v1/docs/deeplinking" target="_blank" rel="noopener">Lyft深度链接文档</a>描述了如何直接链接到特定的位置和目的地:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lyft://ridetype?id=lyft&amp;pickup[latitude]=37.764728&amp;pickup[longitude]=-122.422999&amp;destination[latitude]=37.7763592&amp;destination[longitude]=-122.4242038</span><br></pre></td></tr></table></figure>
+<p>用户可能没有安装Lyft应用，在这种情况下，你可能想打开应用/Play商店，或者让他们知道他们需要先安装。我们建议在这些情况下使用库<a href="https://github.com/fiber-god/react-native-app-link" target="_blank" rel="noopener">react-native-app-link</a>。</p>
+<p>在iOS上，<code>Linking.canOpenUrl</code>需要额外的配置来查询其他应用的链接方案。你可以在你的<code>app.json</code>中使用<code>ios.infoPlist</code>键来指定应用程序需要查询的方案列表。例如:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"infoPlist": &#123;</span><br><span class="line">  "LSApplicationQueriesSchemes": ["lyft"]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你没有指定这个列表，不管设备是否安装了这个应用，<code>Linking.canOpenUrl</code>可能会返回false。注意，这种配置只能在独立的应用程序中进行测试，因为它需要在Expo客户端测试时不应用的本地更改。</p>
+<h2 id="链接到你的应用"><a href="#链接到你的应用" class="headerlink" title="链接到你的应用"></a>链接到你的应用</h2><h3 id="在Expo客户端"><a href="#在Expo客户端" class="headerlink" title="在Expo客户端"></a>在Expo客户端</h3><p>在继续之前，花点时间学习如何在Expo客户端链接到你的应用程序是值得的。Expo客户端使用<code>exp:// scheme</code>，但如果我们链接到<code>exp://</code>没有任何地址，它将会打开应用到主界面。</p>
+<p>在开发中,应用程序将会住在一个url像<code>exp://wg-qka.community.app.exp.direct:80</code>。当它被部署时，它将会出现在一个URL中，比如<code>exp://exp.host/@community/with-webbrowser-redirect</code>。如果你创建了一个网站，其中有一个链接，比如<code>&lt;a href=&quot;exp://expo.io/@community/with-webbrowser-redirect&quot;&gt;Open my project&lt;/a&gt;</code>。打开我的项目，然后在你的设备上打开这个网站，点击这个链接，它就会在Expo客户端打开你的应用程序。你可以通过使用<code>Linking.openURL</code>从另一个应用中链接到它。</p>
+<h3 id="在一个独立的应用程序"><a href="#在一个独立的应用程序" class="headerlink" title="在一个独立的应用程序"></a>在一个独立的应用程序</h3><p>要链接到你的独立应用，你需要为你的应用程序指定一个方案，你可以在你的<code>app.json</code>中注册一个方案，通过在<code>scheme key</code>下面添加一个字符串:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"expo"</span>: &#123;</span><br><span class="line">    <span class="attr">"scheme"</span>: <span class="string">"myapp"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一旦你建立了独立的应用，并将其安装到你的设备上，你就可以用<code>myapp://</code>的链接打开它。</p>
+<h3 id="Expo-Constants-linkingUri"><a href="#Expo-Constants-linkingUri" class="headerlink" title="Expo.Constants.linkingUri"></a><code>Expo.Constants.linkingUri</code></h3><p>为了省去插入大量条件的麻烦，基于您所在的环境和硬编码url，我们提供了<code>linkingUri</code>常量。当您想要提供一个需要重定向到应用程序的url的服务时，您可以使用它，它将解决以下问题:</p>
+<ul>
+<li>在Expo客户端发布的应用:<code>exp://exp.host/@community/with-webbrowser-redirect/+</code></li>
+<li>独立出版的应用:<code>myapp://+</code></li>
+<li>开发: <code>exp://wg-qka.community.app.exp.direct:80/+</code></li>
+</ul>
+<p>您将注意到，在每个URL的末尾有一个<code>/+</code> — 任何在<code>/+</code>之后被应用程序用来接收数据的东西，我们将在下一节中讨论。</p>
+<blockquote>
+<p>注意:目前有一个已知的问题，在Android独立版本中没有出现+。我们希望在不久的版本中解决这个问题！</p>
+</blockquote>
+<h3 id="在你的应用中处理链接"><a href="#在你的应用中处理链接" class="headerlink" title="在你的应用中处理链接"></a>在你的应用中处理链接</h3><p>有两种方法可以处理打开应用程序的url。</p>
+<ol>
+<li><p>如果应用已经打开，应用就会被启动，链接事件就会被触发</p>
+<p>您可以使用Linking.addEventListener(‘url’, callback)来处理这些事件。</p>
+</li>
+<li><p>如果这个应用程序还没有打开，它就会打开，url会作为initialURL传递</p>
+<p>您可以使用<code>Linking.getInitialURL</code>来处理这些事件——如果有的话，它返回一个解析到url的Promise。</p>
+</li>
+</ol>
+<p>请参见下面的示例，以查看这些示例。  </p>
+<h3 id="通过URL将数据传递给应用程序"><a href="#通过URL将数据传递给应用程序" class="headerlink" title="通过URL将数据传递给应用程序"></a>通过URL将数据传递给应用程序</h3><p>如果我想将一些数据传递到我的应用程序中，我可以在常量<code>Constants.linkingUri</code>的末尾添加一个查询字符串。然后，您可以使用类似于<a href="https://www.npmjs.com/package/qs" target="_blank" rel="noopener">qs</a>的东西来解析查询字符串。</p>
+<p>当<a href="https://docs.expo.io/versions/latest/guides/linking.html#handling-urls-in-your-app" target="_blank" rel="noopener">处理用于打开/前景应用的URL</a>时，它看起来是这样的:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">_handleUrl = <span class="function">(<span class="params">url</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">this</span>.setState(&#123; url &#125;);</span><br><span class="line">  <span class="keyword">let</span> queryString = url.replace(Constants.linkingUri, <span class="string">''</span>);</span><br><span class="line">  <span class="keyword">if</span> (queryString) &#123;</span><br><span class="line">    <span class="keyword">let</span> data = qs.parse(queryString);</span><br><span class="line">    alert(<span class="string">`Linked to app with data: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(data)&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你打开一个URL，像<code>${Constants.linkingUri}?hello=world&amp;goodbye=now</code>，这将会alert <code>{hello: &#39;world&#39;, goodbye: &#39;now&#39;}</code>。</p>
+<h3 id="例子-从网页浏览器链接到你的应用"><a href="#例子-从网页浏览器链接到你的应用" class="headerlink" title="例子:从网页浏览器链接到你的应用"></a>例子:从网页浏览器链接到你的应用</h3><p>示例项目<a href="https://github.com/expo/examples/tree/master/with-webbrowser-redirect" target="_blank" rel="noopener">examples/with-webbrowser-redirect</a>演示了如何从WebBrowser重定向并从查询字符串中获取数据。在<a href="https://expo.io/@community/with-webbrowser-redirect" target="_blank" rel="noopener">Expo上试试</a>吧。</p>
+<h3 id="示例-使用链接进行身份验证"><a href="#示例-使用链接进行身份验证" class="headerlink" title="示例:使用链接进行身份验证"></a>示例:使用链接进行身份验证</h3><p>链接到你的应用的一个常见的用例是在打开一个网页浏览器后重定向回你的应用。例如，您可以在屏幕上打开一个web浏览器会话，当用户成功登录时，您可以使用该方案将您的网站重定向到您的应用程序，并将身份验证令牌和其他数据附加到URL。</p>
+<blockquote>
+<p>注意:如果尝试使用链接。openURL打开web浏览器进行身份验证，然后你的应用可能会被苹果拒绝，原因是糟糕或令人困惑的用户体验。<code>WebBrowser.openBrowserAsync</code>打开了一个模态的浏览器窗口，外观和感觉都很好，苹果公司也批准了。</p>
+</blockquote>
+<p>要查看使用web浏览器进行身份验证的完整示例，请参见<a href="https://github.com/expo/examples/tree/master/with-facebook-auth" target="_blank" rel="noopener">examples/with-facebook-auth</a>。目前，Facebook认证要求你部署一个小的webserver来重定向到你的应用程序(正如在这个例子中所描述的那样)，因为Facebook不允许你重定向到自定义的方案，而Expo正在为解决这个问题而努力。在Expo上试一试。</p>
+<p>另一个使用<code>WebBrowser</code>进行身份验证的例子可以在<a href="https://github.com/expo/auth0-example" target="_blank" rel="noopener">expo/auth0-example</a>中找到。</p>
+<h2 id="当不使用深层链接时"><a href="#当不使用深层链接时" class="headerlink" title="当不使用深层链接时"></a>当不使用深层链接时</h2><p>这是在你的应用中建立深度链接的最简单方法，因为它只需要很少的配置。</p>
+<p>主要的问题是，如果用户没有安装你的应用，并按照它的自定义模式链接到你的应用程序，那么他们的操作系统将会显示页面不能打开，但不能提供更多的信息。这不是一次伟大的经历。在浏览器中没有办法解决这个问题。</p>
+<p>此外，许多消息应用程序不使用自定义方案自动生成url——例如，<code>exp://exp.host/@community/native-component-list</code>可能只是在浏览器中显示为纯文本，而不是作为链接(<a href="exp://exp.host/@community/native-component-list" target="_blank" rel="noopener">exp://exp.host/@community/native- componentlist</a>)。</p>
+<hr>
+<h1 id="Expo-amp-“Create-React-Native-App”"><a href="#Expo-amp-“Create-React-Native-App”" class="headerlink" title="Expo &amp; “Create React Native App”"></a>Expo &amp; “Create React Native App”</h1><p><a href="https://facebook.github.io/react-native/blog/2017/03/13/introducing-create-react-native-app.html" target="_blank" rel="noopener">Create React Native App</a>允许您构建一个没有任何构建配置的React Native app。这对您来说可能听起来很熟悉，因为世博会也会这样做——当您用XDE或exp创建一个项目时，您不必处理Xcode或Android Studio配置文件，它只是工作。本指南旨在概述博览会与CRNA (create-react-native-app)之间的一些关键区别。</p>
+<hr>
+<h1 id="Expo是如何工作的"><a href="#Expo是如何工作的" class="headerlink" title="Expo是如何工作的"></a>Expo是如何工作的</h1><hr>
+<h1 id="升级-Expo"><a href="#升级-Expo" class="headerlink" title="升级 Expo"></a>升级 Expo</h1><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/02/08/expo-working-with-expo/" target="_blank" title="使用Expo工作">https://jigangduan.github.io/2018/02/08/expo-working-with-expo/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/expo/">expo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react-native/">react-native</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reactjs/">reactjs</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/01/WebApp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          WebAPP 框架方案讨论
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/08/expo-introduce/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Expo 介绍</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#启动和运行"><span class="nav-number">1.</span> <span class="nav-text">启动和运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个帐户"><span class="nav-number">1.1.</span> <span class="nav-text">创建一个帐户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">1.2.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在你的手机或模拟器上打开应用"><span class="nav-number">1.3.</span> <span class="nav-text">在你的手机或模拟器上打开应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第一次修改"><span class="nav-number">1.4.</span> <span class="nav-text">第一次修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#看不出你的变化吗"><span class="nav-number">1.4.1.</span> <span class="nav-text">看不出你的变化吗?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#手动重新加载应用程序"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">手动重新加载应用程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#祝贺你"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">祝贺你</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#术语表"><span class="nav-number">2.</span> <span class="nav-text">术语表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#app-json"><span class="nav-number">2.0.1.</span> <span class="nav-text">app.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#create-react-native-app"><span class="nav-number">2.0.2.</span> <span class="nav-text">create-react-native-app</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分离"><span class="nav-number">2.0.3.</span> <span class="nav-text">分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eject"><span class="nav-number">2.0.4.</span> <span class="nav-text">eject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Emulator"><span class="nav-number">2.0.5.</span> <span class="nav-text">Emulator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">2.0.6.</span> <span class="nav-text">exp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#体验"><span class="nav-number">2.0.7.</span> <span class="nav-text">体验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Expo-Client"><span class="nav-number">2.0.8.</span> <span class="nav-text">Expo Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Expo-SDK"><span class="nav-number">2.0.9.</span> <span class="nav-text">Expo SDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ExpoKit"><span class="nav-number">2.0.10.</span> <span class="nav-text">ExpoKit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS"><span class="nav-number">2.0.11.</span> <span class="nav-text">iOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链接"><span class="nav-number">2.0.12.</span> <span class="nav-text">链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manifest"><span class="nav-number">2.0.13.</span> <span class="nav-text">Manifest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地目录"><span class="nav-number">2.0.14.</span> <span class="nav-text">本地目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#npm"><span class="nav-number">2.0.15.</span> <span class="nav-text">npm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Over-the-Air-updates"><span class="nav-number">2.0.16.</span> <span class="nav-text">Over the Air updates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包管理器"><span class="nav-number">2.0.17.</span> <span class="nav-text">包管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布"><span class="nav-number">2.0.18.</span> <span class="nav-text">发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#React-Native"><span class="nav-number">2.0.19.</span> <span class="nav-text">React Native</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell-app"><span class="nav-number">2.0.20.</span> <span class="nav-text">Shell app</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Simulator"><span class="nav-number">2.0.21.</span> <span class="nav-text">Simulator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Slug"><span class="nav-number">2.0.22.</span> <span class="nav-text">Slug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Snack"><span class="nav-number">2.0.23.</span> <span class="nav-text">Snack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#独立app"><span class="nav-number">2.0.24.</span> <span class="nav-text">独立app</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XDE"><span class="nav-number">2.0.25.</span> <span class="nav-text">XDE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yarn"><span class="nav-number">2.0.26.</span> <span class="nav-text">yarn</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用app-json配置"><span class="nav-number">3.</span> <span class="nav-text">使用app.json配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开发模式"><span class="nav-number">4.</span> <span class="nav-text">开发模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在XDE中切换开发模式"><span class="nav-number">4.1.</span> <span class="nav-text">在XDE中切换开发模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#exp命令行接口"><span class="nav-number">5.</span> <span class="nav-text">exp命令行接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">5.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">5.2.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看日志"><span class="nav-number">6.</span> <span class="nav-text">查看日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐-使用Expo工具查看日志"><span class="nav-number">6.1.</span> <span class="nav-text">推荐:使用Expo工具查看日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XDE日志面板"><span class="nav-number">6.1.1.</span> <span class="nav-text">XDE日志面板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用exp查看日志"><span class="nav-number">6.1.2.</span> <span class="nav-text">使用exp查看日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可选-手动访问设备日志"><span class="nav-number">6.2.</span> <span class="nav-text">可选:手动访问设备日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看iOS模拟器的日志"><span class="nav-number">6.2.1.</span> <span class="nav-text">查看iOS模拟器的日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选项1-使用GUI日志"><span class="nav-number">6.2.1.1.</span> <span class="nav-text">选项1:使用GUI日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选项2-在终端打开它"><span class="nav-number">6.2.1.2.</span> <span class="nav-text">选项2:在终端打开它</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看iPhone的日志"><span class="nav-number">6.2.2.</span> <span class="nav-text">查看iPhone的日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从Android设备或模拟器查看日志"><span class="nav-number">6.2.3.</span> <span class="nav-text">从Android设备或模拟器查看日志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试"><span class="nav-number">7.</span> <span class="nav-text">调试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Simulator-Emulator"><span class="nav-number">7.1.</span> <span class="nav-text">使用 Simulator / Emulator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS-1"><span class="nav-number">7.1.1.</span> <span class="nav-text">iOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android"><span class="nav-number">7.1.2.</span> <span class="nav-text">Android</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发者菜单"><span class="nav-number">7.2.</span> <span class="nav-text">开发者菜单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS设备上"><span class="nav-number">7.2.1.</span> <span class="nav-text">iOS设备上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在iOS模拟器"><span class="nav-number">7.2.2.</span> <span class="nav-text">在iOS模拟器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Genymotion"><span class="nav-number">7.2.3.</span> <span class="nav-text">在Genymotion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试Javascript"><span class="nav-number">7.3.</span> <span class="nav-text">调试Javascript</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#故障主机调试"><span class="nav-number">7.3.1.</span> <span class="nav-text">故障主机调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码映射和异步函数"><span class="nav-number">7.3.2.</span> <span class="nav-text">源码映射和异步函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP调试"><span class="nav-number">7.4.</span> <span class="nav-text">HTTP调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#热加载和重新加载"><span class="nav-number">7.5.</span> <span class="nav-text">热加载和重新加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他调试技巧"><span class="nav-number">7.6.</span> <span class="nav-text">其他调试技巧</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Genymotion"><span class="nav-number">8.</span> <span class="nav-text">Genymotion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发布-1"><span class="nav-number">9.</span> <span class="nav-text">发布</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何发布"><span class="nav-number">9.1.</span> <span class="nav-text">如何发布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署到App-Store和Play-Store"><span class="nav-number">9.2.</span> <span class="nav-text">部署到App Store和Play Store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限制"><span class="nav-number">9.3.</span> <span class="nav-text">限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐私"><span class="nav-number">9.4.</span> <span class="nav-text">隐私</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#链接-1"><span class="nav-number">10.</span> <span class="nav-text">链接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">10.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从你的应用程序到其他应用程序"><span class="nav-number">10.2.</span> <span class="nav-text">从你的应用程序到其他应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内置的URL方案"><span class="nav-number">10.2.1.</span> <span class="nav-text">内置的URL方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打开你的应用程序的链接"><span class="nav-number">10.2.2.</span> <span class="nav-text">打开你的应用程序的链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Expo-WebBrowser，而不是链接打开web链接"><span class="nav-number">10.2.3.</span> <span class="nav-text">使用Expo.WebBrowser，而不是链接打开web链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打开其他应用程序的链接"><span class="nav-number">10.2.4.</span> <span class="nav-text">打开其他应用程序的链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接到你的应用"><span class="nav-number">10.3.</span> <span class="nav-text">链接到你的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Expo客户端"><span class="nav-number">10.3.1.</span> <span class="nav-text">在Expo客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在一个独立的应用程序"><span class="nav-number">10.3.2.</span> <span class="nav-text">在一个独立的应用程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Expo-Constants-linkingUri"><span class="nav-number">10.3.3.</span> <span class="nav-text">Expo.Constants.linkingUri</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在你的应用中处理链接"><span class="nav-number">10.3.4.</span> <span class="nav-text">在你的应用中处理链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过URL将数据传递给应用程序"><span class="nav-number">10.3.5.</span> <span class="nav-text">通过URL将数据传递给应用程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-从网页浏览器链接到你的应用"><span class="nav-number">10.3.6.</span> <span class="nav-text">例子:从网页浏览器链接到你的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-使用链接进行身份验证"><span class="nav-number">10.3.7.</span> <span class="nav-text">示例:使用链接进行身份验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当不使用深层链接时"><span class="nav-number">10.4.</span> <span class="nav-text">当不使用深层链接时</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Expo-amp-“Create-React-Native-App”"><span class="nav-number">11.</span> <span class="nav-text">Expo &amp; “Create React Native App”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Expo是如何工作的"><span class="nav-number">12.</span> <span class="nav-text">Expo是如何工作的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#升级-Expo"><span class="nav-number">13.</span> <span class="nav-text">升级 Expo</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

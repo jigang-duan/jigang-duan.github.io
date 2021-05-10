@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>ory编辑器 (1)介绍 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javascript前端reactjseditor">
+  
+  
+  
+  
+  <meta name="description" content="介绍欢迎来到ORY编辑器指南。请注意，ORY编辑器需要大量的关于ReactJS、构建工具(如webpack)和ES6的知识。如果你缺乏这方面的知识，请在我们的聊天中寻求帮助。 示范眼见为实，让我们从一个演示开始!  一个可用的演示在editor.ory.sh，所以去试试它自己! 为什么它是不同的在创建ORY之前，我们建立了类似维基百科的东西，但只是为了学习。内容是众包的，每个月有超过50万人使用这">
+<meta name="keywords" content="javascript,前端,reactjs,editor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ORY编辑器 (1)介绍">
+<meta property="og:url" content="https://jigangduan.github.io/2018/12/14/ORY-Editor-1/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="介绍欢迎来到ORY编辑器指南。请注意，ORY编辑器需要大量的关于ReactJS、构建工具(如webpack)和ES6的知识。如果你缺乏这方面的知识，请在我们的聊天中寻求帮助。 示范眼见为实，让我们从一个演示开始!  一个可用的演示在editor.ory.sh，所以去试试它自己! 为什么它是不同的在创建ORY之前，我们建立了类似维基百科的东西，但只是为了学习。内容是众包的，每个月有超过50万人使用这">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ory.gitbooks.io/editor/content/images/inline-edit-md.gif">
+<meta property="og:image" content="https://ory.gitbooks.io/editor/content/images/content-cell.png">
+<meta property="og:image" content="https://ory.gitbooks.io/editor/content/images/layout-cell.gif">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.160Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ORY编辑器 (1)介绍">
+<meta name="twitter:description" content="介绍欢迎来到ORY编辑器指南。请注意，ORY编辑器需要大量的关于ReactJS、构建工具(如webpack)和ES6的知识。如果你缺乏这方面的知识，请在我们的聊天中寻求帮助。 示范眼见为实，让我们从一个演示开始!  一个可用的演示在editor.ory.sh，所以去试试它自己! 为什么它是不同的在创建ORY之前，我们建立了类似维基百科的东西，但只是为了学习。内容是众包的，每个月有超过50万人使用这">
+<meta name="twitter:image" content="https://ory.gitbooks.io/editor/content/images/inline-edit-md.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-ORY-Editor-1" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ORY编辑器 (1)介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/14/ORY-Editor-1/" class="article-date">
+	  <time datetime="2018-12-14T12:22:03.000Z" itemprop="datePublished">2018-12-14</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/React/">React</a><a class="article-category-link" href="/categories/React/ORY编辑器/">ORY编辑器</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>欢迎来到ORY编辑器指南。请注意，ORY编辑器需要大量的关于ReactJS、构建工具(如webpack)和ES6的知识。如果你缺乏这方面的知识，请在我们的<a href="https://gitter.im/ory-am/editor" target="_blank" rel="noopener">聊天</a>中寻求帮助。</p>
+<h2 id="示范"><a href="#示范" class="headerlink" title="示范"></a>示范</h2><p>眼见为实，让我们从一个演示开始!</p>
+<p><img src="https://ory.gitbooks.io/editor/content/images/inline-edit-md.gif" alt="示范"></p>
+<p>一个可用的演示在<a href="https://editor.ory.sh/" target="_blank" rel="noopener">editor.ory.sh</a>，所以去试试它自己!</p>
+<h2 id="为什么它是不同的"><a href="#为什么它是不同的" class="headerlink" title="为什么它是不同的"></a>为什么它是不同的</h2><p>在创建ORY之前，我们建立了<a href="https://de.serlo.org/" target="_blank" rel="noopener">类似维基百科</a>的东西，但只是为了学习。内容是众包的，每个月有超过50万人使用这个平台。我们必须认识到，现有的开源内容编辑解决方案存在以下三个缺陷之一:</p>
+<ol>
+<li>制作的标记非常可怕，必须进行许多安全工作，XSS总是一个威胁。</li>
+<li>作者必须学习特殊的上层标签，如markdown，才能产生内容。这些基于文本的解决方案通常无法指定布局，而且像表这样的复杂数据结构很难编辑。</li>
+<li>有前途的库有可能解决上述问题，因为它最初是作为一个特殊用例或空闲项目而被维护者抛弃的。</li>
+</ol>
+<p>我们的结论是，解决办法必须符合下列原则:</p>
+<ol>
+<li>该状态是一个规范化JSON对象，不涉及HTML。</li>
+<li>它是一个不需要编程经验或特殊培训的可视化编辑器。</li>
+<li>它是由一家公司建造的，减少了被遗弃的可能性。</li>
+<li>基于可重用的React组件，它为开发人员、作者和设计人员提供了新的合作方式，从而更容易地创建更好更丰富的体验。</li>
+<li>它适用于移动和触控设备。</li>
+</ol>
+<p>带着这些原则，我们出去实现了ORY编辑器，也就是您现在看到的编辑器。</p>
+<h2 id="它是如何工作的"><a href="#它是如何工作的" class="headerlink" title="它是如何工作的"></a>它是如何工作的</h2><p>ORY编辑器主要是创建和修改布局的工具。核心是单元格和行。布局系统非常类似于<a href="http://getbootstrap.com/css/#grid" target="_blank" rel="noopener">bootstrap网格系统</a>，其中包含行和列。</p>
+<p>可编辑(其他编辑器称之为“文档”)的示例结构可以是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. Editable</span><br><span class="line">+-1. Container cell</span><br><span class="line">  +-1. Row</span><br><span class="line">  | +-1. Cell (text)</span><br><span class="line">  | |-2. Cell (parallax background image)</span><br><span class="line">  |   +-1. Row</span><br><span class="line">  |     +-1. Cell (image)</span><br><span class="line">  |     |-2. Cell (image)</span><br><span class="line">  |-2. Row</span><br><span class="line">  | +-1. Cell (image)</span><br><span class="line">  | |-2. Cell (image)</span><br></pre></td></tr></table></figure>
+<p>有四种不同的数据类型:</p>
+<ol>
+<li><strong>Editable</strong> (树中 <code>1.</code>) - editable是单元格和行的容器。您可以在一个页面上有多个可编辑的单元格，并且可以将单元格从一个可编辑的单元格拖放到另一个可编辑的单元格中。</li>
+<li><strong>Container cell</strong> (树中 <code>1.1</code>) - <code>容器单元格</code>是一个没有插件的单元格，它为树提供了结构。这些单元格在需要时自动生成，在不再需要时自动删除。</li>
+<li><strong>Content cell</strong> (树中 <code>1.1.1, 1.2.1, ...</code>) - <code>内容单元格</code>始终是树中的叶子(它没有子元素)，它的行为由<code>内容插件</code>定义(可以由您编写或从npm下载)。内容插件通常是富文本、视频、音频、soundcloud小部件等。</li>
+<li><strong>Layout cell</strong> <code>布局单元格</code>包含嵌套单元格和行(容器、内容、布局)的列表。布局单元格的思想是它给它的子单元格一个布局(例如视差背景，一个扰流框，一个所有文本都是红色的框)。布局是由<code>布局插件</code>定义的。布局单元格必须总是至少有一个子单元格，否则它将被自动删除。</li>
+</ol>
+<p><img src="https://ory.gitbooks.io/editor/content/images/content-cell.png" alt="一个带有图像插件的内容单元格"></p>
+<p><img src="https://ory.gitbooks.io/editor/content/images/layout-cell.gif" alt="带有可切换背景图像插件的布局单元格"></p>
+<p>网格系统被烘焙到ORY编辑器中。它负责任何拖放逻辑、调整大小、焦点检测等等。作为开发人员，您将主要使用布局和内容插件扩展功能。此外，编辑器负责整个数据模型。插件只是简单的反应物js组件，它们接收编辑器接收的属性如<code>onChange</code>、<code>readOnly</code>、<code>state</code>。在后面的部分中，您将了解插件的工作原理，它们的API是什么样子的，以及如何编写自己的API。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/14/ORY-Editor-1/" target="_blank" title="ORY编辑器 (1)介绍">https://jigangduan.github.io/2018/12/14/ORY-Editor-1/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/editor/">editor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reactjs/">reactjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/14/ORY-Editor-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          ORY编辑器 (2)ory-editor-core
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/12/react-jsonschema-form/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">react-jsonschema-form</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#示范"><span class="nav-number">1.1.</span> <span class="nav-text">示范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么它是不同的"><span class="nav-number">1.2.</span> <span class="nav-text">为什么它是不同的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#它是如何工作的"><span class="nav-number">1.3.</span> <span class="nav-text">它是如何工作的</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

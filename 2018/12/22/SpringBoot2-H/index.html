@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>spring boot 2精髓 - (17) 监控 spring boot应用 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javaspringspring-boot">
+  
+  
+  
+  
+  <meta name="description" content="SpringBoot也提供了Actuator功能来的监控, 查看 Spring Boot 应用的配置、各种指标、健康程度等 查看和监控以下信息:  Spring Boot 的配置信息 Spring Boot 配置的 Bean 信息 最近请求的 HTTP 信息 数据源，NoSQL 等数据状态 在线查看日志内容，在线日志配置修改 所有@RequestMapping注解的URL路径 自动装配信息汇总">
+<meta name="keywords" content="java,spring,spring-boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 2精髓 - (17) 监控 Spring Boot应用">
+<meta property="og:url" content="https://jigangduan.github.io/2018/12/22/SpringBoot2-H/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="SpringBoot也提供了Actuator功能来的监控, 查看 Spring Boot 应用的配置、各种指标、健康程度等 查看和监控以下信息:  Spring Boot 的配置信息 Spring Boot 配置的 Bean 信息 最近请求的 HTTP 信息 数据源，NoSQL 等数据状态 在线查看日志内容，在线日志配置修改 所有@RequestMapping注解的URL路径 自动装配信息汇总">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545416256131&di=e95967b63f8bf7ad8fe7fa41d1740c58&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Boot 2精髓 - (17) 监控 Spring Boot应用">
+<meta name="twitter:description" content="SpringBoot也提供了Actuator功能来的监控, 查看 Spring Boot 应用的配置、各种指标、健康程度等 查看和监控以下信息:  Spring Boot 的配置信息 Spring Boot 配置的 Bean 信息 最近请求的 HTTP 信息 数据源，NoSQL 等数据状态 在线查看日志内容，在线日志配置修改 所有@RequestMapping注解的URL路径 自动装配信息汇总">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545416256131&di=e95967b63f8bf7ad8fe7fa41d1740c58&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-SpringBoot2-H" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Spring Boot 2精髓 - (17) 监控 Spring Boot应用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/22/SpringBoot2-H/" class="article-date">
+	  <time datetime="2018-12-22T15:22:04.000Z" itemprop="datePublished">2018-12-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Spring/">Spring</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><a class="article-category-link" href="/categories/Spring/Spring-Boot/精髓/">精髓</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1545416256131&amp;di=e95967b63f8bf7ad8fe7fa41d1740c58&amp;imgtype=0&amp;src=http%3A%2F%2Fpic4.zhimg.com%2Fv2-eb94124330d45e94b8f9f805ba42d2ea_1200x500.jpg" alt="spring boot"></p>
+<p>SpringBoot也提供了<code>Actuator</code>功能来的监控, 查看 Spring Boot 应用的配置、各种指标、健康程度等</p>
+<p>查看和监控以下信息:</p>
+<ul>
+<li>Spring Boot 的配置信息</li>
+<li>Spring Boot 配置的 Bean 信息</li>
+<li>最近请求的 HTTP 信息</li>
+<li>数据源，NoSQL 等数据状态</li>
+<li>在线查看日志内容，在线日志配置修改</li>
+<li>所有@RequestMapping注解的URL路径</li>
+<li>自动装配信息汇总</li>
+<li>打印虚拟机的线程栈</li>
+<li>Dump 内存</li>
+<li>应用的各种指标、汇总</li>
+<li>自定义监控指标</li>
+</ul>
+<h2 id="安装-Acutator"><a href="#安装-Acutator" class="headerlink" title="安装 Acutator"></a>安装 Acutator</h2><p>依赖:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">management.server.port=8081</span><br><span class="line">management.endpoints.web.exposure.include=*</span><br><span class="line">#management.endpoints.web.exposure.exclude=env,beans</span><br><span class="line">management.endpoints.web.base-path=/application</span><br></pre></td></tr></table></figure>
+<h2 id="HTIP-跟踪"><a href="#HTIP-跟踪" class="headerlink" title="HTIP 跟踪"></a>HTIP 跟踪</h2><p>trace跟踪功能，能查看最近的 HTTP请求和响应</p>
+<p><code>http://localhost:8081/application/trace</code></p>
+<h2 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h2><p>Actuator 允许查看日志配置,还允许修改日志等级配置，Actuator也可以在线查看日志内容</p>
+<p><code>http://localhost:8081/application/loggers</code></p>
+<h2 id="线程核信息"><a href="#线程核信息" class="headerlink" title="线程核信息"></a>线程核信息</h2><p>可以通过输入<code>dump</code>来获取某一时刻虚拟机线程樵信息，该信息类似使用JDK自带的 <code>jstack</code>命令的输出结果或者 kill -3 的结果。<br>线程械表示某一时刻虚拟机正在做的事情</p>
+<p><code>http://localhost:8081/application/dump</code></p>
+<h2 id="内存信息"><a href="#内存信息" class="headerlink" title="内存信息"></a>内存信息</h2><p><code>heapdump</code> 类似JDK提供的<code>jmap</code>工具，能将内存镜像压缩下载以提供分析</p>
+<p><code>http://localhost:8081/application/heapdump</code></p>
+<h2 id="查看URL映射"><a href="#查看URL映射" class="headerlink" title="查看URL映射"></a>查看URL映射</h2><p>Actuator 的 <code>mappings</code> 输出所有通过注解@RequestMapping 设置的URL映射，可以通过此来查看URL对应的Controller</p>
+<h2 id="查看-Spring-容器管理的-Bean"><a href="#查看-Spring-容器管理的-Bean" class="headerlink" title="查看 Spring 容器管理的 Bean"></a>查看 Spring 容器管理的 Bean</h2><p>Actuator 的 beans 输出所有 Spring 管理的 Bean</p>
+<h2 id="其它监控"><a href="#其它监控" class="headerlink" title="其它监控"></a>其它监控</h2><ul>
+<li>health: 查看所在应用的健康状态，如磁盘、数据源、Redis、Elasticsearch 等。</li>
+<li>metrics: 显示 Spring Boot 的性能指标，如己有内存、未占用内存、垃圾回收次数、类信息等。</li>
+<li>env: 显示 SpringBoot环境变量，如使用的 JDK版本、加载的 jar包、配置文件信息、日志文件信息。</li>
+<li>configprops: 所有@ConfigurationProperties 注解的配置信息，如文件上传的最大允许 配置等。</li>
+<li>autoconfig:显示所有自动装配类的报告，以及是什么原因导致自动装配成功或者不成功</li>
+</ul>
+<h2 id="编写自己的监控信息"><a href="#编写自己的监控信息" class="headerlink" title="编写自己的监控信息"></a>编写自己的监控信息</h2><p>health 用于检查 Spring Boot 应用的健康状态，提供了磁盘的健康状态显示，如果应用还使用了数据源、NoSQL等，也会显示相应的健康状态。<br>Spring Boot 使用 Healthlndicator 接口实现监控信息显示，默认有如下类实现 Healthlndicator 接口</p>
+<p>metrics 用来查看系统的各项指标，包括主机内存的大小、虚拟机 heap 信息、线程信息、垃圾回收、Tomcat会话信息等。<br>也可以在你的Bean中注入CounterService，调用 increment 方法和 decrement 方法来设置指标值</p>
+<h3 id="编写-HealthIndicator"><a href="#编写-HealthIndicator" class="headerlink" title="编写 HealthIndicator"></a>编写 HealthIndicator</h3><p>编写自己的监控器，只需要继承 Healthlndicator，实现 health 方法，返回一个 Health 对象即可</p>
+<h3 id="自定义监控"><a href="#自定义监控" class="headerlink" title="自定义监控"></a>自定义监控</h3><p>注解@Endpoint来自定义一个监控类，并在方法上使用@ReadOperation来显示监控指标，使用@WriteOperation来动态更改监控指标</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/22/SpringBoot2-H/" target="_blank" title="Spring Boot 2精髓 - (17) 监控 Spring Boot应用">https://jigangduan.github.io/2018/12/22/SpringBoot2-H/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/">spring-boot</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/23/leafletjs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Leaflet(交互式地图JS库)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/22/SpringBoot2-G/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Spring Boot 2精髓 - (16) ZooKeeper</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-Acutator"><span class="nav-number">1.</span> <span class="nav-text">安装 Acutator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTIP-跟踪"><span class="nav-number">2.</span> <span class="nav-text">HTIP 跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志查看"><span class="nav-number">3.</span> <span class="nav-text">日志查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程核信息"><span class="nav-number">4.</span> <span class="nav-text">线程核信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存信息"><span class="nav-number">5.</span> <span class="nav-text">内存信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看URL映射"><span class="nav-number">6.</span> <span class="nav-text">查看URL映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看-Spring-容器管理的-Bean"><span class="nav-number">7.</span> <span class="nav-text">查看 Spring 容器管理的 Bean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它监控"><span class="nav-number">8.</span> <span class="nav-text">其它监控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写自己的监控信息"><span class="nav-number">9.</span> <span class="nav-text">编写自己的监控信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编写-HealthIndicator"><span class="nav-number">9.1.</span> <span class="nav-text">编写 HealthIndicator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义监控"><span class="nav-number">9.2.</span> <span class="nav-text">自定义监控</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>android原生程序启动工具 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="androidndk翻译">
+  
+  
+  
+  
+  <meta name="description" content="[翻译]Android原生程序启动工具  介绍 主要功能 入门指南 下载地址 提供了什么? 使用说明 一些细节   示例 示例1 示例2">
+<meta name="keywords" content="android,ndk,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android原生程序启动工具">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/01/AndroidNDKNativeProgramLauncher/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="[翻译]Android原生程序启动工具  介绍 主要功能 入门指南 下载地址 提供了什么? 使用说明 一些细节   示例 示例1 示例2">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://static.pexels.com/photos/595804/pexels-photo-595804.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/robertwgh/AndroidNativeLauncher/master/screenshot/test1.png?raw=true">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.147Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android原生程序启动工具">
+<meta name="twitter:description" content="[翻译]Android原生程序启动工具  介绍 主要功能 入门指南 下载地址 提供了什么? 使用说明 一些细节   示例 示例1 示例2">
+<meta name="twitter:image" content="https://static.pexels.com/photos/595804/pexels-photo-595804.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-AndroidNDKNativeProgramLauncher" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android原生程序启动工具
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/01/AndroidNDKNativeProgramLauncher/" class="article-date">
+	  <time datetime="2017-11-01T08:38:27.000Z" itemprop="datePublished">2017-11-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/NDK/">NDK</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="翻译-Android原生程序启动工具"><a href="#翻译-Android原生程序启动工具" class="headerlink" title="[翻译]Android原生程序启动工具"></a>[翻译]Android原生程序启动工具</h1><p><img src="https://static.pexels.com/photos/595804/pexels-photo-595804.jpeg" alt="android.ndk"></p>
+<ul>
+<li><a href="#introduction">介绍</a></li>
+<li><a href="#major_features">主要功能</a></li>
+<li><a href="#getting_started">入门指南</a><ul>
+<li><a href="#download_address">下载地址</a></li>
+<li><a href="#what_is_provided">提供了什么?</a></li>
+<li><a href="#instructions">使用说明</a></li>
+<li><a href="#some_details">一些细节</a></li>
+</ul>
+</li>
+<li><a href="#examples">示例</a><ul>
+<li><a href="#example1">示例1</a></li>
+<li><a href="#example2">示例2</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a><a name="introduction"></a>介绍</h2><p>在使用原生代码开发Android应用程序时，我们通常需要使用纯原生模式来调试它(使用NDK编译代码，生成可执行文件，并通过<code>adb shell</code>执行它)。有时，我们甚至不想花时间开发Android应用，因为我们只是想测试一些原生函数。</p>
+<p>以处理OpenCL和GPU为例。编写的程序中超过<strong>80%</strong>将是性能和基准代码。由于它们直接操作系统驱动程序或硬件，所以通过ADB以纯原生模式运行它们非常自然。我享受着原生程序带给我的效率和速度。</p>
+<p>但是，纯原生代码可能无法在Android设备上运行。比如以下遇到的一些情况:</p>
+<blockquote>
+<ol>
+<li>设备没有被ROOT。因此，由于缺少权限，您不能将原生程序推到/data/文件夹下。您不能通过使用<code>chmod+x</code>文件来给原生可执行文件提供执行权限，因此，在设备上运行它是不可能的。</li>
+<li>你的设备已经ROOT了。您可以通过ADB来运行代码。然而，当使用ADB运行代码时，您必须使用USB电缆将您的设备连接到计算机。如果你用一些外部功率计来测量系统功耗呢?由于USB电缆为设备提供了额外的电源输入，所以连接到USB电缆使功率测量变得不可能。</li>
+<li>对于某些设备，您甚至没有正确的ADB驱动程序。</li>
+<li>一些未知的情况下…</li>
+</ol>
+</blockquote>
+<p>在所有这些情况下，我们需要特定的工具来帮助我们在<code>没有ROOT</code>、<code>独立的</code>、<code>没有usb连接</code>的设备上运行本机程序。</p>
+<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a><a name="major_features"></a>主要功能</h2><ul>
+<li>不需要root权限。</li>
+<li>你可以在没有ADB和USB连接到电脑的情况下运行原生代码。</li>
+<li>支持从sdcard中加载本机程序。</li>
+<li>支持命令行参数。</li>
+<li>允许用户设置<code>LD_LIBRARY_PATH</code>。</li>
+<li>支持子目录。原生程序装入的输入文件和配置可以放在子目录中，在原生程序中，使用相对路径来访问它们。</li>
+<li>输出文件的支持。可以从工作目录中检索输出文件。</li>
+</ul>
+<h2 id="入门指南"><a href="#入门指南" class="headerlink" title="入门指南"></a><a name="getting_started"></a>入门指南</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a><a name="download_address"></a>下载地址</h3><p><a href="https://github.com/robertwgh/AndroidNativeLauncher" target="_blank" rel="noopener">AndroidNativeLauncher@github.</a></p>
+<p><img src="https://raw.githubusercontent.com/robertwgh/AndroidNativeLauncher/master/screenshot/test1.png?raw=true" alt="NativeLauncher.png"></p>
+<h3 id="提供了什么"><a href="#提供了什么" class="headerlink" title="提供了什么?"></a><a name="what_is_provided"></a>提供了什么?</h3><ul>
+<li>一个APK安装程序。</li>
+<li>一些示例NDK项目，以及构建脚本。</li>
+</ul>
+<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a><a name="instructions"></a>使用说明</h3><ul>
+<li>将您的原生程序(由ndk-build编译)复制到您的sdcard上的一个文件夹中，例如 <code>/sdcard/test/</code>。</li>
+<li>将所有依赖的共享库(.so)复制到该文件夹。</li>
+<li>将输入文件复制到同一个文件夹。</li>
+<li>按下“载入原生程序”按钮。</li>
+<li>如果有的话，设置命令行参数。</li>
+<li>按下“运行”按钮来执行程序。</li>
+<li>检查你文件夹下的结果，例如<code>/sdcard/test/</code>。</li>
+</ul>
+<h3 id="一些细节"><a href="#一些细节" class="headerlink" title="一些细节"></a><a name="some_details"></a>一些细节</h3><ol>
+<li><strong>问</strong>:工作目录在哪里? <br><strong>答</strong>:工作目录是可执行文件的目录。</li>
+<li><strong>问</strong>:如何设置<code>LD_LIBRARY_PATH</code>?库的装载顺序是什么? <br> <strong>答</strong>:在textedit字段中，键入您的自定义库路径。请注意，您的工作目录将自动添加到<code>LD_LIBRARY_PATH</code>。例如，如果您在字段中输入“<code>mylib</code>”，那么<code>LD_LIBRARY_PATH</code>将被设置为<code>LD_LIBRARY_PATH=mypath:workingdirectory:$LD_LIBRARY_PATH</code>。</li>
+<li><strong>问</strong>:如何使用子目录? <br> <strong>答</strong>: 子文件夹可以通过相对路径访问。例如，如果我们在工作目录中有一个名为“<code>image</code>”的文件夹，其中包含一个输入图片“<code>lena.png</code>”。在你的代码中，你可以通过<code>imag/lena.png</code>来访问它。您的输出文件也将在工作目录下。</li>
+</ol>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a><a name="examples"></a>示例</h2><p>提供了两个示例来演示原生程序启动程序的功能。您可以在<code>bin</code>目录中找到预编译的二进制文件。</p>
+<p>如果需要，还可以使用NDK编译代码。我提供一个<code>build_examples.sh</code>脚本简化这个过程，请安装NDK并确保在系统路径中进行NDK构建，然后您就可以使用构建下面的示例:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> examples</span><br><span class="line">$ ./build_examples.sh</span><br></pre></td></tr></table></figure>
+<p>编译完代码后，让我们将二进制文件推入到sdcard中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ adb shell <span class="string">"mkdir -p /sdcard/examples"</span></span><br><span class="line">$ adb push bin /sdcard/example</span><br></pre></td></tr></table></figure>
+<p>然后，您可以使用NativeLauncher应用程序来加载本地程序并执行它。</p>
+<p>–</p>
+<p>让我们来看看两个例子的细节。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a><a name="example1"></a>示例1</h3><p><strong><em>test1.cpp</em></strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> ** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(argc &gt; <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"argc: "</span> &lt;&lt; argc &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; argc; i ++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"argv["</span> &lt;&lt; i &lt;&lt; <span class="string">"]: "</span> &lt;&lt; argv[i] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"cout: Hello world!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"cerr: Hello world!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nTest:\n"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i ++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j ++)</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">std</span>::ofstream <span class="title">ofs</span><span class="params">(<span class="string">"results.txt"</span>)</span></span>;</span><br><span class="line">    <span class="keyword">if</span>(ofs.is_open())&#123;</span><br><span class="line">        ofs &lt;&lt; <span class="string">"This is just a test."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">        ofs.close();</span><br><span class="line"></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"results.txt is generated."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>正如您所看到的，这个演示基本上打印出命令行参数、一些测试消息、一个使用的简单图形，最后保存一个<code>results.txt</code>文件到sdcard。</p>
+<p>我们使用以下makefile编译test1.cpp:</p>
+<p><strong><em>Android.mk</em></strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := <span class="variable">$(<span class="built_in">call</span> my-<span class="built_in">dir</span>)</span></span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(CLEAR_VARS)</span></span><br><span class="line">LOCAL_MODULE := test1</span><br><span class="line">LOCAL_LDLIBS   = -llog</span><br><span class="line">LOCAL_CFLAGS    += -fPIE</span><br><span class="line">LOCAL_LDFLAGS     += -fPIE -pie</span><br><span class="line">LOCAL_SRC_FILES := test1.cpp</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(BUILD_EXECUTABLE)</span></span><br></pre></td></tr></table></figure>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a><a name="example2"></a>示例2</h3><p>这个例子展示了对共享库和<code>LD_LIBRARY_PATH</code>的支持。我们定义一个<code>add()</code>函数并将其编译成一个共享库。然后在<code>main()</code>函数中，我们从共享库调用<code>add()</code>函数来执行计算。</p>
+<p><strong><em>addfunc.cpp</em></strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>test2.cpp</em></strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> ** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Test shared library."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"a="</span> &lt;&lt; a &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span></span><br><span class="line">        &lt;&lt;<span class="string">"b="</span> &lt;&lt; b &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span></span><br><span class="line">        &lt;&lt; <span class="string">"add(a, b)="</span> &lt;&lt; add(a, b) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>Android.mk</em></strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := <span class="variable">$(<span class="built_in">call</span> my-<span class="built_in">dir</span>)</span></span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(CLEAR_VARS)</span></span><br><span class="line">LOCAL_MODULE := addfunc</span><br><span class="line">LOCAL_SRC_FILES := addfunc.cpp</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(BUILD_SHARED_LIBRARY)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(CLEAR_VARS)</span></span><br><span class="line">LOCAL_MODULE := test2</span><br><span class="line">LOCAL_SRC_FILES := test2.cpp</span><br><span class="line">LOCAL_CFLAGS    := -fPIE</span><br><span class="line">LOCAL_LDFLAGS     := -fPIE -pie</span><br><span class="line">LOCAL_LDLIBS    := -L<span class="variable">$(LOCAL_PATH)</span>/../libs/<span class="variable">$(TARGET_ARCH_ABI)</span>/ -laddfunc</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(BUILD_EXECUTABLE)</span></span><br></pre></td></tr></table></figure>
+<p>因为<code>libaddfunc.so</code>和<code>test2</code>在同一个文件夹中，当您加载test2可执行文件时，共享库<code>libaddfunc.so</code>自动加载。因此，当您运行程序时，您将看到正确的输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Test shared library.</span><br><span class="line">a=1</span><br><span class="line">b=2</span><br><span class="line">add(a,b)=3</span><br></pre></td></tr></table></figure>
+<p>但是，如果我们移动<code>libaddfunc.so</code>到一个名为lib的子目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ adb shell</span><br><span class="line">$ <span class="built_in">cd</span> sdcard/example/example2</span><br><span class="line">$ mkdir lib</span><br><span class="line">$ mv libaddfunc.so lib/</span><br></pre></td></tr></table></figure>
+<p>然后，如果我们再次执行本机程序，因为这一次共享库不在搜索路径中，我们将看到以下消息:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CANNOT LINK EXECUTABLE: could not load library &quot;libaddfunc.so&quot; needed by &quot;.test2&quot;; caused by library &quot;libaddfunc.so&quot; not found.</span><br></pre></td></tr></table></figure>
+<p>为了解决这个问题，我们可以在<code>LD_LIBRARY_PATH</code>文本字段中输入<code>lib</code>。也就是说，当前的图书馆搜索路径变成了:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LD_LIBRARY_PATH=lib:working_directory:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>在这里，工作目录是您的本机程序所在的文件夹。</p>
+<p>通过这样做，我们可以再次按下“Run”按钮运行原生程序，我们应该能够看到正确的输出消息。这意味着已经找到并加载了共享库。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/01/AndroidNDKNativeProgramLauncher/" target="_blank" title="Android原生程序启动工具">https://jigangduan.github.io/2017/11/01/AndroidNDKNativeProgramLauncher/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ndk/">ndk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/01/MasteringAndroidNDKBuildSystem1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          掌握Android NDK构建系统——第1部分:使用ndk-build技巧
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/27/App研发录-笔记-二/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">App研发录 笔记二: App开发中的高级技巧</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#翻译-Android原生程序启动工具"><span class="nav-number">1.</span> <span class="nav-text">[翻译]Android原生程序启动工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要功能"><span class="nav-number">1.2.</span> <span class="nav-text">主要功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门指南"><span class="nav-number">1.3.</span> <span class="nav-text">入门指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载地址"><span class="nav-number">1.3.1.</span> <span class="nav-text">下载地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提供了什么"><span class="nav-number">1.3.2.</span> <span class="nav-text">提供了什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用说明"><span class="nav-number">1.3.3.</span> <span class="nav-text">使用说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些细节"><span class="nav-number">1.3.4.</span> <span class="nav-text">一些细节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">1.4.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例1"><span class="nav-number">1.4.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例2"><span class="nav-number">1.4.2.</span> <span class="nav-text">示例2</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

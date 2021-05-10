@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>编写自己的yeoman生成器-6.使用文件系统 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="javascriptnodejsyeoman">
+  
+  
+  
+  
+  <meta name="description" content="位置上下文和路径Yeoman文件实用程序基于您在磁盘上始终有两个位置上下文的想法。这些上下文是您的生成器最有可能读取和写入的文件夹。 目标上下文第一个上下文是目标上下文。目标是Yeoman将脚手架新应用程序的文件夹。它是您的用户项目文件夹，它是您编写大部分脚手架的地方。 目标上下文定义为当前工作目录或包含.yo-rc.json文件的最近父文件夹。该.yo-rc.json文件定义了Yeoman项目的">
+<meta name="keywords" content="javascript,nodejs,yeoman">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写自己的Yeoman生成器-6.使用文件系统">
+<meta property="og:url" content="https://jigangduan.github.io/2018/08/30/yeoman-authoring6/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="位置上下文和路径Yeoman文件实用程序基于您在磁盘上始终有两个位置上下文的想法。这些上下文是您的生成器最有可能读取和写入的文件夹。 目标上下文第一个上下文是目标上下文。目标是Yeoman将脚手架新应用程序的文件夹。它是您的用户项目文件夹，它是您编写大部分脚手架的地方。 目标上下文定义为当前工作目录或包含.yo-rc.json文件的最近父文件夹。该.yo-rc.json文件定义了Yeoman项目的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="编写自己的Yeoman生成器-6.使用文件系统">
+<meta name="twitter:description" content="位置上下文和路径Yeoman文件实用程序基于您在磁盘上始终有两个位置上下文的想法。这些上下文是您的生成器最有可能读取和写入的文件夹。 目标上下文第一个上下文是目标上下文。目标是Yeoman将脚手架新应用程序的文件夹。它是您的用户项目文件夹，它是您编写大部分脚手架的地方。 目标上下文定义为当前工作目录或包含.yo-rc.json文件的最近父文件夹。该.yo-rc.json文件定义了Yeoman项目的">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-yeoman-authoring6" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      编写自己的Yeoman生成器-6.使用文件系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/30/yeoman-authoring6/" class="article-date">
+	  <time datetime="2018-08-29T16:23:20.000Z" itemprop="datePublished">2018-08-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Node-js/">Node.js</a><a class="article-category-link" href="/categories/Node-js/编写自己的Yeoman生成器/">编写自己的Yeoman生成器</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="位置上下文和路径"><a href="#位置上下文和路径" class="headerlink" title="位置上下文和路径"></a>位置上下文和路径</h1><p>Yeoman文件实用程序基于您在磁盘上始终有两个位置上下文的想法。这些上下文是您的生成器最有可能读取和写入的文件夹。</p>
+<h2 id="目标上下文"><a href="#目标上下文" class="headerlink" title="目标上下文"></a>目标上下文</h2><p>第一个上下文是目标上下文。目标是Yeoman将脚手架新应用程序的文件夹。它是您的用户项目文件夹，它是您编写大部分脚手架的地方。</p>
+<p>目标上下文定义为当前工作目录或包含<code>.yo-rc.json</code>文件的最近父文件夹。该<code>.yo-rc.json</code>文件定义了Yeoman项目的根。此文件允许您的用户在子目录中运行命令并让它们在项目上工作。这确保了最终用户的一致行为。</p>
+<p>你可以得到的目标路径使用<code>this.destinationRoot()</code>或通过加入一个路径<code>this.destinationPath(&#39;sub/path&#39;)</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Given destination root is ~/projects</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">Generator</span> </span>&#123;</span><br><span class="line">  paths() &#123;</span><br><span class="line">    <span class="keyword">this</span>.destinationRoot();</span><br><span class="line">    <span class="comment">// returns '~/projects'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.destinationPath(<span class="string">'index.js'</span>);</span><br><span class="line">    <span class="comment">// returns '~/projects/index.js'</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>您可以使用手动设置它<code>this.destinationRoot(&#39;new/path&#39;)</code>。但为了保持一致性，您可能不应该更改默认目标。</p>
+<p>如果您想知道用户在哪里运行yo，那么您可以获取路径this.contextRoot。这是yo从中调用的原始路径; 在我们确定项目根目录之前.yo-rc.json。</p>
+<h2 id="模板上下文"><a href="#模板上下文" class="headerlink" title="模板上下文"></a>模板上下文</h2><p>模板上下文是存储模板文件的文件夹。它通常是您将从中读取和复制的文件夹。</p>
+<p>模板上下文默认定义为<code>./templates/</code>。您可以使用覆盖此默认值<code>this.sourceRoot(&#39;new/template/path&#39;)</code>。</p>
+<p>您可以使用<code>this.sourceRoot()</code>或通过使用加入路径来获取路径值this.templatePath(‘app/index.js’)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">Generator</span> </span>&#123;</span><br><span class="line">  paths() &#123;</span><br><span class="line">    <span class="keyword">this</span>.sourceRoot();</span><br><span class="line">    <span class="comment">// returns './templates'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.templatePath(<span class="string">'index.js'</span>);</span><br><span class="line">    <span class="comment">// returns './templates/index.js'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="“内存”文件系统"><a href="#“内存”文件系统" class="headerlink" title="“内存”文件系统"></a>“内存”文件系统</h1><p>在覆盖用户文件时，Yeoman非常小心。基本上，在预先存在的文件上发生的每个写入都将经历冲突解决过程。此过程要求用户验证将内容覆盖到其文件的每个文件写入。</p>
+<p>此行为可防止出现意外错误并限制出错的风险。另一方面，这意味着每个文件都异步写入磁盘。</p>
+<p>由于异步API更难使用，Yeoman提供了一个同步文件系统API，其中每个文件都被写入<a href="https://github.com/sboudrias/mem-fs" target="_blank" rel="noopener">内存文件系统</a>，并且只有在Yeoman运行完毕后才会写入磁盘一次。</p>
+<p>此内存文件系统在所有<a href="http://yeoman.io/authoring/composability.html" target="_blank" rel="noopener">组合的生成器</a>之间共享。</p>
+<h1 id="文件工具"><a href="#文件工具" class="headerlink" title="文件工具"></a>文件工具</h1><p>生成器公开所有文件方法this.fs，这是<a href="https://github.com/sboudrias/mem-fs-editor" target="_blank" rel="noopener">mem-fs编辑器</a>的一个实例- 确保检查所有可用方法的<a href="https://github.com/sboudrias/mem-fs-editor" target="_blank" rel="noopener">模块文档</a>。</p>
+<p>值得注意的是，虽然this.fs暴露commit，但你不应该在你的发电机中调用它。Yeoman在运行循环的冲突阶段之后在内部调用它。</p>
+<h2 id="示例：复制模板文件"><a href="#示例：复制模板文件" class="headerlink" title="示例：复制模板文件"></a>示例：复制模板文件</h2><p>这是我们想要复制和处理模板文件的示例。</p>
+<p>鉴于内容./templates/index.html是：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后，我们将使用该<a href="https://github.com/sboudrias/mem-fs-editor#copytplfrom-to-context-templateoptions--copyoptions" target="_blank" rel="noopener">copyTpl</a>方法复制文件，同时将内容作为模板处理。<code>copyTpl</code>正在使用<a href="http://ejs.co/" target="_blank" rel="noopener">ejs模板语法</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">Generator</span> </span>&#123;</span><br><span class="line">  writing() &#123;</span><br><span class="line">    <span class="keyword">this</span>.fs.copyTpl(</span><br><span class="line">      <span class="keyword">this</span>.templatePath(<span class="string">'index.html'</span>),</span><br><span class="line">      <span class="keyword">this</span>.destinationPath(<span class="string">'public/index.html'</span>),</span><br><span class="line">      &#123; <span class="attr">title</span>: <span class="string">'Templating with Yeoman'</span> &#125;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一旦生成器运行完毕，<code>public/index.html</code>将包含：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Templating with Yeoman<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>一个非常常见的场景是在<a href="http://yeoman.io/authoring/user-interactions.html" target="_blank" rel="noopener">提示阶段</a>存储使用用户答案并将其用于模板：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">Generator</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> prompting() &#123;</span><br><span class="line">    <span class="keyword">this</span>.answers = <span class="keyword">await</span> <span class="keyword">this</span>.prompt([&#123;</span><br><span class="line">      type    : <span class="string">'input'</span>,</span><br><span class="line">      name    : <span class="string">'title'</span>,</span><br><span class="line">      message : <span class="string">'Your project title'</span>,</span><br><span class="line">    &#125;]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  writing() &#123;</span><br><span class="line">    <span class="keyword">this</span>.fs.copyTpl(</span><br><span class="line">      <span class="keyword">this</span>.templatePath(<span class="string">'index.html'</span>),</span><br><span class="line">      <span class="keyword">this</span>.destinationPath(<span class="string">'public/index.html'</span>),</span><br><span class="line">      &#123; <span class="attr">title</span>: <span class="keyword">this</span>.answers.title &#125; <span class="comment">// user answer `title` used</span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="通过流转换输出文件"><a href="#通过流转换输出文件" class="headerlink" title="通过流转换输出文件"></a>通过流转换输出文件</h1><p>生成器系统允许您在每个文件写入上应用自定义过滤器。自动美化文件，规范化空白等是完全可能的。</p>
+<p>根据Yeoman进程，我们将每个修改过的文件写入磁盘。这个过程通过一个<a href="https://github.com/wearefractal/vinyl" target="_blank" rel="noopener">vinyl</a>对象流（就像gulp一样）。任何生成器作者都可以注册<code>transformStream</code>来修改文件路径和/或内容。</p>
+<p>通过该<code>registerTransformStream()</code>方法注册新修改器。这是一个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> beautify = <span class="built_in">require</span>(<span class="string">'gulp-beautify'</span>);</span><br><span class="line"><span class="keyword">this</span>.registerTransformStream(beautify(&#123;<span class="attr">indent_size</span>: <span class="number">2</span> &#125;));</span><br></pre></td></tr></table></figure>
+<p>请注意，任何类型的每个文件都将通过此流传递。确保任何转换流都将通过它不支持的文件。像<a href="https://github.com/robrich/gulp-if" target="_blank" rel="noopener">gulp-if</a>或<a href="https://github.com/sindresorhus/gulp-filter" target="_blank" rel="noopener">gulp-filter</a>这样的工具将有助于过滤无效类型并传递它们。</p>
+<p>您基本上可以使用任何带有Yeoman转换流的gulp插件来处理在写入阶段生成的文件。</p>
+<h1 id="提示：更新现有文件的内容"><a href="#提示：更新现有文件的内容" class="headerlink" title="提示：更新现有文件的内容"></a>提示：更新现有文件的内容</h1><p>更新预先存在的文件并不总是一项简单的任务。最可靠的方法是解析文件AST（抽象语法树）并对其进行编辑。这个解决方案的主要问题是编辑AST可能很冗长，有点难以掌握。</p>
+<p>一些流行的AST解析器是：</p>
+<ul>
+<li><a href="https://github.com/cheeriojs/cheerio" target="_blank" rel="noopener">Cheerio</a>用于解析HTML。</li>
+<li>用于解析JavaScript的<a href="https://github.com/ariya/esprima" target="_blank" rel="noopener">Esprima</a> - 您可能对<a href="https://github.com/SBoudrias/ast-query" target="_blank" rel="noopener">AST-Query</a>感兴趣，它提供了一个较低 级别的API来编辑Esprima语法树。</li>
+<li>对于JSON文件，您可以使用原生<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON" target="_blank" rel="noopener">JSON对象方法</a>。</li>
+<li><a href="https://github.com/SBoudrias/gruntfile-editor" target="_blank" rel="noopener">gruntfile-editor</a>动态修改Gruntfile。</li>
+</ul>
+<p>使用RegEx解析代码文件是一条危险的路径，在此之前，您应该阅<a href="http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags#answer-1732454" target="_blank" rel="noopener">读此CS人类学答案</a>并掌握RegEx解析的缺陷。如果您确实选择使用RegEx而不是AST树编辑现有文件，请注意并提供完整的单元测试。 - 请，请不要破坏用户的代码。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/30/yeoman-authoring6/" target="_blank" title="编写自己的Yeoman生成器-6.使用文件系统">https://jigangduan.github.io/2018/08/30/yeoman-authoring6/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yeoman/">yeoman</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/30/yeoman-authoring7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          编写自己的Yeoman生成器-7.管理配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/30/yeoman-authoring5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">编写自己的Yeoman生成器-5.依赖关系管理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#位置上下文和路径"><span class="nav-number">1.</span> <span class="nav-text">位置上下文和路径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标上下文"><span class="nav-number">1.1.</span> <span class="nav-text">目标上下文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板上下文"><span class="nav-number">1.2.</span> <span class="nav-text">模板上下文</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#“内存”文件系统"><span class="nav-number">2.</span> <span class="nav-text">“内存”文件系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件工具"><span class="nav-number">3.</span> <span class="nav-text">文件工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#示例：复制模板文件"><span class="nav-number">3.1.</span> <span class="nav-text">示例：复制模板文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通过流转换输出文件"><span class="nav-number">4.</span> <span class="nav-text">通过流转换输出文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提示：更新现有文件的内容"><span class="nav-number">5.</span> <span class="nav-text">提示：更新现有文件的内容</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

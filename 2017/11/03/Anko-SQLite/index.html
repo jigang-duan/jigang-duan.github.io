@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>anko sqlite | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="androidankokotlin">
+  
+  
+  
+  
+  <meta name="description" content="您是否厌倦了使用Android Cursor解析SQLite查询结果?您必须编写大量的样板代码来解析查询结果行，并将其封装在无数的try..finally块中，以便正确地关闭所有打开的资源。 Anko提供了许多扩展功能，以简化与SQLite数据库的工作。 目录 在项目中使用Anko SQLite 访问数据库 创建和删除表 插入数据 查询数据 解析查询结果 自定义行解析器 Cursor流 更新值">
+<meta name="keywords" content="android,anko,kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Anko SQLite">
+<meta property="og:url" content="https://jigangduan.github.io/2017/11/03/Anko-SQLite/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="您是否厌倦了使用Android Cursor解析SQLite查询结果?您必须编写大量的样板代码来解析查询结果行，并将其封装在无数的try..finally块中，以便正确地关闭所有打开的资源。 Anko提供了许多扩展功能，以简化与SQLite数据库的工作。 目录 在项目中使用Anko SQLite 访问数据库 创建和删除表 插入数据 查询数据 解析查询结果 自定义行解析器 Cursor流 更新值">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/Kotlin/anko/blob/master/doc/logo.png?raw=true">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.148Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Anko SQLite">
+<meta name="twitter:description" content="您是否厌倦了使用Android Cursor解析SQLite查询结果?您必须编写大量的样板代码来解析查询结果行，并将其封装在无数的try..finally块中，以便正确地关闭所有打开的资源。 Anko提供了许多扩展功能，以简化与SQLite数据库的工作。 目录 在项目中使用Anko SQLite 访问数据库 创建和删除表 插入数据 查询数据 解析查询结果 自定义行解析器 Cursor流 更新值">
+<meta name="twitter:image" content="https://github.com/Kotlin/anko/blob/master/doc/logo.png?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Anko-SQLite" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Anko SQLite
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/03/Anko-SQLite/" class="article-date">
+	  <time datetime="2017-11-03T03:05:26.000Z" itemprop="datePublished">2017-11-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Kotlin/">Kotlin</a><a class="article-category-link" href="/categories/Kotlin/Anko/">Anko</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://github.com/Kotlin/anko/blob/master/doc/logo.png?raw=true" alt="anko"></p>
+<p>您是否厌倦了使用Android Cursor解析SQLite查询结果?<br>您必须编写大量的样板代码来解析查询结果行，并将其封装在无数的try..finally块中，以便正确地关闭所有打开的资源。</p>
+<p>Anko提供了许多扩展功能，以简化与SQLite数据库的工作。</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#using_anko_sqlite">在项目中使用Anko SQLite</a></li>
+<li><a href="#access_database">访问数据库</a></li>
+<li><a href="#creat_drop_tables">创建和删除表</a></li>
+<li><a href="#insert_data">插入数据</a></li>
+<li><a href="#query_data">查询数据</a></li>
+<li><a href="#parsing_query">解析查询结果</a></li>
+<li><a href="#custom_row_parsers">自定义行解析器</a></li>
+<li><a href="#cursor_streams">Cursor流</a></li>
+<li><a href="#updat_values">更新值</a></li>
+<li><a href="#transactions">事务</a></li>
+</ul>
+<a id="more"></a>
+<h2 id="在项目中使用Anko-SQLite"><a href="#在项目中使用Anko-SQLite" class="headerlink" title="在项目中使用Anko SQLite"></a><a name="using_anko_sqlite"></a>在项目中使用Anko SQLite</h2><p>将<code>anko-sqlite</code>的依赖添加到您的<code>build.gradle</code>:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="keyword">compile</span> <span class="string">"org.jetbrains.anko:anko-sqlite:$anko_version"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="访问数据库"><a href="#访问数据库" class="headerlink" title="访问数据库"></a><a name="access_database"></a>访问数据库</h2><p>如果使用<code>SQLiteOpenHelper</code>，通常会调用<code>getReadableDatabase()</code>或<code>getWritableDatabase()</code>(在生产代码中结果是相同的)，但是必须确保在接收到的<code>SQLiteDatabase</code>上调用<code>close()</code>方法。<br>另外，您必须在某个地方缓存helper类，如果您在几个线程中使用它，那么您必须知道并发访问。<br>这一切都很艰难。<br>这就是为什么Android开发人员并不热衷于使用默认的SQLite API，而是更喜欢使用诸如ORMs之类的相当昂贵的包装器。</p>
+<p>Anko提供了一个特殊的类ManagedSQLiteOpenHelper，它可以无缝地替换缺省值。以下是你如何使用它:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, &quot;MyDatabase&quot;, null, 1) &#123;</span><br><span class="line">    companion object &#123;</span><br><span class="line">        private var instance: MyDatabaseOpenHelper? = null</span><br><span class="line"></span><br><span class="line">        @Synchronized</span><br><span class="line">        fun getInstance(ctx: Context): MyDatabaseOpenHelper &#123;</span><br><span class="line">            if (instance == null) &#123;</span><br><span class="line">                instance = MyDatabaseOpenHelper(ctx.getApplicationContext())</span><br><span class="line">            &#125;</span><br><span class="line">            return instance!!</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreate(db: SQLiteDatabase) &#123;</span><br><span class="line">        // 这里创建表</span><br><span class="line">        db.createTable(&quot;Customer&quot;, ifNotExists = true, </span><br><span class="line">                    &quot;id&quot; to INTEGER + PRIMARY_KEY + UNIQUE,</span><br><span class="line">                    &quot;name&quot; to TEXT,</span><br><span class="line">                    &quot;photo&quot; to BLOB)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) &#123;</span><br><span class="line">        // 在这里，您可以像往常一样删除表</span><br><span class="line">        db.dropTable(&quot;User&quot;, true)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 访问属性的Context</span><br><span class="line">val Context.database: MyDatabaseOpenHelper</span><br><span class="line">    get() = MyDatabaseOpenHelper.getInstance(getApplicationContext())</span><br></pre></td></tr></table></figure>
+<p>什么感觉?不要将你的代码封装到try块中，现在你可以这样写:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">database.use &#123;</span><br><span class="line">    // `this` is a SQLiteDatabase instance</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>{}</code>里执行了所有的代码之后，数据库将会被关闭。</p>
+<p>异步调用的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class SomeActivity : Activity() &#123;</span><br><span class="line">    private fun loadAsync() &#123;</span><br><span class="line">        async(UI) &#123;</span><br><span class="line">            val result = bg &#123; </span><br><span class="line">                database.use &#123; ... &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            loadComplete(result)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>🐧 下面提到的这些方法和所有方法可能会抛出SQLiteException。<br>你必须自己处理，因为Anko假装错误不会发生，这是不合理的。</p>
+</blockquote>
+<h2 id="创建和删除表"><a href="#创建和删除表" class="headerlink" title="创建和删除表"></a><a name="creat_drop_tables"></a>创建和删除表</h2><p>对于Anko，你可以很容易地创建新的表，并删除现有的表。语法很简单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">database.use &#123;</span><br><span class="line">    createTable(&quot;Customer&quot;, true, </span><br><span class="line">        &quot;id&quot; to INTEGER + PRIMARY_KEY + UNIQUE,</span><br><span class="line">        &quot;name&quot; to TEXT,</span><br><span class="line">        &quot;photo&quot; to BLOB)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在SQLite中，有5种主要类型:<code>NULL</code>、<code>INTEGER</code>、<code>REAL</code>、<code>TEXT</code>和<code>BLOB</code>。<br>但是每一列可能都有一些修饰符，比如主键(<code>PRIMARY KEY</code>)或惟一(<code>UNIQUE</code>)的。<br>您可以将这些修饰符附加到主类型名中。</p>
+<p>要删除一个表，使用dropTable函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dropTable(&quot;User&quot;, true)</span><br></pre></td></tr></table></figure>
+<h2 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a><a name="insert_data"></a>插入数据</h2><p>通常，您需要一个ContentValues实例来将行插入到表中。<br>这是一个例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">val values = ContentValues()</span><br><span class="line">values.put(&quot;id&quot;, 5)</span><br><span class="line">values.put(&quot;name&quot;, &quot;John Smith&quot;)</span><br><span class="line">values.put(&quot;email&quot;, &quot;user@domain.org&quot;)</span><br><span class="line">db.insert(&quot;User&quot;, null, values)</span><br></pre></td></tr></table></figure>
+<p>Anko允许消除这些仪式,通过直接把值作为insert()函数的参数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Where db is an SQLiteDatabase</span><br><span class="line">// eg: val db = database.writeableDatabase</span><br><span class="line">db.insert(&quot;User&quot;, </span><br><span class="line">    &quot;id&quot; to 42,</span><br><span class="line">    &quot;name&quot; to &quot;John&quot;,</span><br><span class="line">    &quot;email&quot; to &quot;user@domain.org&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>或者使用database.use:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">database.use &#123;</span><br><span class="line">    insert(&quot;User&quot;, </span><br><span class="line">        &quot;id&quot; to 42,</span><br><span class="line">        &quot;name&quot; to &quot;John&quot;,</span><br><span class="line">        &quot;email&quot; to &quot;user@domain.org&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请注意，在上面的示例中，<code>database</code>是一个数据库助手实例，而<code>db</code>是一个<code>SQLiteDatabase</code>对象</p>
+<p>函数<code>insertOrThrow()</code>, <code>replace()</code>, <code>replaceOrThrow()</code>也存在并具有类似的语义。</p>
+<h2 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a><a name="query_data"></a>查询数据</h2><p>Anko提供了一个方便的查询构建器。<br>它可能是用db.select(tableName, vararg columns)，db是SQLiteDatabase的一个实例。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>column(String)</code></td>
+<td>添加一个用于选择查询的列</td>
+</tr>
+<tr>
+<td><code>distinct(Boolean)</code></td>
+<td>不同的查询</td>
+</tr>
+<tr>
+<td><code>whereArgs(String)</code></td>
+<td>指定原始字符串<code>where</code>查询</td>
+</tr>
+<tr>
+<td><code>whereArgs(String, args)</code>    ✨</td>
+<td>指定带有参数的<code>where</code>查询</td>
+</tr>
+<tr>
+<td><code>whereSimple(String, args)</code></td>
+<td>指定带有<code>?</code>标志参数的<code>where</code>查询</td>
+</tr>
+<tr>
+<td><code>orderBy(String, [ASC/DESC])</code></td>
+<td>按列排序</td>
+</tr>
+<tr>
+<td><code>groupBy(String)</code></td>
+<td>按列分组</td>
+</tr>
+<tr>
+<td><code>limit(count: Int)</code></td>
+<td>限制查询结果行数</td>
+</tr>
+<tr>
+<td><code>limit(offset: Int, count: Int)</code></td>
+<td>用偏移量限制查询结果行数</td>
+</tr>
+<tr>
+<td><code>having(String)</code></td>
+<td>指定原始<code>having</code>表达式</td>
+</tr>
+<tr>
+<td><code>having(String, args)</code> ✨</td>
+<td>指定带有参数的<code>having</code>表达式</td>
+</tr>
+</tbody>
+</table>
+<p>函数标记✨以一种特殊的方式解析它的参数。<br>它们允许您以任何顺序提供值，并支持无缝地转义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.select(&quot;User&quot;, &quot;name&quot;)</span><br><span class="line">    .whereArgs(&quot;(_id &gt; &#123;userId&#125;) and (name = &#123;userName&#125;)&quot;,</span><br><span class="line">        &quot;userName&quot; to &quot;John&quot;,</span><br><span class="line">        &quot;userId&quot; to 42)</span><br></pre></td></tr></table></figure>
+<p>在这里，<code>{userId}</code>部分将被<code>42</code>替换，<code>{userName}</code>替换为<code>&#39;John&#39;</code>。<br>如果它的类型不是数值(<code>Int</code>、<code>Float</code>等)或<code>Boolean</code>，则该值将被转义。<br>对于其他类型，将被使用<code>toString()</code>表示。</p>
+<p><code>whereSimple</code>函数接受String类型的参数。<br>它与SQLiteDatabase中的query()相同(问号<code>?</code>将会被实值的实值所取代)</p>
+<p>我们如何执行查询?<br>使用<code>exec()</code>函数。<br>它接受一个扩展函数，它的类型是<code>Cursor.() -&gt; T</code>。<br>它只是启动接收的扩展函数，然后关闭Cursor，这样您就不需要自己动手了:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.select(&quot;User&quot;, &quot;email&quot;).exec &#123;</span><br><span class="line">	// 用电子邮件做一些事情</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解析查询结果"><a href="#解析查询结果" class="headerlink" title="解析查询结果"></a><a name="parsing_query"></a>解析查询结果</h2><p>因此，我们有一些Cursor，我们如何将它解析为普通类呢?<br>Anko提供了一些功能parseSingle, parseOpt和parseList，这样做更容易。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parseSingle(rowParser): T</code></td>
+<td>解析1行</td>
+</tr>
+<tr>
+<td><code>parseOpt(rowParser): T?</code></td>
+<td>解析0或1行</td>
+</tr>
+<tr>
+<td><code>parseList(rowParser): List&lt;T&gt;</code></td>
+<td>解析0或多行</td>
+</tr>
+</tbody>
+</table>
+<p>注意，<code>parseSingle()</code>和<code>parseOpt()</code>将抛出一个异常，如果接收到的Cursor包含超过一行。</p>
+<p>现在的问题是:什么是<code>rowParser</code>?每个函数都支持两种不同类型的解析器: <code>RowParser</code>和<code>MapRowParser</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">interface RowParser&lt;T&gt; &#123;</span><br><span class="line">    fun parseRow(columns: Array&lt;Any&gt;): T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface MapRowParser&lt;T&gt; &#123;</span><br><span class="line">    fun parseRow(columns: Map&lt;String, Any&gt;): T</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果您想以一种非常有效的方式编写查询，请使用RowParser(但是您必须知道每个列的索引)。<br><code>parseRow</code>接受了一个<code>Any</code>列表(<code>Any</code>类型实际上都可以是Long、Double、String或ByteArray)。<br>另一方面，<code>MapRowParser</code>允许使用列名来获取行值。</p>
+<p>Anko已经有了简单的单列行的解析器:</p>
+<ul>
+<li><code>ShortParser</code></li>
+<li><code>IntParser</code></li>
+<li><code>LongParser</code></li>
+<li><code>FloatParser</code></li>
+<li><code>DoubleParser</code></li>
+<li><code>StringParser</code></li>
+<li><code>BlobParser</code></li>
+</ul>
+<p>同样，您可以从类构造函数创建row解析器。假设你有一个class:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class Person(val firstName: String, val lastName: String, val age: Int)</span><br></pre></td></tr></table></figure>
+<p>解析器将非常简单:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val rowParser = classParser&lt;Person&gt;()</span><br></pre></td></tr></table></figure>
+<p>现在，如果主构造函数有可选的参数，那么Anko<code>不支持</code>创建这样的解析器。<br>另外，请注意，构造函数将使用Java反射来调用，因此编写一个自定义的<code>RowParser</code>对于大型数据集来说是更合理的。</p>
+<p>如果使用Anko db.select()构建器，可以直接调用<code>parseSingle</code>、<code>parseOpt</code>或<code>parseList</code>，并传递一个适当的解析器。</p>
+<h2 id="自定义行解析器"><a href="#自定义行解析器" class="headerlink" title="自定义行解析器"></a><a name="custom_row_parsers"></a>自定义行解析器</h2><p>例如，让我们为columns (Int, String, String)创建一个新的解析器。最幼稚的做法是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class MyRowParser : RowParser&lt;Triple&lt;Int, String, String&gt;&gt; &#123;</span><br><span class="line">    override fun parseRow(columns: Array&lt;Any&gt;): Triple&lt;Int, String, String&gt; &#123;</span><br><span class="line">        return Triple(columns[0] as Int, columns[1] as String, columns[2] as String)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，我们的代码中有三个显式的类型转换。让我们通过使用rowParser函数来摆脱它们:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val parser = rowParser &#123; id: Int, name: String, email: String -&gt;</span><br><span class="line">    Triple(id, name, email)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是它!<code>rowParser</code>将所有的类型转换为底层，您可以根据您的需要来命名lambda参数。</p>
+<h2 id="Cursor流"><a href="#Cursor流" class="headerlink" title=" Cursor流"></a><a name="cursor_streams"></a> Cursor流</h2><p>Anko提供了一种以功能方式访问SQLite Cursor的方法。<br>只需调用cursor.assequence()或cursormap.asmapsequence()扩展函数，就可以得到一个行序列。<br>不要忘记关闭Cursor :)</p>
+<h2 id="更新值"><a href="#更新值" class="headerlink" title="更新值"></a><a name="updat_values"></a>更新值</h2><p>让我们给我们的一个用户一个新名字:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update(&quot;User&quot;, &quot;name&quot; to &quot;Alice&quot;)</span><br><span class="line">    .where(&quot;_id = &#123;userId&#125;&quot;, &quot;userId&quot; to 42)</span><br><span class="line">    .exec()</span><br></pre></td></tr></table></figure>
+<p>更新还有一个whereSimple()方法，以防您想要以传统方式提供查询:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update(&quot;User&quot;, &quot;name&quot; to &quot;Alice&quot;)</span><br><span class="line">    .whereSimple(&quot;_id = ?&quot;, 42)</span><br><span class="line">    .exec()</span><br></pre></td></tr></table></figure>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a><a name="transactions"></a>事务</h2><p>有一个名为<code>transaction()</code>的特殊函数，它允许您将多个数据库操作封装在一个SQLite事务中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">transaction &#123;</span><br><span class="line">    // 你的事务代码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果在<code>{}</code>块中没有抛出异常，那么该事务将被标记为成功。</p>
+<blockquote>
+<p>🐧 如果你想中止事务出于某种原因,抛出TransactionAbortException。<br>在这种情况下，您不需要自己处理这个异常。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/11/03/Anko-SQLite/" target="_blank" title="Anko SQLite">https://jigangduan.github.io/2017/11/03/Anko-SQLite/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/anko/">anko</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kotlin/">kotlin</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/03/Anko-Coroutines/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Anko 协程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/02/Anko-Layouts/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Anko 布局</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在项目中使用Anko-SQLite"><span class="nav-number">2.</span> <span class="nav-text">在项目中使用Anko SQLite</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问数据库"><span class="nav-number">3.</span> <span class="nav-text">访问数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建和删除表"><span class="nav-number">4.</span> <span class="nav-text">创建和删除表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入数据"><span class="nav-number">5.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询数据"><span class="nav-number">6.</span> <span class="nav-text">查询数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析查询结果"><span class="nav-number">7.</span> <span class="nav-text">解析查询结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义行解析器"><span class="nav-number">8.</span> <span class="nav-text">自定义行解析器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cursor流"><span class="nav-number">9.</span> <span class="nav-text"> Cursor流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新值"><span class="nav-number">10.</span> <span class="nav-text">更新值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">11.</span> <span class="nav-text">事务</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

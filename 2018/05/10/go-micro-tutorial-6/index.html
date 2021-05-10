@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>go微服务教程-第六部分 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="golanggo-micro">
+  
+  
+  
+  
+  <meta name="description" content="在上一篇文章中，我们讨论了一些在go-micro和go中事件驱动架构的各种方法。这一部分，我们将深入到客户端，看看如何创建与我们的平台交互的web客户端。 我们将研究微型工具包，使您能够将内部rpc方法从外部代理到web客户端。 我们将为我们的平台创建一个用户界面，一个登录界面，以及一个创建委托界面。这将把以前的一些帖子联系在一起。 所以让我们开始吧!">
+<meta name="keywords" content="golang,go-micro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go微服务教程-第六部分">
+<meta property="og:url" content="https://jigangduan.github.io/2018/05/10/go-micro-tutorial-6/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="在上一篇文章中，我们讨论了一些在go-micro和go中事件驱动架构的各种方法。这一部分，我们将深入到客户端，看看如何创建与我们的平台交互的web客户端。 我们将研究微型工具包，使您能够将内部rpc方法从外部代理到web客户端。 我们将为我们的平台创建一个用户界面，一个登录界面，以及一个创建委托界面。这将把以前的一些帖子联系在一起。 所以让我们开始吧!">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526284371762&di=4d74aecb4c8b43534361e1c232276d81&imgtype=0&src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.205Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go微服务教程-第六部分">
+<meta name="twitter:description" content="在上一篇文章中，我们讨论了一些在go-micro和go中事件驱动架构的各种方法。这一部分，我们将深入到客户端，看看如何创建与我们的平台交互的web客户端。 我们将研究微型工具包，使您能够将内部rpc方法从外部代理到web客户端。 我们将为我们的平台创建一个用户界面，一个登录界面，以及一个创建委托界面。这将把以前的一些帖子联系在一起。 所以让我们开始吧!">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526284371762&di=4d74aecb4c8b43534361e1c232276d81&imgtype=0&src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-go-micro-tutorial-6" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Go微服务教程-第六部分
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/10/go-micro-tutorial-6/" class="article-date">
+	  <time datetime="2018-05-10T13:56:52.000Z" itemprop="datePublished">2018-05-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/Go微服务/">Go微服务</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1526284371762&amp;di=4d74aecb4c8b43534361e1c232276d81&amp;imgtype=0&amp;src=http%3A%2F%2Fi0.wp.com%2Fwww.virtuaniz.com%2Fwp-content%2Fuploads%2F2014%2F08%2Fcloud-computing-advantages-benifits-virtuaniz.png%3Fresize%3D660%2C330" alt="micro-diag"></p>
+<p>在上一篇文章中，我们讨论了一些在go-micro和go中事件驱动架构的各种方法。这一部分，我们将深入到客户端，看看如何创建与我们的平台交互的web客户端。</p>
+<p>我们将研究微型工具包，使您能够将内部rpc方法从外部代理到web客户端。</p>
+<p>我们将为我们的平台创建一个用户界面，一个登录界面，以及一个创建委托界面。这将把以前的一些帖子联系在一起。</p>
+<p>所以让我们开始吧!</p>
+<a id="more"></a>
+<h1 id="RPC复兴"><a href="#RPC复兴" class="headerlink" title="RPC复兴"></a>RPC复兴</h1><p>REST已经在web上运行多年了，它已经迅速成为管理客户端和服务器之间资源的goto方式。REST的出现，取代了RPC和SOAP实现的狂野西部，这种方式有时会让人觉得过时和痛苦。曾经需要编写wsdl文件吗?</p>
+<p>REST向我们承诺了一种实用的、简单的、统一的管理资源的方法。REST使用http谓词在执行的操作类型中更加显式。REST鼓励我们使用http错误代码来更好地描述服务器的响应。在很大程度上，这种方法运行良好，而且很好。但是像所有的好东西一样，休息也有很多抱怨和烦恼，我不打算在这里详细说明。但请务必阅读这篇<a href="https://medium.freecodecamp.org/rest-is-the-new-soap-97ff6c09896d" target="_blank" rel="noopener">文章</a>。但随着微服务的出现，RPC正在卷土重来。</p>
+<p>Rest对于管理不同的资源非常有用，但是微服务通常只处理单个资源的本质。因此，我们不需要在微服务上下文中使用RESTful术语。相反，我们可以专注于每个服务的具体操作和交互。</p>
+<h1 id="Micro"><a href="#Micro" class="headerlink" title="Micro"></a>Micro</h1><p>在本教程中，我们已经广泛地使用了go-micro，现在我们将讨论microcli /toolkit。microtoolkit提供了一个API网关、一个sidecar、一个web代理以及其他一些很酷的特性。但我们将在这篇文章中看到的主要部分是API网关。</p>
+<p>API网关将允许我们将rpc调用代理到web友好的JSON rpc调用，并将公开我们在客户端应用程序中可以使用的url。</p>
+<p>那么这是如何运作的呢?你首先要确保安装了微型工具包:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go get -u github.com/micro/micro</span><br></pre></td></tr></table></figure>
+<p>更好的是，既然我们使用Docker，让我们使用Docker映像:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull microhq/micro</span><br></pre></td></tr></table></figure>
+<p>现在让我们进入我们的用户服务，我做了一些更改，主要是错误处理和命名约定:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shippy-user-service/main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line"></span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy-user-service/proto/auth"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro"</span></span><br><span class="line">	_ <span class="string">"github.com/micro/go-plugins/registry/mdns"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Creates a database connection and handles</span></span><br><span class="line">	<span class="comment">// closing it again before exit.</span></span><br><span class="line">	db, err := CreateConnection()</span><br><span class="line">	<span class="keyword">defer</span> db.Close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"Could not connect to DB: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Automatically migrates the user struct</span></span><br><span class="line">	<span class="comment">// into database columns/types etc. This will</span></span><br><span class="line">	<span class="comment">// check for changes and migrate them each time</span></span><br><span class="line">	<span class="comment">// this service is restarted.</span></span><br><span class="line">	db.AutoMigrate(&amp;pb.User&#123;&#125;)</span><br><span class="line"></span><br><span class="line">	repo := &amp;UserRepository&#123;db&#125;</span><br><span class="line"></span><br><span class="line">	tokenService := &amp;TokenService&#123;repo&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create a new service. Optionally include some options here.</span></span><br><span class="line">	srv := micro.NewService(</span><br><span class="line"></span><br><span class="line">		<span class="comment">// This name must match the package name given in your protobuf definition</span></span><br><span class="line">		micro.Name(<span class="string">"shippy.auth"</span>),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Init will parse the command line flags.</span></span><br><span class="line">	srv.Init()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Will comment this out for now to save having to run this locally...</span></span><br><span class="line">	<span class="comment">// publisher := micro.NewPublisher("user.created", srv.Client())</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Register handler</span></span><br><span class="line">	pb.RegisterAuthHandler(srv.Server(), &amp;service&#123;repo, tokenService, publisher&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Run the server</span></span><br><span class="line">	<span class="keyword">if</span> err := srv.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">// shippy-user-service/proto/auth/auth.proto</span><br><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">package auth;</span><br><span class="line"></span><br><span class="line">service Auth &#123;</span><br><span class="line">    rpc Create(User) returns (Response) &#123;&#125;</span><br><span class="line">    rpc Get(User) returns (Response) &#123;&#125;</span><br><span class="line">    rpc GetAll(Request) returns (Response) &#123;&#125;</span><br><span class="line">    rpc Auth(User) returns (Token) &#123;&#125;</span><br><span class="line">    rpc ValidateToken(Token) returns (Token) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message User &#123;</span><br><span class="line">    string id = 1;</span><br><span class="line">    string name = 2;</span><br><span class="line">    string company = 3;</span><br><span class="line">    string email = 4;</span><br><span class="line">    string password = 5;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Request &#123;&#125;</span><br><span class="line"></span><br><span class="line">message Response &#123;</span><br><span class="line">    User user = 1;</span><br><span class="line">    repeated User users = 2;</span><br><span class="line">    repeated Error errors = 3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Token &#123;</span><br><span class="line">    string token = 1;</span><br><span class="line">    bool valid = 2;</span><br><span class="line">    repeated Error errors = 3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message Error &#123;</span><br><span class="line">    int32 code = 1;</span><br><span class="line">    string description = 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shippy-user-service/handler.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"errors"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line"></span><br><span class="line">	pb <span class="string">"github.com/EwanValentine/shippy-user-service/proto/auth"</span></span><br><span class="line">	micro <span class="string">"github.com/micro/go-micro"</span></span><br><span class="line">	<span class="string">"golang.org/x/crypto/bcrypt"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/context"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> topic = <span class="string">"user.created"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> service <span class="keyword">struct</span> &#123;</span><br><span class="line">	repo         Repository</span><br><span class="line">	tokenService Authable</span><br><span class="line">	Publisher    micro.Publisher</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">Get</span><span class="params">(ctx context.Context, req *pb.User, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	user, err := srv.repo.Get(req.Id)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.User = user</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">GetAll</span><span class="params">(ctx context.Context, req *pb.Request, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	users, err := srv.repo.GetAll()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.Users = users</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">Auth</span><span class="params">(ctx context.Context, req *pb.User, res *pb.Token)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	log.Println(<span class="string">"Logging in with:"</span>, req.Email, req.Password)</span><br><span class="line">	user, err := srv.repo.GetByEmail(req.Email)</span><br><span class="line">	log.Println(user, err)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Compares our given password against the hashed password</span></span><br><span class="line">	<span class="comment">// stored in the database</span></span><br><span class="line">	<span class="keyword">if</span> err := bcrypt.CompareHashAndPassword([]<span class="keyword">byte</span>(user.Password), []<span class="keyword">byte</span>(req.Password)); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	token, err := srv.tokenService.Encode(user)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	res.Token = token</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">Create</span><span class="params">(ctx context.Context, req *pb.User, res *pb.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	log.Println(<span class="string">"Creating user: "</span>, req)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Generates a hashed version of our password</span></span><br><span class="line">	hashedPass, err := bcrypt.GenerateFromPassword([]<span class="keyword">byte</span>(req.Password), bcrypt.DefaultCost)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> errors.New(fmt.Sprintf(<span class="string">"error hashing password: %v"</span>, err))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	req.Password = <span class="keyword">string</span>(hashedPass)</span><br><span class="line">	<span class="keyword">if</span> err := srv.repo.Create(req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> errors.New(fmt.Sprintf(<span class="string">"error creating user: %v"</span>, err))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	res.User = req</span><br><span class="line">	<span class="keyword">if</span> err := srv.Publisher.Publish(ctx, req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> errors.New(fmt.Sprintf(<span class="string">"error publishing event: %v"</span>, err))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(srv *service)</span> <span class="title">ValidateToken</span><span class="params">(ctx context.Context, req *pb.Token, res *pb.Token)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Decode token</span></span><br><span class="line">	claims, err := srv.tokenService.Decode(req.Token)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> claims.User.Id == <span class="string">""</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> errors.New(<span class="string">"invalid user"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	res.Valid = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在运行<code>$ make build &amp;&amp; make run</code>。然后前往您的shippy- emailservice服务并运行<code>$ make build &amp;&amp; make run</code>。一旦两者都运行，运行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -p 8080:8080 \</span><br><span class="line">    -e MICRO_REGISTRY=mdns \</span><br><span class="line">    microhq/micro api \</span><br><span class="line">    --handler=rpc \</span><br><span class="line">    --address=:8080 \</span><br><span class="line">    --namespace=shippy</span><br></pre></td></tr></table></figure>
+<p>这在Docker容器中作为端口8080的rpc处理程序运行微api网关。我们告诉它在本地使用mdns作为注册表，与其他服务相同。最后，我们告诉它使用名称空间shippy，这是我们所有服务名称的第一部分shippy.auth或shippy.email。这很重要，因为它默认为go.micro.api，在这种情况下，它将无法找到我们的服务来代理它们。</p>
+<p>我们的用户服务方法现在可以通过以下方式调用:</p>
+<p>创建一个用户:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -H <span class="string">'Content-Type: application/json'</span> \</span><br><span class="line">    -d <span class="string">'&#123; "service": "shippy.auth", "method": "Auth.Create", "request": &#123; "user": &#123; "email": "ewan.valentine89@gmail.com", "password": "testing123", "name": "Ewan Valentine", "company": "BBC" &#125; &#125; &#125;'</span> \</span><br><span class="line">    http://localhost:8080/rpc</span><br></pre></td></tr></table></figure>
+<p>如您所见，我们在请求中包括我们希望被路由的服务、我们想要使用的服务的方法，以及我们希望使用的数据。</p>
+<p>验证一个用户:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPOST -H <span class="string">'Content-Type: application/json'</span> \</span><br><span class="line">    -d <span class="string">'&#123; "service": "shippy.auth", "method": "Auth.Auth", "request":  &#123; "email": "your@email.com", "password": "SomePass" &#125; &#125;'</span> \</span><br><span class="line">    http://localhost:8080/rpc</span><br></pre></td></tr></table></figure>
+<h2 id="寄售服务"><a href="#寄售服务" class="headerlink" title="寄售服务"></a>寄售服务</h2><p>现在是时候重新启动我们的寄售服务了，<code>$ make build &amp;&amp; make run</code>。我们不需要在这里修改任何东西，但是，运行rpc代理，我们应该能够做到:</p>
+<p>创建一个委托:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPOST -H <span class="string">'Content-Type: application/json'</span> \</span><br><span class="line">    -d <span class="string">'&#123;</span></span><br><span class="line"><span class="string">      "service": "shippy.consignment",</span></span><br><span class="line"><span class="string">      "method": "ConsignmentService.Create",</span></span><br><span class="line"><span class="string">      "request": &#123;</span></span><br><span class="line"><span class="string">        "description": "This is a test",</span></span><br><span class="line"><span class="string">        "weight": "500",</span></span><br><span class="line"><span class="string">        "containers": []</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    &#125;'</span> --url http://localhost:8080/rpc</span><br></pre></td></tr></table></figure>
+<h2 id="船服务"><a href="#船服务" class="headerlink" title="船服务"></a>船服务</h2><p>为了测试我们的用户界面，我们需要运行的最终服务是我们的船只服务，这里没有什么变化，所以只要运行<code>$ make build &amp;&amp; make run</code>。</p>
+<h2 id="用户界面"><a href="#用户界面" class="headerlink" title="用户界面"></a>用户界面</h2><p>让我们使用新的rpc端点，并创建一个UI。我们将使用React，但你可以随意使用任何你喜欢的。请求都是一样的。我将使用来自Facebook的react-create-app library。<code>$ npm install -g react-create-app</code>.一旦安装好，你就可以做<code>$ react-create-app shippy-ui</code>了。这将为您创建一个反应应用程序的框架。</p>
+<p>所以让我们开始…</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shippy-ui/src/App.js</span></span><br><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'./App.css'</span>;</span><br><span class="line"><span class="keyword">import</span> CreateConsignment <span class="keyword">from</span> <span class="string">'./CreateConsignment'</span>;</span><br><span class="line"><span class="keyword">import</span> Authenticate <span class="keyword">from</span> <span class="string">'./Authenticate'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  state = &#123;</span><br><span class="line">    err: <span class="literal">null</span>,</span><br><span class="line">    authenticated: <span class="literal">false</span>,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  onAuth = <span class="function">(<span class="params">token</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      authenticated: <span class="literal">true</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  renderLogin = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;Authenticate onAuth=&#123;<span class="keyword">this</span>.onAuth&#125; /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  renderAuthenticated = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;CreateConsignment /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getToken = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> localStorage.getItem(<span class="string">'token'</span>) || <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  isAuthenticated = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.state.authenticated || <span class="keyword">this</span>.getToken() || <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">const</span> authenticated = <span class="keyword">this</span>.isAuthenticated();</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">"App"</span>&gt;</span><br><span class="line">        &lt;div className=<span class="string">"App-header"</span>&gt;</span><br><span class="line">          &lt;h2&gt;Shippy&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">        &lt;div className=<span class="string">'App-intro container'</span>&gt;</span><br><span class="line">          &#123;(authenticated ? <span class="keyword">this</span>.renderAuthenticated() : <span class="keyword">this</span>.renderLogin())&#125;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> App;</span><br></pre></td></tr></table></figure>
+<p>现在，让我们添加主要的两个组件，身份验证和createcon:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shippy-ui/src/Authenticate.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Authenticate</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  state = &#123;</span><br><span class="line">    authenticated: <span class="literal">false</span>,</span><br><span class="line">    email: <span class="string">''</span>,</span><br><span class="line">    password: <span class="string">''</span>,</span><br><span class="line">    err: <span class="string">''</span>,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  login = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    fetch(<span class="string">`http://localhost:8080/rpc`</span>, &#123;</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      headers: &#123;</span><br><span class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        request: &#123;</span><br><span class="line">          email: <span class="keyword">this</span>.state.email,</span><br><span class="line">          password: <span class="keyword">this</span>.state.password,</span><br><span class="line">        &#125;,</span><br><span class="line">        service: <span class="string">'shippy.auth'</span>,</span><br><span class="line">        method: <span class="string">'Auth.Auth'</span>,</span><br><span class="line">      &#125;),</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="params">res</span> =&gt;</span> res.json())</span><br><span class="line">    .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.props.onAuth(res.token);</span><br><span class="line">      <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        token: res.token,</span><br><span class="line">        authenticated: <span class="literal">true</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="keyword">this</span>.setState(&#123; err, <span class="attr">authenticated</span>: <span class="literal">false</span>, &#125;));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  signup = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    fetch(<span class="string">`http://localhost:8080/rpc`</span>, &#123;</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      headers: &#123;</span><br><span class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        request: &#123;</span><br><span class="line">          email: <span class="keyword">this</span>.state.email,</span><br><span class="line">          password: <span class="keyword">this</span>.state.password,</span><br><span class="line">          name: <span class="keyword">this</span>.state.name,</span><br><span class="line">        &#125;,</span><br><span class="line">        method: <span class="string">'Auth.Create'</span>,</span><br><span class="line">        service: <span class="string">'shippy.auth'</span>,</span><br><span class="line">      &#125;),</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.json())</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.props.onAuth(res.token.token);</span><br><span class="line">      <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        token: res.token.token,</span><br><span class="line">        authenticated: <span class="literal">true</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">      localStorage.setItem(<span class="string">'token'</span>, res.token.token);</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="keyword">this</span>.setState(&#123; err, <span class="attr">authenticated</span>: <span class="literal">false</span>, &#125;));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setEmail = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      email: e.target.value,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setPassword = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      password: e.target.value,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setName = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      name: e.target.value,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">'Authenticate'</span>&gt;</span><br><span class="line">        &lt;div className=<span class="string">'Login'</span>&gt;</span><br><span class="line">          &lt;div className=<span class="string">'form-group'</span>&gt;</span><br><span class="line">            &lt;input</span><br><span class="line">              type=<span class="string">"email"</span></span><br><span class="line">              onChange=&#123;<span class="keyword">this</span>.setEmail&#125;</span><br><span class="line">              placeholder=<span class="string">'E-Mail'</span></span><br><span class="line">              className=<span class="string">'form-control'</span> /&gt;</span><br><span class="line">          &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='form-group'&gt;</span></span><br><span class="line"><span class="regexp">            &lt;input</span></span><br><span class="line"><span class="regexp">              type="password"</span></span><br><span class="line"><span class="regexp">              onChange=&#123;this.setPassword&#125;</span></span><br><span class="line"><span class="regexp">              placeholder='Password'</span></span><br><span class="line"><span class="regexp">              className='form-control' /</span>&gt;</span><br><span class="line">          &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">          &lt;button className='btn btn-primary' onClick=&#123;this.login&#125;&gt;Login&lt;/</span>button&gt;</span><br><span class="line">          &lt;br /&gt;<span class="xml"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span></span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        &lt;div className='Sign-up'&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='form-group'&gt;</span></span><br><span class="line"><span class="regexp">            &lt;input</span></span><br><span class="line"><span class="regexp">              type='input'</span></span><br><span class="line"><span class="regexp">              onChange=&#123;this.setName&#125;</span></span><br><span class="line"><span class="regexp">              placeholder='Name'</span></span><br><span class="line"><span class="regexp">              className='form-control' /</span>&gt;</span><br><span class="line">          &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='form-group'&gt;</span></span><br><span class="line"><span class="regexp">            &lt;input</span></span><br><span class="line"><span class="regexp">              type='email'</span></span><br><span class="line"><span class="regexp">              onChange=&#123;this.setEmail&#125;</span></span><br><span class="line"><span class="regexp">              placeholder='E-Mail'</span></span><br><span class="line"><span class="regexp">              className='form-control' /</span>&gt;</span><br><span class="line">          &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='form-group'&gt;</span></span><br><span class="line"><span class="regexp">            &lt;input</span></span><br><span class="line"><span class="regexp">              type='password'</span></span><br><span class="line"><span class="regexp">              onChange=&#123;this.setPassword&#125;</span></span><br><span class="line"><span class="regexp">              placeholder='Password'</span></span><br><span class="line"><span class="regexp">              className='form-control' /</span>&gt;</span><br><span class="line">          &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">          &lt;button className='btn btn-primary' onClick=&#123;this.signup&#125;&gt;Sign-up&lt;/</span>button&gt;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Authenticate;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shippy-ui/src/CreateConsignment.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">'lodash'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateConsignment</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  state = &#123;</span><br><span class="line">    created: <span class="literal">false</span>,</span><br><span class="line">    description: <span class="string">''</span>,</span><br><span class="line">    weight: <span class="number">0</span>,</span><br><span class="line">    containers: [],</span><br><span class="line">    consignments: [],</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentWillMount() &#123;</span><br><span class="line">    fetch(<span class="string">`http://localhost:8080/rpc`</span>, &#123;</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      headers: &#123;</span><br><span class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        service: <span class="string">'shippy.consignment'</span>,</span><br><span class="line">        method: <span class="string">'ConsignmentService.Get'</span>,</span><br><span class="line">        request: &#123;&#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="params">req</span> =&gt;</span> req.json())</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        consignments: res.consignments,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  create = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> consignment = <span class="keyword">this</span>.state;</span><br><span class="line">    fetch(<span class="string">`http://localhost:8080/rpc`</span>, &#123;</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      headers: &#123;</span><br><span class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        service: <span class="string">'shippy.consignment'</span>,</span><br><span class="line">        method: <span class="string">'ConsignmentService.Create'</span>,</span><br><span class="line">        request: _.omit(consignment, <span class="string">'created'</span>, <span class="string">'consignments'</span>),</span><br><span class="line">      &#125;),</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.json())</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        created: res.created,</span><br><span class="line">        consignments: [...this.state.consignments, consignment],</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  addContainer = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      containers: [...this.state.containers, e.target.value],</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setDescription = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      description: e.target.value,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setWeight = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      weight: <span class="built_in">Number</span>(e.target.value),</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; consignments, &#125; = <span class="keyword">this</span>.state;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">'consignment-screen'</span>&gt;</span><br><span class="line">        &lt;div className=<span class="string">'consignment-form container'</span>&gt;</span><br><span class="line">          &lt;br /&gt;</span><br><span class="line">          &lt;div className=<span class="string">'form-group'</span>&gt;</span><br><span class="line">            &lt;textarea onChange=&#123;<span class="keyword">this</span>.setDescription&#125; className=<span class="string">'form-control'</span> placeholder=<span class="string">'Description'</span>&gt;&lt;<span class="regexp">/textarea&gt;</span></span><br><span class="line"><span class="regexp">          &lt;/</span>div&gt;</span><br><span class="line">          &lt;div className=<span class="string">'form-group'</span>&gt;</span><br><span class="line">            &lt;input onChange=&#123;<span class="keyword">this</span>.setWeight&#125; type=<span class="string">'number'</span> placeholder=<span class="string">'Weight'</span> className=<span class="string">'form-control'</span> /&gt;</span><br><span class="line">          &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='form-control'&gt;</span></span><br><span class="line"><span class="regexp">            Add containers...</span></span><br><span class="line"><span class="regexp">          &lt;/</span>div&gt;</span><br><span class="line">          &lt;br /&gt;</span><br><span class="line">          &lt;button onClick=&#123;<span class="keyword">this</span>.create&#125; className=<span class="string">'btn btn-primary'</span>&gt;Create&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">          &lt;br /</span>&gt;</span><br><span class="line">          &lt;hr /&gt;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        &#123;(consignments &amp;&amp; consignments.length &gt; 0</span></span><br><span class="line"><span class="regexp">          ? &lt;div className='consignment-list'&gt;</span></span><br><span class="line"><span class="regexp">              &lt;h2&gt;Consignments&lt;/</span>h2&gt;</span><br><span class="line">              &#123;consignments.map(<span class="function">(<span class="params">item</span>) =&gt;</span> (</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;p&gt;Vessel id: &#123;item.vessel_id&#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">                  &lt;p&gt;Consignment id: &#123;item.id&#125;&lt;/</span>p&gt;</span><br><span class="line">                  &lt;p&gt;Description: &#123;item.description&#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">                  &lt;p&gt;Weight: &#123;item.weight&#125;&lt;/</span>p&gt;</span><br><span class="line">                  &lt;hr /&gt;</span><br><span class="line">                &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">              ))&#125;</span></span><br><span class="line"><span class="regexp">            &lt;/</span>div&gt;</span><br><span class="line">          : <span class="literal">false</span>)&#125;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">export default CreateConsignment;</span></span><br></pre></td></tr></table></figure>
+<p>注意:我还添加了Twitter Bootstrap 到/public/index.html和修改了一些css。</p>
+<p>现在运行用户界面<code>$ npm start</code>。这应该会在您的浏览器中自动打开。现在，您应该能够注册和登录，并查看托运表单，您可以在其中创建新的托运。在您的dev工具中查看网络选项卡，并查看从不同的微服务中触发和获取数据的rpc方法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/05/10/go-micro-tutorial-6/" target="_blank" title="Go微服务教程-第六部分">https://jigangduan.github.io/2018/05/10/go-micro-tutorial-6/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-micro/">go-micro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/10/go-micro-tutorial-7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Go微服务教程-第七部分
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/10/go-micro-tutorial-5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Go微服务教程-第五部分</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RPC复兴"><span class="nav-number">1.</span> <span class="nav-text">RPC复兴</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Micro"><span class="nav-number">2.</span> <span class="nav-text">Micro</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#寄售服务"><span class="nav-number">2.1.</span> <span class="nav-text">寄售服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#船服务"><span class="nav-number">2.2.</span> <span class="nav-text">船服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户界面"><span class="nav-number">2.3.</span> <span class="nav-text">用户界面</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

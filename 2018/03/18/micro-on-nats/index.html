@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>micro在nats - 微服务与消息 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="golanggo-micro">
+  
+  
+  
+  
+  <meta name="description" content="在这篇文章中，我们将讨论在NATS上使用Micro。它包括关于服务发现的讨论、对微服务的同步和异步通信。 让我们开始谈正事吧。">
+<meta name="keywords" content="golang,go-micro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Micro在NATS - 微服务与消息">
+<meta property="og:url" content="https://jigangduan.github.io/2018/03/18/micro-on-nats/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="在这篇文章中，我们将讨论在NATS上使用Micro。它包括关于服务发现的讨论、对微服务的同步和异步通信。 让我们开始谈正事吧。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521376593279&di=576a492a87f7c5608921cec413e24295&imgtype=0&src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/request-response.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/nats-transport.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/pub-sub.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/nats-broker.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/service-discovery.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/nats-registry.png">
+<meta property="og:image" content="https://micro.mu/blog/assets/images/region.png">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.214Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Micro在NATS - 微服务与消息">
+<meta name="twitter:description" content="在这篇文章中，我们将讨论在NATS上使用Micro。它包括关于服务发现的讨论、对微服务的同步和异步通信。 让我们开始谈正事吧。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521376593279&di=576a492a87f7c5608921cec413e24295&imgtype=0&src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-micro-on-nats" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Micro在NATS - 微服务与消息
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/18/micro-on-nats/" class="article-date">
+	  <time datetime="2018-03-18T12:41:09.000Z" itemprop="datePublished">2018-03-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/go-micro/">go-micro</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1521376593279&amp;di=576a492a87f7c5608921cec413e24295&amp;imgtype=0&amp;src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg" alt></p>
+<p>在这篇文章中，我们将讨论在NATS上使用Micro。它包括关于服务发现的讨论、对微服务的同步和异步通信。</p>
+<p>让我们开始谈正事吧。</p>
+<a id="more"></a>
+<h2 id="NATS是什么"><a href="#NATS是什么" class="headerlink" title="NATS是什么?"></a>NATS是什么?</h2><p><a href="http://nats.io/" target="_blank" rel="noopener">NATS</a>是一个开源的云本地消息传递系统或更简单的消息总线。NATS是由Apcera的创始人Derek Collison创立的。它起源于VMWare，并开始以ruby为基础的系统。它早就被重写了，并且在那些寻找高度可伸缩和高性能的消息传递系统的用户中稳步获得采用。</p>
+<p>如果你想更多地了解NATS本身，请访问<a href="http://nats.io/" target="_blank" rel="noopener">nats.io</a>或加入<a href="http://nats.io/community/" target="_blank" rel="noopener">这里</a>的社区。</p>
+<h2 id="为什么NATS"><a href="#为什么NATS" class="headerlink" title="为什么NATS ?"></a>为什么NATS ?</h2><p>为什么不NATS呢?在过去处理过许多消息总线后，很明显，NATS是分开的。多年来，信息传递被认为是企业的救星，导致系统试图成为所有人的一切。它导致了很多错误的承诺，显著的特征膨胀和高成本技术，造成了比他们解决的更多的问题。</p>
+<p>相比之下，NATS则采取了非常专注的方式，解决了性能和可用性方面的问题，同时保持了不可思议的精益。它说的是“随时待命”，并使用“fire and forget”消息模式。它的简单性、焦点和轻量级特性使它成为微服务生态系统的主要候选对象。我们相信，它将很快成为主要的候选服务，作为消息传递的服务之间的通信传输。</p>
+<p>NATS提供:</p>
+<ul>
+<li>较高的性能和可伸缩性</li>
+<li>高可用性</li>
+<li>非常轻量级的</li>
+<li>最多一次交付</li>
+</ul>
+<p>NATS所不提供的:</p>
+<ul>
+<li>持久性</li>
+<li>传输</li>
+<li>增强的交付模式</li>
+<li>企业排队</li>
+</ul>
+<p>简单介绍一下什么是NATS，为什么是NATS。那么它是如何与Micro相适应的呢?让我们讨论一下。</p>
+<h2 id="Micro在NATS"><a href="#Micro在NATS" class="headerlink" title="Micro在NATS"></a>Micro在NATS</h2><p><a href="https://github.com/micro/micro" target="_blank" rel="noopener">Micro</a>是一个使用可插入架构构建的微服务工具箱，它允许将底层的依赖项以最小的变化交换出来。<a href="https://github.com/micro/go-micro" target="_blank" rel="noopener">Go-Micro</a>框架的每个接口都为微服务提供了一个构建块;用于服务发现的注册、同步通信的<a href="https://godoc.org/github.com/micro/go-micro/transport#Transport" target="_blank" rel="noopener">传输</a>、异步消息传递<a href="https://godoc.org/github.com/micro/go-micro/broker#Broker" target="_blank" rel="noopener">代理</a>等。</p>
+<p>为每个组件创建一个插件就像实现接口一样简单。我们将花更多的时间详细介绍如何在以后的博客文章中编写插件。如果您想要查看NATS或其他系统(如etcd发现、kafka broker、rabbitmq传输)的插件，您可以在这里找到<a href="https://github.com/micro/go-plugins" target="_blank" rel="noopener">github.com/micro/go-plugins</a>。</p>
+<p>Micro on NATS本质上是一组可用于与NATS消息系统集成的微型插件。通过为go-micro的各种接口提供插件，我们创建了许多集成点，允许选择架构模式。</p>
+<p>在我们的经验中，一种尺寸并不适合所有的，而微操作系统的灵活性允许您定义为您和您的团队工作的模型。</p>
+<p>下面我们将讨论用于传输、代理和注册的NATS插件的实现。</p>
+<h2 id="传输"><a href="#传输" class="headerlink" title="传输"></a>传输</h2><p><img src="https://micro.mu/blog/assets/images/request-response.png" alt></p>
+<p>传输是同步通信的微型接口。它使用相当通用的Socket语义，类似于其他的Go代码，使用<code>Listen</code>、<code>Dial</code>和<code>Accept</code>。这些概念和模式对于使用tcp、http等的同步通信非常了解，但是适应消息总线可能会有些困难。与消息总线建立连接，而不是使用服务本身。为了解决这个问题，我们使用了与主题和通道有关的伪连接的概念。</p>
+<p>这是它是如何工作的。</p>
+<p>服务使用<code>transport.Listen</code>侦听消息。这将创建与NATS的连接。当<code>transport.Accept</code>被调用时，一个独特的主题被创建并订阅。这个独特的主题将被用作go-micro注册表中的服务地址。每个接收到的消息将被用作pseudo套接字/连接的基础。如果现有的连接存在相同的应答地址，我们将简单地将该消息放入到该连接的backlog中。</p>
+<p>希望与此服务通信的客户端将使用<code>transport.Dial</code>来创建与服务的连接。这将连接到NATS，创建它自己独特的主题并订阅它。主题用于服务的响应。当客户端向服务发送消息时，它将为这个主题设置应答地址。</p>
+<p>当任何一方想要关闭连接时，他们简单地调用<code>transport.Close</code>来终止与NATS的连接。</p>
+<p><img src="https://micro.mu/blog/assets/images/nats-transport.png" alt></p>
+<h3 id="使用传输插件"><a href="#使用传输插件" class="headerlink" title="使用传输插件"></a>使用传输插件</h3><p>导入传输插件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> _ <span class="string">"github.com/micro/go-plugins/transport/nats"</span></span><br></pre></td></tr></table></figure>
+<p>从transport标志开始</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go run main.go --transport=nats --transport_address=127.0.0.1:4222</span><br></pre></td></tr></table></figure>
+<p>或者直接使用transport</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transport := nats.NewTransport()</span><br></pre></td></tr></table></figure>
+<p>go-micro传输接口:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Transport <span class="keyword">interface</span> &#123;</span><br><span class="line">    Dial(addr <span class="keyword">string</span>, opts ...DialOption) (Client, error)</span><br><span class="line">    Listen(addr <span class="keyword">string</span>, opts ...ListenOption) (Listener, error)</span><br><span class="line">    String() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p><img src="https://micro.mu/blog/assets/images/pub-sub.png" alt></p>
+<p>代理是异步消息传递的go-micro接口。它提供了适用于大多数消息代理的高级通用实现。NATS本质上是一个异步消息传递系统，它被用作消息代理。只有一个警告，NATS不保存消息。虽然这对一些人来说可能不是理想的，但我们仍然相信NATS可以并且应该作为一个中间人使用。在不需要持久性的情况下，它允许具有高度可伸缩的pub子架构。</p>
+<p>NATS提供了一个非常直接的发布和订阅机制，其中包含了主题、通道等概念。消息可以以异步的方式发布并忘记方式。使用相同通道名称的订阅者在NATS中形成一个队列组，然后允许消息自动均匀地分布在订阅者之间。</p>
+<p><img src="https://micro.mu/blog/assets/images/nats-broker.png" alt></p>
+<h3 id="使用代理插件"><a href="#使用代理插件" class="headerlink" title="使用代理插件"></a>使用代理插件</h3><p>导入代理插件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> _ <span class="string">"github.com/micro/go-plugins/broker/nats"</span></span><br></pre></td></tr></table></figure>
+<p>从broker标志开始</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go run main.go --broker=nats --broker_address=127.0.0.1:4222</span><br></pre></td></tr></table></figure>
+<p>或者直接使用broker</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">broker := nats.NewBroker()</span><br></pre></td></tr></table></figure>
+<p>go-micro代理接口:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Broker <span class="keyword">interface</span> &#123;</span><br><span class="line">    Options() Options</span><br><span class="line">    Address() <span class="keyword">string</span></span><br><span class="line">    Connect() error</span><br><span class="line">    Disconnect() error</span><br><span class="line">    Init(...Option) error</span><br><span class="line">    Publish(<span class="keyword">string</span>, *Message, ...PublishOption) error</span><br><span class="line">    Subscribe(<span class="keyword">string</span>, Handler, ...SubscribeOption) (Subscriber, error)</span><br><span class="line">    String() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><p><img src="https://micro.mu/blog/assets/images/service-discovery.png" alt></p>
+<p>注册是服务发现的go-micro接口。你可能会思考。使用消息总线的服务发现?,即使是工作吗?确实如此，而且相当不错。许多使用消息总线的人将避免使用任何类型的独立发现机制。这是因为消息总线本身可以通过主题和通道来处理路由。定义为服务名称的主题可以用作路由键，自动在订阅该主题的服务实例之间进行负载平衡。</p>
+<p>Go-micro将服务发现和传输机制视为两个不同的关注点。当客户端向另一个服务发出请求时，在覆盖层之下，它会根据名称查找注册表中的服务，选择一个节点的地址，然后通过传输与它通信。</p>
+<p>通常，存储服务发现信息的最常用方法是通过一个分布式的键值存储库，如zookeeper, etcd或类似的东西。您可能已经意识到,NATS分布式键值存储不是一个,所以我们要做一些有点不同…</p>
+<h3 id="广播查询"><a href="#广播查询" class="headerlink" title="广播查询!"></a>广播查询!</h3><p>广播查询就像你想象的那样。服务侦听我们认为用于广播查询的特定主题。任何想要服务发现信息的人首先会创建一个它订阅的回复主题，然后用他们的回复地址对广播主题进行查询。</p>
+<p>因为我们实际上不知道一个服务运行的实例有多少，或者返回的响应有多少，所以我们在等待响应的时候设置了一个上限。这是一种分散收集的粗糙机制，但由于NATs的可扩展性和性能，它实际上工作得非常好。它还间接提供了一种非常简单的过滤服务的方式，响应时间也更高。在将来，我们将考虑改进底层实现。</p>
+<p>总结一下它是如何工作的:</p>
+<ol>
+<li>创建应答主题并订阅</li>
+<li>以回复地址发送广播主题查询</li>
+<li>在一个时间限制后，倾听回应和取消订阅</li>
+<li>聚合响应和返回结果</li>
+</ol>
+<p><img src="https://micro.mu/blog/assets/images/nats-registry.png" alt></p>
+<h3 id="使用注册中心插件"><a href="#使用注册中心插件" class="headerlink" title="使用注册中心插件"></a>使用注册中心插件</h3><p>导入registry插件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> _ <span class="string">"github.com/micro/go-plugins/registry/nats"</span></span><br></pre></td></tr></table></figure>
+<p>从registry标志开始</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go run main.go --registry=nats --registry_address=127.0.0.1:4222</span><br></pre></td></tr></table></figure>
+<p>或者直接使用registry</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">registry := nats.NewRegistry()</span><br></pre></td></tr></table></figure>
+<p>go-micro registry接口:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Registry <span class="keyword">interface</span> &#123;</span><br><span class="line">    Register(*Service, ...RegisterOption) error</span><br><span class="line">    Deregister(*Service) error</span><br><span class="line">    GetService(<span class="keyword">string</span>) ([]*Service, error)</span><br><span class="line">    ListServices() ([]*Service, error)</span><br><span class="line">    Watch() (Watcher, error)</span><br><span class="line">    String() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="NATS上加强Micro"><a href="#NATS上加强Micro" class="headerlink" title="NATS上加强Micro"></a>NATS上加强Micro</h2><p>在上面的示例中，我们只在localhost上指定一个单独的NATS服务器，但是我们推荐的实际应用程序是为高可用性和容错性设置一个NATS集群。要了解更多关于NATs集群检查的<a href="http://nats.io/documentation/server/gnatsd-cluster/" target="_blank" rel="noopener">NATs文档</a>。</p>
+<p>Micro接受一个逗号分隔的地址列表，就像上面提到的标记或者可以选择使用环境变量。如果您直接使用客户端库，那么它也允许作为初始化注册、传输和代理的一种可变的主机集。</p>
+<p>在一个云原生世界的架构方面，我们过去的经验表明，每个AZ或每个区域的集群是理想的。大多数云提供商在AZs之间有相对较低的(3-5ms)延迟，这使得区域集群没有问题。当运行一个高度可用的配置时，重要的是确保您的系统能够容忍AZ的失败，并且在更成熟的配置中能够容忍整个区域的失败。我们不建议跨区域进行集群。理想情况下，应该使用更高级别的工具来管理多集群和多区域系统。</p>
+<p>Micro是一个非常灵活的运行时不可知的微服务系统。它可以在任何地方和任何配置中运行。它的世界观是由服务注册中心指导的。服务集群可以在一组机器、AZs或区域中进行本地化和命名空间，这完全基于您提供服务访问的注册中心。结合NATS集群，它允许您构建一个高度可用的体系结构来满足您的需求。</p>
+<p><img src="https://micro.mu/blog/assets/images/region.png" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>NATS是一个可扩展和性能的消息传递系统，我们认为它非常适合于微服务生态系统。它与Micro的关系非常好，正如我们所演示的，它可以作为<a href="https://godoc.org/github.com/micro/go-plugins/registry/nats" target="_blank" rel="noopener">注册表</a>、<a href="https://godoc.org/github.com/micro/go-plugins/transport/nats" target="_blank" rel="noopener">传输</a>或<a href="https://godoc.org/github.com/micro/go-plugins/broker/nats" target="_blank" rel="noopener">代理</a>的插件。我们已经实现了这三种功能，以强调NATS的灵活性。</p>
+<p>微观上的NATS是微观强大的可插入架构的一个例子。每一个微型软件包都可以实现并以最小的变化交换出去。在未来，我们将会看到更多关于微观的例子。</p>
+<p>希望这能激励你在NATS上试用Micro，甚至为其他系统编写一些插件，并回馈社区。</p>
+<p>在<a href="https://github.com/micro/go-plugins" target="_blank" rel="noopener">github.com/micro/go-plugins</a>中找到NATS插件的源代码。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/18/micro-on-nats/" target="_blank" title="Micro在NATS - 微服务与消息">https://jigangduan.github.io/2018/03/18/micro-on-nats/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-micro/">go-micro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/18/micro-architecture/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Micro架构和微服务的设计模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/18/go-micro/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">用Go Micro编写微服务</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NATS是什么"><span class="nav-number">1.</span> <span class="nav-text">NATS是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么NATS"><span class="nav-number">2.</span> <span class="nav-text">为什么NATS ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Micro在NATS"><span class="nav-number">3.</span> <span class="nav-text">Micro在NATS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输"><span class="nav-number">4.</span> <span class="nav-text">传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用传输插件"><span class="nav-number">4.1.</span> <span class="nav-text">使用传输插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理"><span class="nav-number">5.</span> <span class="nav-text">代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用代理插件"><span class="nav-number">5.1.</span> <span class="nav-text">使用代理插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册"><span class="nav-number">6.</span> <span class="nav-text">注册</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#广播查询"><span class="nav-number">6.1.</span> <span class="nav-text">广播查询!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用注册中心插件"><span class="nav-number">6.2.</span> <span class="nav-text">使用注册中心插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NATS上加强Micro"><span class="nav-number">7.</span> <span class="nav-text">NATS上加强Micro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

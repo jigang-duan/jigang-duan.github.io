@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>自定义视图(2) —— 自定义绘制 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="androidandroid-ui">
+  
+  
+  
+  
+  <meta name="description" content="自定义视图最重要的部分是它的外观。根据您的应用程序的需要，自定义绘制可以很简单或复杂。这一课涵盖了一些最常见的操作。">
+<meta name="keywords" content="android,android-ui">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义视图(2) —— 自定义绘制">
+<meta property="og:url" content="https://jigangduan.github.io/2017/08/13/custom-views-custom-drawing/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="自定义视图最重要的部分是它的外观。根据您的应用程序的需要，自定义绘制可以很简单或复杂。这一课涵盖了一些最常见的操作。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://qiniu.jigangduan.xyz/qiniu.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.196Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义视图(2) —— 自定义绘制">
+<meta name="twitter:description" content="自定义视图最重要的部分是它的外观。根据您的应用程序的需要，自定义绘制可以很简单或复杂。这一课涵盖了一些最常见的操作。">
+<meta name="twitter:image" content="http://qiniu.jigangduan.xyz/qiniu.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-custom-views-custom-drawing" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      自定义视图(2) —— 自定义绘制
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/13/custom-views-custom-drawing/" class="article-date">
+	  <time datetime="2017-08-13T04:40:03.000Z" itemprop="datePublished">2017-08-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Android/">Android</a><a class="article-category-link" href="/categories/Android/Android-用户界面的最佳实践/">Android 用户界面的最佳实践</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://qiniu.jigangduan.xyz/qiniu.jpg" alt="android"></p>
+<p>自定义视图最重要的部分是它的外观。<br>根据您的应用程序的需要，自定义绘制可以很简单或复杂。<br>这一课涵盖了一些最常见的操作。</p>
+<a id="more"></a>
+<h2 id="覆写onDraw"><a href="#覆写onDraw" class="headerlink" title="覆写onDraw()"></a>覆写onDraw()</h2><p>绘制自定义视图最重要的步骤是覆盖<a href="https://developer.android.google.cn/reference/android/view/View.html#onDraw(android.graphics.Canvas" target="_blank" rel="noopener">onDraw()</a>)方法。<br>onDraw()的参数是一个画布对象，视图可以使用它来绘制自己。<br><a href="https://developer.android.google.cn/reference/android/graphics/Canvas.html" target="_blank" rel="noopener">Canvas</a>类定义了用于绘制文本、行、位图和许多其他图形原语的方法。<br>您可以在onDraw()中使用这些方法来创建定制的用户界面(UI)。</p>
+<p>不过，在您调用任何绘图方法之前，需要创建一个<a href="https://developer.android.google.cn/reference/android/graphics/Paint.html" target="_blank" rel="noopener">Paint</a>对象。<br>下一节将更详细地讨论<code>Paint</code></p>
+<h2 id="创建绘图对象"><a href="#创建绘图对象" class="headerlink" title="创建绘图对象"></a>创建绘图对象</h2><p><a href="https://developer.android.google.cn/reference/android/graphics/package-summary.html" target="_blank" rel="noopener">android.graphics</a>框架将绘图分为两个领域:</p>
+<ul>
+<li>画什么，用<code>Canvas</code>来处理</li>
+<li>如何画，用<code>Paint</code>来处理</li>
+</ul>
+<p>例如，Canvas提供了一种绘制线条的方法，而<code>Paint</code>则提供了定义线条颜色的方法。<br>Canvas有一个绘制矩形的方法，而<code>Paint</code>则定义了是用一个颜色填充这个矩形，还是把它留空。<br>简单地说，Canvas定义了你可以在屏幕上绘制的图形，而<code>Paint</code>则定义了你所绘制的每一个图形的颜色、样式、字体等等。</p>
+<p>因此，在绘制任何东西之前，您需要创建一个或多个<code>Paint</code>对象。PieChart的例子在一个名为init的方法中这样做，这个方法在构造函数中调用的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   mTextPaint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG);</span><br><span class="line">   mTextPaint.setColor(mTextColor);</span><br><span class="line">   <span class="keyword">if</span> (mTextHeight == <span class="number">0</span>) &#123;</span><br><span class="line">       mTextHeight = mTextPaint.getTextSize();</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       mTextPaint.setTextSize(mTextHeight);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   mPiePaint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG);</span><br><span class="line">   mPiePaint.setStyle(Paint.Style.FILL);</span><br><span class="line">   mPiePaint.setTextSize(mTextHeight);</span><br><span class="line"></span><br><span class="line">   mShadowPaint = <span class="keyword">new</span> Paint(<span class="number">0</span>);</span><br><span class="line">   mShadowPaint.setColor(<span class="number">0xff101010</span>);</span><br><span class="line">   mShadowPaint.setMaskFilter(<span class="keyword">new</span> BlurMaskFilter(<span class="number">8</span>, BlurMaskFilter.Blur.NORMAL));</span><br><span class="line"></span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
+<p>提前创建对象是一个重要的优化。<br>视图经常被重新绘制，许多绘图对象需要昂贵的初始化。<br>在onDraw()方法中创建绘图对象可以显著降低性能，并使UI显得迟缓。</p>
+<h2 id="处理布局事件"><a href="#处理布局事件" class="headerlink" title="处理布局事件"></a>处理布局事件</h2><p>为了正确地绘制您的自定义视图，您需要知道它的大小。<br>复杂的自定义视图通常需要根据屏幕上的区域的大小和形状来执行多个布局计算。<br>你不应该在屏幕上对视图的大小做出假设。<br>即使只有一个应用程序使用你的视图，这个应用程序也需要处理不同的屏幕大小，屏幕密度，以及横向和横向模式的不同方面的比率。</p>
+<p>尽管视图有许多用于处理度量的方法，但它们中的大多数不需要被覆盖。<br>如果您的视图不需要对它的大小进行特殊的控制，那么您只需覆盖一个方法:<a href="https://developer.android.google.cn/reference/android/view/View.html#onSizeChanged(int,%20int,%20int,%20int" target="_blank" rel="noopener">onSizeChanged()</a>)。</p>
+<p><a href="https://developer.android.google.cn/reference/android/view/View.html#onSizeChanged(int,%20int,%20int,%20int" target="_blank" rel="noopener">onSizeChanged()</a>)是在您的视图第一次分配一个大小时调用的，如果您的视图的大小因任何原因而发生变化，则调用onSizeChanged()。<br>在onSizeChanged()中计算位置、维度和其他与视图大小相关的值，而不是每次绘制时都重新计算它们。<br>在<code>PieChart</code>的例子中，onSizeChanged()是<code>PieChart</code>视图计算饼图的边界矩形和文本标签和其他可视元素的相对位置的地方。</p>
+<p>当您的视图被分配一个大小时，布局管理器假设这个大小包含了所有视图的padding。<br>在计算视图的大小时，必须处理padding值。<br>下面是PieChart.onSizeChanged()的一个片段，展示了如何做到这一点:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Account for padding</span></span><br><span class="line"><span class="keyword">float</span> xpad = (<span class="keyword">float</span>)(getPaddingLeft() + getPaddingRight());</span><br><span class="line"><span class="keyword">float</span> ypad = (<span class="keyword">float</span>)(getPaddingTop() + getPaddingBottom());</span><br><span class="line"></span><br><span class="line"><span class="comment">// Account for the label</span></span><br><span class="line"><span class="keyword">if</span> (mShowText) xpad += mTextWidth;</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> ww = (<span class="keyword">float</span>)w - xpad;</span><br><span class="line"><span class="keyword">float</span> hh = (<span class="keyword">float</span>)h - ypad;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Figure out how big we can make the pie.</span></span><br><span class="line"><span class="keyword">float</span> diameter = Math.min(ww, hh);</span><br></pre></td></tr></table></figure>
+<p>如果您需要更好地控制视图的布局参数，那么可以实现onMeasure()。<br>这个方法的参数是View.MeasureSpec值，它告诉你视图的父视图有多大，它的大小是一个硬的最大值还是一个建议。<br>作为一个优化，这些值被存储为打包的整数，您使用View.MeasureSpec的静态方法来解存储在每个整数中的信息。</p>
+<p>下面是onMeasure()的一个示例实现。<br>在这个实现中，PieChart试图让它的区域足够大，使这个馅饼和它的label一样大:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// Try for a width based on our minimum</span></span><br><span class="line">   <span class="keyword">int</span> minw = getPaddingLeft() + getPaddingRight() + getSuggestedMinimumWidth();</span><br><span class="line">   <span class="keyword">int</span> w = resolveSizeAndState(minw, widthMeasureSpec, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Whatever the width ends up being, ask for a height that would let the pie</span></span><br><span class="line">   <span class="comment">// get as big as it can</span></span><br><span class="line">   <span class="keyword">int</span> minh = MeasureSpec.getSize(w) - (<span class="keyword">int</span>)mTextWidth + getPaddingBottom() + getPaddingTop();</span><br><span class="line">   <span class="keyword">int</span> h = resolveSizeAndState(MeasureSpec.getSize(w) - (<span class="keyword">int</span>)mTextWidth, heightMeasureSpec, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">   setMeasuredDimension(w, h);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这段代码中有三件重要的事情需要注意:</p>
+<ul>
+<li><p>计算考虑到视图的填充。正如前面提到的，这是视图的责任。</p>
+</li>
+<li><p>助手方法<a href="https://developer.android.google.cn/reference/android/view/View.html#resolveSizeAndState(int,%20int,%20int" target="_blank" rel="noopener">resolveSizeAndState()</a>)用于创建最终的宽度和高度值。通过将视图所需的大小与传递给<a href="https://developer.android.google.cn/reference/android/view/View.html#onMeasure(int,%20int" target="_blank" rel="noopener">onMeasure()</a>)的规范相比较，这个助手返回一个适当的View.MeasureSpec值。</p>
+</li>
+<li><p>onMeasure()没有返回值。<br>相反，该方法通过调用<a href="https://developer.android.google.cn/reference/android/view/View.html#setMeasuredDimension(int,%20int" target="_blank" rel="noopener">setMeasuredDimension()</a>)来传递其结果。<br>调用此方法是强制性的。<br>如果省略了这个调用，视图类会抛出一个运行时异常。</p>
+</li>
+</ul>
+<h2 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h2><p>一旦您创建了对象创建和度量代码，您就可以实现onDraw()。<br>每个视图都以不同的方式实现onDraw()，但是有一些常见的操作是大多数视图共享的:</p>
+<ul>
+<li><p>绘制文本使用<a href="https://developer.android.google.cn/reference/android/graphics/Canvas.html#drawText(char[],%20int,%20int,%20float,%20float,%20android.graphics.Paint" target="_blank" rel="noopener">drawText()</a>)。<br>通过调用setTypeface()来指定字体，并通过调用setColor()来指定文本颜色。</p>
+</li>
+<li><p>使用<a href="https://developer.android.google.cn/reference/android/graphics/Canvas.html#drawRect(android.graphics.Rect,%20android.graphics.Paint" target="_blank" rel="noopener">drawRect()</a>)、<a href="https://developer.android.google.cn/reference/android/graphics/Canvas.html#drawOval(android.graphics.RectF,%20android.graphics.Paint" target="_blank" rel="noopener">drawOval()</a>)和<a href="****">drawArc()</a>绘制原始图形。<br>通过调用setStyle()来改变这些形状是否填充、概括或两者都有。</p>
+</li>
+<li><p>使用<a href="https://developer.android.google.cn/reference/android/graphics/Path.html" target="_blank" rel="noopener">Path</a>类绘制更复杂的图形。<br>通过向路径对象添加行和曲线来定义一个形状，然后使用<a href="https://developer.android.google.cn/reference/android/graphics/Canvas.html#drawPath(android.graphics.Path,%20android.graphics.Paint" target="_blank" rel="noopener">drawPath()</a>)来绘制图形。<br>就像原始的形状一样，可以根据setStyle()对路径进行概述、填充，或者两者都可以。</p>
+</li>
+<li><p>通过创建<a href="https://developer.android.google.cn/reference/android/graphics/LinearGradient.html" target="_blank" rel="noopener">LinearGradient</a>对象来定义渐变填充。<br>调用setShader()在填充的图形上使用你的线性渐变。</p>
+</li>
+<li><p>绘制位图使用<a href="https://developer.android.google.cn/reference/android/graphics/Canvas.html#drawBitmap(android.graphics.Bitmap,%20android.graphics.Matrix,%20android.graphics.Paint" target="_blank" rel="noopener">drawBitmap()</a>)。</p>
+</li>
+</ul>
+<p>例如，这里是绘制PieChart的代码。它使用了文本、线条和形状的混合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Draw the shadow</span></span><br><span class="line">   canvas.drawOval(</span><br><span class="line">           mShadowBounds,</span><br><span class="line">           mShadowPaint</span><br><span class="line">   );</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Draw the label text</span></span><br><span class="line">   canvas.drawText(mData.get(mCurrentItem).mLabel, mTextX, mTextY, mTextPaint);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Draw the pie slices</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mData.size(); ++i) &#123;</span><br><span class="line">       Item it = mData.get(i);</span><br><span class="line">       mPiePaint.setShader(it.mShader);</span><br><span class="line">       canvas.drawArc(mBounds,</span><br><span class="line">               <span class="number">360</span> - it.mEndAngle,</span><br><span class="line">               it.mEndAngle - it.mStartAngle,</span><br><span class="line">               <span class="keyword">true</span>, mPiePaint);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Draw the pointer</span></span><br><span class="line">   canvas.drawLine(mTextX, mPointerY, mPointerX, mPointerY, mTextPaint);</span><br><span class="line">   canvas.drawCircle(mPointerX, mPointerY, mPointerSize, mTextPaint);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/08/13/custom-views-custom-drawing/" target="_blank" title="自定义视图(2) —— 自定义绘制">https://jigangduan.github.io/2017/08/13/custom-views-custom-drawing/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-ui/">android-ui</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/13/custom-views-making-interactive/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          自定义视图(3) —— 视图交互
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/10/custom-views/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">自定义视图(1) —— 创建自定义视图类</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#覆写onDraw"><span class="nav-number">1.</span> <span class="nav-text">覆写onDraw()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建绘图对象"><span class="nav-number">2.</span> <span class="nav-text">创建绘图对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理布局事件"><span class="nav-number">3.</span> <span class="nav-text">处理布局事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绘制"><span class="nav-number">4.</span> <span class="nav-text">绘制</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

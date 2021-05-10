@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>mysql 笔记 (5) 数据类型（列类型） | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="mysqlsql">
+  
+  
+  
+  
+  <meta name="description" content="数值类型整型   类型 字节 范围（有符号位）     tinyint 1字节 -128 ~ 127      无符号位：0 ~ 255   smallint 2字节 -32768 ~ 32767   mediumint 3字节 -8388608 ~ 8388607   int 4字节   bigint 8字节   int(M) M表示总位数     默认存在符号位，unsigned 属性修改 显">
+<meta name="keywords" content="mysql,sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 笔记 (5) 数据类型（列类型）">
+<meta property="og:url" content="https://jigangduan.github.io/2019/03/12/mysql-notes-5/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="数值类型整型   类型 字节 范围（有符号位）     tinyint 1字节 -128 ~ 127      无符号位：0 ~ 255   smallint 2字节 -32768 ~ 32767   mediumint 3字节 -8388608 ~ 8388607   int 4字节   bigint 8字节   int(M) M表示总位数     默认存在符号位，unsigned 属性修改 显">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.221Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 笔记 (5) 数据类型（列类型）">
+<meta name="twitter:description" content="数值类型整型   类型 字节 范围（有符号位）     tinyint 1字节 -128 ~ 127      无符号位：0 ~ 255   smallint 2字节 -32768 ~ 32767   mediumint 3字节 -8388608 ~ 8388607   int 4字节   bigint 8字节   int(M) M表示总位数     默认存在符号位，unsigned 属性修改 显">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-mysql-notes-5" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      MySQL 笔记 (5) 数据类型（列类型）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/03/12/mysql-notes-5/" class="article-date">
+	  <time datetime="2019-03-12T05:43:56.000Z" itemprop="datePublished">2019-03-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a><a class="article-category-link" href="/categories/MySQL/MySQL-笔记/">MySQL 笔记</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h3><h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>字节</th>
+<th>范围（有符号位）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tinyint</td>
+<td>1字节</td>
+<td>-128 ~ 127      无符号位：0 ~ 255</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td>2字节</td>
+<td>-32768 ~ 32767</td>
+</tr>
+<tr>
+<td>mediumint</td>
+<td>3字节</td>
+<td>-8388608 ~ 8388607</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>8字节</td>
+</tr>
+<tr>
+<td>int(M)</td>
+<td>M表示总位数</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>默认存在符号位，unsigned 属性修改</li>
+<li>显示宽度，如果某个数不够定义字段时设置的位数，则前面以0补填，zerofill 属性修改<br>  例：int(5)   插入一个数’123’，补填后为’00123’</li>
+<li>在满足要求的情况下，越小越好。</li>
+<li>1表示bool值真，0表示bool值假。MySQL没有布尔类型，通过整型0和1表示。常用tinyint(1)表示布尔型。</li>
+</ul>
+<h4 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>字节</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float(单精度)</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>double(双精度)</td>
+<td>8字节</td>
+</tr>
+</tbody>
+</table>
+<p>浮点型既支持符号位 unsigned 属性，也支持显示宽度 zerofill 属性。<br>    不同于整型，前后均会补填0.<br>定义浮点型时，需指定总位数和小数位数。<br>    float(M, D)     double(M, D)<br>    M表示总位数，D表示小数位数。<br>    M和D的大小会决定浮点数的范围。不同于整型的固定范围。<br>    M既表示总位数（不包括小数点和正负号），也表示显示宽度（所有显示符号均包括）。<br>    支持科学计数法表示。<br>    浮点数表示近似值。</p>
+<h4 id="定点数"><a href="#定点数" class="headerlink" title="定点数"></a>定点数</h4><ul>
+<li><code>decimal</code> – 可变长度</li>
+<li><code>decimal(M, D)</code>   M也表示总位数，D表示小数位数。</li>
+</ul>
+<p>保存一个精确的数值，不会发生数据的改变，不同于浮点数的四舍五入。<br>将浮点数转换为字符串来保存，每9位数字保存为4个字节。</p>
+<h3 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h3><h4 id="char-varchar"><a href="#char-varchar" class="headerlink" title="char, varchar"></a>char, varchar</h4><ul>
+<li><code>char</code>    定长字符串，速度快，但浪费空间</li>
+<li><p><code>varchar</code> 变长字符串，速度慢，但节省空间</p>
+</li>
+<li><p>M表示能存储的最大长度，此长度是字符数，非字节数。</p>
+</li>
+<li>不同的编码，所占用的空间不同。</li>
+<li><code>char</code>,最多255个字符，与编码无关。</li>
+<li><code>varchar</code>,最多65535字符，与编码有关。</li>
+<li>一条有效记录最大不能超过65535个字节。<br>  <code>utf8</code> 最大为21844个字符，gbk 最大为32766个字符，latin1 最大为65532个字符</li>
+<li><code>varchar</code> 是变长的，需要利用存储空间保存 varchar 的长度，如果数据小于255个字节，则采用一个字节来保存长度，反之需要两个字节来保存。</li>
+<li><code>varchar</code> 的最大有效长度由最大行大小和使用的字符集确定。</li>
+<li>最大有效长度是65532字节，因为在varchar存字符串时，第一个字节是空的，不存在任何数据，然后还需两个字节来存放字符串的长度，所以有效长度是64432-1-2=65532字节。</li>
+</ul>
+<blockquote>
+<p>例：若一个表定义为 CREATE TABLE tb(c1 int, c2 char(30), c3 varchar(N)) charset=utf8; 问N的最大值是多少？<br>答：(65535-1-2-4-30*3)/3</p>
+</blockquote>
+<h4 id="blob-text"><a href="#blob-text" class="headerlink" title="blob, text"></a>blob, text</h4><ul>
+<li><code>blob</code> 二进制字符串（字节字符串）<ul>
+<li><code>tinyblob</code></li>
+<li><code>blob</code></li>
+<li><code>mediumblob</code></li>
+<li><code>longblob</code></li>
+</ul>
+</li>
+<li><code>text</code> 非二进制字符串（字符字符串）<ul>
+<li><code>tinytext</code></li>
+<li><code>text</code></li>
+<li><code>mediumtext</code></li>
+<li><code>longtext</code></li>
+</ul>
+</li>
+<li><code>text</code> 在定义时，不需要定义长度，也不会计算总长度。</li>
+<li><code>text</code> 类型在定义时，不可给default值</li>
+</ul>
+<h4 id="binary-varbinary"><a href="#binary-varbinary" class="headerlink" title="binary, varbinary"></a>binary, varbinary</h4><p>类似于char和varchar，用于保存二进制字符串，也就是保存字节字符串而非字符字符串。<br>char, varchar, text 对应 binary, varbinary, blob.</p>
+<h3 id="日期时间类型"><a href="#日期时间类型" class="headerlink" title="日期时间类型"></a>日期时间类型</h3><p>一般用整型保存时间戳，因为PHP可以很方便的将时间戳进行格式化。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>字节</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>datetime</td>
+<td>8字节</td>
+<td>日期及时间     1000-01-01 00:00:00 到 9999-12-31 23:59:59</td>
+</tr>
+<tr>
+<td>date</td>
+<td>3字节</td>
+<td>日期         1000-01-01 到 9999-12-31</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>4字节</td>
+<td>时间戳        19700101000000 到 2038-01-19 03:14:07</td>
+</tr>
+<tr>
+<td>time</td>
+<td>3字节</td>
+<td>时间         -838:59:59 到 838:59:59</td>
+</tr>
+<tr>
+<td>year</td>
+<td>1字节</td>
+<td>年份         1901 - 2155</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">datetime    YYYY-MM-DD hh:mm:ss</span><br><span class="line">timestamp   YY-MM-DD hh:mm:ss</span><br><span class="line">            YYYYMMDDhhmmss</span><br><span class="line">            YYMMDDhhmmss</span><br><span class="line">            YYYYMMDDhhmmss</span><br><span class="line">            YYMMDDhhmmss</span><br><span class="line">date        YYYY-MM-DD</span><br><span class="line">            YY-MM-DD</span><br><span class="line">            YYYYMMDD</span><br><span class="line">            YYMMDD</span><br><span class="line">            YYYYMMDD</span><br><span class="line">            YYMMDD</span><br><span class="line">time        hh:mm:ss</span><br><span class="line">            hhmmss</span><br><span class="line">            hhmmss</span><br><span class="line">year        YYYY</span><br><span class="line">            YY</span><br><span class="line">            YYYY</span><br><span class="line">            YY</span><br></pre></td></tr></table></figure>
+<h3 id="枚举和集合"><a href="#枚举和集合" class="headerlink" title="枚举和集合"></a>枚举和集合</h3><h4 id="枚举-enum"><a href="#枚举-enum" class="headerlink" title="枚举(enum)"></a>枚举(enum)</h4><p><code>enum(val1, val2, val3...)</code></p>
+<ul>
+<li>在已知的值中进行单选。最大数量为65535.</li>
+<li>枚举值在保存时，以2个字节的整型(smallint)保存。每个枚举值，按保存的位置顺序，从1开始逐一递增。</li>
+<li>表现为字符串类型，存储却是整型。</li>
+<li>NULL值的索引是NULL。</li>
+<li>空字符串错误值的索引值是0。</li>
+</ul>
+<h4 id="集合（set"><a href="#集合（set" class="headerlink" title="集合（set)"></a>集合（set)</h4><p><code>set(val1, val2, val3...)</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tab ( gender <span class="keyword">set</span>(<span class="string">'男'</span>, <span class="string">'女'</span>, <span class="string">'无'</span>) );</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tab <span class="keyword">values</span> (<span class="string">'男, 女'</span>);</span><br></pre></td></tr></table></figure>
+<p>最多可以有64个不同的成员。以bigint存储，共8个字节。采取位运算的形式。<br>当创建表时，SET成员值的尾部空格将自动被删除。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/03/12/mysql-notes-5/" target="_blank" title="MySQL 笔记 (5) 数据类型（列类型）">https://jigangduan.github.io/2019/03/12/mysql-notes-5/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/12/mysql-notes-6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          MySQL 笔记 (6) 列属性（列约束）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/12/mysql-notes-4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MySQL 笔记 (4) 数据操作</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数值类型"><span class="nav-number">1.</span> <span class="nav-text">数值类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整型"><span class="nav-number">1.1.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点型"><span class="nav-number">1.2.</span> <span class="nav-text">浮点型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定点数"><span class="nav-number">1.3.</span> <span class="nav-text">定点数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串类型"><span class="nav-number">2.</span> <span class="nav-text">字符串类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#char-varchar"><span class="nav-number">2.1.</span> <span class="nav-text">char, varchar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#blob-text"><span class="nav-number">2.2.</span> <span class="nav-text">blob, text</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#binary-varbinary"><span class="nav-number">2.3.</span> <span class="nav-text">binary, varbinary</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日期时间类型"><span class="nav-number">3.</span> <span class="nav-text">日期时间类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举和集合"><span class="nav-number">4.</span> <span class="nav-text">枚举和集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举-enum"><span class="nav-number">4.1.</span> <span class="nav-text">枚举(enum)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合（set"><span class="nav-number">4.2.</span> <span class="nav-text">集合（set)</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

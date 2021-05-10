@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>用go micro编写微服务 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="golanggo-micro">
+  
+  
+  
+  
+  <meta name="description" content="这是一个高水平的指导，用go-micro来编写微服务。 如果你想了解更多有关微服务的内容，请点击这里的入门博客文章，如果你想了解更多关于Micro的信息，请点击这里。 让我们开始吧。">
+<meta name="keywords" content="golang,go-micro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Go Micro编写微服务">
+<meta property="og:url" content="https://jigangduan.github.io/2018/03/18/go-micro/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="这是一个高水平的指导，用go-micro来编写微服务。 如果你想了解更多有关微服务的内容，请点击这里的入门博客文章，如果你想了解更多关于Micro的信息，请点击这里。 让我们开始吧。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521376593279&di=576a492a87f7c5608921cec413e24295&imgtype=0&src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Go Micro编写微服务">
+<meta name="twitter:description" content="这是一个高水平的指导，用go-micro来编写微服务。 如果你想了解更多有关微服务的内容，请点击这里的入门博客文章，如果你想了解更多关于Micro的信息，请点击这里。 让我们开始吧。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521376593279&di=576a492a87f7c5608921cec413e24295&imgtype=0&src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-go-micro" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      用Go Micro编写微服务
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/18/go-micro/" class="article-date">
+	  <time datetime="2018-03-18T11:30:53.000Z" itemprop="datePublished">2018-03-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/go-micro/">go-micro</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1521376593279&amp;di=576a492a87f7c5608921cec413e24295&amp;imgtype=0&amp;src=http%3A%2F%2Fstatic.open-open.com%2Fnews%2FuploadImg%2F20151218%2F20151218212318_391.jpg" alt="micro"></p>
+<p>这是一个高水平的指导，用go-micro来编写微服务。</p>
+<p>如果你想了解更多有关微服务的内容，请点击<a href="/2018/03/18/micro-introduction/">这里</a>的入门博客文章，如果你想了解更多关于Micro的信息，请点击<a href="/2018/03/18/micro/">这里</a>。</p>
+<p>让我们开始吧。</p>
+<a id="more"></a>
+<h2 id="Go-Micro是什么"><a href="#Go-Micro是什么" class="headerlink" title="Go Micro是什么?"></a>Go Micro是什么?</h2><p><a href="https://github.com/micro/go-micro" target="_blank" rel="noopener">Go Micro</a>是一个可插入的RPC库，它提供了用于编写微服务的基本构件。微哲学是用可插拔的体系结构设计的“电池”。从这个框中，它实现了使用代理的服务发现，通过http和使用proto-rpc或json-rpc进行编码</p>
+<p>Go Micro是:</p>
+<ol>
+<li>Go写的库</li>
+<li>一组可插入的接口</li>
+<li>基于RPC</li>
+</ol>
+<p>Go Micro提供了接口:</p>
+<ol>
+<li>服务发现</li>
+<li>编码</li>
+<li>客户端/服务端</li>
+<li>发布/订阅</li>
+</ol>
+<p><a href="/2018/03/18/micro#go-micro">这里</a>可以找到更详细的分类。</p>
+<h2 id="为什么要Go-Micro"><a href="#为什么要Go-Micro" class="headerlink" title="为什么要Go Micro?"></a>为什么要Go Micro?</h2><p>一年前就开始做Go Micro，最初是为个人服务。不久之后，很明显，它对更广泛的受众来说也很有价值，他们也希望编写微服务。这是基于在谷歌和Hailo等规模经营微服务平台的各种科技公司的经验。</p>
+<p>正如前面提到的，Go Micro是一个可插入的体系结构，它侧重于提供基于Go的接口，这些接口在一起使用时提供了用于编写微服务的构件。这些接口可以通过具体的实现来满足。例如，服务发现的<a href="https://godoc.org/github.com/micro/go-micro/registry" target="_blank" rel="noopener">注册</a>接口有一个默认的Consul实现，但是可以用etcd、zookeeper或其他任何能够满足接口的功能交换。</p>
+<p>如果您想要交换底层技术，可插拔的体系结构意味着零代码重写。</p>
+<p>让我们开始写一个服务吧。</p>
+<h2 id="写一个服务"><a href="#写一个服务" class="headerlink" title="写一个服务"></a>写一个服务</h2><p>如果您想直接阅读代码，请查看<a href="https://github.com/micro/examples/tree/master/service" target="_blank" rel="noopener">examples/service</a>。</p>
+<p>顶层<a href="https://godoc.org/github.com/micro/go-micro#Service" target="_blank" rel="noopener">服务</a>接口是构建服务的主要组件。它将所有的底层Go Micro包封装到一个方便的接口中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">type Service interface &#123;</span><br><span class="line">    Init(...Option)</span><br><span class="line">    Options() Options</span><br><span class="line">    Client() client.Client</span><br><span class="line">    Server() server.Server</span><br><span class="line">    Run() error</span><br><span class="line">    String() string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h3><p>服务是用<code>micro.NewService</code>创建的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/micro/go-micro"</span></span><br><span class="line"></span><br><span class="line">service := micro.NewService()</span><br></pre></td></tr></table></figure>
+<p>选项可以在创建期间传入。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service := micro.NewService(</span><br><span class="line">	micro.Name(<span class="string">"greeter"</span>),</span><br><span class="line">	micro.Version(<span class="string">"latest"</span>),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><a href="https://godoc.org/github.com/micro/go-micro#Option" target="_blank" rel="noopener">这里</a>可以找到所有可用的选项。</p>
+<p>Go Micro还提供了一种使用micro.Flags设置命令行标志的方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/micro/cli"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">service := micro.NewService(</span><br><span class="line">	micro.Flags(</span><br><span class="line">		cli.StringFlag&#123;</span><br><span class="line">			Name:  <span class="string">"environment"</span>,</span><br><span class="line">			Usage: <span class="string">"The environment"</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">	)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>要解析标记使用service.Init。另外，访问标志使用micro.Action 选项。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">service.Init(</span><br><span class="line">	micro.Action(<span class="function"><span class="keyword">func</span><span class="params">(c *cli.Context)</span></span> &#123;</span><br><span class="line">		env := c.StringFlag(<span class="string">"environment"</span>)</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(env) &gt; <span class="number">0</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"Environment set to"</span>, env)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>Go Micro提供预定义的标志，如果调用了service.Init，就会设置和解析这些标志。看<a href="https://godoc.org/github.com/micro/go-micro/cmd#pkg-variables" target="_blank" rel="noopener">这里</a>所有的flags。</p>
+<h3 id="2-定义API"><a href="#2-定义API" class="headerlink" title="2. 定义API"></a>2. 定义API</h3><p>我们使用protobuf文件来定义服务API接口。这是严格定义API并为服务器和客户机提供具体类型的非常方便的方法。</p>
+<p>这里有一个例子定义。</p>
+<p>greeter.proto</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">service Greeter &#123;</span><br><span class="line">	rpc Hello(HelloRequest) returns (HelloResponse) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">	string name = 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloResponse &#123;</span><br><span class="line">	string greeting = 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里，我们定义了一个服务处理程序，叫做Greeter，方法是Hello，它使用参数HelloRequest类型并返回HelloResponse。</p>
+<h3 id="3-生成的API接口"><a href="#3-生成的API接口" class="headerlink" title="3. 生成的API接口"></a>3. 生成的API接口</h3><p>我们使用protoc和protoc-gen-go为这个定义生成具体的go实现。</p>
+<p>Go-micro使用代码生成来提供客户端存根方法来减少板代码，就像gRPC一样。它是通过一个protobuf插件需要golang/protobuf,可以在这里找到github.com/micro/protobuf。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/micro/protobuf/&#123;proto,protoc-gen-go&#125;</span><br><span class="line">protoc --go_out=plugins=micro:. greeter.proto</span><br></pre></td></tr></table></figure>
+<p>生成的类型现在可以导入，并在请求时在服务器或客户机的处理程序中使用。</p>
+<p>这是生成代码的一部分。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> HelloRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="keyword">string</span> <span class="string">`protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> HelloResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Greeting <span class="keyword">string</span> <span class="string">`protobuf:"bytes,2,opt,name=greeting" json:"greeting,omitempty"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Client API for Greeter service</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> GreeterClient <span class="keyword">interface</span> &#123;</span><br><span class="line">	Hello(ctx context.Context, in *HelloRequest, opts ...client.CallOption) (*HelloResponse, error)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> greeterClient <span class="keyword">struct</span> &#123;</span><br><span class="line">	c           client.Client</span><br><span class="line">	serviceName <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewGreeterClient</span><span class="params">(serviceName <span class="keyword">string</span>, c client.Client)</span> <span class="title">GreeterClient</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> c == <span class="literal">nil</span> &#123;</span><br><span class="line">		c = client.NewClient()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(serviceName) == <span class="number">0</span> &#123;</span><br><span class="line">		serviceName = <span class="string">"greeter"</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> &amp;greeterClient&#123;</span><br><span class="line">		c:           c,</span><br><span class="line">		serviceName: serviceName,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *greeterClient)</span> <span class="title">Hello</span><span class="params">(ctx context.Context, in *HelloRequest, opts ...client.CallOption)</span> <span class="params">(*HelloResponse, error)</span></span> &#123;</span><br><span class="line">	req := c.c.NewRequest(c.serviceName, <span class="string">"Greeter.Hello"</span>, in)</span><br><span class="line">	out := <span class="built_in">new</span>(HelloResponse)</span><br><span class="line">	err := c.c.Call(ctx, req, out, opts...)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> out, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Server API for Greeter service</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> GreeterHandler <span class="keyword">interface</span> &#123;</span><br><span class="line">	Hello(context.Context, *HelloRequest, *HelloResponse) error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterGreeterHandler</span><span class="params">(s server.Server, hdlr GreeterHandler)</span></span> &#123;</span><br><span class="line">	s.Handle(s.NewHandler(&amp;Greeter&#123;hdlr&#125;))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-实现处理程序"><a href="#4-实现处理程序" class="headerlink" title="4. 实现处理程序"></a>4. 实现处理程序</h3><p>服务器需要为服务请求注册<em>** handlers</em>。handler是一种public类型，其public方法符合签名<code>func(ctx context.Context, req interface{}, rsp interface{}) error</code>。</p>
+<p>正如您在上面看到的，一个用于Greeter接口的处理程序签名看起来是这样的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> GreeterHandler <span class="keyword">interface</span> &#123;</span><br><span class="line">        Hello(context.Context, *HelloRequest, *HelloResponse) error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是Greeter handler的一个实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> proto <span class="string">"github.com/micro/examples/service/proto"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Greeter)</span> <span class="title">Hello</span><span class="params">(ctx context.Context, req *proto.HelloRequest, rsp *proto.HelloResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	rsp.Greeting = <span class="string">"Hello "</span> + req.Name</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>handler在您的服务中注册的很像http.Handler。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">service := micro.NewService(</span><br><span class="line">	micro.Name(<span class="string">"greeter"</span>),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">proto.RegisterGreeterHandler(service.Server(), <span class="built_in">new</span>(Greeter))</span><br></pre></td></tr></table></figure>
+<p>您还可以创建双向流handler，但我们将把它留到以后的一天。</p>
+<h3 id="5-运行服务"><a href="#5-运行服务" class="headerlink" title="5. 运行服务"></a>5. 运行服务</h3><p>greeter.go</p>
+<p>该服务可以通过调用<code>server.Run</code>来运行。这会导致服务绑定到config中的地址(默认设置为找到的第一个RFC1918接口和一个随机端口)并侦听请求。</p>
+<p>这将在发出一个kill信号时，在开始时和注销时对服务进行注册。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err := service.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-完整的服务"><a href="#6-完整的服务" class="headerlink" title="6. 完整的服务"></a>6. 完整的服务</h3><p>greeter.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"log"</span></span><br><span class="line"></span><br><span class="line">        <span class="string">"github.com/micro/go-micro"</span></span><br><span class="line">        proto <span class="string">"github.com/micro/examples/service/proto"</span></span><br><span class="line"></span><br><span class="line">        <span class="string">"golang.org/x/net/context"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Greeter)</span> <span class="title">Hello</span><span class="params">(ctx context.Context, req *proto.HelloRequest, rsp *proto.HelloResponse)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">        rsp.Greeting = <span class="string">"Hello "</span> + req.Name</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        service := micro.NewService(</span><br><span class="line">                micro.Name(<span class="string">"greeter"</span>),</span><br><span class="line">                micro.Version(<span class="string">"latest"</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        service.Init()</span><br><span class="line"></span><br><span class="line">        proto.RegisterGreeterHandler(service.Server(), <span class="built_in">new</span>(Greeter))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> err := service.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">                log.Fatal(err)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请注意。服务发现机制需要运行，因此服务可以注册为客户机和其他服务发现。这里有一个<a href="https://github.com/micro/go-micro#getting-started" target="_blank" rel="noopener">快速入门</a>。</p>
+<h2 id="编写一个客户端"><a href="#编写一个客户端" class="headerlink" title="编写一个客户端"></a>编写一个客户端</h2><p>客户端包用于查询服务。当您创建服务时，将包含一个与服务器使用的初始包相匹配的客户端。</p>
+<p>查询上述服务如下所示。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create the greeter client using the service name and client</span></span><br><span class="line">greeter := proto.NewGreeterClient(<span class="string">"greeter"</span>, service.Client())</span><br><span class="line"></span><br><span class="line"><span class="comment">// request the Hello method on the Greeter handler</span></span><br><span class="line">rsp, err := greeter.Hello(context.TODO(), &amp;proto.HelloRequest&#123;</span><br><span class="line">	Name: <span class="string">"John"</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(err)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fmt.Println(rsp.Greeter)</span><br></pre></td></tr></table></figure>
+<p><code>proto.NewGreeterClient</code>使用服务名称和用于发出请求的客户端。</p>
+<p>完整的例子可以在<a href="https://github.com/micro/examples/tree/master/service" target="_blank" rel="noopener">go-micro/example/service</a>中找到。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>希望这篇博文是一个有用的高级指南，可以用<a href="https://github.com/micro/go-micro" target="_blank" rel="noopener">Go Micro</a>来编写微服务。您可以在<a href="https://github.com/micro" target="_blank" rel="noopener">repo github.com/micro</a>中找到更多的示例服务，以帮助您进一步了解更真实的世界解决方案。</p>
+<p>如果你想了解更多关于我们提供的服务或微服务，请检查<a href="https://micro.mu" target="_blank" rel="noopener">micro.mu</a>。或者是<a href="https://github.com/micro/micro" target="_blank" rel="noopener">github repo</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/18/go-micro/" target="_blank" title="用Go Micro编写微服务">https://jigangduan.github.io/2018/03/18/go-micro/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-micro/">go-micro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/18/micro-on-nats/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Micro在NATS - 微服务与消息
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/18/micro/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Micro - 微服务工具包</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-Micro是什么"><span class="nav-number">1.</span> <span class="nav-text">Go Micro是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要Go-Micro"><span class="nav-number">2.</span> <span class="nav-text">为什么要Go Micro?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写一个服务"><span class="nav-number">3.</span> <span class="nav-text">写一个服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-初始化"><span class="nav-number">3.1.</span> <span class="nav-text">1. 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-定义API"><span class="nav-number">3.2.</span> <span class="nav-text">2. 定义API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-生成的API接口"><span class="nav-number">3.3.</span> <span class="nav-text">3. 生成的API接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-实现处理程序"><span class="nav-number">3.4.</span> <span class="nav-text">4. 实现处理程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-运行服务"><span class="nav-number">3.5.</span> <span class="nav-text">5. 运行服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-完整的服务"><span class="nav-number">3.6.</span> <span class="nav-text">6. 完整的服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写一个客户端"><span class="nav-number">4.</span> <span class="nav-text">编写一个客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

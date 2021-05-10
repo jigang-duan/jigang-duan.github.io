@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>rxswift 入门指南 | 朝着牛逼的道路一路狂奔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="iosswiftrxswift">
+  
+  
+  
+  
+  <meta name="description" content="RxSwift试图与ReactiveX.io保持一致.在RxSwift的情况下，通用跨平台的文档和教程也应该是有效的.  Observables又叫序列 Disposing Observable的隐式保障 创造你自己的 Observable (observable序列) 创造一个 Observable 执行工作 共享订阅和shareReplay操作符 操作符 Playgrounds 自定义操作符">
+<meta name="keywords" content="ios,swift,rxswift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift 入门指南">
+<meta property="og:url" content="https://jigangduan.github.io/2017/10/26/RxSwift-GettingStarted/index.html">
+<meta property="og:site_name" content="朝着牛逼的道路一路狂奔">
+<meta property="og:description" content="RxSwift试图与ReactiveX.io保持一致.在RxSwift的情况下，通用跨平台的文档和教程也应该是有效的.  Observables又叫序列 Disposing Observable的隐式保障 创造你自己的 Observable (observable序列) 创造一个 Observable 执行工作 共享订阅和shareReplay操作符 操作符 Playgrounds 自定义操作符">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://reactivex.io/assets/reactivex_bg.jpg">
+<meta property="og:updated_time" content="2020-07-25T02:57:18.162Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxSwift 入门指南">
+<meta name="twitter:description" content="RxSwift试图与ReactiveX.io保持一致.在RxSwift的情况下，通用跨平台的文档和教程也应该是有效的.  Observables又叫序列 Disposing Observable的隐式保障 创造你自己的 Observable (observable序列) 创造一个 Observable 执行工作 共享订阅和shareReplay操作符 操作符 Playgrounds 自定义操作符">
+<meta name="twitter:image" content="http://reactivex.io/assets/reactivex_bg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="朝着牛逼的道路一路狂奔" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-RxSwift-GettingStarted" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      RxSwift 入门指南
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/26/RxSwift-GettingStarted/" class="article-date">
+	  <time datetime="2017-10-26T04:28:14.000Z" itemprop="datePublished">2017-10-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/Swift/">Swift</a><a class="article-category-link" href="/categories/iOS/Swift/RxSwift/">RxSwift</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://reactivex.io/assets/reactivex_bg.jpg" alt="reactivex.io"></p>
+<p><code>RxSwift</code>试图与<a href="http://reactivex.io/" target="_blank" rel="noopener">ReactiveX.io</a>保持一致.在<code>RxSwift</code>的情况下，通用跨平台的文档和教程也应该是有效的.</p>
+<ol>
+<li><a href="#observables-aka-sequences">Observables又叫序列</a></li>
+<li><a href="#disposing">Disposing</a></li>
+<li><a href="#implicit-observable-guarantees"><code>Observable</code>的隐式保障</a></li>
+<li><a href="#creating-your-own-observable-aka-observable-sequence">创造你自己的 <code>Observable</code> (observable序列)</a></li>
+<li><a href="#creating-an-observable-that-performs-work">创造一个 <code>Observable</code> 执行工作</a></li>
+<li><a href="#sharing-subscription-and-sharereplay-operator">共享订阅和<code>shareReplay</code>操作符</a></li>
+<li><a href="#operators">操作符</a></li>
+<li><a href="#playgrounds">Playgrounds</a></li>
+<li><a href="#custom-operators">自定义操作符</a></li>
+<li><a href="#error-handling">错误处理</a></li>
+<li><a href="#debugging-compile-errors">调试编译错误</a></li>
+<li><a href="#debugging">调试</a></li>
+<li><a href="#debugging-memory-leaks">调试内存泄漏</a></li>
+<li><a href="#enabling-debug-mode">启用调试模式</a></li>
+<li><a href="#kvo">KVO</a></li>
+<li><a href="#ui-layer-tips">UI层提示</a></li>
+<li><a href="#making-http-requests">HTTP请求</a></li>
+<li><a href="#rxdatasources">RxDataSources</a></li>
+<li><a href="Traits.md#driver">Driver</a></li>
+<li><a href="Traits.md">特征: Driver, Single, Maybe, Completable</a></li>
+<li><a href="Examples.md">例子</a></li>
+</ol>
+<a id="more"></a>
+<h1 id="Observables又叫序列"><a href="#Observables又叫序列" class="headerlink" title="Observables又叫序列"></a>Observables又叫序列</h1><h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>观察者模式(<code>Observable&lt;Element&gt;</code>序列)和普通序列(<code>Sequence</code>)的<a href="MathBehindRx">等价性</a>是理解Rx最重要的东西。</p>
+<p><strong>每一个<code>Observable</code>序列就像是一个序列。<code>Observable</code> 对比 Swift的 <code>Sequence</code>的关键优势在于，它还可以异步地接收元素。这是RxSwift的核心，这里的文档是关于我们如何扩展这个想法的。</strong></p>
+<ul>
+<li><code>Observable</code>(<code>ObservableType</code>) 相当于 <code>Sequence</code></li>
+<li><code>ObservableType.subscribe</code> 方法是相当于 <code>Sequence.makeIterator</code> 方法.</li>
+<li>观察者(callback)需要通过<code>ObservableType.subscribe</code>方法接收序列元素，而不是在返回的迭代器上调用next()。</li>
+</ul>
+<p>序列是一个简单而又熟悉的概念，<strong>很容易理解</strong>。</p>
+<p>人类是有着巨大视觉纹理的生物。当我们可以很容易地看到一个概念时，它就容易多了。</p>
+<p>我们可以从试图模拟每个Rx操作符中的事件状态机到高级别操作，从而提升许多认知.</p>
+<p>如果我们不使用Rx，但在模型异步系统，这可能意味着我们的代码中充满了状态机和临时状态，我们需要模拟而不是抽象出来.</p>
+<p>列表和序列可能是数学家和程序员学习的第一个概念.</p>
+<p>这是一系列的数字:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--1--2--3--4--5--6--| // 正常终止</span><br></pre></td></tr></table></figure>
+<p>另一个序列,字符:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--a--b--a--a--a---d---X // 终止在错误上</span><br></pre></td></tr></table></figure>
+<p>一些序列是有限的，而另一些则是无限的，就像一个按钮点击序列:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">---tap-tap-------tap---&gt;</span><br></pre></td></tr></table></figure>
+<p>这些被称为大理石图表。还有更多的大理石图表在 <a href="http://rxmarbles.com" target="_blank" rel="noopener">rxmarbles.com</a>.</p>
+<p>如果我们把序列语法指定为正则表达式，它看起来就像:</p>
+<p><strong>next* (error | completed)?</strong></p>
+<p>描述如下:</p>
+<ul>
+<li><strong>序列可以有0个或多个元素.</strong></li>
+<li><strong>一旦接收到 <code>error</code> 或 <code>completed</code> 的事件, 序列就无法生成任何其他元素.</strong></li>
+</ul>
+<p>Rx中的序列由一个push接口(即callback)描述.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Event</span>&lt;<span class="title">Element</span>&gt;  </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> next(<span class="type">Element</span>)      <span class="comment">// 序列的下一个元素</span></span><br><span class="line">    <span class="keyword">case</span> error(<span class="type">Swift</span>.<span class="type">Error</span>) <span class="comment">// 序列失败的错误</span></span><br><span class="line">    <span class="keyword">case</span> completed          <span class="comment">// 成功终止序列</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observable</span>&lt;<span class="title">Element</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">subscribe</span><span class="params">(<span class="number">_</span> observer: Observer&lt;Element&gt;)</span></span> -&gt; <span class="type">Disposable</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">ObserverType</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">on</span><span class="params">(<span class="number">_</span> event: Event&lt;Element&gt;)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>当一个序列发送<code>completed</code>或<code>error</code>事件时，所有计算序列元素的内部资源将被释放.</strong></p>
+<p><strong>要立即取消序列元素和释放资源的产生，请在返回的订阅中调用<code>dispose</code>.</strong></p>
+<p>如果一个序列在有限的时间内终止，则不调用<code>dispose</code>或不使用<code>disposed(by: disposeBag)</code>不会造成任何永久性的资源泄漏。但是，这些资源将被使用，直到序列完成，要么完成元素的生产，要么返回一个错误。</p>
+<p>如果一个序列没有自动终止，例如使用一个按钮点击的系列，资源将被永久地分配，除非是手动调用<code>dispose</code>，自动地在<code>disposeBag</code>内，使用<code>takeUntil</code> 操作符,或者以另一种方式进行操作。</p>
+<p><strong>使用<code>disposeBag</code>或<code>takeUntil</code>操作符是一种可靠的方法，确保资源被清理干净。我们建议在生产环境中使用它们,即使序列在有限时间内终止</strong></p>
+<p>如果你好奇为什么<code>Swift.Error</code>不使用一般的错误类型，你可以在<a href="DesignRationale.md#why-error-type-isnt-generic">这里</a>找到解释.</p>
+<h2 id="Disposing"><a href="#Disposing" class="headerlink" title="Disposing"></a>Disposing</h2><p>有一种额外的方法可以被observed序列终止。当我们完成一个序列，并且我们想要释放 分配用来计算 即将到来的元素的所有资源时，我们可以在订阅中调用<code>dispose</code>。</p>
+<p>这是一个带有<code>interval</code>操作符的例子.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> scheduler = <span class="type">SerialDispatchQueueScheduler</span>(qos: .<span class="keyword">default</span>)</span><br><span class="line"><span class="keyword">let</span> subscription = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.interval(<span class="number">0.3</span>, scheduler: scheduler)</span><br><span class="line">    .subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(event)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">2.0</span>)</span><br><span class="line"></span><br><span class="line">subscription.dispose()</span><br></pre></td></tr></table></figure>
+<p>将打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<p>注意，您通常不希望手动调用<code>dispose</code>;这只是一个教育的例子。手动调用dispose通常是一种糟糕的代码气味。有更好的方式来处理订阅，比如<code>DisposeBag</code>，或者<code>takeUntil</code>操作符，或者其他的一些机制。</p>
+<p>那么，在执行了<code>dispose</code>调用之后，这段代码可以打印出什么东西吗?答案是:这取决于</p>
+<ul>
+<li><p>如果 <code>scheduler</code>  是一个 <strong>串行调度程序器</strong> (ex. <code>MainScheduler</code>) 并且 <code>dispose</code>被调用<strong>在相同的串行调度程序器</strong>, 答案是<strong>no</strong>.</p>
+</li>
+<li><p>否则它是 <strong>yes</strong>.</p>
+</li>
+</ul>
+<p>你可以找到更多关于调度器的信息 <a href="Schedulers.md">这里</a>.</p>
+<p>你只需要并行地进行两个过程.</p>
+<ul>
+<li>一个是生产元素</li>
+<li>另一种是处理订阅</li>
+</ul>
+<p>问题是不同的调度器在这些不同过程中“什么东西可以印出来?”都没有什么意义 “在不同的调度程序中，这些过程是不合理的。”</p>
+<p>再来几个例子 (<code>observeOn</code> 的解释在 <a href="Schedulers.md">这里</a>).</p>
+<p>如果我们有类似的东西:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> subscription = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.interval(<span class="number">0.3</span>, scheduler: scheduler)</span><br><span class="line">            .observeOn(<span class="type">MainScheduler</span>.instance)</span><br><span class="line">            .subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">                <span class="built_in">print</span>(event)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ....</span></span><br><span class="line"></span><br><span class="line">subscription.dispose() <span class="comment">// 从主线程调用</span></span><br></pre></td></tr></table></figure>
+<p><strong>在<code>dispose</code>调用返回之后，没有任何东西会被打印出来。这是保证的.</strong></p>
+<p>同时,在这种情况下:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> subscription = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.interval(<span class="number">0.3</span>, scheduler: scheduler)</span><br><span class="line">            .observeOn(serialScheduler)</span><br><span class="line">            .subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">                <span class="built_in">print</span>(event)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">subscription.dispose() <span class="comment">// 执行在相同的`serialScheduler`</span></span><br></pre></td></tr></table></figure>
+<p><strong>在<code>dispose</code>调用返回之后，没有任何东西会被打印出来。这是保证的.</strong></p>
+<h3 id="Dispose-Bags"><a href="#Dispose-Bags" class="headerlink" title="Dispose Bags"></a>Dispose Bags</h3><p>Dispose bags就像RX的ARC行为.</p>
+<p>当一个<code>DisposeBag</code>被释放时，它将调用<code>dispose</code> 对每一个添加了disposables项的进行处理.</p>
+<p>它没有<code>dispose</code>方法，因此不允许明确地显式调用。如果需要立即进行清理，我们可以创建一个新bag。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.disposeBag = <span class="type">DisposeBag</span>()</span><br></pre></td></tr></table></figure>
+<p>这将清除旧的引用，并导致资源的处置.</p>
+<p>If that explicit manual disposal is still wanted, use <code>CompositeDisposable</code>. <strong>It has the wanted behavior but once that <code>dispose</code> method is called, it will immediately dispose any newly added disposable.</strong></p>
+<h3 id="Take-until"><a href="#Take-until" class="headerlink" title="Take until"></a>Take until</h3><p>在dealloc中自动处理订阅的另一种方法是使用<code>takeUntil</code>操作符.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sequence</span><br><span class="line">    .takeUntil(<span class="keyword">self</span>.rx.deallocated)</span><br><span class="line">    .subscribe &#123;</span><br><span class="line">        <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Observable的隐式保障"><a href="#Observable的隐式保障" class="headerlink" title="Observable的隐式保障"></a><code>Observable</code>的隐式保障</h2><p>还有一些额外的保证，所有序列的生产者(<code>Observable</code>s)都必须遵守.</p>
+<p>它们在哪个线程上生成元素无关紧要，但是如果它们生成一个元素并将其发送给观察者<code>observer.on(.next(nextElement))</code>, 它们不能发送下一个元素,直到<code>observer.on</code>方法已完成.</p>
+<p>生产者也不能发送终止<code>.completed或</code>.error<code>在</code>.next`事件还没有结束的情况.</p>
+<p>简而言之，考虑一下这个例子:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">someObservable</span><br><span class="line">  .subscribe &#123; (e: <span class="type">Event</span>&lt;<span class="type">Element</span>&gt;) <span class="keyword">in</span></span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"Event processing started"</span>)</span><br><span class="line">      <span class="comment">// processing</span></span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"Event processing ended"</span>)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>总是会打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Event processing started</span><br><span class="line">Event processing ended</span><br><span class="line">Event processing started</span><br><span class="line">Event processing ended</span><br><span class="line">Event processing started</span><br><span class="line">Event processing ended</span><br></pre></td></tr></table></figure>
+<p>它不能打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Event processing started</span><br><span class="line">Event processing started</span><br><span class="line">Event processing ended</span><br><span class="line">Event processing ended</span><br></pre></td></tr></table></figure>
+<h2 id="创造你自己的-Observable-observable序列"><a href="#创造你自己的-Observable-observable序列" class="headerlink" title="创造你自己的 Observable (observable序列)"></a>创造你自己的 <code>Observable</code> (observable序列)</h2><p>关于observables有一件重要的事情要理解.</p>
+<p><strong>当一个observable被创建时，它不会仅仅因为它已经被创建而执行任何工作.</strong></p>
+<p>的确，<code>Observable</code>可以有许多方法产生元素。它们中的一些会产生副作用，其中一些会利用现有的运行过程，比如点击鼠标事件等等.</p>
+<p><strong>但是，如果您只是调用一个<code>Observable</code>的方法，那么就不会执行任何序列生成，并且没有副作用。<code>Observable</code>只是定义了序列是如何生成的，以及为元素生成使用了哪些参数。当调用了订阅方法时，序列生成才开始.</strong></p>
+<p>假设，你有一个类似prototype的方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">searchWikipedia</span><span class="params">(searchTerm: String)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Results</span>&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> searchForMe = searchWikipedia(<span class="string">"me"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有执行请求，没有工作，没有发送URL请求</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cancel = searchForMe</span><br><span class="line">  <span class="comment">// 序列生成现在开始，URL请求被触发</span></span><br><span class="line">  .subscribe(onNext: &#123; results <span class="keyword">in</span></span><br><span class="line">      <span class="built_in">print</span>(results)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<p>有很多方法可以创建你自己的<code>Observable</code> 序列。最简单的方法可能是使用create函数.</p>
+<p>让我们编写一个函数来创建一个序列，该序列在订阅时返回一个元素。这个函数被称为’just’.</p>
+<p><em>这是实际的实现</em></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">myJust</span>&lt;E&gt;<span class="params">(<span class="number">_</span> element: E)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">E</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Observable</span>.create &#123; observer <span class="keyword">in</span></span><br><span class="line">        observer.on(.next(element))</span><br><span class="line">        observer.on(.completed)</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myJust(<span class="number">0</span>)</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">      <span class="built_in">print</span>(n)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>将打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>那么什么是<code>create</code>函数呢?</p>
+<p>它只是一种方便的方法，它使您能够使用Swift闭包方便地实现<code>subscribe</code>方法。就像 <code>subscribe</code>方法一样，它需要一个参数，一个<code>observer</code>，然后返回<code>disposable</code>.</p>
+<p>这样实现的顺序实际上是同步的。它将生成元素，并在终止之前<code>subscribe</code>调用返回disposable。因为它的返回并不重要所以生成元素的过程不会被打断.</p>
+<p>在生成同步序列时，通常使用的disposable返回是<code>NopDisposable</code>实例.</p>
+<p>现在让我们创建一个可以从数组中返回元素的observable.</p>
+<p><em>实际的实现</em></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">myFrom</span>&lt;E&gt;<span class="params">(<span class="number">_</span> sequence: [E])</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">E</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Observable</span>.create &#123; observer <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">for</span> element <span class="keyword">in</span> sequence &#123;</span><br><span class="line">            observer.on(.next(element))</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        observer.on(.completed)</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> stringCounter = myFrom([<span class="string">"first"</span>, <span class="string">"second"</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Started ----"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// first time</span></span><br><span class="line">stringCounter</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(n)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"----"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// again</span></span><br><span class="line">stringCounter</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(n)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Ended ----"</span>)</span><br></pre></td></tr></table></figure>
+<p>将打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Started ----</span><br><span class="line">first</span><br><span class="line">second</span><br><span class="line">----</span><br><span class="line">first</span><br><span class="line">second</span><br><span class="line">Ended ----</span><br></pre></td></tr></table></figure>
+<h2 id="创造一个-Observable-执行工作"><a href="#创造一个-Observable-执行工作" class="headerlink" title="创造一个 Observable 执行工作"></a>创造一个 <code>Observable</code> 执行工作</h2><p>好了，现在更有趣了。我们来创建之前例子中使用的<code>interval</code>操作符.</p>
+<p><em>这相当于分派队列调度程序的实际实现</em></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">myInterval</span><span class="params">(<span class="number">_</span> interval: TimeInterval)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Observable</span>.create &#123; observer <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Subscribed"</span>)</span><br><span class="line">        <span class="keyword">let</span> timer = <span class="type">DispatchSource</span>.makeTimerSource(queue: <span class="type">DispatchQueue</span>.global())</span><br><span class="line">        timer.scheduleRepeating(deadline: <span class="type">DispatchTime</span>.now() + interval, interval: interval)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> cancel = <span class="type">Disposables</span>.create &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Disposed"</span>)</span><br><span class="line">            timer.cancel()</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> next = <span class="number">0</span></span><br><span class="line">        timer.setEventHandler &#123;</span><br><span class="line">            <span class="keyword">if</span> cancel.isDisposed &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">            observer.on(.next(next))</span><br><span class="line">            next += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        timer.resume()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> cancel</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = myInterval(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Started ----"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> subscription = counter</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(n)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">subscription.dispose()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Ended ----"</span>)</span><br></pre></td></tr></table></figure>
+<p>将打印</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Started ----</span><br><span class="line">Subscribed</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">Disposed</span><br><span class="line">Ended ----</span><br></pre></td></tr></table></figure>
+<p>如果你想写</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = myInterval(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Started ----"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> subscription1 = counter</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"First \(n)"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="keyword">let</span> subscription2 = counter</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Second \(n)"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">subscription1.dispose()</span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">subscription2.dispose()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Ended ----"</span>)</span><br></pre></td></tr></table></figure>
+<p>将打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Started ----</span><br><span class="line">Subscribed</span><br><span class="line">Subscribed</span><br><span class="line">First 0</span><br><span class="line">Second 0</span><br><span class="line">First 1</span><br><span class="line">Second 1</span><br><span class="line">First 2</span><br><span class="line">Second 2</span><br><span class="line">First 3</span><br><span class="line">Second 3</span><br><span class="line">First 4</span><br><span class="line">Second 4</span><br><span class="line">Disposed</span><br><span class="line">Second 5</span><br><span class="line">Second 6</span><br><span class="line">Second 7</span><br><span class="line">Second 8</span><br><span class="line">Second 9</span><br><span class="line">Disposed</span><br><span class="line">Ended ----</span><br></pre></td></tr></table></figure>
+<p><strong>订阅的每个订阅者通常会生成它自己的单独的元素序列。默认情况下，操作符是无状态的。有很多无状态的操作符比有状态的多.</strong></p>
+<h2 id="共享订阅和shareReplay操作符"><a href="#共享订阅和shareReplay操作符" class="headerlink" title="共享订阅和shareReplay操作符"></a>共享订阅和<code>shareReplay</code>操作符</h2><p>但是，如果您希望多个观察者只从一个订阅中共享事件(元素)，该怎么办呢?</p>
+<p>有两件事需要定义。</p>
+<ul>
+<li>在新用户对它们感兴趣之前,如何处理以前接收到的过去的元素(仅重放最新、重放所有、重放最后n个)</li>
+<li>如何决定何时触发共享订阅(refCount、手动或其他算法)</li>
+</ul>
+<p>通常的选择是<code>replay(1).refCount()</code> 也可以 <code>shareReplay()</code>.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = myInterval(<span class="number">0.1</span>)</span><br><span class="line">    .shareReplay(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Started ----"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> subscription1 = counter</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"First \(n)"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="keyword">let</span> subscription2 = counter</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Second \(n)"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">subscription1.dispose()</span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">subscription2.dispose()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Ended ----"</span>)</span><br></pre></td></tr></table></figure>
+<p>将打印</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Started ----</span><br><span class="line">Subscribed</span><br><span class="line">First 0</span><br><span class="line">Second 0</span><br><span class="line">First 1</span><br><span class="line">Second 1</span><br><span class="line">First 2</span><br><span class="line">Second 2</span><br><span class="line">First 3</span><br><span class="line">Second 3</span><br><span class="line">First 4</span><br><span class="line">Second 4</span><br><span class="line">First 5</span><br><span class="line">Second 5</span><br><span class="line">Second 6</span><br><span class="line">Second 7</span><br><span class="line">Second 8</span><br><span class="line">Second 9</span><br><span class="line">Disposed</span><br><span class="line">Ended ----</span><br></pre></td></tr></table></figure>
+<p>注意，现在只有一个<code>Subscribed</code>和<code>Disposed</code>事件.</p>
+<p>URL observables的行为是一样的.</p>
+<p>这就是在Rx中封装HTTP请求的方式。它和interval操作符的模式是一样的.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Reactive</span> <span class="title">where</span> <span class="title">Base</span>: <span class="title">URLSession</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">response</span><span class="params">(<span class="number">_</span> request: URLRequest)</span></span> -&gt; <span class="type">Observable</span>&lt;(<span class="type">Data</span>, <span class="type">HTTPURLResponse</span>)&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Observable</span>.create &#123; observer <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> task = <span class="keyword">self</span>.dataTaskWithRequest(request) &#123; (data, response, error) <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">guard</span> <span class="keyword">let</span> response = response, <span class="keyword">let</span> data = data <span class="keyword">else</span> &#123;</span><br><span class="line">                    observer.on(.error(error ?? <span class="type">RxCocoaURLError</span>.<span class="type">Unknown</span>))</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">guard</span> <span class="keyword">let</span> httpResponse = response <span class="keyword">as</span>? <span class="type">HTTPURLResponse</span> <span class="keyword">else</span> &#123;</span><br><span class="line">                    observer.on(.error(<span class="type">RxCocoaURLError</span>.nonHTTPResponse(response: response)))</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                observer.on(.next(data, httpResponse))</span><br><span class="line">                observer.on(.completed)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            task.resume()</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="type">Disposables</span>.create &#123;</span><br><span class="line">                task.cancel()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><p>在RxSwift中实现了许多操作符.</p>
+<p>所有操作符的大理石图表都可以在 <a href="http://reactivex.io/" target="_blank" rel="noopener">ReactiveX.io</a></p>
+<p>几乎所有的运算符都在 <a href="#">Playgrounds</a>.</p>
+<p>要使用playgrounds，请打开<code>Rx.xcworkspace</code>，构建<code>RxSwift-macOS</code> scheme，然后在<code>Rx.xcworkspace</code>上打开playgrounds的树视图.</p>
+<p>如果你需要一个操作符，不知道怎么找到它，这有一个<a href="http://reactivex.io/documentation/operators.html#tree" target="_blank" rel="noopener">操作符树</a>.</p>
+<h3 id="自定义操作符"><a href="#自定义操作符" class="headerlink" title="自定义操作符"></a>自定义操作符</h3><p>如何创建自定义操作符有两种方法.</p>
+<h4 id="简单的方法"><a href="#简单的方法" class="headerlink" title="简单的方法"></a>简单的方法</h4><p>所有的内部代码都使用了高度优化的操作符，因此它们并不是最好的教程材料。这就是为什么使用标准操作符的原因.</p>
+<p>幸运的是，有一种更简单的方法来创建操作符。创建新的运算符实际上是关于创建observables，而之前的章节已经描述了如何做到这一点.</p>
+<p>让我们看看如何实现一个未优化的映射操作符.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">ObservableType</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">myMap</span>&lt;R&gt;<span class="params">(transform: @escaping <span class="params">(E)</span></span></span> -&gt; <span class="type">R</span>) -&gt; <span class="type">Observable</span>&lt;<span class="type">R</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Observable</span>.create &#123; observer <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> subscription = <span class="keyword">self</span>.subscribe &#123; e <span class="keyword">in</span></span><br><span class="line">                    <span class="keyword">switch</span> e &#123;</span><br><span class="line">                    <span class="keyword">case</span> .next(<span class="keyword">let</span> value):</span><br><span class="line">                        <span class="keyword">let</span> result = transform(value)</span><br><span class="line">                        observer.on(.next(result))</span><br><span class="line">                    <span class="keyword">case</span> .error(<span class="keyword">let</span> error):</span><br><span class="line">                        observer.on(.error(error))</span><br><span class="line">                    <span class="keyword">case</span> .completed:</span><br><span class="line">                        observer.on(.completed)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> subscription</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在你可以使用自己的map了:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> subscription = myInterval(<span class="number">0.1</span>)</span><br><span class="line">    .myMap &#123; e <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"This is simply \(e)"</span></span><br><span class="line">    &#125;</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(n)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>将打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Subscribed</span><br><span class="line">This is simply 0</span><br><span class="line">This is simply 1</span><br><span class="line">This is simply 2</span><br><span class="line">This is simply 3</span><br><span class="line">This is simply 4</span><br><span class="line">This is simply 5</span><br><span class="line">This is simply 6</span><br><span class="line">This is simply 7</span><br><span class="line">This is simply 8</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="Life-happens"><a href="#Life-happens" class="headerlink" title="Life happens"></a>Life happens</h3><p>那么，如果不用自定义操作符来解决某些情况会怎么样呢? 您可以退出单个Rx，在真实世界中执行活动，然后使用<code>Subject</code>s将结果再次使用到Rx.</p>
+<p>这不是应该经常练习的东西，而且是一种不好的代码味道，但你可以这样做.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> magicBeings: <span class="type">Observable</span>&lt;<span class="type">MagicBeing</span>&gt; = summonFromMiddleEarth()</span><br><span class="line"></span><br><span class="line">magicBeings</span><br><span class="line">  .subscribe(onNext: &#123; being <span class="keyword">in</span>     <span class="comment">// exit the Rx monad</span></span><br><span class="line">      <span class="keyword">self</span>.doSomeStateMagic(being)</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag)</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//  Mess</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">let</span> kitten = globalParty(   <span class="comment">// calculate something in messy world</span></span><br><span class="line">  being,</span><br><span class="line">  <span class="type">UIApplication</span>.delegate.dataSomething.attendees</span><br><span class="line">)</span><br><span class="line">kittens.on(.next(kitten))   <span class="comment">// send result back to rx</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Another mess</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> kittens = <span class="type">Variable</span>(firstKitten) <span class="comment">// again back in Rx monad</span></span><br><span class="line"></span><br><span class="line">kittens.asObservable()</span><br><span class="line">  .<span class="built_in">map</span> &#123; kitten <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> kitten.purr()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ....</span></span><br></pre></td></tr></table></figure>
+<p>每次你这么做的时候，有人可能会把这个代码写在某个地方:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kittens</span><br><span class="line">  .subscribe(onNext: &#123; kitten <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// do something with kitten</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+<p>所以请尽量不要这样做.</p>
+<h2 id="Playgrounds"><a href="#Playgrounds" class="headerlink" title="Playgrounds"></a>Playgrounds</h2><p>如果你不确定其中的一些操作符是如何工作的，<a href="#">playgrounds</a>包含几乎所有的操作符，都已经准备好了演示他们行为的小例子.</p>
+<p><strong>要使用playgrounds，请打开Rx.xcworkspace，构建RxSwift-macOS scheme，然后在Rx.xcworkspace上打开playgrounds的树视图.</strong></p>
+<p><strong>要查看playgrounds上的示例结果，请打开<code>Assistant Editor</code>。您可以通过点击<code>View &gt; Assistant Editor &gt; Show Assistant Editor</code>来打开<code>Assistant Editor</code></strong></p>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>有两种错误机制.</p>
+<h3 id="observables中的异步错误处理机制"><a href="#observables中的异步错误处理机制" class="headerlink" title="observables中的异步错误处理机制"></a>observables中的异步错误处理机制</h3><p>错误处理非常简单。如果一个序列以错误结束，那么所有依赖序列都将以错误结束。这是通常的短路逻辑。</p>
+<p>您可以通过使用<code>catch</code>操作符来恢复overloads的故障。有各种重载使您能够详细地指定恢复.</p>
+<p>还有<code>retry</code>操作符，可以在出现错误序列时进行重试.</p>
+<h2 id="调试编译错误"><a href="#调试编译错误" class="headerlink" title="调试编译错误"></a>调试编译错误</h2><p>在编写优雅的rxswift/rxcocoa代码时，您可能非常依赖于编译器来推断<code>Observable</code>的类型。这就是为什么Swift很棒的原因之一，但有时也会让人沮丧.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">images = word</span><br><span class="line">    .<span class="built_in">filter</span> &#123; $<span class="number">0</span>.containsString(<span class="string">"important"</span>) &#125;</span><br><span class="line">    .flatMap &#123; word <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.api.loadFlickrFeed(<span class="string">"karate"</span>)</span><br><span class="line">            .catchError &#123; error <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">return</span> just(<span class="type">JSON</span>(<span class="number">1</span>))</span><br><span class="line">            &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>如果编译器报告在这个表达式的某个地方有一个错误，我建议首先注释返回类型.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">images = word</span><br><span class="line">    .<span class="built_in">filter</span> &#123; s -&gt; <span class="type">Bool</span> <span class="keyword">in</span> s.containsString(<span class="string">"important"</span>) &#125;</span><br><span class="line">    .flatMap &#123; word -&gt; <span class="type">Observable</span>&lt;<span class="type">JSON</span>&gt; <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.api.loadFlickrFeed(<span class="string">"karate"</span>)</span><br><span class="line">            .catchError &#123; error -&gt; <span class="type">Observable</span>&lt;<span class="type">JSON</span>&gt; <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">return</span> just(<span class="type">JSON</span>(<span class="number">1</span>))</span><br><span class="line">            &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>如果这不起作用，您可以继续添加更多类型注释，直到将错误本地化.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">images = word</span><br><span class="line">    .<span class="built_in">filter</span> &#123; (s: <span class="type">String</span>) -&gt; <span class="type">Bool</span> <span class="keyword">in</span> s.containsString(<span class="string">"important"</span>) &#125;</span><br><span class="line">    .flatMap &#123; (word: <span class="type">String</span>) -&gt; <span class="type">Observable</span>&lt;<span class="type">JSON</span>&gt; <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.api.loadFlickrFeed(<span class="string">"karate"</span>)</span><br><span class="line">            .catchError &#123; (error: <span class="type">Error</span>) -&gt; <span class="type">Observable</span>&lt;<span class="type">JSON</span>&gt; <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">return</span> just(<span class="type">JSON</span>(<span class="number">1</span>))</span><br><span class="line">            &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>我建议首先注释返回类型和闭包的参数.</strong></p>
+<p>通常在您修复了错误之后，您可以删除类型注释来重新清理您的代码.</p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>单独使用调试器是很有用的，但是通常使用<code>debug</code>会更有效。<code>debug</code>操作符将把所有事件打印到标准输出中，您还可以添加标记这些事件。.</p>
+<p><code>debug</code>就像一个探针。这里有一个使用它的例子:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> subscription = myInterval(<span class="number">0.1</span>)</span><br><span class="line">    .debug(<span class="string">"my probe"</span>)</span><br><span class="line">    .<span class="built_in">map</span> &#123; e <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"This is simply \(e)"</span></span><br><span class="line">    &#125;</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(n)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleepForTimeInterval(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">subscription.dispose()</span><br></pre></td></tr></table></figure>
+<p>将打印</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[my probe] subscribed</span><br><span class="line">Subscribed</span><br><span class="line">[my probe] -&gt; Event next(Box(0))</span><br><span class="line">This is simply 0</span><br><span class="line">[my probe] -&gt; Event next(Box(1))</span><br><span class="line">This is simply 1</span><br><span class="line">[my probe] -&gt; Event next(Box(2))</span><br><span class="line">This is simply 2</span><br><span class="line">[my probe] -&gt; Event next(Box(3))</span><br><span class="line">This is simply 3</span><br><span class="line">[my probe] -&gt; Event next(Box(4))</span><br><span class="line">This is simply 4</span><br><span class="line">[my probe] dispose</span><br><span class="line">Disposed</span><br></pre></td></tr></table></figure>
+<p>您还可以轻松地创建<code>debug</code>操作符的版本.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">ObservableType</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">myDebug</span><span class="params">(identifier: String)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Self</span>.<span class="type">E</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Observable</span>.create &#123; observer <span class="keyword">in</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"subscribed \(identifier)"</span>)</span><br><span class="line">            <span class="keyword">let</span> subscription = <span class="keyword">self</span>.subscribe &#123; e <span class="keyword">in</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">"event \(identifier)  \(e)"</span>)</span><br><span class="line">                <span class="keyword">switch</span> e &#123;</span><br><span class="line">                <span class="keyword">case</span> .next(<span class="keyword">let</span> value):</span><br><span class="line">                    observer.on(.next(value))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">case</span> .error(<span class="keyword">let</span> error):</span><br><span class="line">                    observer.on(.error(error))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">case</span> .completed:</span><br><span class="line">                    observer.on(.completed)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">Disposables</span>.create &#123;</span><br><span class="line">                   <span class="built_in">print</span>(<span class="string">"disposing \(identifier)"</span>)</span><br><span class="line">                   subscription.dispose()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="启用调试模式"><a href="#启用调试模式" class="headerlink" title="启用调试模式"></a>启用调试模式</h3><p>使用<code>RxSwift.Resources</code>来调试内存泄漏或自动记录所有HTTP请求，您必须启用调试模式.</p>
+<p>为了启用调试模式，必须将一个<code>TRACE_RESOURCES</code>标志添加到RxSwift目标构建设置中，在<em>Other Swift Flags</em>下.</p>
+<p>有关如何用Cocoapods &amp; Carthage设置<code>TRACE_RESOURCES</code>标志的进一步讨论和指导，请参阅 <a href="https://github.com/ReactiveX/RxSwift/issues/378" target="_blank" rel="noopener">#378</a></p>
+<h2 id="调试内存泄漏"><a href="#调试内存泄漏" class="headerlink" title="调试内存泄漏"></a>调试内存泄漏</h2><p>在调试模式下，Rx在全局变量<code>Resources.total</code>中跟踪所有分配的资源.</p>
+<p>如果您想要有一些资源泄漏检测逻辑，最简单的方法就是打印<code>RxSwift.Resources.total</code>周期性的输出.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* add somewhere in</span></span><br><span class="line"><span class="comment">func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="number">_</span> = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.interval(<span class="number">1</span>, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .subscribe(onNext: &#123; <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Resource count \(RxSwift.Resources.total)"</span>)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>测试内存泄漏的最有效方法是:</p>
+<ul>
+<li>导航到你的屏幕并使用它</li>
+<li>导航返回</li>
+<li>观察初始资源数</li>
+<li>第二次浏览你的屏幕并使用它</li>
+<li>导航返回</li>
+<li>观察最终的资源数</li>
+</ul>
+<p>如果在初始资源和最终资源计数之间存在差异，可能会出现内存泄漏.</p>
+<p>之所以建议2个导航，是因为第一个导航强制加载了惰性资源.</p>
+<h2 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h2><p><code>Variable</code>s表示一些observable状态。不包含值的<code>Variable</code>不能存在，所以需要初始值.</p>
+<p>Variable封装<a href="http://reactivex.io/documentation/subject.html" target="_blank" rel="noopener"><code>Subject</code></a>。更具体地说，这是一个<code>BehaviorSubject</code>。与<code>BehaviorSubject</code>不同，它只显示值接口，因此variable永远不能以错误结束.</p>
+<p>它还会在订阅中立即播放它的当前价.</p>
+<p>在variable被释放后，它将完成从<code>.asObservable()</code>返回observable序列.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> variable = <span class="type">Variable</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Before first subscription ---"</span>)</span><br><span class="line"></span><br><span class="line"><span class="number">_</span> = variable.asObservable()</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"First \(n)"</span>)</span><br><span class="line">    &#125;, onCompleted: &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Completed 1"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Before send 1"</span>)</span><br><span class="line"></span><br><span class="line">variable.value = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Before second subscription ---"</span>)</span><br><span class="line"></span><br><span class="line"><span class="number">_</span> = variable.asObservable()</span><br><span class="line">    .subscribe(onNext: &#123; n <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Second \(n)"</span>)</span><br><span class="line">    &#125;, onCompleted: &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Completed 2"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Before send 2"</span>)</span><br><span class="line"></span><br><span class="line">variable.value = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"End ---"</span>)</span><br></pre></td></tr></table></figure>
+<p>将打印</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Before first subscription ---</span><br><span class="line">First 0</span><br><span class="line">Before send 1</span><br><span class="line">First 1</span><br><span class="line">Before second subscription ---</span><br><span class="line">Second 1</span><br><span class="line">Before send 2</span><br><span class="line">First 2</span><br><span class="line">Second 2</span><br><span class="line">End ---</span><br><span class="line">Completed 1</span><br><span class="line">Completed 2</span><br></pre></td></tr></table></figure>
+<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO是一种Objective-C机制。这意味着它并不是在考虑类型安全的情况下建立起来的。这个项目试图解决一些问题。</p>
+<p>这个库支持KVO的方式有两种。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// KVO</span></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Reactive</span> <span class="title">where</span> <span class="title">Base</span>: <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">observe</span>&lt;E&gt;<span class="params">(type: E.<span class="keyword">Type</span>, <span class="number">_</span> keyPath: String, options: KeyValueObservingOptions, retainSelf: Bool = <span class="literal">true</span>)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">E?</span>&gt; &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#<span class="keyword">if</span> !<span class="type">DISABLE_SWIZZLING</span></span><br><span class="line"><span class="comment">// KVO</span></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Reactive</span> <span class="title">where</span> <span class="title">Base</span>: <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">observeWeakly</span>&lt;E&gt;<span class="params">(type: E.<span class="keyword">Type</span>, <span class="number">_</span> keyPath: String, options: KeyValueObservingOptions)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">E?</span>&gt; &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<p>例如如何观察<code>UIView</code>的frame.</p>
+<p><strong>警告:UIKit不是KVO兼容的，但这是可行的.</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">view</span><br><span class="line">  .rx.observe(<span class="type">CGRect</span>.<span class="keyword">self</span>, <span class="string">"frame"</span>)</span><br><span class="line">  .subscribe(onNext: &#123; frame <span class="keyword">in</span></span><br><span class="line">    ...</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">view</span><br><span class="line">  .rx.observeWeakly(<span class="type">CGRect</span>.<span class="keyword">self</span>, <span class="string">"frame"</span>)</span><br><span class="line">  .subscribe(onNext: &#123; frame <span class="keyword">in</span></span><br><span class="line">    ...</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="rx-observe"><a href="#rx-observe" class="headerlink" title="rx.observe"></a><code>rx.observe</code></h3><p><code>rx.observe</code>更有性能，因为它只是围绕KVO机制的一个简单包装，但它的使用场景更有限</p>
+<ul>
+<li>它可以用于observe路径开始于来自<code>self</code>或来自所有权的祖先 (<code>retainSelf = false</code>)</li>
+<li>它可以用于observe路径开始于从所有权中的后代 (<code>retainSelf = true</code>)</li>
+<li>路径必须只包含 <code>strong</code>属性，否则，在dealloc之前，您可能会冒着破坏系统的风险.</li>
+</ul>
+<p>如</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.rx.observe(<span class="type">CGRect</span>.<span class="keyword">self</span>, <span class="string">"view.frame"</span>, retainSelf: <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="rx-observeWeakly"><a href="#rx-observeWeakly" class="headerlink" title="rx.observeWeakly"></a><code>rx.observeWeakly</code></h3><p><code>rx.observeWeakly</code>的速度比<code>rx.observe</code>慢一些。观察因为它必须在弱引用的情况下处理对象的交易.</p>
+<p>它可以在<code>rx.observe</code>的所有情况下使用</p>
+<ul>
+<li>因为它不会持有observed的目标，它可以用来observe任意的对象，它的所有权关系是未知的</li>
+<li>它可以用来观察<code>weak</code>属性</li>
+</ul>
+<p>如</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">someSuspiciousViewController.rx.observeWeakly(<span class="type">Bool</span>.<span class="keyword">self</span>, <span class="string">"behavingOk"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="观察结构"><a href="#观察结构" class="headerlink" title="观察结构"></a>观察结构</h3><p>KVO是一种Objective-C机制，因此它非常依赖于<code>NSValue</code>.</p>
+<p><strong>RxCocoa为KVO提供了对<code>CGRect</code>、<code>CGSize</code>和<code>CGPoint</code>结构的支持.</strong></p>
+<p>当观察其他结构体时，必须手动从<code>NSValue</code>中提取这些结构。</p>
+<p>RxCocoa/Foundation/KVORepresentable+CoreGraphics.swift)是如何扩展示例KVO观察机制和<code>rx.observe*</code>的方法，通过实现KVORepresentable协议。</p>
+<h2 id="UI层提示"><a href="#UI层提示" class="headerlink" title="UI层提示"></a>UI层提示</h2><p>当绑定到UIKit控件时你的<code>Observable</code>s 的一些东西在UI层中需要满足.</p>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p><code>Observable</code>s需要在<code>MainScheduler</code>(UIThread)上发送值。这只是普通的UIKit/Cocoa需求.</p>
+<p>对于您的api来说，在<code>MainScheduler</code>上返回结果通常是一个好主意。如果您试图从后台线程中绑定某个东西，在调试构建RxCocoa中通常会抛出一个异常来通知您这一点</p>
+<p>要解决这个问题，您需要添加<code>observeOn(MainScheduler.instance)</code>.</p>
+<p><strong>URLSession扩展在默认情况下不会返回<code>MainScheduler</code>.</strong></p>
+<h3 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h3><p>你不能将失败绑定到UIKit控件因为这是未定义的行为.</p>
+<p>如果你不知道<code>Observable</code>可能失败,您可以使用<code>catchErrorJustReturn(valueThatIsReturnedWhenErrorHappens)</code>确保它不能失败,<strong>但是，在发生错误之后，底层的序列仍然会完成</strong>.</p>
+<p>如果想要的行为是底层序列继续生成元素，则需要某些版本的<code>retry</code>操作符.</p>
+<h3 id="分享订阅"><a href="#分享订阅" class="headerlink" title="分享订阅"></a>分享订阅</h3><p>您通常希望在UI层中共享订阅。您不需要单独进行HTTP调用来将相同的数据绑定到多个UI元素.</p>
+<p>假设你有这样的东西:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> searchResults = searchText</span><br><span class="line">    .throttle(<span class="number">0.3</span>, $.mainScheduler)</span><br><span class="line">    .distinctUntilChanged</span><br><span class="line">    .flatMapLatest &#123; query <span class="keyword">in</span></span><br><span class="line">        <span class="type">API</span>.getSearchResults(query)</span><br><span class="line">            .retry(<span class="number">3</span>)</span><br><span class="line">            .startWith([]) <span class="comment">// clears results on new search term</span></span><br><span class="line">            .catchErrorJustReturn([])</span><br><span class="line">    &#125;</span><br><span class="line">    .shareReplay(<span class="number">1</span>)              <span class="comment">// &lt;- notice the `shareReplay` operator</span></span><br></pre></td></tr></table></figure>
+<p>你通常想要的是分享搜索结果。这就是<code>shareReplay</code>的意思。</p>
+<p><strong>在UI层中，在转换链的末尾添加<code>shareReplay</code>通常是一个很好的经验法则，因为您确实想要共享计算结果。当将<code>搜索结果</code>绑定到多个UI元素时，您不希望触发单独的HTTP连接。</strong></p>
+<p><strong>再看一下<code>Driver</code>单元。它被设计为透明地包装这些共享调用，确保在主UI线程上观察到元素，并且没有错误可以绑定到UI。</strong></p>
+<h2 id="HTTP请求"><a href="#HTTP请求" class="headerlink" title="HTTP请求"></a>HTTP请求</h2><p>http请求是人们尝试的第一件事。</p>
+<p>首先需要构建一个表示需要完成的工作的<code>URLRequest</code>对象.</p>
+<p>请求确定是GET请求，还是POST请求，请求主体是什么，查询参数 …</p>
+<p>这就是如何创建一个简单的GET请求</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> req = <span class="type">URLRequest</span>(url: <span class="type">URL</span>(string: <span class="string">"http://en.wikipedia.org/w/api.php?action=parse&amp;page=Pizza&amp;format=json"</span>))</span><br></pre></td></tr></table></figure>
+<p>如果您想在组合之外执行其他observables的请求，那么这就是需要做的事情。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> responseJSON = <span class="type">URLSession</span>.shared.rx.json(request: req)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有任何请求会被执行到responseJSON,只是一个描述如何获取响应</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cancelRequest = responseJSON</span><br><span class="line">    <span class="comment">// this will fire the request</span></span><br><span class="line">    .subscribe(onNext: &#123; json <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(json)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">3.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果你想在3秒后取消请求</span></span><br><span class="line">cancelRequest.dispose()</span><br></pre></td></tr></table></figure>
+<p><strong>URLSession扩展不会在默认情况下返回<code>MainScheduler</code>.</strong></p>
+<p>如果您想要一个更低级别访问响应，您可以使用:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URLSession</span>.shared.rx.response(myURLRequest)</span><br><span class="line">    .debug(<span class="string">"my request"</span>) <span class="comment">// 将把信息打印到控制台</span></span><br><span class="line">    .flatMap &#123; (data: <span class="type">NSData</span>, response: <span class="type">URLResponse</span>) -&gt; <span class="type">Observable</span>&lt;<span class="type">String</span>&gt; <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> response = response <span class="keyword">as</span>? <span class="type">HTTPURLResponse</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> <span class="number">200</span> ..&lt; <span class="number">300</span> ~= response.statusCode &#123;</span><br><span class="line">                <span class="keyword">return</span> just(transform(data))</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="type">Observable</span>.error(yourNSError)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            rxFatalError(<span class="string">"response = nil"</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="type">Observable</span>.error(yourNSError)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    .subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(event) <span class="comment">// 如果发生错误，也会将错误输出到控制台</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="日志记录HTTP流量"><a href="#日志记录HTTP流量" class="headerlink" title="日志记录HTTP流量"></a>日志记录HTTP流量</h3><p>在调试模式下，RxCocoa将默认将所有HTTP请求记录到控制台。如果您想要改变这种行为，请设置<code>Logging.URLRequests</code>的过滤器。.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读自己的配置</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">Logging</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="type">LogURLRequest</span> = (<span class="type">URLRequest</span>) -&gt; <span class="type">Bool</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> <span class="type">URLRequests</span>: <span class="type">LogURLRequest</span> =  &#123; <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    #<span class="keyword">if</span> <span class="type">DEBUG</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    #<span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    #endif</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="RxDataSources"><a href="#RxDataSources" class="headerlink" title="RxDataSources"></a>RxDataSources</h2><p>… 是一组为UITableView s和UICollectionView提供全功能的响应式数据源的类。</p>
+<p>RxDataSources被绑定在 <a href="https://github.com/RxSwiftCommunity/RxDataSources" target="_blank" rel="noopener">这里</a>.</p>
+<p>在<a href="#">RxExample</a>项目中包含了如何使用它们的功能完整的演示。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>段纪刚</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/10/26/RxSwift-GettingStarted/" target="_blank" title="RxSwift 入门指南">https://jigangduan.github.io/2017/10/26/RxSwift-GettingStarted/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/">ios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rxswift/">rxswift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/27/RxSwift-HotAndColdObservables/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          RxSwift 热&amp;冷Observables
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/26/RxSwift-Examples/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">RxSwift 例子</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Observables又叫序列"><span class="nav-number">1.</span> <span class="nav-text">Observables又叫序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础知识"><span class="nav-number">1.1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Disposing"><span class="nav-number">1.2.</span> <span class="nav-text">Disposing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dispose-Bags"><span class="nav-number">1.2.1.</span> <span class="nav-text">Dispose Bags</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Take-until"><span class="nav-number">1.2.2.</span> <span class="nav-text">Take until</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Observable的隐式保障"><span class="nav-number">1.3.</span> <span class="nav-text">Observable的隐式保障</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创造你自己的-Observable-observable序列"><span class="nav-number">1.4.</span> <span class="nav-text">创造你自己的 Observable (observable序列)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创造一个-Observable-执行工作"><span class="nav-number">1.5.</span> <span class="nav-text">创造一个 Observable 执行工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享订阅和shareReplay操作符"><span class="nav-number">1.6.</span> <span class="nav-text">共享订阅和shareReplay操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作符"><span class="nav-number">1.7.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义操作符"><span class="nav-number">1.7.1.</span> <span class="nav-text">自定义操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单的方法"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">简单的方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Life-happens"><span class="nav-number">1.7.2.</span> <span class="nav-text">Life happens</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Playgrounds"><span class="nav-number">1.8.</span> <span class="nav-text">Playgrounds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理"><span class="nav-number">1.9.</span> <span class="nav-text">错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#observables中的异步错误处理机制"><span class="nav-number">1.9.1.</span> <span class="nav-text">observables中的异步错误处理机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试编译错误"><span class="nav-number">1.10.</span> <span class="nav-text">调试编译错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试"><span class="nav-number">1.11.</span> <span class="nav-text">调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启用调试模式"><span class="nav-number">1.11.1.</span> <span class="nav-text">启用调试模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试内存泄漏"><span class="nav-number">1.12.</span> <span class="nav-text">调试内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Variables"><span class="nav-number">1.13.</span> <span class="nav-text">Variables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVO"><span class="nav-number">1.14.</span> <span class="nav-text">KVO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rx-observe"><span class="nav-number">1.14.1.</span> <span class="nav-text">rx.observe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rx-observeWeakly"><span class="nav-number">1.14.2.</span> <span class="nav-text">rx.observeWeakly</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察结构"><span class="nav-number">1.14.3.</span> <span class="nav-text">观察结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UI层提示"><span class="nav-number">1.15.</span> <span class="nav-text">UI层提示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">1.15.1.</span> <span class="nav-text">线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误"><span class="nav-number">1.15.2.</span> <span class="nav-text">错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分享订阅"><span class="nav-number">1.15.3.</span> <span class="nav-text">分享订阅</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP请求"><span class="nav-number">1.16.</span> <span class="nav-text">HTTP请求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志记录HTTP流量"><span class="nav-number">1.16.1.</span> <span class="nav-text">日志记录HTTP流量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RxDataSources"><span class="nav-number">1.17.</span> <span class="nav-text">RxDataSources</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2021 朝着牛逼的道路一路狂奔 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            朝着牛逼的道路一路狂奔
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 段纪刚 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
